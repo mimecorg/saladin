@@ -1,0 +1,5 @@
+<RCC version="1.0">
+<qresource prefix="/resources">
+  <file>mainwindow.xml</file>
+</qresource>
+</RCC>

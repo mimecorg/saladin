@@ -1,0 +1,1 @@
+RESOURCES += icons/icons.qrc
