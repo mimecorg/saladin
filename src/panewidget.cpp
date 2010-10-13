@@ -26,20 +26,19 @@
 
 #include "shell/shellfolder.h"
 #include "shell/shellitem.h"
+#include "utils/localsettings.h"
 #include "utils/iconloader.h"
 
 PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( parent ),
     m_strip( NULL ),
     m_view( NULL ),
     m_model( NULL ),
-    m_isSource( false )
+    m_isSource( false ),
+    m_movingSection( false )
 {
     QVBoxLayout* layout = new QVBoxLayout( this );
     layout->setSpacing( 0 );
-    if ( location == LeftPane )
-        layout->setContentsMargins( 3, 0, 0, 0 );
-    else
-        layout->setContentsMargins( 0, 0, 3, 0 );
+    layout->setMargin( 0 );
 
     m_strip = new XmlUi::ToolStrip( this );
     layout->addWidget( m_strip );
@@ -114,6 +113,9 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     connect( m_view, SIGNAL( activated( const QModelIndex& ) ), this, SLOT( itemActivated( const QModelIndex& ) ) );
     connect( m_view, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( viewContextMenuRequested( const QPoint& ) ) );
 
+    connect( m_view->header(), SIGNAL( sectionResized( int, int, int ) ), this, SLOT( sectionResized( int, int, int ) ) );
+    connect( m_view->header(), SIGNAL( sectionMoved( int, int, int ) ), this, SLOT( sectionMoved( int, int, int ) ) );
+
     m_view->installEventFilter( this );
     m_view->viewport()->installEventFilter( this );
 
@@ -126,10 +128,15 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->setSortingEnabled( true );
     m_view->sortByColumn( 0, Qt::AscendingOrder );
 
-    m_view->setColumnWidth( 0, 480 );
-    m_view->setColumnWidth( 1, 100 );
-    m_view->setColumnWidth( 2, 120 );
-    m_view->setColumnWidth( 3, 70 );
+    LocalSettings* settings = application->applicationSettings();
+    if ( settings->contains( "HeaderState" ) ) {
+        m_view->header()->restoreState( settings->value( "HeaderState" ).toByteArray() );
+    } else {
+        m_view->setColumnWidth( 0, 210 );
+        m_view->setColumnWidth( 1, 90 );
+        m_view->setColumnWidth( 2, 110 );
+        m_view->setColumnWidth( 3, 70 );
+    }
 
     QStatusBar* status = new QStatusBar( this );
     status->setSizeGripEnabled( false );
@@ -144,6 +151,8 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
 PaneWidget::~PaneWidget()
 {
+    LocalSettings* settings = application->applicationSettings();
+    settings->setValue( "HeaderState", m_view->header()->saveState() );
 }
 
 bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
@@ -572,4 +581,27 @@ void PaneWidget::stripContextMenuRequested( const QPoint& pos )
         if ( command == ShellSelection::Open )
             openDrive( drive );
     }
+}
+
+void PaneWidget::sectionResized( int index, int /*oldSize*/, int newSize )
+{
+    emit headerSectionResized( index, newSize );
+}
+
+void PaneWidget::sectionMoved( int /*index*/, int from, int to )
+{
+    m_movingSection = true;
+    emit headerSectionMoved( from, to );
+    m_movingSection = false;
+}
+
+void PaneWidget::resizeHeaderSection( int index, int size )
+{
+    m_view->header()->resizeSection( index, size );
+}
+
+void PaneWidget::moveHeaderSection( int from, int to )
+{
+    if ( !m_movingSection )
+        m_view->header()->moveSection( from, to );
 }

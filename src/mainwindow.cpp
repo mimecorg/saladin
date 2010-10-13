@@ -215,12 +215,12 @@ void MainWindow::initialize()
     connect( action, SIGNAL( triggered() ), this, SLOT( deleteSelected() ) );
     setAction( "deleteSelected", action );
 
-    action = new QAction( IconLoader::icon( "terminal" ), tr( "Open Terminal" ), this );
+    action = new QAction( IconLoader::icon( "terminal" ), tr( "Open Console" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F9 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openTerminal() ) );
     setAction( "openTerminal", action );
 
-    action = new QAction( IconLoader::icon( "pack" ), tr( "Pack To Zip" ), this );
+    action = new QAction( IconLoader::icon( "pack" ), tr( "Pack" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_P ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( packToZip() ) );
     setAction( "packToZip", action );
@@ -244,7 +244,7 @@ void MainWindow::initialize()
     connect( action, SIGNAL( triggered() ), this, SLOT( openFtpSite() ) );
     setAction( "openFtpSite", action );
 
-    action = new QAction( IconLoader::icon( "calculate" ), tr( "Calculate Size" ), this );
+    action = new QAction( IconLoader::icon( "calculate" ), tr( "Show Size" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_L ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( calculateSize() ) );
     setAction( "calculateSize", action );
@@ -306,24 +306,33 @@ void MainWindow::initialize()
 
     builder->registerToolStrip( "stripMain", strip );
 
-    QSplitter* splitter = new QSplitter( this );
-    setCentralWidget( splitter );
+    QWidget* widget = new QWidget( this );
+    setCentralWidget( widget );
 
-    m_panes[ 0 ] = new PaneWidget( PaneWidget::LeftPane, splitter );
-    m_panes[ 1 ] = new PaneWidget( PaneWidget::RightPane, splitter );
+    m_panes[ 0 ] = new PaneWidget( PaneWidget::LeftPane, widget );
+    m_panes[ 1 ] = new PaneWidget( PaneWidget::RightPane, widget );
 
-    splitter->addWidget( m_panes[ 0 ] );
-    splitter->addWidget( m_panes[ 1 ] );
+    QHBoxLayout* layout = new QHBoxLayout( widget );
+    layout->setContentsMargins( 3, 0, 3, 0 );
+    layout->setSpacing( 5 );
+
+    layout->addWidget( m_panes[ 0 ] );
+    layout->addWidget( m_panes[ 1 ] );
 
     LocalSettings* settings = application->applicationSettings();
     if ( settings->contains( "MainWindowGeometry" ) )
         restoreGeometry( settings->value( "MainWindowGeometry" ).toByteArray() );
     else
-        resize( QSize( 750, 500 ) );
+        resize( QSize( 1020, 680 ) );
+
+    connect( m_panes[ 0 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 1 ], SLOT( resizeHeaderSection( int, int ) ) );
+    connect( m_panes[ 1 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 0 ], SLOT( resizeHeaderSection( int, int ) ) );
+    connect( m_panes[ 0 ], SIGNAL( headerSectionMoved( int, int ) ), m_panes[ 1 ], SLOT( moveHeaderSection( int, int ) ) );
+    connect( m_panes[ 1 ], SIGNAL( headerSectionMoved( int, int ) ), m_panes[ 0 ], SLOT( moveHeaderSection( int, int ) ) );
 
     application->installEventFilter( this );
 
-    splitter->widget( 0 )->setFocus();
+    m_panes[ 0 ]->setFocus();
 }
 
 bool MainWindow::eventFilter( QObject* object, QEvent* e )

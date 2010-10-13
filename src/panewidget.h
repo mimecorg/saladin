@@ -72,6 +72,14 @@ public:
 public: // overrides
     bool eventFilter( QObject* watched, QEvent* e );
 
+public slots:
+    void resizeHeaderSection( int index, int size );
+    void moveHeaderSection( int from, int to );
+
+signals:
+    void headerSectionResized( int index, int size );
+    void headerSectionMoved( int from, int to );
+
 private slots:
     void changeDirectory();
     void driveSelected( int index );
@@ -80,6 +88,9 @@ private slots:
     void viewContextMenuRequested( const QPoint& pos );
 
     void stripContextMenuRequested( const QPoint& pos );
+
+    void sectionResized( int index, int oldSize, int newSize );
+    void sectionMoved( int index, int from, int to );
 
 private:
     void enterDirectory( const ShellItem& item );
@@ -99,6 +110,8 @@ private:
     FolderItemModel* m_model;
 
     bool m_isSource;
+
+    bool m_movingSection;
 };
 
 #endif
