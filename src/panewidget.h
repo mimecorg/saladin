@@ -102,6 +102,8 @@ private:
     void updateEditPalette();
 
 private:
+    PaneLocation m_location;
+
     XmlUi::ToolStrip* m_strip;
 
     QLineEdit* m_edit;

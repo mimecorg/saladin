@@ -30,6 +30,7 @@
 #include "utils/iconloader.h"
 
 PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( parent ),
+    m_location( location ),
     m_strip( NULL ),
     m_view( NULL ),
     m_model( NULL ),
@@ -129,8 +130,9 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->sortByColumn( 0, Qt::AscendingOrder );
 
     LocalSettings* settings = application->applicationSettings();
-    if ( settings->contains( "HeaderState" ) ) {
-        m_view->header()->restoreState( settings->value( "HeaderState" ).toByteArray() );
+    QString key = QString( "HeaderState%1" ).arg( location + 1 );
+    if ( settings->contains( key ) ) {
+        m_view->header()->restoreState( settings->value( key ).toByteArray() );
     } else {
         m_view->setColumnWidth( 0, 210 );
         m_view->setColumnWidth( 1, 90 );
@@ -152,7 +154,8 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 PaneWidget::~PaneWidget()
 {
     LocalSettings* settings = application->applicationSettings();
-    settings->setValue( "HeaderState", m_view->header()->saveState() );
+    QString key = QString( "HeaderState%1" ).arg( m_location + 1 );
+    settings->setValue( key, m_view->header()->saveState() );
 }
 
 bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
