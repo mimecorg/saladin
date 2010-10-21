@@ -183,6 +183,21 @@ bool ShellSelectionPrivate::dragDropHelper( ShellFolder* targetFolder, ShellSele
     return result;
 }
 
+bool ShellSelection::canDelete()
+{
+    bool result = false;
+
+    ITransferSource* source;
+    HRESULT hr = d->m_sourceFolder->d->m_folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &source ) );
+
+    if ( SUCCEEDED( hr ) ) {
+        result = true;
+        source->Release();
+    }
+
+    return result;
+}
+
 bool ShellSelection::deleteSelection( Flags flags )
 {
     bool result = false;

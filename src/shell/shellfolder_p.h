@@ -40,6 +40,9 @@ public:
 
     void readItemProperties( ShellItem& item );
 
+    void updateDescriptors( ShellItem& item );
+    void updateDescriptors( QList<ShellItem>& items );
+
     ShellFolder* createParentFolder( ShellItem& item );
 
 public:

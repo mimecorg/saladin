@@ -775,7 +775,10 @@ void MainWindow::deleteItems( ShellFolder* folder, const QList<ShellItem>& items
 
     ShellSelection selection( folder, items, this );
 
-    selection.deleteSelection( flags );
+    if ( selection.canDelete() )
+        selection.deleteSelection( flags );
+    else
+        selection.invokeCommand( "delete" );
 }
 
 void MainWindow::openTerminal()

@@ -64,6 +64,7 @@ public:
     bool canDragDropTo( ShellFolder* targetFolder, TransferType type );
     bool dragDropTo( ShellFolder* targetFolder, TransferType type );
 
+    bool canDelete();
     bool deleteSelection( Flags flags );
 
     MenuCommand showContextMenu( const QPoint& pos, Flags flags );

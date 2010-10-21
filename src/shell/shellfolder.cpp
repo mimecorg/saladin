@@ -78,29 +78,11 @@ void ShellFolderPrivate::readProperties()
 
     m_hasParent = true;
 
-    LPITEMIDLIST pidl;
-    hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), CSIDL_DRIVES, &pidl );
+    const int rootFolders[ 4 ] = { CSIDL_DRIVES, CSIDL_NETWORK, CSIDL_INTERNET, CSIDL_DESKTOP };
 
-    if ( SUCCEEDED( hr ) ) {
-        if ( ILIsParent( pidl, m_pidl, true ) )
-            m_hasParent = false;
-
-        CoTaskMemFree( pidl );
-    }
-
-    if ( m_hasParent ) {
-        hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), CSIDL_NETWORK, &pidl );
-
-        if ( SUCCEEDED( hr ) ) {
-            if ( ILIsEqual( pidl, m_pidl ) || ILIsParent( pidl, m_pidl, true ) )
-                m_hasParent = false;
-
-            CoTaskMemFree( pidl );
-        }
-    }
-
-    if ( m_hasParent ) {
-        hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), CSIDL_DESKTOP, &pidl );
+    for ( int i = 0; i < 4 && m_hasParent; i++ ) {
+        LPITEMIDLIST pidl;
+        hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), rootFolders[ i ], &pidl );
 
         if ( SUCCEEDED( hr ) ) {
             if ( ILIsEqual( pidl, m_pidl ) || ILIsParent( pidl, m_pidl, true ) )
@@ -175,6 +157,8 @@ QList<ShellItem> ShellFolder::listItems( Flags flags )
             result.append( d->makeItem( pidl ) );
 
         enumerator->Release();
+
+        d->updateDescriptors( result );
     }
 
     return result;
@@ -201,8 +185,10 @@ ShellItem ShellFolderPrivate::makeRealNotifyItem( LPITEMIDLIST pidl )
 
     HRESULT hr = SHGetRealIDL( m_folder, pidl, &item.d->m_pidl );
 
-    if ( SUCCEEDED( hr ) )
+    if ( SUCCEEDED( hr ) ) {
         readItemProperties( item );
+        updateDescriptors( item );
+    }
 
     return item;
 }
@@ -294,6 +280,97 @@ void ShellFolderPrivate::readItemProperties( ShellItem& item )
     }
 
     item.d->m_icon = icon;
+}
+
+void ShellFolderPrivate::updateDescriptors( ShellItem& item )
+{
+    if ( item.state().testFlag( ShellItem::HasProperties ) || item.attributes().testFlag( ShellItem::Directory ) )
+        return;
+
+    IDataObject* dataObject;
+    HRESULT hr = m_folder->GetUIObjectOf( q->parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&item.d->m_pidl, IID_IDataObject, NULL, (void**)&dataObject );
+
+    if ( SUCCEEDED( hr ) ) {
+        FORMATETC format;
+        format.cfFormat = RegisterClipboardFormat( CFSTR_FILEDESCRIPTOR );
+        format.ptd = NULL;
+        format.dwAspect = DVASPECT_CONTENT;
+        format.lindex = -1;
+        format.tymed = TYMED_HGLOBAL;
+
+        STGMEDIUM medium = { 0 };
+        hr = dataObject->GetData( &format, &medium );
+
+        if ( SUCCEEDED( hr ) ) {
+            FILEGROUPDESCRIPTOR* group = (FILEGROUPDESCRIPTOR*)GlobalLock( medium.hGlobal );
+
+            if ( group->cItems == 1 ) {
+                item.d->m_size = (qint64)group->fgd[ 0 ].nFileSizeHigh << 32 | group->fgd[ 0 ].nFileSizeLow;
+                item.d->m_modified = fileTimeToQDateTime( &group->fgd[ 0 ].ftLastWriteTime );
+                item.d->m_state |= ShellItem::HasProperties;
+            }
+
+            GlobalUnlock( medium.hGlobal );
+        }
+
+        ReleaseStgMedium( &medium );
+        dataObject->Release();
+    }
+}
+
+void ShellFolderPrivate::updateDescriptors( QList<ShellItem>& items )
+{
+    int count = 0;
+    for ( int i = 0; i < items.count(); i++ ) {
+        if ( !items.at( i ).state().testFlag( ShellItem::HasProperties ) && !items.at( i ).attributes().testFlag( ShellItem::Directory ) )
+            count++;
+    }
+
+    if ( !count )
+        return;
+
+    QVector<LPCITEMIDLIST> pidls( count );
+    QVector<int> indexes( count );
+    int j = 0;
+    for ( int i = 0; i < items.count(); i++ ) {
+        if ( !items.at( i ).state().testFlag( ShellItem::HasProperties ) && !items.at( i ).attributes().testFlag( ShellItem::Directory ) ) {
+            pidls[ j ] = items.at( i ).d->m_pidl;
+            indexes[ j++ ] = i;
+        }
+    }
+
+    IDataObject* dataObject;
+    HRESULT hr = m_folder->GetUIObjectOf( q->parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
+
+    if ( SUCCEEDED( hr ) ) {
+        FORMATETC format;
+        format.cfFormat = RegisterClipboardFormat( CFSTR_FILEDESCRIPTOR );
+        format.ptd = NULL;
+        format.dwAspect = DVASPECT_CONTENT;
+        format.lindex = -1;
+        format.tymed = TYMED_HGLOBAL;
+
+        STGMEDIUM medium = { 0 };
+        hr = dataObject->GetData( &format, &medium );
+
+        if ( SUCCEEDED( hr ) ) {
+            FILEGROUPDESCRIPTOR* group = (FILEGROUPDESCRIPTOR*)GlobalLock( medium.hGlobal );
+
+            if ( group->cItems == count ) {
+                for ( int i = 0; i < count; i++ ) {
+                    int index = indexes[ i ];
+                    items[ index ].d->m_size = (qint64)group->fgd[ i ].nFileSizeHigh << 32 | group->fgd[ i ].nFileSizeLow;
+                    items[ index ].d->m_modified = fileTimeToQDateTime( &group->fgd[ i ].ftLastWriteTime );
+                    items[ index ].d->m_state |= ShellItem::HasProperties;
+                }
+            }
+
+            GlobalUnlock( medium.hGlobal );
+        }
+
+        ReleaseStgMedium( &medium );
+        dataObject->Release();
+    }
 }
 
 bool ShellFolder::extractIcon( ShellItem& item )
@@ -538,8 +615,10 @@ ShellItem ShellFolder::childItem( const QString& name )
 
     HRESULT hr = d->m_folder->ParseDisplayName( parent()->effectiveWinId(), NULL, (LPWSTR)name.utf16(), NULL, &result.d->m_pidl, NULL );
 
-    if ( SUCCEEDED( hr ) )
+    if ( SUCCEEDED( hr ) ) {
         d->readItemProperties( result );
+        d->updateDescriptors( result );
+    }
 
     return result;
 }
