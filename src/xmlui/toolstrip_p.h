@@ -155,6 +155,20 @@ protected: // overrides
     void paintEvent( QPaintEvent* e );
 };
 
+class ActionButton : public QToolButton
+{
+    Q_OBJECT
+public:
+    ActionButton( QWidget* parent );
+    ~ActionButton();
+
+public:
+    void adjustText();
+
+protected: // overrides
+    void actionEvent( QActionEvent* e );
+};
+
 }
 
 #endif

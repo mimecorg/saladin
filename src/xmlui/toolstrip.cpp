@@ -159,34 +159,7 @@ void ToolStrip::addAuxiliaryAction( QAction* action )
 
 QToolButton* ToolStrip::createButton( QAction* action, ButtonSize size )
 {
-    if ( size == LargeButton ) {
-        QString text = action->iconText();
-        if ( !text.contains( '\n' ) ) {
-            int mid = text.length() / 2;
-            int after = text.indexOf( ' ', mid );
-            int before = text.lastIndexOf( ' ', mid );
-            if ( before < 0 && after < 0 )
-                text.append( '\n' );
-            else if ( after >= 0 && ( before < 0 || ( after - mid ) < ( mid - before ) ) )
-                text.replace( after, 1, '\n' );
-            else
-                text.replace( before, 1, '\n' );
-            action->setIconText( text );
-        }
-    }
-
-    if ( !action->shortcut().isEmpty() ) {
-        QString text = action->toolTip();
-        if ( !text.contains( '(' ) ) {
-            text = QString( "%1 (%2)" ).arg( text, action->shortcut().toString( QKeySequence::NativeText ) );
-            action->setToolTip( text );
-        }
-    }
-
-    QToolButton* button = new QToolButton( this );
-    button->setDefaultAction( action );
-    button->setAutoRaise( true );
-    button->setFocusPolicy( Qt::NoFocus );
+    ActionButton* button = new ActionButton( this );
 
     switch ( size ) {
         case SmallButton:
@@ -202,6 +175,9 @@ QToolButton* ToolStrip::createButton( QAction* action, ButtonSize size )
             button->setIconSize( QSize( 22, 22 ) );
             break;
     }
+
+    button->setDefaultAction( action );
+    button->adjustText();
 
     return button;
 }
@@ -718,4 +694,44 @@ void ChevronButton::paintEvent( QPaintEvent* /*e*/ )
     option.features &= ~QStyleOptionToolButton::HasMenu;
 
     painter.drawComplexControl( QStyle::CC_ToolButton, option );
+}
+
+ActionButton::ActionButton( QWidget* parent ) : QToolButton( parent )
+{
+    setAutoRaise( true );
+    setFocusPolicy( Qt::NoFocus );
+}
+
+ActionButton::~ActionButton()
+{
+}
+
+void ActionButton::adjustText()
+{
+    if ( toolButtonStyle() == Qt::ToolButtonTextUnderIcon ) {
+        QString text = defaultAction()->iconText();
+        if ( !text.contains( '\n' ) ) {
+            int mid = text.length() / 2;
+            int after = text.indexOf( ' ', mid );
+            int before = text.lastIndexOf( ' ', mid );
+            if ( before < 0 && after < 0 )
+                text.append( '\n' );
+            else if ( after >= 0 && ( before < 0 || ( after - mid ) < ( mid - before ) ) )
+                text.replace( after, 1, '\n' );
+            else
+                text.replace( before, 1, '\n' );
+            setText( text );
+        }
+    }
+
+    QKeySequence shortcut = defaultAction()->shortcut();
+    if ( !shortcut.isEmpty() )
+        setToolTip( QString( "%1 (%2)" ).arg( defaultAction()->toolTip(), shortcut.toString( QKeySequence::NativeText ) ) );
+}
+
+void ActionButton::actionEvent( QActionEvent* e )
+{
+    QToolButton::actionEvent( e );
+    if ( e->type() == QEvent::ActionChanged && e->action() == defaultAction() )
+        adjustText();
 }
