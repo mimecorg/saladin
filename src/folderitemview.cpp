@@ -53,3 +53,19 @@ void FolderItemView::drawRow( QPainter* painter, const QStyleOptionViewItem& opt
         painter->drawRect( rect.adjusted( 0, 0, -1, -1 ) );
     }
 }
+
+void FolderItemView::setAnchor( const QModelIndex& index )
+{
+    m_anchor = index;
+}
+
+QModelIndex FolderItemView::anchor() const
+{
+    return m_anchor;
+}
+
+void FolderItemView::currentChanged( const QModelIndex& current, const QModelIndex& previous )
+{
+    QTreeView::currentChanged( current, previous );
+    m_anchor = QPersistentModelIndex();
+}

@@ -34,8 +34,16 @@ public:
     QModelIndex movePageUp();
     QModelIndex movePageDown();
 
+    void setAnchor( const QModelIndex& index );
+    QModelIndex anchor() const;
+
 protected: // overrides
     void drawRow( QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index ) const;
+
+    void currentChanged( const QModelIndex& current, const QModelIndex& previous );
+
+private:
+    QPersistentModelIndex m_anchor;
 };
 
 #endif

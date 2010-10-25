@@ -263,10 +263,43 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
         }
     }
 
-    if ( m_view && watched == m_view->viewport() && e->type() == QEvent::MouseButtonRelease ) {
+    if ( m_view && watched == m_view->viewport() && e->type() == QEvent::MouseButtonPress ) {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( e );
-        if ( mouseEvent->button() == Qt::LeftButton )
-            m_model->unselectAll();
+        if ( mouseEvent->button() == Qt::LeftButton ) {
+            if ( mouseEvent->modifiers().testFlag( Qt::ShiftModifier ) ) {
+                QModelIndex index = m_view->indexAt( mouseEvent->pos() );
+                if ( index.isValid() ) {
+                    QModelIndex anchor = m_view->anchor();
+                    if ( !anchor.isValid() )
+                        anchor = m_view->currentIndex();
+                    if ( anchor.isValid() ) {
+                        int from = qMin( anchor.row(), index.row() );
+                        int to = qMax( anchor.row(), index.row() );
+                        if ( mouseEvent->modifiers().testFlag( Qt::ControlModifier ) ) {
+                            bool isSelected = m_model->isItemSelected( index );
+                            for ( int i = from; i <= to; i++ )
+                                m_model->setItemSelected( m_model->index( i, 0 ), !isSelected );
+                        } else {
+                            for ( int i = 0; i < m_model->rowCount(); i++ )
+                                m_model->setItemSelected( m_model->index( i, 0 ), i >= from && i <= to );
+                        }
+                        m_view->setCurrentIndex( index );
+                        m_view->setAnchor( anchor );
+                        return true;
+                    }
+                }
+            } else if ( mouseEvent->modifiers().testFlag( Qt::ControlModifier ) ) {
+                QModelIndex index = m_view->indexAt( mouseEvent->pos() );
+                if ( index.isValid() ) {
+                    if ( index != m_view->currentIndex() && m_model->selectedItems().isEmpty() )
+                        m_model->setItemSelected( m_view->currentIndex(), true );
+                    m_model->toggleItemSelected( index );
+                }
+            } else {
+                m_model->unselectAll();
+            }
+        }
+        m_view->setAnchor( QModelIndex() );
     }
 
     if ( watched == m_edit ) {
