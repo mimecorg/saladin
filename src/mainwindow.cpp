@@ -68,7 +68,6 @@ void MainWindow::initialize()
     setAction( "cut", action );
 
     action = new QAction( IconLoader::icon( "edit-copy" ), tr( "Copy" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "popupEditCopy", action );
 
     action = new QAction( IconLoader::icon( "edit-copy" ), tr( "Copy Files" ), this );
@@ -155,7 +154,6 @@ void MainWindow::initialize()
     setAction( "viewCurrent", action );
 
     action = new QAction( IconLoader::icon( "edit" ), tr( "Edit / Create" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( editCurrent() ) );
     setAction( "popupEdit", action );
 
     action = new QAction( IconLoader::icon( "edit" ), tr( "Edit File" ), this );
@@ -169,7 +167,6 @@ void MainWindow::initialize()
     setAction( "editNew", action );
 
     action = new QAction( IconLoader::icon( "copy" ), tr( "Copy / Clone" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( copySelected() ) );
     setAction( "popupCopy", action );
 
     action = new QAction( IconLoader::icon( "copy" ), tr( "Copy To Target Directory" ), this );
@@ -183,7 +180,6 @@ void MainWindow::initialize()
     setAction( "cloneSelected", action );
 
     action = new QAction( IconLoader::icon( "move" ), tr( "Move / Rename" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( moveSelected() ) );
     setAction( "popupMove", action );
 
     action = new QAction( IconLoader::icon( "move" ), tr( "Move To Target Directory" ), this );
@@ -202,7 +198,6 @@ void MainWindow::initialize()
     setAction( "createFolder", action );
 
     action = new QAction( IconLoader::icon( "trashcan" ), tr( "Delete" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( moveToTrashCan() ) );
     setAction( "popupDelete", action );
 
     action = new QAction( IconLoader::icon( "trashcan" ), tr( "Move To Recycle Bin" ), this );
@@ -226,7 +221,6 @@ void MainWindow::initialize()
     setAction( "packToZip", action );
 
     action = new QAction( IconLoader::icon( "browse" ), tr( "Open" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( browse() ) );
     setAction( "popupOpen", action );
 
     action = new QAction( IconLoader::icon( "open" ), tr( "Open Directory" ), this );
@@ -250,7 +244,6 @@ void MainWindow::initialize()
     setAction( "calculateSize", action );
 
     action = new QAction( IconLoader::icon( "compare" ), tr( "Compare" ), this );
-    connect( action, SIGNAL( triggered() ), this, SLOT( compareFiles() ) );
     setAction( "popupCompare", action );
 
     action = new QAction( IconLoader::icon( "compare" ), tr( "Compare Files" ), this );
@@ -279,6 +272,14 @@ void MainWindow::initialize()
     setTitle( "sectionSelect", tr( "Select" ) );
     setTitle( "sectionTools", tr( "Tools" ) );
 
+    setPopupMenu( "popupEdit", "menuEdit", "editCurrent" );
+    setPopupMenu( "popupCopy", "menuCopy", "copySelected" );
+    setPopupMenu( "popupMove", "menuMove", "moveSelected" );
+    setPopupMenu( "popupDelete", "menuDelete", "moveToTrashCan" );
+    setPopupMenu( "popupEditCopy", "menuEditCopy", "copy" );
+    setPopupMenu( "popupOpen", "menuOpen", "browse" );
+    setPopupMenu( "popupCompare", "menuCompare", "compareFiles" );
+
     loadXmlUiFile( ":/resources/mainwindow.xml" );
 
     XmlUi::ToolStrip* strip = new XmlUi::ToolStrip( this );
@@ -287,22 +288,6 @@ void MainWindow::initialize()
 
     XmlUi::Builder* builder = new XmlUi::Builder( this );
     builder->addClient( this );
-
-    this->action( "popupEdit" )->setMenu( builder->contextMenu( "menuEdit" ) );
-    this->action( "popupCopy" )->setMenu( builder->contextMenu( "menuCopy" ) );
-    this->action( "popupMove" )->setMenu( builder->contextMenu( "menuMove" ) );
-    this->action( "popupDelete" )->setMenu( builder->contextMenu( "menuDelete" ) );
-    this->action( "popupEditCopy" )->setMenu( builder->contextMenu( "menuEditCopy" ) );
-    this->action( "popupOpen" )->setMenu( builder->contextMenu( "menuOpen" ) );
-    this->action( "popupCompare" )->setMenu( builder->contextMenu( "menuCompare" ) );
-
-    builder->contextMenu( "menuEdit" )->setDefaultAction( this->action( "editCurrent" ) );
-    builder->contextMenu( "menuCopy" )->setDefaultAction( this->action( "copySelected" ) );
-    builder->contextMenu( "menuMove" )->setDefaultAction( this->action( "moveSelected" ) );
-    builder->contextMenu( "menuDelete" )->setDefaultAction( this->action( "moveToTrashCan" ) );
-    builder->contextMenu( "menuEditCopy" )->setDefaultAction( this->action( "copy" ) );
-    builder->contextMenu( "menuOpen" )->setDefaultAction( this->action( "browse" ) );
-    builder->contextMenu( "menuCompare" )->setDefaultAction( this->action( "compareFiles" ) );
 
     builder->registerToolStrip( "stripMain", strip );
 

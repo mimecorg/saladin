@@ -101,6 +101,28 @@ public:
     QString title( const QString& id ) const;
 
     /**
+    * Assign a popup menu to the given action.
+    * @param actionId The identifier of the action.
+    * @param menuId The identifier of the menu.
+    * @param defaultId The identifier of the default action in the menu.
+    */
+    void setPopupMenu( const QString& actionId, const QString& menuId, const QString& defaultId );
+
+    /**
+    * Return popup menu for the given action.
+    * @param id The identifier of the action.
+    * @return The identifier of the menu.
+    */
+    QString popupMenu( const QString& id );
+
+    /**
+    * Return the default action in the popup menu for the given action.
+    * @param id The identifier of the action.
+    * @return The identifier of the default action in the menu.
+    */
+    QString defaultMenuAction( const QString& id );
+
+    /**
     * Load the UI layout from the given XML file.
     * @param path The path of the file.
     * @return @c true if the file was loaded, @c false otherwise.
@@ -121,6 +143,9 @@ private:
     QMap<QString, QAction*> m_actions;
 
     QMap<QString, QString> m_titles;
+
+    QMap<QString, QString> m_menus;
+    QMap<QString, QString> m_defaultActions;
 
     Node m_rootNode;
 

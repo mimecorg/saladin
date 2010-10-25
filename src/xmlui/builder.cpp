@@ -269,7 +269,7 @@ void Builder::populateToolStrip( const Node& node )
                                             strip->beginRow();
                                             row = true;
                                         }
-                                        strip->addToolAction( action );
+                                        addToolAction( strip, action, rowChild.id() );
                                     }
                                 }
                             }
@@ -291,7 +291,7 @@ void Builder::populateToolStrip( const Node& node )
                                     strip->beginGrid();
                                     grid = true;
                                 }
-                                strip->addToolAction( action );
+                                addToolAction( strip, action, gridChild.id() );
                             }
                         }
                     }
@@ -309,7 +309,7 @@ void Builder::populateToolStrip( const Node& node )
                             strip->beginSection( title );
                             section = true;
                         }
-                        strip->addToolAction( action );
+                        addToolAction( strip, action, sectionChild.id() );
                     }
                 }
             }
@@ -322,9 +322,25 @@ void Builder::populateToolStrip( const Node& node )
             QAction* action = findAction( child.id() );
 
             if ( action && action->isVisible() )
-                strip->addToolAction( action );
+                addToolAction( strip, action, child.id() );
         }
     }
+}
+
+void Builder::addToolAction( ToolStrip* strip, QAction* action, const QString& id )
+{
+    for ( int i = m_clients.count() - 1; i >= 0; i-- ) {
+        QString menuId = m_clients.at( i )->popupMenu( id );
+        if ( !menuId.isEmpty() ) {
+            QMenu* menu = contextMenu( menuId );
+            action->setMenu( menu );
+            QString defaultId = m_clients.at( i )->defaultMenuAction( id );
+            menu->setDefaultAction( findAction( defaultId ) );
+            break;
+        }
+    }
+
+    strip->addToolAction( action );
 }
 
 QMenu* Builder::contextMenu( const QString& id )

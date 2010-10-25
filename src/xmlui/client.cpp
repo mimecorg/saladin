@@ -65,6 +65,24 @@ QString Client::title( const QString& id ) const
     return m_titles.value( id, QString() );
 }
 
+void Client::setPopupMenu( const QString& actionId, const QString& menuId, const QString& defaultId )
+{
+    m_menus.insert( actionId, menuId );
+    m_defaultActions.insert( actionId, defaultId );
+
+    QObject::connect( action( actionId ), SIGNAL( triggered() ), action( defaultId ), SIGNAL( triggered() ) );
+}
+
+QString Client::popupMenu( const QString& id )
+{
+    return m_menus.value( id, QString() );
+}
+
+QString Client::defaultMenuAction( const QString& id )
+{
+    return m_defaultActions.value( id, QString() );
+}
+
 bool Client::loadXmlUiFile( const QString& path )
 {
     QDomDocument document;

@@ -137,6 +137,8 @@ private:
 
     void populateToolStrip( const Node& node );
 
+    void addToolAction( ToolStrip* strip, QAction* action, const QString& id );
+
     QMenu* createMenu( const Node& node );
 
     QAction* findAction( const QString& id );
