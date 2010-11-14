@@ -209,7 +209,7 @@ static QDateTime fileTimeToQDateTime( const FILETIME* fileTime )
 
 void ShellFolderPrivate::readItemProperties( ShellItem& item )
 {
-    item.d->m_name = displayName( item.d->m_pidl, SHGDN_INFOLDER | SHGDN_FOREDITING );
+    item.d->m_name = displayName( item.d->m_pidl, SHGDN_INFOLDER );
 
     ShellItem::Attributes attributes = 0;
     ShellItem::State state = 0;
@@ -249,13 +249,15 @@ void ShellFolderPrivate::readItemProperties( ShellItem& item )
         if ( data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT )
             attributes |= ShellItem::ReparsePoint;
 
+        item.d->m_name = QString::fromUtf16( data.cFileName );
+
         item.d->m_size = (qint64)data.nFileSizeHigh << 32 | data.nFileSizeLow;
 
         item.d->m_modified = fileTimeToQDateTime( &data.ftLastWriteTime );
 
         state |= ShellItem::HasProperties;
     } else {
-        if ( attributes.testFlag( ShellItem::Folder ) )
+        if ( attributes.testFlag( ShellItem::Folder ) && !attributes.testFlag( ShellItem::Stream ) )
             attributes |= ShellItem::Directory;
     }
 
@@ -394,7 +396,7 @@ bool ShellFolder::setItemName( ShellItem& item, const QString& name )
     bool result = false;
 
     LPITEMIDLIST pidlNew = NULL;
-    HRESULT hr = d->m_folder->SetNameOf( parent()->effectiveWinId(), item.d->m_pidl, (LPCWSTR)name.utf16(), SHGDN_INFOLDER | SHGDN_FOREDITING, &pidlNew );
+    HRESULT hr = d->m_folder->SetNameOf( parent()->effectiveWinId(), item.d->m_pidl, (LPCWSTR)name.utf16(), SHGDN_INFOLDER | SHGDN_FORPARSING, &pidlNew );
 
     if ( SUCCEEDED( hr ) ) {
         if ( pidlNew ) {
