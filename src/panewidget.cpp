@@ -189,6 +189,8 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
                 return true;
 
             case Qt::Key_Space:
+                if ( !m_model->isItemSelected(  m_view->currentIndex() ) )
+                    m_model->calculateSize(  m_view->currentIndex() );
                 m_model->toggleItemSelected( m_view->currentIndex() );
                 return true;
 

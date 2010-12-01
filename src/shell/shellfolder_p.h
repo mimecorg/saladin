@@ -45,6 +45,8 @@ public:
 
     ShellFolder* createParentFolder( ShellItem& item );
 
+    qint64 calculateSize( IShellFolder* parentFolder, LPITEMIDLIST pidl );
+
 public:
     ShellFolder* q;
 

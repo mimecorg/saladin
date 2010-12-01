@@ -53,6 +53,8 @@ public:
 
     bool extractIcon( ShellItem& item );
 
+    bool calculateSize( ShellItem& item );
+
     bool setItemName( ShellItem& item, const QString& name );
 
     QString itemPath( const ShellItem& item );

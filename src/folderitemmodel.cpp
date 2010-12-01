@@ -349,6 +349,19 @@ void FolderItemModel::invertSelection()
     emit dataChanged( rowToIndex( 0, 0 ), rowToIndex( m_items.count() - 1, 3 ) );
 }
 
+void FolderItemModel::calculateSize( const QModelIndex& index )
+{
+    int row = indexToRow( index );
+    if ( row >= 0 ) {
+        QApplication::setOverrideCursor( Qt::WaitCursor );
+
+        if ( m_folder->calculateSize( m_items[ row ] ) )
+            emit dataChanged( rowToIndex( row, 0 ), rowToIndex( row, 3 ) );
+
+        QApplication::restoreOverrideCursor();
+    }
+}
+
 int FolderItemModel::columnCount( const QModelIndex& parent /*= QModelIndex()*/ ) const
 {
     if ( !parent.isValid() )
@@ -428,7 +441,8 @@ QVariant FolderItemModel::data( const QModelIndex& index, int role /*= Qt::Displ
                     if ( item.attributes().testFlag( ShellItem::Directory ) ) {
                         if ( item.attributes().testFlag( ShellItem::ReparsePoint ) )
                             return tr( "<LNK>" );
-                        return tr( "<DIR>" );
+                        if ( !item.state().testFlag( ShellItem::HasCalculatedSize ) )
+                            return tr( "<DIR>" );
                     } 
                     if ( item.state().testFlag( ShellItem::HasProperties ) )
                         return QLocale::system().toString( item.size() ) + ' ';
@@ -475,7 +489,8 @@ QVariant FolderItemModel::data( const QModelIndex& index, int role /*= Qt::Displ
     if ( role == Qt::TextAlignmentRole && index.column() == Column_Size ) {
         int row = indexToRow( index );
         if ( row >= 0 ) {
-            if ( !m_items.at( row ).attributes().testFlag( ShellItem::Directory ) )
+            const ShellItem& item = m_items.at( row );
+            if ( !item.attributes().testFlag( ShellItem::Directory ) || item.state().testFlag( ShellItem::HasCalculatedSize ) )
                 return (int)( Qt::AlignRight | Qt::AlignVCenter );
         }
     }
@@ -570,24 +585,22 @@ bool FolderItemModel::shellItemLessThan( const ShellItem& item1, const ShellItem
 
     int result = 0;
 
-    if ( !dir1 && !dir2 ) {
-        switch ( m_sortColumn ) {
-            case Column_Size:
-                if ( item1.size() < item2.size() )
-                    result = -1;
-                else if ( item2.size() < item1.size() )
-                    result = 1;
-                break;
-            case Column_LastModified:
-                if ( item1.lastModified() < item2.lastModified() )
-                    result = -1;
-                else if ( item2.lastModified() < item1.lastModified() )
-                    result = 1;
-                break;
-            case Column_Attributes:
-                result = QString::localeAwareCompare( formatAttributes( item1.attributes() ), formatAttributes( item2.attributes() ) );
-                break;
-        }
+    switch ( m_sortColumn ) {
+        case Column_Size:
+            if ( item1.size() < item2.size() )
+                result = -1;
+            else if ( item2.size() < item1.size() )
+                result = 1;
+            break;
+        case Column_LastModified:
+            if ( item1.lastModified() < item2.lastModified() )
+                result = -1;
+            else if ( item2.lastModified() < item1.lastModified() )
+                result = 1;
+            break;
+        case Column_Attributes:
+            result = QString::localeAwareCompare( formatAttributes( item1.attributes() ), formatAttributes( item2.attributes() ) );
+            break;
     }
 
     if ( result == 0 )

@@ -63,6 +63,8 @@ public:
     void unselectAll();
     void invertSelection();
 
+    void calculateSize( const QModelIndex& index );
+
     void refresh();
 
 public: // overrides

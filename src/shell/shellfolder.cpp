@@ -391,6 +391,56 @@ bool ShellFolder::extractIcon( ShellItem& item )
     return result;
 }
 
+qint64 ShellFolderPrivate::calculateSize( IShellFolder* parentFolder, LPITEMIDLIST pidl )
+{
+    qint64 size = 0;
+
+    IShellFolder* folder;
+    HRESULT hr = SHBindToObject( parentFolder, pidl, NULL, IID_PPV_ARGS( &folder ) );
+
+    if ( SUCCEEDED( hr ) ) {
+        IEnumIDList* enumerator;
+        hr = folder->EnumObjects( q->parent()->effectiveWinId(), SHCONTF_FOLDERS | SHCONTF_NONFOLDERS | SHCONTF_INCLUDEHIDDEN, &enumerator );
+
+        if ( SUCCEEDED( hr ) && enumerator ) {
+            LPITEMIDLIST itemPidl;
+            while ( enumerator->Next( 1, &itemPidl, NULL ) == S_OK ) {
+                WIN32_FIND_DATA data;
+                hr = SHGetDataFromIDList( folder, itemPidl, SHGDFIL_FINDDATA, &data, sizeof( data ) );
+
+                if ( SUCCEEDED( hr ) ) {
+                    size += (qint64)data.nFileSizeHigh << 32 | data.nFileSizeLow;
+
+                    if ( ( data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) && !( data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT ) )
+                        size += calculateSize( folder, itemPidl );
+                }
+
+                CoTaskMemFree( itemPidl );
+            }
+
+            enumerator->Release();
+        }
+
+        folder->Release();
+    }
+
+    return size;
+}
+
+bool ShellFolder::calculateSize( ShellItem& item )
+{
+    if ( item.d->m_state.testFlag( ShellItem::HasCalculatedSize ) || !item.d->m_state.testFlag( ShellItem::HasProperties ) )
+        return false;
+
+    if ( !item.d->m_attributes.testFlag( ShellItem::Directory ) )
+        return false;
+
+    item.d->m_size = d->calculateSize( d->m_folder, item.d->m_pidl );
+    item.d->m_state |= ShellItem::HasCalculatedSize;
+
+    return true;
+}
+
 bool ShellFolder::setItemName( ShellItem& item, const QString& name )
 {
     bool result = false;

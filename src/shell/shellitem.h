@@ -49,7 +49,8 @@ public:
     {
         HasProperties = 1,
         HasExtractedIcon = 2,
-        IsSelected = 4
+        HasCalculatedSize = 4,
+        IsSelected = 8
     };
     Q_DECLARE_FLAGS( State, StateFlag );
 
