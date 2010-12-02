@@ -355,8 +355,12 @@ void FolderItemModel::calculateSize( const QModelIndex& index )
     if ( row >= 0 ) {
         QApplication::setOverrideCursor( Qt::WaitCursor );
 
-        if ( m_folder->calculateSize( m_items[ row ] ) )
-            emit dataChanged( rowToIndex( row, 0 ), rowToIndex( row, 3 ) );
+        if ( m_folder->calculateSize( m_items[ row ] ) ) {
+            if ( m_sortColumn == Column_Size )
+                resort();
+            else
+                emit dataChanged( rowToIndex( row, 0 ), rowToIndex( row, 3 ) );
+        }
 
         QApplication::restoreOverrideCursor();
     }
