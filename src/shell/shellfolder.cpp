@@ -463,6 +463,7 @@ bool ShellFolder::setItemName( ShellItem& item, const QString& name )
         }
 
         item.d->m_name = name;
+        item.d->m_state &= ~ShellItem::HasExtractedIcon;
 
         result = true;
     }
