@@ -307,9 +307,11 @@ void ShellFolderPrivate::updateDescriptors( ShellItem& item )
             FILEGROUPDESCRIPTOR* group = (FILEGROUPDESCRIPTOR*)GlobalLock( medium.hGlobal );
 
             if ( group->cItems == 1 ) {
-                item.d->m_size = (qint64)group->fgd[ 0 ].nFileSizeHigh << 32 | group->fgd[ 0 ].nFileSizeLow;
-                item.d->m_modified = fileTimeToQDateTime( &group->fgd[ 0 ].ftLastWriteTime );
-                item.d->m_state |= ShellItem::HasProperties;
+                if ( ( group->fgd[ 0 ].dwFlags & FD_FILESIZE ) && ( group->fgd[ 0 ].dwFlags & FD_WRITESTIME ) ) {
+                    item.d->m_size = (qint64)group->fgd[ 0 ].nFileSizeHigh << 32 | group->fgd[ 0 ].nFileSizeLow;
+                    item.d->m_modified = fileTimeToQDateTime( &group->fgd[ 0 ].ftLastWriteTime );
+                    item.d->m_state |= ShellItem::HasProperties;
+                }
             }
 
             GlobalUnlock( medium.hGlobal );
@@ -360,10 +362,12 @@ void ShellFolderPrivate::updateDescriptors( QList<ShellItem>& items )
 
             if ( group->cItems == count ) {
                 for ( int i = 0; i < count; i++ ) {
-                    int index = indexes[ i ];
-                    items[ index ].d->m_size = (qint64)group->fgd[ i ].nFileSizeHigh << 32 | group->fgd[ i ].nFileSizeLow;
-                    items[ index ].d->m_modified = fileTimeToQDateTime( &group->fgd[ i ].ftLastWriteTime );
-                    items[ index ].d->m_state |= ShellItem::HasProperties;
+                    if ( ( group->fgd[ i ].dwFlags & FD_FILESIZE ) && ( group->fgd[ i ].dwFlags & FD_WRITESTIME ) ) {
+                        int index = indexes[ i ];
+                        items[ index ].d->m_size = (qint64)group->fgd[ i ].nFileSizeHigh << 32 | group->fgd[ i ].nFileSizeLow;
+                        items[ index ].d->m_modified = fileTimeToQDateTime( &group->fgd[ i ].ftLastWriteTime );
+                        items[ index ].d->m_state |= ShellItem::HasProperties;
+                    }
                 }
             }
 
