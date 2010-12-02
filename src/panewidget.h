@@ -84,7 +84,7 @@ private slots:
     void changeDirectory();
     void driveSelected( int index );
 
-    void itemActivated( const QModelIndex& index );
+    void openItem( const QModelIndex& index );
     void viewContextMenuRequested( const QPoint& pos );
 
     void stripContextMenuRequested( const QPoint& pos );

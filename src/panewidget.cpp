@@ -111,7 +111,7 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->setContextMenuPolicy( Qt::CustomContextMenu );
     layout->addWidget( m_view, 1 );
 
-    connect( m_view, SIGNAL( activated( const QModelIndex& ) ), this, SLOT( itemActivated( const QModelIndex& ) ) );
+    connect( m_view, SIGNAL( doubleClicked( const QModelIndex& ) ), this, SLOT( openItem( const QModelIndex& ) ) );
     connect( m_view, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( viewContextMenuRequested( const QPoint& ) ) );
 
     connect( m_view->header(), SIGNAL( sectionResized( int, int, int ) ), this, SLOT( sectionResized( int, int, int ) ) );
@@ -166,7 +166,7 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
             case Qt::Key_Enter:
             case Qt::Key_Return:
                 if ( !m_view->isEditing() ) {
-                    itemActivated( m_view->currentIndex() );
+                    openItem( m_view->currentIndex() );
                     return true;
                 }
                 break;
@@ -427,7 +427,7 @@ void PaneWidget::openDrive( const ShellDrive& drive )
     }
 }
 
-void PaneWidget::itemActivated( const QModelIndex& index )
+void PaneWidget::openItem( const QModelIndex& index )
 {
     if ( !index.isValid() )
         return;
