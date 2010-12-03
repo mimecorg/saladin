@@ -38,6 +38,8 @@ public:
     ShellDrive driveAt( int index ) const;
     ShellDrive driveAt( XmlUi::ToolStrip* strip, const QPoint& pos ) const;
 
+    ShellDrive driveFromFolder( ShellFolder* folder ) const;
+
     void registerToolStrip( XmlUi::ToolStrip* strip, QObject* receiver, const char* member );
 
     void showDrivesMenu( XmlUi::ToolStrip* strip );

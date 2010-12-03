@@ -374,6 +374,45 @@ void FolderItemModel::calculateSize( const QModelIndex& index )
     }
 }
 
+qint64 FolderItemModel::totalItemsSize() const
+{
+    qint64 size = 0;
+
+    foreach ( ShellItem item, m_items )
+        size += item.size();
+
+    return size;
+}
+
+qint64 FolderItemModel::selectedItemsSize() const
+{
+    qint64 size = 0;
+
+    foreach ( ShellItem item, m_items ) {
+        if ( item.isSelected() )
+            size += item.size();
+    }
+
+    return size;
+}
+
+int FolderItemModel::totalItemsCount() const
+{
+    return m_items.count();
+}
+
+int FolderItemModel::selectedItemsCount() const
+{
+    int count = 0;
+
+    foreach ( ShellItem item, m_items ) {
+        if ( item.isSelected() )
+            count++;
+    }
+
+    return count;
+}
+
 int FolderItemModel::columnCount( const QModelIndex& parent /*= QModelIndex()*/ ) const
 {
     if ( !parent.isValid() )

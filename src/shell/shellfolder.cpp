@@ -140,6 +140,23 @@ QString ShellFolder::name()
     return result;
 }
 
+QString ShellFolder::realPath()
+{
+    QString result;
+
+    wchar_t* name;
+    HRESULT hr = SHGetNameFromIDList( d->m_pidl, SIGDN_FILESYSPATH, &name );
+
+    if ( SUCCEEDED( hr ) ) {
+        result = QString::fromWCharArray( name );
+        CoTaskMemFree( name );
+    } else {
+        result = d->m_path;
+    }
+
+    return result;
+}
+
 QList<ShellItem> ShellFolder::listItems( Flags flags )
 {
     QList<ShellItem> result;

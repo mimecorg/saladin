@@ -49,6 +49,8 @@ public:
     ShellItem::Attributes attributes();
     QString name();
 
+    QString realPath();
+
     QList<ShellItem> listItems( Flags flags );
 
     bool extractIcon( ShellItem& item );

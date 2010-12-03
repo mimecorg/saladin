@@ -96,6 +96,8 @@ private slots:
 
     void renameTimeout();
 
+    void updateStatus();
+
 private:
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );
@@ -104,6 +106,8 @@ private:
 
     void updateLocation();
     void updateEditPalette();
+
+    QString formatSize( qint64 size, bool bytesSuffix );
 
 private:
     PaneLocation m_location;
@@ -114,6 +118,9 @@ private:
 
     FolderItemView* m_view;
     FolderItemModel* m_model;
+
+    QLabel* m_selectionStatus;
+    QLabel* m_driveStatus;
 
     bool m_isSource;
 

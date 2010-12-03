@@ -39,6 +39,8 @@ public:
     QString name() const;
     QPixmap icon() const;
 
+    bool getFreeSpace( qint64* free, qint64* total ) const;
+
 private:
     QSharedDataPointer<ShellDrivePrivate> d;
 

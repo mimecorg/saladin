@@ -18,6 +18,8 @@
 
 #include "drivestripmanager.h"
 
+#include "shell/shellfolder.h"
+
 class ShellDriveLessThan
 {
 public:
@@ -65,6 +67,20 @@ ShellDrive DriveStripManager::driveAt( XmlUi::ToolStrip* strip, const QPoint& po
                     return m_drives.at( index );
                 break;
             }
+        }
+    }
+
+    return ShellDrive();
+}
+
+ShellDrive DriveStripManager::driveFromFolder( ShellFolder* folder ) const
+{
+    QString path = folder->realPath();
+
+    if ( path.length() > 2 && path.at( 1 ) == QLatin1Char( ':' ) ) {
+        foreach ( ShellDrive drive, m_drives ) {
+            if ( path.at( 0 ) == QLatin1Char( drive.letter() ) )
+                return drive;
         }
     }
 

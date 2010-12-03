@@ -65,6 +65,12 @@ public:
 
     void calculateSize( const QModelIndex& index );
 
+    qint64 totalItemsSize() const;
+    qint64 selectedItemsSize() const;
+
+    int totalItemsCount() const;
+    int selectedItemsCount() const;
+
     void refresh();
 
 public: // overrides

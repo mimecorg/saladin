@@ -150,6 +150,18 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     status->setSizeGripEnabled( false );
     layout->addWidget( status );
 
+    m_selectionStatus = new QLabel( status );
+    m_selectionStatus->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Preferred );
+    status->addWidget( m_selectionStatus, 1 );
+
+    m_driveStatus = new QLabel( status );
+    m_driveStatus->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Preferred );
+    status->addWidget( m_driveStatus, 1 );
+
+    connect( m_model, SIGNAL( modelReset() ), this, SLOT( updateStatus() ) );
+    connect( m_model, SIGNAL( layoutChanged() ), this, SLOT( updateStatus() ) );
+    connect( m_model, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ), this, SLOT( updateStatus() ) );
+
     setFocusProxy( m_view );
 
     updateEditPalette();
@@ -682,4 +694,44 @@ void PaneWidget::moveHeaderSection( int from, int to )
 {
     if ( !m_movingSection )
         m_view->header()->moveSection( from, to );
+}
+
+void PaneWidget::updateStatus()
+{
+    int selectedCount = m_model->selectedItemsCount();
+    int totalCount = m_model->totalItemsCount();
+
+    qint64 selectedSize = m_model->selectedItemsSize();
+    qint64 totalSize = m_model->totalItemsSize();
+
+    m_selectionStatus->setText( QString( "%1 of %2 items selected (%3 of %4)" ).arg( QString::number( selectedCount ), QString::number( totalCount ),
+        formatSize( selectedSize, false ), formatSize( totalSize, true ) ) );
+
+    DriveStripManager* manager = application->mainWindow()->driveStripManager();
+    ShellDrive drive = manager->driveFromFolder( m_model->folder() );
+
+    if ( drive.isValid() ) {
+        qint64 free;
+        qint64 total;
+        if ( drive.getFreeSpace( &free, &total ) ) {
+            m_driveStatus->setText( tr( "%1 - %2 of %3 free (%4%)" ).arg( drive.name(), formatSize( free, false ), formatSize( total, true ),
+                QString::number( free * 100 / total ) ) );
+            m_driveStatus->show();
+        } else {
+            m_driveStatus->hide();
+        }
+    } else {
+        m_driveStatus->hide();
+    }
+}
+
+QString PaneWidget::formatSize( qint64 size, bool bytesSuffix )
+{
+    if ( size < 1024 )
+        return bytesSuffix ? tr( "%1 bytes" ).arg( size ) : QString::number( size );
+    if ( size < 1048576 )
+        return tr( "%1 kB" ).arg( size / 1024.0, 0, 'f', 1 );
+    if ( size < 1073741824 )
+        return tr( "%1 MB" ).arg( size / 1048576.0, 0, 'f', 1 );
+    return tr( "%1 GB" ).arg( size / 1073741824.0, 0, 'f', 1 );
 }

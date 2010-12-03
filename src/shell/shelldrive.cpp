@@ -76,3 +76,20 @@ QPixmap ShellDrive::icon() const
 {
     return d->m_icon;
 }
+
+bool ShellDrive::getFreeSpace( qint64* free, qint64* total ) const
+{
+    QString path = QLatin1Char( d->m_letter ) + QLatin1String( ":\\" );
+
+    ULARGE_INTEGER freeBytes;
+    ULARGE_INTEGER totalBytes;
+
+    if ( GetDiskFreeSpaceEx( path.utf16(), &freeBytes, &totalBytes, NULL ) )
+    {
+        *free = freeBytes.QuadPart;
+        *total = totalBytes.QuadPart;
+        return true;
+    }
+
+    return false;
+}
