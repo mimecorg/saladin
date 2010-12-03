@@ -59,6 +59,8 @@ void FolderItemModel::setIncludeHidden( bool on )
 
 void FolderItemModel::setFolder( ShellFolder* folder )
 {
+    QApplication::setOverrideCursor( Qt::WaitCursor );
+
     delete m_folder;
     m_folder = folder;
 
@@ -81,10 +83,14 @@ void FolderItemModel::setFolder( ShellFolder* folder )
     m_pendingRefresh = false;
 
     reset();
+
+    QApplication::restoreOverrideCursor();
 }
 
 void FolderItemModel::refresh()
 {
+    QApplication::setOverrideCursor( Qt::WaitCursor );
+
     emit layoutAboutToBeChanged();
 
     QModelIndexList oldIndexes = persistentIndexList();
@@ -105,6 +111,8 @@ void FolderItemModel::refresh()
     m_pendingRefresh = false;
 
     emit layoutChanged();
+
+    QApplication::restoreOverrideCursor();
 }
 
 void FolderItemModel::itemChanged( const ItemChange& change )
