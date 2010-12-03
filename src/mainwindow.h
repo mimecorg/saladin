@@ -88,6 +88,9 @@ private slots:
     void search();
     void explore();
 
+    void showDrivesMenu1();
+    void showDrivesMenu2();
+
 private:
     enum Tool
     {

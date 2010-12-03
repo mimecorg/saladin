@@ -69,6 +69,8 @@ public:
 
     void renameCurrent();
 
+    void showDrivesMenu();
+
 public: // overrides
     bool eventFilter( QObject* watched, QEvent* e );
 

@@ -40,6 +40,8 @@ public:
 
     void registerToolStrip( XmlUi::ToolStrip* strip, QObject* receiver, const char* member );
 
+    void showDrivesMenu( XmlUi::ToolStrip* strip );
+
 private slots:
     void driveChanged( const ShellDrive& drive );
     void computerUpdated();

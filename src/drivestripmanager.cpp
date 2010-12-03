@@ -97,6 +97,7 @@ void DriveStripManager::populateToolStrip( StripInfo& info )
         ShellDrive drive = m_drives.at( i );
 
         QAction* action = new QAction( this );
+        action->setText( QString( "&%1 - %2" ).arg( (QChar)drive.letter(), drive.name().replace( "&", "" ) ) );
         action->setIconText( (QChar)drive.letter() );
         action->setToolTip( drive.name() );
         action->setIcon( drive.icon() );
@@ -138,4 +139,14 @@ void DriveStripManager::computerUpdated()
 
     for ( int i = 0; i < m_strips.count(); i++ )
         populateToolStrip( m_strips[ i ] );
+}
+
+void DriveStripManager::showDrivesMenu( XmlUi::ToolStrip* strip )
+{
+    for ( int i = 0; i < m_strips.count(); i++ ) {
+        if ( m_strips.at( i ).m_strip == strip ) {
+            QMenu::exec( m_strips.at( i ).m_actions, strip->mapToGlobal( strip->geometry().bottomLeft() ) );
+            break;
+        }
+    }
 }

@@ -291,6 +291,14 @@ void MainWindow::initialize()
 
     builder->registerToolStrip( "stripMain", strip );
 
+    QShortcut* shortcut;
+
+    shortcut = new QShortcut( Qt::ALT + Qt::Key_F1, this );
+    connect( shortcut, SIGNAL( activated() ), this, SLOT( showDrivesMenu1() ) );
+
+    shortcut = new QShortcut( Qt::ALT + Qt::Key_F2, this );
+    connect( shortcut, SIGNAL( activated() ), this, SLOT( showDrivesMenu2() ) );
+
     QWidget* widget = new QWidget( this );
     setCentralWidget( widget );
 
@@ -923,4 +931,14 @@ void MainWindow::search()
 void MainWindow::explore()
 {
     m_sourcePane->folder()->explore();
+}
+
+void MainWindow::showDrivesMenu1()
+{
+    m_panes[ 0 ]->showDrivesMenu();
+}
+
+void MainWindow::showDrivesMenu2()
+{
+    m_panes[ 1 ]->showDrivesMenu();
 }

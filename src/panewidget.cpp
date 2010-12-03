@@ -563,6 +563,12 @@ void PaneWidget::renameCurrent()
     }
 }
 
+void PaneWidget::showDrivesMenu()
+{
+    MainWindow* mainWindow = application->mainWindow();
+    mainWindow->driveStripManager()->showDrivesMenu( m_strip );
+}
+
 void PaneWidget::viewContextMenuRequested( const QPoint& pos )
 {
     QModelIndex index = m_view->indexAt( pos );
