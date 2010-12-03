@@ -140,6 +140,12 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
         m_view->setColumnWidth( 3, 70 );
     }
 
+    m_renameTimer = new QTimer( this );
+    m_renameTimer->setInterval( qApp->doubleClickInterval() + 200 );
+    m_renameTimer->setSingleShot( true );
+
+    connect( m_renameTimer, SIGNAL( timeout() ), this, SLOT( renameTimeout() ) );
+
     QStatusBar* status = new QStatusBar( this );
     status->setSizeGripEnabled( false );
     layout->addWidget( status );
@@ -268,8 +274,13 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
     if ( m_view && watched == m_view->viewport() && e->type() == QEvent::MouseButtonPress ) {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( e );
         if ( mouseEvent->button() == Qt::LeftButton ) {
+            QModelIndex index = m_view->indexAt( mouseEvent->pos() );
+            if ( index.isValid() && index == m_view->currentIndex() )
+                m_renameIndex = index;
+            else
+                m_renameIndex = QModelIndex();
+
             if ( mouseEvent->modifiers().testFlag( Qt::ShiftModifier ) ) {
-                QModelIndex index = m_view->indexAt( mouseEvent->pos() );
                 if ( index.isValid() ) {
                     QModelIndex anchor = m_view->anchor();
                     if ( !anchor.isValid() )
@@ -291,7 +302,6 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
                     }
                 }
             } else if ( mouseEvent->modifiers().testFlag( Qt::ControlModifier ) ) {
-                QModelIndex index = m_view->indexAt( mouseEvent->pos() );
                 if ( index.isValid() ) {
                     if ( index != m_view->currentIndex() && m_model->selectedItems().isEmpty() )
                         m_model->setItemSelected( m_view->currentIndex(), true );
@@ -300,8 +310,24 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
             } else {
                 m_model->unselectAll();
             }
+        } else {
+            m_renameIndex = QModelIndex();
         }
         m_view->setAnchor( QModelIndex() );
+        m_renameTimer->stop();
+    }
+
+    if ( m_view && watched == m_view->viewport() && e->type() == QEvent::MouseButtonRelease ) {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( e );
+        if ( mouseEvent->button() == Qt::LeftButton ) {
+            QModelIndex index = m_view->indexAt( mouseEvent->pos() );
+            if ( index.isValid() && index == m_view->currentIndex() && index == m_renameIndex )
+                m_renameTimer->start();
+            else
+                m_renameIndex = QModelIndex();
+        } else {
+            m_renameIndex = QModelIndex();
+        }
     }
 
     if ( watched == m_edit ) {
@@ -624,6 +650,14 @@ void PaneWidget::stripContextMenuRequested( const QPoint& pos )
 
         if ( command == ShellSelection::Open )
             openDrive( drive );
+    }
+}
+
+void PaneWidget::renameTimeout()
+{
+    if ( m_renameIndex.isValid() && m_renameIndex == m_view->currentIndex() ) {
+        if ( m_renameIndex == m_view->indexAt( m_view->viewport()->mapFromGlobal( QCursor::pos() ) ) )
+            renameCurrent();
     }
 }
 

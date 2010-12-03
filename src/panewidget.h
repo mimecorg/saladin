@@ -94,6 +94,8 @@ private slots:
     void sectionResized( int index, int oldSize, int newSize );
     void sectionMoved( int index, int from, int to );
 
+    void renameTimeout();
+
 private:
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );
@@ -116,6 +118,9 @@ private:
     bool m_isSource;
 
     bool m_movingSection;
+
+    QPersistentModelIndex m_renameIndex;
+    QTimer* m_renameTimer;
 };
 
 #endif
