@@ -107,7 +107,7 @@ private:
     void updateLocation();
     void updateEditPalette();
 
-    QString formatSize( qint64 size, bool bytesSuffix );
+    QString formatSize( qint64 size, bool afterOf );
 
 private:
     PaneLocation m_location;

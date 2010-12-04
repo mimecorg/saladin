@@ -725,10 +725,12 @@ void PaneWidget::updateStatus()
     }
 }
 
-QString PaneWidget::formatSize( qint64 size, bool bytesSuffix )
+QString PaneWidget::formatSize( qint64 size, bool afterOf )
 {
+    if ( size == 0 && !afterOf )
+        return "0";
     if ( size < 1024 )
-        return bytesSuffix ? tr( "%1 bytes" ).arg( size ) : QString::number( size );
+        return !afterOf ? tr( "%n bytes", "before of", size ) : tr( "%n bytes", "after of", size );
     if ( size < 1048576 )
         return tr( "%1 kB" ).arg( size / 1024.0, 0, 'f', 1 );
     if ( size < 1073741824 )
