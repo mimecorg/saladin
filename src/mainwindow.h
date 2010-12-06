@@ -90,6 +90,9 @@ private slots:
 
     void showDrivesMenu1();
     void showDrivesMenu2();
+    void showProperties();
+    void otherOpenFolder();
+    void otherOpenParent();
 
 private:
     enum Tool

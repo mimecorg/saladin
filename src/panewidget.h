@@ -50,6 +50,7 @@ public:
     void setFolder( ShellFolder* folder );
     ShellFolder* folder() const;
 
+    QList<ShellItem> items() const;
     QList<ShellItem> selectedItems() const;
     ShellItem currentItem() const;
 
@@ -68,7 +69,8 @@ public:
     void setPatternSelection( const QString& pattern, bool selected );
 
     void renameCurrent();
-
+    void calculateSize();
+    void compareWith( const QList<ShellItem>& items );
     void showDrivesMenu();
 
 public: // overrides

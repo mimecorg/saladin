@@ -47,6 +47,8 @@ public:
     void setFolder( ShellFolder* folder );
     ShellFolder* folder() const { return m_folder; }
 
+    const QList<ShellItem>& items() const { return m_items; }
+
     ShellItem itemAt( const QModelIndex& index ) const;
     QModelIndex indexOf( const ShellItem& item, int column = 0 ) const;
 
@@ -64,12 +66,15 @@ public:
     void invertSelection();
 
     void calculateSize( const QModelIndex& index );
+    void calculateSizeSelected();
 
     qint64 totalItemsSize() const;
     qint64 selectedItemsSize() const;
 
     int totalItemsCount() const;
     int selectedItemsCount() const;
+
+    void compareWith( const QList<ShellItem>& items );
 
     void refresh();
 

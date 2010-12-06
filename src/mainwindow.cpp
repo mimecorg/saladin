@@ -299,6 +299,15 @@ void MainWindow::initialize()
     shortcut = new QShortcut( Qt::ALT + Qt::Key_F2, this );
     connect( shortcut, SIGNAL( activated() ), this, SLOT( showDrivesMenu2() ) );
 
+    shortcut = new QShortcut( Qt::ALT + Qt::Key_Return, this );
+    connect( shortcut, SIGNAL( activated() ), this, SLOT( showProperties() ) );
+
+    shortcut = new QShortcut( Qt::CTRL + Qt::Key_Right, this );
+    connect( shortcut, SIGNAL( activated() ), this, SLOT( otherOpenFolder() ) );
+
+    shortcut = new QShortcut( Qt::CTRL + Qt::Key_Left, this );
+    connect( shortcut, SIGNAL( activated() ), this, SLOT( otherOpenParent() ) );
+
     QWidget* widget = new QWidget( this );
     setCentralWidget( widget );
 
@@ -863,7 +872,7 @@ void MainWindow::openFtpSite()
 
 void MainWindow::calculateSize()
 {
-    // TODO
+    m_sourcePane->calculateSize();
 }
 
 void MainWindow::compareFiles()
@@ -920,7 +929,8 @@ void MainWindow::compareFiles()
 
 void MainWindow::compareDirectories()
 {
-    // TODO
+    if ( !m_sourcePane->folder()->match( m_targetPane->folder() ) )
+        m_sourcePane->compareWith( m_targetPane->items() );
 }
 
 void MainWindow::search()
@@ -941,4 +951,24 @@ void MainWindow::showDrivesMenu1()
 void MainWindow::showDrivesMenu2()
 {
     m_panes[ 1 ]->showDrivesMenu();
+}
+
+void MainWindow::showProperties()
+{
+    invokeCommand( m_sourcePane->folder(), m_sourcePane->selectedItems(), "properties" );
+}
+
+void MainWindow::otherOpenFolder()
+{
+    ShellFolder* folder = m_sourcePane->folder()->openFolder( m_sourcePane->currentItem() );
+    if ( folder )
+        m_targetPane->setFolder( folder );
+}
+
+void MainWindow::otherOpenParent()
+{
+    ShellItem item;
+    ShellFolder* folder = m_sourcePane->folder()->parentFolder( item );
+    if ( folder )
+        m_targetPane->setFolder( folder );
 }

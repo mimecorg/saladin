@@ -365,6 +365,11 @@ ShellFolder* PaneWidget::folder() const
     return m_model->folder();
 }
 
+QList<ShellItem> PaneWidget::items() const
+{
+    return m_model->items();
+}
+
 QList<ShellItem> PaneWidget::selectedItems() const
 {
     QList<ShellItem> items = m_model->selectedItems();
@@ -599,6 +604,19 @@ void PaneWidget::renameCurrent()
                 lineEdit->setSelection( 0, pos );
         }
     }
+}
+
+void PaneWidget::calculateSize()
+{
+    if ( m_model->selectedItemsCount() > 0 )
+        m_model->calculateSizeSelected();
+    else
+        m_model->calculateSize( m_view->currentIndex() );
+}
+
+void PaneWidget::compareWith( const QList<ShellItem>& items )
+{
+    m_model->compareWith( items );
 }
 
 void PaneWidget::showDrivesMenu()

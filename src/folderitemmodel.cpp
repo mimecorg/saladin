@@ -374,6 +374,23 @@ void FolderItemModel::calculateSize( const QModelIndex& index )
     }
 }
 
+void FolderItemModel::calculateSizeSelected()
+{
+    QApplication::setOverrideCursor( Qt::WaitCursor );
+
+    for ( int i = 0; i < m_items.count(); i++ ) {
+        if ( m_items.at( i ).isSelected() )
+            m_folder->calculateSize( m_items[ i ] );
+    }
+
+    if ( m_sortColumn == Column_Size )
+        resort();
+    else
+        emit dataChanged( rowToIndex( 0, 0 ), rowToIndex( m_items.count() - 1, 3 ) );
+
+    QApplication::restoreOverrideCursor();
+}
+
 qint64 FolderItemModel::totalItemsSize() const
 {
     qint64 size = 0;
@@ -411,6 +428,25 @@ int FolderItemModel::selectedItemsCount() const
     }
 
     return count;
+}
+
+void FolderItemModel::compareWith( const QList<ShellItem>& items )
+{
+    for ( int i = 0; i < m_items.count(); i++ ) {
+        bool match = false;
+        for ( int j = 0; j < items.count(); j++ ) {
+            if ( m_items.at( i ).match( items.at( j ) ) ) {
+                if ( !m_items.at( i ).state().testFlag( ShellItem::HasProperties ) || !items.at( j ).state().testFlag( ShellItem::HasProperties )
+                     || m_items.at( i ).lastModified() <= items.at( j ).lastModified() ) {
+                    match = true;
+                }
+                break;
+            }
+        }
+        m_items[ i ].setSelected( !match );
+    }
+
+    emit dataChanged( rowToIndex( 0, 0 ), rowToIndex( m_items.count() - 1, 3 ) );
 }
 
 int FolderItemModel::columnCount( const QModelIndex& parent /*= QModelIndex()*/ ) const
