@@ -19,6 +19,7 @@
 #include "shellfolder.h"
 #include "shellfolder_p.h"
 #include "shellitem_p.h"
+#include "shellpidl_p.h"
 #include "iconcache_p.h"
 #include "changenotifywatcher_p.h"
 
@@ -37,6 +38,19 @@ ShellFolder::ShellFolder( const QString& path, QWidget* parent ) : QObject( pare
         if ( SUCCEEDED( hr ) )
             d->readProperties();
     }
+}
+
+ShellFolder::ShellFolder( const ShellPidl& pidl, QWidget* parent ) : QObject( parent ),
+    d( new ShellFolderPrivate() )
+{
+    d->q = this;
+
+    d->m_pidl = ILClone( pidl.d->pidl() );
+
+    HRESULT hr = SHBindToObject( NULL, d->m_pidl, NULL, IID_PPV_ARGS( &d->m_folder ) );
+
+    if ( SUCCEEDED( hr ) )
+        d->readProperties();
 }
 
 ShellFolder::ShellFolder( IShellFolder* folder, QWidget* parent ) : QObject( parent ),
@@ -69,23 +83,45 @@ ShellFolderPrivate::~ShellFolderPrivate()
 void ShellFolderPrivate::readProperties()
 {
     wchar_t* name;
-    HRESULT hr = SHGetNameFromIDList( m_pidl, SIGDN_DESKTOPABSOLUTEEDITING, &name );
+    HRESULT hr = SHGetNameFromIDList( m_pidl, SIGDN_FILESYSPATH, &name );
 
     if ( SUCCEEDED( hr ) ) {
         m_path = QString::fromWCharArray( name );
         CoTaskMemFree( name );
+    } else {
+        hr = SHGetNameFromIDList( m_pidl, SIGDN_DESKTOPABSOLUTEEDITING, &name );
+
+        if ( SUCCEEDED( hr ) ) {
+            m_path = QString::fromWCharArray( name );
+            CoTaskMemFree( name );
+        }
+    }
+
+    if ( m_path.startsWith( QLatin1String( "ftp://" ) ) ) {
+        QUrl url = QUrl( m_path );
+        m_path = url.toString( QUrl::RemoveUserInfo );
     }
 
     m_hasParent = true;
 
-    const int rootFolders[ 4 ] = { CSIDL_DRIVES, CSIDL_NETWORK, CSIDL_INTERNET, CSIDL_DESKTOP };
+    LPITEMIDLIST pidl;
+    hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), CSIDL_DESKTOP, &pidl );
 
-    for ( int i = 0; i < 4 && m_hasParent; i++ ) {
+    if ( SUCCEEDED( hr ) ) {
+        if ( ILIsEqual( pidl, m_pidl ) )
+            m_hasParent = false;
+
+        CoTaskMemFree( pidl );
+    }
+
+    const int rootFolders[ 3 ] = { CSIDL_DRIVES, CSIDL_NETWORK, CSIDL_INTERNET };
+
+    for ( int i = 0; i < 3 && m_hasParent; i++ ) {
         LPITEMIDLIST pidl;
         hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), rootFolders[ i ], &pidl );
 
         if ( SUCCEEDED( hr ) ) {
-            if ( ILIsEqual( pidl, m_pidl ) || ILIsParent( pidl, m_pidl, true ) )
+            if ( ILIsParent( pidl, m_pidl, true ) )
                 m_hasParent = false;
 
             CoTaskMemFree( pidl );
@@ -140,21 +176,12 @@ QString ShellFolder::name()
     return result;
 }
 
-QString ShellFolder::realPath()
+ShellPidl ShellFolder::pidl() const
 {
-    QString result;
-
-    wchar_t* name;
-    HRESULT hr = SHGetNameFromIDList( d->m_pidl, SIGDN_FILESYSPATH, &name );
-
-    if ( SUCCEEDED( hr ) ) {
-        result = QString::fromWCharArray( name );
-        CoTaskMemFree( name );
-    } else {
-        result = d->m_path;
-    }
-
-    return result;
+    ShellPidl pidl;
+    pidl.d->m_data = QByteArray( (const char*)d->m_pidl, (int)ILGetSize( d->m_pidl ) );
+    pidl.d->m_path = d->m_path;
+    return pidl;
 }
 
 QList<ShellItem> ShellFolder::listItems( Flags flags )
@@ -566,6 +593,9 @@ ShellFolder* ShellFolder::rootFolder()
     for ( const ShellFolder* folder = this; folder && folder->hasParent(); folder = result ) {
         ShellItem item;
         result = folder->d->createParentFolder( item );
+
+        if ( folder != this )
+            delete folder;
     }
 
     return result;
@@ -769,7 +799,7 @@ bool ShellFolder::explore()
     info.cbSize = sizeof( info );
     info.fMask = SEE_MASK_IDLIST;
     info.hwnd = parent()->effectiveWinId();
-    info.lpVerb = NULL;//L"explore";
+    info.lpVerb = NULL;
     info.lpParameters = NULL;
     info.lpDirectory = NULL;
     info.nShow = SW_SHOWNORMAL;

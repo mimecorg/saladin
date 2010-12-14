@@ -88,6 +88,8 @@ private slots:
     void search();
     void explore();
 
+    void showHistory();
+
     void showDrivesMenu1();
     void showDrivesMenu2();
     void showProperties();

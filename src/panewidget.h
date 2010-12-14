@@ -21,6 +21,7 @@
 
 #include "shell/shellitem.h"
 #include "xmlui/toolstrip.h"
+#include "xmlui/toolstrip_p.h"
 
 #include <QWidget>
 
@@ -29,6 +30,7 @@ class FolderItemModel;
 class DriveStripManager;
 class ShellFolder;
 class ShellDrive;
+class ShellPidl;
 
 class PaneWidget : public QWidget
 {
@@ -72,6 +74,7 @@ public:
     void calculateSize();
     void compareWith( const QList<ShellItem>& items );
     void showDrivesMenu();
+    void showHistory();
 
 public: // overrides
     bool eventFilter( QObject* watched, QEvent* e );
@@ -111,12 +114,16 @@ private:
 
     QString formatSize( qint64 size, bool afterOf );
 
+    void setHistoryIndex( int index );
+
 private:
     PaneLocation m_location;
 
     XmlUi::ToolStrip* m_strip;
 
     QLineEdit* m_edit;
+
+    XmlUi::ActionButton* m_historyButton;
 
     FolderItemView* m_view;
     FolderItemModel* m_model;
@@ -130,6 +137,10 @@ private:
 
     QPersistentModelIndex m_renameIndex;
     QTimer* m_renameTimer;
+
+    QList<ShellPidl> m_history;
+    int m_historyIndex;
+    bool m_lockHistory;
 };
 
 #endif

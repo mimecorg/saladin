@@ -9,6 +9,8 @@ HEADERS += shell/changenotifywatcher_p.h \
            shell/shellfolder_p.h \
            shell/shellitem.h \
            shell/shellitem_p.h \
+           shell/shellpidl.h \
+           shell/shellpidl_p.h \
            shell/shellselection.h \
            shell/shellselection_p.h
 
@@ -19,4 +21,5 @@ SOURCES += shell/changenotifywatcher.cpp \
            shell/shelldrive.cpp \
            shell/shellfolder.cpp \
            shell/shellitem.cpp \
+           shell/shellpidl.cpp \
            shell/shellselection.cpp

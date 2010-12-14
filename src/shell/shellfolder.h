@@ -25,6 +25,7 @@
 #include <QObject>
 
 class ShellFolderPrivate;
+class ShellPidl;
 class ItemChange;
 
 class ShellFolder : public QObject
@@ -39,6 +40,7 @@ public:
 
 public:
     ShellFolder( const QString& path, QWidget* parent );
+    ShellFolder( const ShellPidl& pidl, QWidget* parent );
     ~ShellFolder();
 
 public:
@@ -49,7 +51,7 @@ public:
     ShellItem::Attributes attributes();
     QString name();
 
-    QString realPath();
+    ShellPidl pidl() const;
 
     QList<ShellItem> listItems( Flags flags );
 

@@ -26,6 +26,7 @@
 
 #include "shell/shellfolder.h"
 #include "shell/shellitem.h"
+#include "shell/shellpidl.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 
@@ -35,7 +36,9 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view( NULL ),
     m_model( NULL ),
     m_isSource( false ),
-    m_movingSection( false )
+    m_movingSection( false ),
+    m_historyIndex( 0 ),
+    m_lockHistory( false )
 {
     QVBoxLayout* layout = new QVBoxLayout( this );
     layout->setSpacing( 0 );
@@ -79,14 +82,12 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
     m_edit->installEventFilter( this );
 
-    QToolButton* historyButton = new QToolButton( parent );
-    historyButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
-    historyButton->setIcon( IconLoader::icon( "history" ) );
-    historyButton->setIconSize( QSize( 16, 16 ) );
-    historyButton->setToolTip( tr ( "History" ) );
-    historyButton->setAutoRaise( true );
-    historyButton->setFocusPolicy( Qt::NoFocus );
-    editLayout->addWidget( historyButton );
+    m_historyButton = new XmlUi::ActionButton( parent );
+    m_historyButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
+    m_historyButton->setIconSize( QSize( 16, 16 ) );
+    m_historyButton->setDefaultAction( mainWindow->action( "showHistory" ) );
+    m_historyButton->adjustText();
+    editLayout->addWidget( m_historyButton );
 
     QToolButton* bookmarkButton = new QToolButton( parent );
     bookmarkButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
@@ -278,6 +279,18 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
                         m_model->toggleItemSelected( m_model->index( i, 0 ) );
                     m_view->setCurrentIndex( fromIndex.sibling( m_model->rowCount() - 1, 0 ) );
                 }
+                return true;
+            }
+
+            case Qt::ALT + Qt::Key_Left: {
+                if ( m_historyIndex < m_history.count() - 1 )
+                    setHistoryIndex( m_historyIndex + 1 );
+                return true;
+            }
+
+            case Qt::ALT + Qt::Key_Right: {
+                if ( m_historyIndex > 0 )
+                    setHistoryIndex( m_historyIndex - 1 );
                 return true;
             }
         }
@@ -510,6 +523,21 @@ void PaneWidget::setFolder( ShellFolder* folder )
 
     updateLocation();
 
+    if ( !m_lockHistory ) {
+        ShellPidl pidl = m_model->folder()->pidl();
+
+        while ( m_historyIndex > 0 ) {
+            m_history.removeFirst();
+            m_historyIndex--;
+        }
+
+        if ( m_history.isEmpty() || m_history.first() != pidl )
+            m_history.prepend( pidl );
+
+        while ( m_history.count() > 20 )
+            m_history.removeLast();
+    }
+
     QApplication::restoreOverrideCursor();
 }
 
@@ -540,12 +568,6 @@ void PaneWidget::setSourcePane( bool source )
 void PaneWidget::updateLocation()
 {
     QString path = m_model->folder()->path();
-
-    if ( path.startsWith( QLatin1String( "ftp://" ) ) ) {
-        QUrl url = QUrl( path );
-        path = url.toString( QUrl::RemoveUserInfo );
-    }
-
     m_edit->setText( path );
 }
 
@@ -623,6 +645,47 @@ void PaneWidget::showDrivesMenu()
 {
     MainWindow* mainWindow = application->mainWindow();
     mainWindow->driveStripManager()->showDrivesMenu( m_strip );
+}
+
+void PaneWidget::showHistory()
+{
+    QMenu menu;
+
+    QList<QAction*> actions;
+    for ( int i = 0; i < m_history.count(); i++ ) {
+        QAction* action = menu.addAction( m_history.at( i ).path() );
+
+        if ( m_historyIndex == i )
+            menu.setDefaultAction( action );
+
+        actions.append( action );
+    }
+
+    QAction* action = menu.exec( m_historyButton->mapToGlobal( m_historyButton->rect().bottomLeft() ) );
+
+    if ( action ) {
+        int index = actions.indexOf( action );
+        if ( index >= 0 )
+            setHistoryIndex( index );
+    }
+}
+
+void PaneWidget::setHistoryIndex( int index )
+{
+    m_lockHistory = true;
+
+    m_historyIndex = index;
+
+    ShellFolder* folder = new ShellFolder( m_history.at( index ), this );
+    if ( folder->isValid() ) {
+        setFolder( folder );
+        activateView();
+    } else {
+        delete folder;
+        QMessageBox::warning( this, tr( "Invalid Path" ), tr( "The path you selected cannot be opened.\nMake sure it is available and try again." ) );
+    }
+
+    m_lockHistory = false;
 }
 
 void PaneWidget::viewContextMenuRequested( const QPoint& pos )

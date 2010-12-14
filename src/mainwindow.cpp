@@ -266,6 +266,11 @@ void MainWindow::initialize()
     connect( action, SIGNAL( triggered() ), this, SLOT( explore() ) );
     setAction( "explore", action );
 
+    action = new QAction( IconLoader::icon( "history" ), tr( "History" ), this );
+    action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_G ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( showHistory() ) );
+    setAction( "showHistory", action );
+
     setTitle( "sectionFunctions", tr( "Functions" ) );
     setTitle( "sectionClipboard", tr( "Clipboard" ) );
     setTitle( "sectionView", tr( "View" ) );
@@ -941,6 +946,11 @@ void MainWindow::search()
 void MainWindow::explore()
 {
     m_sourcePane->folder()->explore();
+}
+
+void MainWindow::showHistory()
+{
+    m_sourcePane->showHistory();
 }
 
 void MainWindow::showDrivesMenu1()

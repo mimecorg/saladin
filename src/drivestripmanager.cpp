@@ -75,7 +75,7 @@ ShellDrive DriveStripManager::driveAt( XmlUi::ToolStrip* strip, const QPoint& po
 
 ShellDrive DriveStripManager::driveFromFolder( ShellFolder* folder ) const
 {
-    QString path = folder->realPath();
+    QString path = folder->path();
 
     if ( path.length() > 2 && path.at( 1 ) == QLatin1Char( ':' ) ) {
         foreach ( ShellDrive drive, m_drives ) {
