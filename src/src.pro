@@ -7,6 +7,8 @@ CONFIG  += qt
 QT      += xml
 
 HEADERS += application.h \
+           bookmark.h \
+           bookmark_p.h \
            drivestripmanager.h \
            folderitemdelegate.h \
            folderitemmodel.h \
@@ -18,6 +20,7 @@ HEADERS += application.h \
            panewidget.h
 
 SOURCES += application.cpp \
+           bookmark.cpp \
            drivestripmanager.cpp \
            folderitemdelegate.cpp \
            folderitemmodel.cpp \
@@ -40,7 +43,7 @@ INCLUDEPATH += .
 PRECOMPILED_HEADER = precompiled.h
 
 RC_FILE = saladin.rc
-LIBS += -lshell32 -lshlwapi
+LIBS += -lshell32 -lshlwapi -lcrypt32
 
 win32-msvc* {
     CONFIG -= flat

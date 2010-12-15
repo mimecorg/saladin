@@ -16,46 +16,38 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef SHELLFOLDER_P_H
-#define SHELLFOLDER_P_H
+#ifndef BOOKMARK_P_H
+#define BOOKMARK_P_H
 
-#include "shellbase_p.h"
+#include "bookmark.h"
 
-#include <shlobj.h>
+#include "shell/shellpidl.h"
 
-class ShellFolder;
-
-class ShellFolderPrivate : public ShellBasePrivate
+class BookmarkPrivate : public QSharedData
 {
 public:
-    ShellFolderPrivate();
-    ~ShellFolderPrivate();
+    enum BookmarkType
+    {
+        NullBookmark,
+        PidlBookmark,
+        FtpBookmark
+    };
 
 public:
-    void readProperties();
-
-    ShellItem makeItem( LPITEMIDLIST pidl );
-    ShellItem makeNotifyItem( LPITEMIDLIST pidl );
-    ShellItem makeRealNotifyItem( LPITEMIDLIST pidl );
-
-    void readItemProperties( ShellItem& item );
-
-    void updateDescriptors( ShellItem& item );
-    void updateDescriptors( QList<ShellItem>& items );
-
-    ShellFolder* createParentFolder( ShellItem& item );
-
-    qint64 calculateSize( IShellFolder* parentFolder, LPITEMIDLIST pidl );
+    BookmarkPrivate();
+    BookmarkPrivate( const BookmarkPrivate& other );
+    ~BookmarkPrivate();
 
 public:
-    ShellFolder* q;
+    QString m_name;
+
+    BookmarkType m_type;
+
+    ShellPidl m_pidl;
 
     QString m_path;
-
     QString m_user;
     QString m_password;
-
-    bool m_hasParent;
 };
 
 #endif

@@ -72,3 +72,13 @@ bool operator !=( const ShellPidl& lhs, const ShellPidl& rhs )
 {
     return !( lhs == rhs );
 }
+
+QDataStream& operator <<( QDataStream& stream, const ShellPidl& pidl )
+{
+    return stream << pidl.d->m_data << pidl.d->m_path;
+}
+
+QDataStream& operator >>( QDataStream& stream, ShellPidl& pidl )
+{
+    return stream >> pidl.d->m_data >> pidl.d->m_path;
+}

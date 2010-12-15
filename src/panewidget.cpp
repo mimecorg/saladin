@@ -23,6 +23,7 @@
 #include "folderitemmodel.h"
 #include "folderitemdelegate.h"
 #include "drivestripmanager.h"
+#include "openftpdialog.h"
 
 #include "shell/shellfolder.h"
 #include "shell/shellitem.h"
@@ -89,14 +90,14 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_historyButton->adjustText();
     editLayout->addWidget( m_historyButton );
 
-    QToolButton* bookmarkButton = new QToolButton( parent );
-    bookmarkButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
-    bookmarkButton->setIcon( IconLoader::icon( "bookmark" ) );
-    bookmarkButton->setIconSize( QSize( 16, 16 ) );
-    bookmarkButton->setToolTip( tr( "Bookmarks" ) );
-    bookmarkButton->setAutoRaise( true );
-    bookmarkButton->setFocusPolicy( Qt::NoFocus );
-    editLayout->addWidget( bookmarkButton );
+    m_bookmarkButton = new XmlUi::ActionButton( parent );
+    m_bookmarkButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
+    m_bookmarkButton->setIconSize( QSize( 16, 16 ) );
+    m_bookmarkButton->setDefaultAction( mainWindow->action( "showBookmarks" ) );
+    m_bookmarkButton->adjustText();
+    editLayout->addWidget( m_bookmarkButton );
+
+    addAction( mainWindow->action( "addBookmark" ) );
 
     layout->addLayout( editLayout );
     layout->addSpacing( 3 );
@@ -653,7 +654,7 @@ void PaneWidget::showHistory()
 
     QList<QAction*> actions;
     for ( int i = 0; i < m_history.count(); i++ ) {
-        QAction* action = menu.addAction( m_history.at( i ).path() );
+        QAction* action = menu.addAction( m_history.at( i ).path().replace( QLatin1String( "&" ), QLatin1String( "&&" ) ) );
 
         if ( m_historyIndex == i )
             menu.setDefaultAction( action );
@@ -682,10 +683,60 @@ void PaneWidget::setHistoryIndex( int index )
         activateView();
     } else {
         delete folder;
-        QMessageBox::warning( this, tr( "Invalid Path" ), tr( "The path you selected cannot be opened.\nMake sure it is available and try again." ) );
+        QMessageBox::warning( this, tr( "Invalid Path" ), tr( "The path you selected cannot be opened.\nMake sure the location is available and try again." ) );
     }
 
     m_lockHistory = false;
+}
+
+void PaneWidget::showBookmarks()
+{
+    QMenu menu;
+
+    QList<Bookmark> bookmarks = application->bookmarks();
+    qSort( bookmarks );
+
+    QList<QAction*> actions;
+    for ( int i = 0; i < bookmarks.count(); i++ ) {
+        QAction* action = menu.addAction( bookmarks.at( i ).name().replace( QLatin1String( "&" ), QLatin1String( "&&" ) ) );
+        actions.append( action );
+    }
+
+    if ( !actions.isEmpty() )
+        menu.addSeparator();
+
+    MainWindow* mainWindow = application->mainWindow();
+    menu.addAction( mainWindow->action( "addBookmark" ) );
+
+    QAction* action = menu.exec( m_bookmarkButton->mapToGlobal( m_bookmarkButton->rect().bottomLeft() ) );
+    if ( action ) {
+        int index = actions.indexOf( action );
+        if ( index >= 0 )
+            setBookmark( bookmarks.at( index ) );
+    }
+}
+
+void PaneWidget::setBookmark( const Bookmark& bookmark )
+{
+    if ( !bookmark.user().isEmpty() && bookmark.password().isEmpty() ) {
+        OpenFtpDialog dialog( this );
+        dialog.setPath( bookmark.path() );
+        dialog.setUser( bookmark.user() );
+
+        if ( dialog.exec() != QDialog::Accepted )
+            return;
+
+        setDirectory( dialog.path() );
+    } else {
+        ShellFolder* folder = bookmark.createFolder( this );
+        if ( folder->isValid() ) {
+            setFolder( folder );
+            activateView();
+        } else {
+            delete folder;
+            QMessageBox::warning( this, tr( "Invalid Bookmark" ), tr( "The bookmark you selected cannot be opened.\nMake sure the location is available and try again." ) );
+        }
+    }
 }
 
 void PaneWidget::viewContextMenuRequested( const QPoint& pos )

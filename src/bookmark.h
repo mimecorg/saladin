@@ -16,46 +16,44 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef SHELLFOLDER_P_H
-#define SHELLFOLDER_P_H
+#ifndef BOOKMARK_H
+#define BOOKMARK_H
 
-#include "shellbase_p.h"
+#include <QSharedData>
 
-#include <shlobj.h>
-
+class BookmarkPrivate;
 class ShellFolder;
 
-class ShellFolderPrivate : public ShellBasePrivate
+class Bookmark
 {
 public:
-    ShellFolderPrivate();
-    ~ShellFolderPrivate();
+    Bookmark();
+    Bookmark( const QString& name, ShellFolder* folder, bool withPassword );
+    ~Bookmark();
+
+    Bookmark( const Bookmark& other );
+    Bookmark& operator =( const Bookmark& other );
 
 public:
-    void readProperties();
+    bool isValid() const;
 
-    ShellItem makeItem( LPITEMIDLIST pidl );
-    ShellItem makeNotifyItem( LPITEMIDLIST pidl );
-    ShellItem makeRealNotifyItem( LPITEMIDLIST pidl );
+    QString name() const;
+    void setName( const QString& name );
 
-    void readItemProperties( ShellItem& item );
+    QString path() const;
+    QString user() const;
+    QString password() const;
 
-    void updateDescriptors( ShellItem& item );
-    void updateDescriptors( QList<ShellItem>& items );
-
-    ShellFolder* createParentFolder( ShellItem& item );
-
-    qint64 calculateSize( IShellFolder* parentFolder, LPITEMIDLIST pidl );
+    ShellFolder* createFolder( QWidget* parent ) const;
 
 public:
-    ShellFolder* q;
+    friend bool operator <( const Bookmark& lhs, const Bookmark& rhs );
 
-    QString m_path;
+    friend QDataStream& operator <<( QDataStream& stream, const Bookmark& bookmark );
+    friend QDataStream& operator >>( QDataStream& stream, Bookmark& bookmark );
 
-    QString m_user;
-    QString m_password;
-
-    bool m_hasParent;
+private:
+    QSharedDataPointer<BookmarkPrivate> d;
 };
 
 #endif

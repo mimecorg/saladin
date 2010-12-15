@@ -29,6 +29,9 @@ public:
     ~OpenFtpDialog();
 
 public:
+    void setPath( const QString& path );
+    void setUser( const QString& user );
+
     QString path();
 
 public: // overrides

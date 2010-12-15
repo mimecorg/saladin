@@ -31,6 +31,7 @@ class DriveStripManager;
 class ShellFolder;
 class ShellDrive;
 class ShellPidl;
+class Bookmark;
 
 class PaneWidget : public QWidget
 {
@@ -75,6 +76,7 @@ public:
     void compareWith( const QList<ShellItem>& items );
     void showDrivesMenu();
     void showHistory();
+    void showBookmarks();
 
 public: // overrides
     bool eventFilter( QObject* watched, QEvent* e );
@@ -115,6 +117,7 @@ private:
     QString formatSize( qint64 size, bool afterOf );
 
     void setHistoryIndex( int index );
+    void setBookmark( const Bookmark& bookmark );
 
 private:
     PaneLocation m_location;
@@ -124,6 +127,7 @@ private:
     QLineEdit* m_edit;
 
     XmlUi::ActionButton* m_historyButton;
+    XmlUi::ActionButton* m_bookmarkButton;
 
     FolderItemView* m_view;
     FolderItemModel* m_model;

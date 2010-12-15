@@ -97,9 +97,11 @@ void ShellFolderPrivate::readProperties()
         }
     }
 
-    if ( m_path.startsWith( QLatin1String( "ftp://" ) ) ) {
+    if ( m_path.startsWith( QLatin1String( "ftp://" ), Qt::CaseInsensitive ) ) {
         QUrl url = QUrl( m_path );
         m_path = url.toString( QUrl::RemoveUserInfo );
+        m_user = url.userName();
+        m_password = url.password();
     }
 
     m_hasParent = true;
@@ -182,6 +184,16 @@ ShellPidl ShellFolder::pidl() const
     pidl.d->m_data = QByteArray( (const char*)d->m_pidl, (int)ILGetSize( d->m_pidl ) );
     pidl.d->m_path = d->m_path;
     return pidl;
+}
+
+QString ShellFolder::user() const
+{
+    return d->m_user;
+}
+
+QString ShellFolder::password() const
+{
+    return d->m_password;
 }
 
 QList<ShellItem> ShellFolder::listItems( Flags flags )

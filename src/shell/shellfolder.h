@@ -53,6 +53,9 @@ public:
 
     ShellPidl pidl() const;
 
+    QString user() const;
+    QString password() const;
+
     QList<ShellItem> listItems( Flags flags );
 
     bool extractIcon( ShellItem& item );

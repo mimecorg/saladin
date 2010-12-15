@@ -271,6 +271,16 @@ void MainWindow::initialize()
     connect( action, SIGNAL( triggered() ), this, SLOT( showHistory() ) );
     setAction( "showHistory", action );
 
+    action = new QAction( IconLoader::icon( "bookmark" ), tr( "Bookmarks" ), this );
+    action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_D ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( showBookmarks() ) );
+    setAction( "showBookmarks", action );
+
+    action = new QAction( IconLoader::icon( "bookmark" ), tr( "Add Bookmark..." ), this );
+    action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_D ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( addBookmark() ) );
+    setAction( "addBookmark", action );
+
     setTitle( "sectionFunctions", tr( "Functions" ) );
     setTitle( "sectionClipboard", tr( "Clipboard" ) );
     setTitle( "sectionView", tr( "View" ) );
@@ -951,6 +961,37 @@ void MainWindow::explore()
 void MainWindow::showHistory()
 {
     m_sourcePane->showHistory();
+}
+
+void MainWindow::showBookmarks()
+{
+    m_sourcePane->showBookmarks();
+}
+
+void MainWindow::addBookmark()
+{
+    ShellFolder* folder = m_sourcePane->folder();
+
+    OperationDialog::Flags flags = OperationDialog::WithName | OperationDialog::CanEditName | OperationDialog::WithLocation;
+    if ( !folder->password().isEmpty() )
+        flags |= OperationDialog::WithCheckBox;
+
+    OperationDialog dialog( flags, this );
+
+    dialog.setWindowTitle( tr( "Add Bookmark" ) );
+    dialog.setPromptPixmap( IconLoader::pixmap( "bookmark", 22 ) );
+    dialog.setPrompt( tr( "Add current directory to the list of bookmarks:" ) );
+
+    dialog.setName( folder->path() );
+    dialog.setLocation( folder->path() );
+
+    dialog.setCheckBoxText( tr( "&Remember password" ) );
+
+    if ( dialog.exec() != QDialog::Accepted )
+        return;
+
+    Bookmark bookmark( dialog.name(), folder, dialog.checkBoxChecked() );
+    application->addBookmark( bookmark );
 }
 
 void MainWindow::showDrivesMenu1()

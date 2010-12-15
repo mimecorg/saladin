@@ -173,7 +173,7 @@ void OperationDialog::setName( const QString& text )
         m_nameEdit->setText( text );
         if ( !m_nameEdit->isReadOnly() ) {
             int pos = text.lastIndexOf( '.' );
-            if ( pos <= 0 )
+            if ( pos <= 0 || text.contains( QRegExp( "[:\\\\/]" ) ) )
                 pos = text.length();
             m_nameEdit->setSelection( 0, pos );
         }

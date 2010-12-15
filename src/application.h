@@ -19,6 +19,8 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "bookmark.h"
+
 #include <QApplication>
 
 class MainWindow;
@@ -42,6 +44,10 @@ public:
 
     LocalSettings* applicationSettings() const { return m_settings; }
 
+    const QList<Bookmark>& bookmarks() const { return m_bookmarks; }
+    void setBookmarks( const QList<Bookmark>& bookmarks );
+    void addBookmark( const Bookmark& bookmark );
+
 public slots:
     void about();
 
@@ -49,6 +55,9 @@ private:
     void initializeDefaultPaths();
 
     bool checkAccess( const QString& path );
+
+    void loadBookmarks();
+    void saveBookmarks();
 
 private:
     MainWindow* m_mainWindow;
@@ -58,6 +67,8 @@ private:
     QString m_tempPath;
 
     LocalSettings* m_settings;
+
+    QList<Bookmark> m_bookmarks;
 };
 
 extern Application* application;

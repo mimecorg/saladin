@@ -20,6 +20,7 @@
 #include "mainwindow.h"
 
 #include "utils/localsettings.h"
+#include "utils/dataserializer.h"
 #include "utils/iconloader.h"
 
 Application* application = NULL;
@@ -33,6 +34,7 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
     application = this;
 
     m_settings = new LocalSettings( locateDataFile( "settings.dat" ), this );
+    loadBookmarks();
 
     setStyle( "XmlUi::WindowsStyle" );
 
@@ -164,4 +166,38 @@ bool Application::checkAccess( const QString& path )
         return dir.isReadable();
 
     return dir.mkpath( dir.absolutePath() );
+}
+
+void Application::setBookmarks( const QList<Bookmark>& bookmarks )
+{
+    m_bookmarks = bookmarks;
+
+    saveBookmarks();
+}
+
+void Application::addBookmark( const Bookmark& bookmark )
+{
+    m_bookmarks.append( bookmark );
+
+    saveBookmarks();
+}
+
+void Application::loadBookmarks()
+{
+    DataSerializer serializer( locateDataFile( "bookmarks.dat" ) );
+
+    if ( !serializer.openForReading() )
+        return;
+
+    serializer.stream() >> m_bookmarks;
+}
+
+void Application::saveBookmarks()
+{
+    DataSerializer serializer( locateDataFile( "bookmarks.dat" ) );
+
+    if ( !serializer.openForWriting() )
+        return;
+
+    serializer.stream() << m_bookmarks;
 }

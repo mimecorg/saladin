@@ -134,6 +134,22 @@ OpenFtpDialog::~OpenFtpDialog()
 {
 }
 
+void OpenFtpDialog::setPath( const QString& path )
+{
+    QUrl url( path );
+
+    m_hostEdit->setText( url.host() );
+    m_portSpinBox->setValue( url.port( 21 ) );
+    m_pathEdit->setText( url.path() );
+}
+
+void OpenFtpDialog::setUser( const QString& user )
+{
+    m_anonymousCheckBox->setChecked( false );
+    m_userEdit->setText( user );
+    m_passwordEdit->setFocus();
+}
+
 QString OpenFtpDialog::path()
 {
     QUrl url;

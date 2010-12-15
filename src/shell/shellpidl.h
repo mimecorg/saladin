@@ -37,8 +37,12 @@ public:
 
     QString path() const;
 
+public:
     friend bool operator ==( const ShellPidl& lhs, const ShellPidl& rhs );
     friend bool operator !=( const ShellPidl& lhs, const ShellPidl& rhs );
+
+    friend QDataStream& operator <<( QDataStream& stream, const ShellPidl& pidl );
+    friend QDataStream& operator >>( QDataStream& stream, ShellPidl& pidl );
 
 private:
     QSharedDataPointer<ShellPidlPrivate> d;
