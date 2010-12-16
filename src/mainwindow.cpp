@@ -22,6 +22,7 @@
 #include "drivestripmanager.h"
 #include "operationdialog.h"
 #include "openftpdialog.h"
+#include "bookmarksdialog.h"
 
 #include "shell/shellfolder.h"
 #include "shell/shellselection.h"
@@ -280,6 +281,10 @@ void MainWindow::initialize()
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_D ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( addBookmark() ) );
     setAction( "addBookmark", action );
+
+    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit Bookmarks..." ), this );
+    connect( action, SIGNAL( triggered() ), this, SLOT( editBookmarks() ) );
+    setAction( "editBookmarks", action );
 
     setTitle( "sectionFunctions", tr( "Functions" ) );
     setTitle( "sectionClipboard", tr( "Clipboard" ) );
@@ -992,6 +997,12 @@ void MainWindow::addBookmark()
 
     Bookmark bookmark( dialog.name(), folder, dialog.checkBoxChecked() );
     application->addBookmark( bookmark );
+}
+
+void MainWindow::editBookmarks()
+{
+    BookmarksDialog dialog( this );
+    dialog.exec();
 }
 
 void MainWindow::showDrivesMenu1()

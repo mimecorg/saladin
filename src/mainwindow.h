@@ -91,6 +91,7 @@ private slots:
     void showHistory();
     void showBookmarks();
     void addBookmark();
+    void editBookmarks();
 
     void showDrivesMenu1();
     void showDrivesMenu2();

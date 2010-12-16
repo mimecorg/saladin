@@ -1,0 +1,10 @@
+<xmlui>
+  <strip id="stripBookmarks">
+    <action id="editRename"/>
+    <action id="editDelete"/>
+  </strip>
+  <menu id="menuBookmark">
+    <action id="editRename"/>
+    <action id="editDelete"/>
+  </menu>
+</xmlui>

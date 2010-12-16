@@ -126,7 +126,8 @@ OperationDialog::OperationDialog( Flags flags, QWidget* parent ) : QDialog( pare
     if ( flags.testFlag( WithMultiRename ) )
         rename();
 
-    m_mainLayout->addSpacing( 5 );
+    if ( row > 0 )
+        m_mainLayout->addSpacing( 5 );
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this );
     m_mainLayout->addWidget( buttonBox );

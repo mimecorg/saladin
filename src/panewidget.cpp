@@ -707,6 +707,9 @@ void PaneWidget::showBookmarks()
 
     MainWindow* mainWindow = application->mainWindow();
     menu.addAction( mainWindow->action( "addBookmark" ) );
+    menu.addAction( mainWindow->action( "editBookmarks" ) );
+
+    mainWindow->action( "editBookmarks" )->setEnabled( !actions.isEmpty() );
 
     QAction* action = menu.exec( m_bookmarkButton->mapToGlobal( m_bookmarkButton->rect().bottomLeft() ) );
     if ( action ) {

@@ -9,6 +9,7 @@ QT      += xml
 HEADERS += application.h \
            bookmark.h \
            bookmark_p.h \
+           bookmarksdialog.h \
            drivestripmanager.h \
            folderitemdelegate.h \
            folderitemmodel.h \
@@ -21,6 +22,7 @@ HEADERS += application.h \
 
 SOURCES += application.cpp \
            bookmark.cpp \
+           bookmarksdialog.cpp \
            drivestripmanager.cpp \
            folderitemdelegate.cpp \
            folderitemmodel.cpp \
