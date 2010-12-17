@@ -775,15 +775,7 @@ void PaneWidget::viewContextMenuRequested( const QPoint& pos )
     } else {
         m_model->unselectAll();
 
-        ShellSelection::Flags flags = 0;
-
-        if ( m_model->isParentFolder( index ) )
-            flags |= ShellSelection::CanOpen;
-
-        ShellSelection::MenuCommand command = m_model->folder()->showContextMenu( m_view->viewport()->mapToGlobal( pos ), flags );
-
-        if ( command == ShellSelection::Open )
-            openParent();
+        m_model->folder()->showContextMenu( m_view->viewport()->mapToGlobal( pos ), 0 );
     }
 }
 
