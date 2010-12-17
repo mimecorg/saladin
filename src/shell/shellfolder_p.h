@@ -40,9 +40,6 @@ public:
 
     void readItemProperties( ShellItem& item );
 
-    void updateDescriptors( ShellItem& item );
-    void updateDescriptors( QList<ShellItem>& items );
-
     ShellFolder* createParentFolder( ShellItem& item );
 
     qint64 calculateSize( IShellFolder* parentFolder, LPITEMIDLIST pidl );

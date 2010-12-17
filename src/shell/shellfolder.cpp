@@ -24,6 +24,7 @@
 #include "changenotifywatcher_p.h"
 
 #include <shlwapi.h>
+#include <ntquery.h>
 
 ShellFolder::ShellFolder( const QString& path, QWidget* parent ) : QObject( parent ),
     d( new ShellFolderPrivate() )
@@ -213,8 +214,6 @@ QList<ShellItem> ShellFolder::listItems( Flags flags )
             result.append( d->makeItem( pidl ) );
 
         enumerator->Release();
-
-        d->updateDescriptors( result );
     }
 
     return result;
@@ -241,12 +240,21 @@ ShellItem ShellFolderPrivate::makeRealNotifyItem( LPITEMIDLIST pidl )
 
     HRESULT hr = SHGetRealIDL( m_folder, pidl, &item.d->m_pidl );
 
-    if ( SUCCEEDED( hr ) ) {
+    if ( SUCCEEDED( hr ) )
         readItemProperties( item );
-        updateDescriptors( item );
-    }
 
     return item;
+}
+
+static QDateTime systemTimeToQDateTime( const SYSTEMTIME* systemTime )
+{
+    SYSTEMTIME localTime;
+    SystemTimeToTzSpecificLocalTime( NULL, systemTime, &localTime );
+
+    QDate date( localTime.wYear, localTime.wMonth, localTime.wDay );
+    QTime time( localTime.wHour, localTime.wMinute, localTime.wSecond, localTime.wMilliseconds );
+
+    return QDateTime( date, time, Qt::LocalTime );
 }
 
 static QDateTime fileTimeToQDateTime( const FILETIME* fileTime )
@@ -254,13 +262,39 @@ static QDateTime fileTimeToQDateTime( const FILETIME* fileTime )
     SYSTEMTIME systemTime;
     FileTimeToSystemTime( fileTime, &systemTime );
 
-    SYSTEMTIME localTime;
-    SystemTimeToTzSpecificLocalTime( NULL, &systemTime, &localTime );
+    return systemTimeToQDateTime( &systemTime );
+}
 
-    QDate date( localTime.wYear, localTime.wMonth, localTime.wDay );
-    QTime time( localTime.wHour, localTime.wMinute, localTime.wSecond, localTime.wMilliseconds );
+static QDateTime variantTimeToQDateTime( double vtime )
+{
+    SYSTEMTIME systemTime;
+    VariantTimeToSystemTime( vtime, &systemTime );
 
-    return QDateTime( date, time, Qt::LocalTime );
+    return systemTimeToQDateTime( &systemTime );
+}
+
+ShellItem::Attributes fileAttributesToAttributes( DWORD fileAttributes )
+{
+    ShellItem::Attributes attributes = 0;
+
+    if ( fileAttributes & FILE_ATTRIBUTE_READONLY )
+        attributes |= ShellItem::ReadOnly;
+    if ( fileAttributes & FILE_ATTRIBUTE_HIDDEN )
+        attributes |= ShellItem::Hidden;
+    if ( fileAttributes & FILE_ATTRIBUTE_SYSTEM )
+        attributes |= ShellItem::System;
+    if ( fileAttributes & FILE_ATTRIBUTE_DIRECTORY )
+        attributes |= ShellItem::Directory;
+    if ( fileAttributes & FILE_ATTRIBUTE_ARCHIVE )
+        attributes |= ShellItem::Archive;
+    if ( fileAttributes & FILE_ATTRIBUTE_COMPRESSED )
+        attributes |= ShellItem::Compressed;
+    if ( fileAttributes & FILE_ATTRIBUTE_ENCRYPTED )
+        attributes |= ShellItem::Encrypted;
+    if ( fileAttributes & FILE_ATTRIBUTE_REPARSE_POINT )
+        attributes |= ShellItem::ReparsePoint;
+
+    return attributes;
 }
 
 void ShellFolderPrivate::readItemProperties( ShellItem& item )
@@ -288,24 +322,9 @@ void ShellFolderPrivate::readItemProperties( ShellItem& item )
     hr = SHGetDataFromIDList( m_folder, item.d->m_pidl, SHGDFIL_FINDDATA, &data, sizeof( data ) );
 
     if ( SUCCEEDED( hr ) ) {
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_READONLY )
-            attributes |= ShellItem::ReadOnly;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN )
-            attributes |= ShellItem::Hidden;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM )
-            attributes |= ShellItem::System;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY )
-            attributes |= ShellItem::Directory;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE )
-            attributes |= ShellItem::Archive;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_COMPRESSED )
-            attributes |= ShellItem::Compressed;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_ENCRYPTED )
-            attributes |= ShellItem::Encrypted;
-        if ( data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT )
-            attributes |= ShellItem::ReparsePoint;
+        attributes |= fileAttributesToAttributes( data.dwFileAttributes );
 
-        item.d->m_name = QString::fromUtf16( data.cFileName );
+        item.d->m_name = QString::fromWCharArray( data.cFileName );
 
         item.d->m_size = (qint64)data.nFileSizeHigh << 32 | data.nFileSizeLow;
 
@@ -315,6 +334,40 @@ void ShellFolderPrivate::readItemProperties( ShellItem& item )
     } else {
         if ( attributes.testFlag( ShellItem::Folder ) && !attributes.testFlag( ShellItem::Stream ) )
             attributes |= ShellItem::Directory;
+
+        IShellFolder2* folder2;
+        hr = m_folder->QueryInterface( IID_PPV_ARGS( &folder2 ) );
+
+        if ( SUCCEEDED( hr ) ) {
+            SHCOLUMNID shcolumnid;
+            shcolumnid.fmtid = FMTID_Storage;
+            shcolumnid.pid = PID_STG_ATTRIBUTES;
+
+            VARIANT variant = { 0 };
+
+            hr = folder2->GetDetailsEx( item.d->m_pidl, &shcolumnid, &variant );
+            if ( SUCCEEDED( hr ) )
+                attributes |= fileAttributesToAttributes( variant.uintVal );
+
+            shcolumnid.pid = PID_STG_WRITETIME;
+            hr = folder2->GetDetailsEx( item.d->m_pidl, &shcolumnid, &variant );
+
+            if ( SUCCEEDED( hr ) ) {
+                item.d->m_modified = variantTimeToQDateTime( variant.date );
+
+                if ( !attributes.testFlag( ShellItem::Directory ) ) {
+                    shcolumnid.pid = PID_STG_SIZE;
+                    hr = folder2->GetDetailsEx( item.d->m_pidl, &shcolumnid, &variant );
+
+                    if ( SUCCEEDED( hr ) )
+                        item.d->m_size = variant.llVal;
+                }
+
+                state |= ShellItem::HasProperties;
+            }
+
+            folder2->Release();
+        }
     }
 
     item.d->m_attributes = attributes;
@@ -338,101 +391,6 @@ void ShellFolderPrivate::readItemProperties( ShellItem& item )
     }
 
     item.d->m_icon = icon;
-}
-
-void ShellFolderPrivate::updateDescriptors( ShellItem& item )
-{
-    if ( item.state().testFlag( ShellItem::HasProperties ) || item.attributes().testFlag( ShellItem::Directory ) )
-        return;
-
-    IDataObject* dataObject;
-    HRESULT hr = m_folder->GetUIObjectOf( q->parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&item.d->m_pidl, IID_IDataObject, NULL, (void**)&dataObject );
-
-    if ( SUCCEEDED( hr ) ) {
-        FORMATETC format;
-        format.cfFormat = RegisterClipboardFormat( CFSTR_FILEDESCRIPTOR );
-        format.ptd = NULL;
-        format.dwAspect = DVASPECT_CONTENT;
-        format.lindex = -1;
-        format.tymed = TYMED_HGLOBAL;
-
-        STGMEDIUM medium = { 0 };
-        hr = dataObject->GetData( &format, &medium );
-
-        if ( SUCCEEDED( hr ) ) {
-            FILEGROUPDESCRIPTOR* group = (FILEGROUPDESCRIPTOR*)GlobalLock( medium.hGlobal );
-
-            if ( group->cItems == 1 ) {
-                if ( ( group->fgd[ 0 ].dwFlags & FD_FILESIZE ) && ( group->fgd[ 0 ].dwFlags & FD_WRITESTIME ) ) {
-                    item.d->m_size = (qint64)group->fgd[ 0 ].nFileSizeHigh << 32 | group->fgd[ 0 ].nFileSizeLow;
-                    item.d->m_modified = fileTimeToQDateTime( &group->fgd[ 0 ].ftLastWriteTime );
-                    item.d->m_state |= ShellItem::HasProperties;
-                }
-            }
-
-            GlobalUnlock( medium.hGlobal );
-        }
-
-        ReleaseStgMedium( &medium );
-        dataObject->Release();
-    }
-}
-
-void ShellFolderPrivate::updateDescriptors( QList<ShellItem>& items )
-{
-    int count = 0;
-    for ( int i = 0; i < items.count(); i++ ) {
-        if ( !items.at( i ).state().testFlag( ShellItem::HasProperties ) && !items.at( i ).attributes().testFlag( ShellItem::Directory ) )
-            count++;
-    }
-
-    if ( !count )
-        return;
-
-    QVector<LPCITEMIDLIST> pidls( count );
-    QVector<int> indexes( count );
-    int j = 0;
-    for ( int i = 0; i < items.count(); i++ ) {
-        if ( !items.at( i ).state().testFlag( ShellItem::HasProperties ) && !items.at( i ).attributes().testFlag( ShellItem::Directory ) ) {
-            pidls[ j ] = items.at( i ).d->m_pidl;
-            indexes[ j++ ] = i;
-        }
-    }
-
-    IDataObject* dataObject;
-    HRESULT hr = m_folder->GetUIObjectOf( q->parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
-
-    if ( SUCCEEDED( hr ) ) {
-        FORMATETC format;
-        format.cfFormat = RegisterClipboardFormat( CFSTR_FILEDESCRIPTOR );
-        format.ptd = NULL;
-        format.dwAspect = DVASPECT_CONTENT;
-        format.lindex = -1;
-        format.tymed = TYMED_HGLOBAL;
-
-        STGMEDIUM medium = { 0 };
-        hr = dataObject->GetData( &format, &medium );
-
-        if ( SUCCEEDED( hr ) ) {
-            FILEGROUPDESCRIPTOR* group = (FILEGROUPDESCRIPTOR*)GlobalLock( medium.hGlobal );
-
-            if ( group->cItems == count ) {
-                for ( int i = 0; i < count; i++ ) {
-                    if ( ( group->fgd[ i ].dwFlags & FD_FILESIZE ) && ( group->fgd[ i ].dwFlags & FD_WRITESTIME ) ) {
-                        int index = indexes[ i ];
-                        items[ index ].d->m_size = (qint64)group->fgd[ i ].nFileSizeHigh << 32 | group->fgd[ i ].nFileSizeLow;
-                        items[ index ].d->m_modified = fileTimeToQDateTime( &group->fgd[ i ].ftLastWriteTime );
-                        items[ index ].d->m_state |= ShellItem::HasProperties;
-                    }
-                }
-            }
-
-            GlobalUnlock( medium.hGlobal );
-        }
-
-        ReleaseStgMedium( &medium );
-        dataObject->Release();
-    }
 }
 
 bool ShellFolder::extractIcon( ShellItem& item )
@@ -731,10 +689,8 @@ ShellItem ShellFolder::childItem( const QString& name )
 
     HRESULT hr = d->m_folder->ParseDisplayName( parent()->effectiveWinId(), NULL, (LPWSTR)name.utf16(), NULL, &result.d->m_pidl, NULL );
 
-    if ( SUCCEEDED( hr ) ) {
+    if ( SUCCEEDED( hr ) )
         d->readItemProperties( result );
-        d->updateDescriptors( result );
-    }
 
     return result;
 }
