@@ -126,8 +126,8 @@ private:
 
     QLineEdit* m_edit;
 
-    XmlUi::ActionButton* m_historyButton;
     XmlUi::ActionButton* m_bookmarkButton;
+    XmlUi::ActionButton* m_historyButton;
 
     FolderItemView* m_view;
     FolderItemModel* m_model;

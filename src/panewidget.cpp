@@ -83,19 +83,19 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
     m_edit->installEventFilter( this );
 
-    m_historyButton = new XmlUi::ActionButton( parent );
-    m_historyButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
-    m_historyButton->setIconSize( QSize( 16, 16 ) );
-    m_historyButton->setDefaultAction( mainWindow->action( "showHistory" ) );
-    m_historyButton->adjustText();
-    editLayout->addWidget( m_historyButton );
-
     m_bookmarkButton = new XmlUi::ActionButton( parent );
     m_bookmarkButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
     m_bookmarkButton->setIconSize( QSize( 16, 16 ) );
     m_bookmarkButton->setDefaultAction( mainWindow->action( "showBookmarks" ) );
     m_bookmarkButton->adjustText();
     editLayout->addWidget( m_bookmarkButton );
+
+    m_historyButton = new XmlUi::ActionButton( parent );
+    m_historyButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
+    m_historyButton->setIconSize( QSize( 16, 16 ) );
+    m_historyButton->setDefaultAction( mainWindow->action( "showHistory" ) );
+    m_historyButton->adjustText();
+    editLayout->addWidget( m_historyButton );
 
     addAction( mainWindow->action( "addBookmark" ) );
 
@@ -532,8 +532,9 @@ void PaneWidget::setFolder( ShellFolder* folder )
             m_historyIndex--;
         }
 
-        if ( m_history.isEmpty() || m_history.first() != pidl )
-            m_history.prepend( pidl );
+        m_history.removeAll( pidl );
+
+        m_history.prepend( pidl );
 
         while ( m_history.count() > 20 )
             m_history.removeLast();

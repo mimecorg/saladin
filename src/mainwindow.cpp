@@ -46,6 +46,8 @@ MainWindow::~MainWindow()
 
     LocalSettings* settings = application->applicationSettings();
     settings->setValue( "MainWindowGeometry", saveGeometry() );
+
+    settings->setValue( "ViewHiddenFiles", action( "viewHidden" )->isChecked() );
 }
 
 void MainWindow::initialize()
@@ -346,6 +348,8 @@ void MainWindow::initialize()
         restoreGeometry( settings->value( "MainWindowGeometry" ).toByteArray() );
     else
         resize( QSize( 1020, 680 ) );
+
+    this->action( "viewHidden" )->setChecked( settings->value( "ViewHiddenFiles" ).toBool() );
 
     connect( m_panes[ 0 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 1 ], SLOT( resizeHeaderSection( int, int ) ) );
     connect( m_panes[ 1 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 0 ], SLOT( resizeHeaderSection( int, int ) ) );
