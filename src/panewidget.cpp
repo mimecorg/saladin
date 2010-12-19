@@ -841,13 +841,13 @@ void PaneWidget::updateStatus()
     if ( drive.isValid() ) {
         qint64 free;
         qint64 total;
-        if ( drive.getFreeSpace( &free, &total ) ) {
+        if ( drive.getFreeSpace( &free, &total ) && total > 0 ) {
             m_driveStatus->setText( tr( "%1 - %2 of %3 free (%4%)" ).arg( drive.name(), formatSize( free, false ), formatSize( total, true ),
                 QString::number( free * 100 / total ) ) );
-            m_driveStatus->show();
         } else {
-            m_driveStatus->hide();
+            m_driveStatus->setText( drive.name() );
         }
+        m_driveStatus->show();
     } else {
         m_driveStatus->hide();
     }
