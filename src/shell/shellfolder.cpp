@@ -273,7 +273,7 @@ static QDateTime variantTimeToQDateTime( double vtime )
     return systemTimeToQDateTime( &systemTime );
 }
 
-ShellItem::Attributes fileAttributesToAttributes( DWORD fileAttributes )
+static ShellItem::Attributes fileAttributesToAttributes( DWORD fileAttributes )
 {
     ShellItem::Attributes attributes = 0;
 
@@ -341,19 +341,20 @@ void ShellFolderPrivate::readItemProperties( ShellItem& item )
         if ( SUCCEEDED( hr ) ) {
             SHCOLUMNID shcolumnid;
             shcolumnid.fmtid = FMTID_Storage;
-            shcolumnid.pid = PID_STG_ATTRIBUTES;
+            shcolumnid.pid = PID_STG_WRITETIME;
 
             VARIANT variant = { 0 };
 
             hr = folder2->GetDetailsEx( item.d->m_pidl, &shcolumnid, &variant );
-            if ( SUCCEEDED( hr ) )
-                attributes |= fileAttributesToAttributes( variant.uintVal );
-
-            shcolumnid.pid = PID_STG_WRITETIME;
-            hr = folder2->GetDetailsEx( item.d->m_pidl, &shcolumnid, &variant );
 
             if ( SUCCEEDED( hr ) ) {
                 item.d->m_modified = variantTimeToQDateTime( variant.date );
+
+                shcolumnid.pid = PID_STG_ATTRIBUTES;
+                hr = folder2->GetDetailsEx( item.d->m_pidl, &shcolumnid, &variant );
+
+                if ( SUCCEEDED( hr ) )
+                    attributes |= fileAttributesToAttributes( variant.uintVal );
 
                 if ( !attributes.testFlag( ShellItem::Directory ) ) {
                     shcolumnid.pid = PID_STG_SIZE;
