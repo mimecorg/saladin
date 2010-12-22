@@ -372,16 +372,15 @@ bool PaneWidget::viewKeyPressEvent( QKeyEvent* e )
 
 bool PaneWidget::viewMouseButtonPressEvent( QMouseEvent* e )
 {
-    m_startDragPosition = e->pos();
+    QModelIndex index = m_view->indexAt( e->pos() );
+
+    if ( index.isValid() && !m_model->isParentFolder( index ) )
+        m_startDragPosition = e->pos();
 
     m_renameIndex = QModelIndex();
     m_renameTimer->stop();
 
     if ( e->button() == Qt::LeftButton ) {
-        QModelIndex index = m_view->indexAt( e->pos() );
-        if ( index.isValid() && index == m_view->currentIndex() )
-            m_renameIndex = index;
-
         if ( e->modifiers().testFlag( Qt::ShiftModifier ) ) {
             if ( index.isValid() ) {
                 QModelIndex anchor = m_view->anchor();
@@ -410,8 +409,17 @@ bool PaneWidget::viewMouseButtonPressEvent( QMouseEvent* e )
                 m_model->toggleItemSelected( index );
             }
         } else {
-            m_model->unselectAll();
+            if ( index.isValid() && index == m_view->currentIndex() )
+                m_renameIndex = index;
+
+            if ( !m_model->isItemSelected( index ) )
+                m_model->unselectAll();
         }
+    }
+
+    if ( e->button() == Qt::RightButton ) {
+        if ( !m_model->isItemSelected( index ) )
+            m_model->unselectAll();
     }
 
     m_view->setAnchor( QModelIndex() );
@@ -451,6 +459,9 @@ bool PaneWidget::viewMouseButtonReleaseEvent( QMouseEvent* e )
         QModelIndex index = m_view->indexAt( e->pos() );
         if ( index.isValid() && index == m_view->currentIndex() && index == m_renameIndex )
             m_renameTimer->start();
+
+        if ( !e->modifiers().testFlag( Qt::ShiftModifier ) && !e->modifiers().testFlag( Qt::ControlModifier ) )
+            m_model->unselectAll();
     }
 
     return false;
@@ -904,6 +915,9 @@ void PaneWidget::setBookmark( const Bookmark& bookmark )
 
 void PaneWidget::viewContextMenuRequested( const QPoint& pos )
 {
+    if ( !m_view->viewport()->visibleRegion().contains( pos ) )
+        return;
+
     QModelIndex index = m_view->indexAt( pos );
 
     if ( index.isValid() && !m_model->isParentFolder( index ) ) {
