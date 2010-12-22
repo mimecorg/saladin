@@ -155,25 +155,24 @@ bool ShellSelectionPrivate::dragDropHelper( ShellFolder* targetFolder, ShellSele
         if ( SUCCEEDED( hr ) ) {
             POINTL point = { 0, 0 };
 
-            DWORD transfer = ( type == ShellSelection::Move ) ? DROPEFFECT_MOVE : DROPEFFECT_COPY;
+            DWORD possibleEffect = ( type == ShellSelection::Move ) ? DROPEFFECT_MOVE : DROPEFFECT_COPY;
 
-            DWORD effect = transfer;
-            hr = dropTarget->DragEnter( dataObject, MK_LBUTTON, point, &effect );
+            DWORD dragEffect = possibleEffect;
+            hr = dropTarget->DragEnter( dataObject, MK_LBUTTON, point, &dragEffect );
 
-            if ( SUCCEEDED( hr ) && ( effect & transfer ) ) {
+            if ( SUCCEEDED( hr ) && ( dragEffect & possibleEffect ) != 0 ) {
                 if ( doDrop ) {
-                    effect = transfer;
-                    hr = dropTarget->Drop( dataObject, MK_LBUTTON, point, &effect );
+                    DWORD dropEffect = possibleEffect;
+                    hr = dropTarget->Drop( dataObject, MK_LBUTTON, point, &dropEffect );
 
                     if ( SUCCEEDED( hr ) ) {
                         SHChangeNotify( SHCNE_UPDATEDIR, SHCNF_IDLIST, targetFolder->d->m_pidl, NULL );
                         result = true;
                     }
                 } else {
+                    dropTarget->DragLeave();
                     result = true;
                 }
-            } else {
-                dropTarget->DragLeave();
             }
 
             dropTarget->Release();
@@ -391,6 +390,131 @@ bool ShellSelection::invokeCommand( const char* verb )
             result = true;
 
         contextMenu->Release();
+    }
+
+    return result;
+}
+
+class ShellDropSource : public IDropSource
+{
+public:
+    ShellDropSource();
+    ~ShellDropSource();
+
+public: // IUnknown methods
+    STDMETHOD( QueryInterface )( REFIID iid, void** ppv );
+    STDMETHOD_( ULONG, AddRef )();
+    STDMETHOD_( ULONG, Release )();
+
+public: // IDropSource methods
+    STDMETHOD( QueryContinueDrag )( BOOL escapePressed, DWORD keyState );
+    STDMETHOD( GiveFeedback )( DWORD effect );
+
+private:
+    ULONG m_refs;
+
+    Qt::MouseButtons m_currentButtons;
+};
+
+ShellDropSource::ShellDropSource() :
+    m_refs( 1 ),
+    m_currentButtons( Qt::NoButton )
+{
+}
+
+ShellDropSource::~ShellDropSource()
+{
+}
+
+STDMETHODIMP ShellDropSource::QueryInterface( REFIID iid, void** ppv )
+{
+    if ( iid == IID_IUnknown || iid == IID_IDropSource ) {
+        *ppv = this;
+        ++m_refs;
+        return S_OK;
+    }
+
+    *ppv = NULL;
+    return E_NOINTERFACE;
+}
+
+
+STDMETHODIMP_( ULONG ) ShellDropSource::AddRef()
+{
+    return ++m_refs;
+}
+
+
+STDMETHODIMP_( ULONG ) ShellDropSource::Release()
+{
+    if ( --m_refs == 0 ) {
+        delete this;
+        return 0;
+    }
+    return m_refs;
+}
+
+static Qt::MouseButtons keyStateToMouseButtons( DWORD keyState )
+{
+    Qt::MouseButtons result;
+    if ( keyState & MK_LBUTTON )
+        result |= Qt::LeftButton;
+    if ( keyState & MK_MBUTTON )
+        result |= Qt::MidButton;
+    if ( keyState & MK_RBUTTON )
+        result |= Qt::RightButton;
+    if ( keyState & MK_XBUTTON1 )
+        result |= Qt::XButton1;
+    if ( keyState & MK_XBUTTON2 )
+        result |= Qt::XButton2;
+    return result;
+}
+
+STDMETHODIMP ShellDropSource::QueryContinueDrag( BOOL escapePressed, DWORD keyState )
+{
+    if ( escapePressed )
+        return DRAGDROP_S_CANCEL;
+
+    if ( m_currentButtons == Qt::NoButton ) {
+        m_currentButtons = keyStateToMouseButtons( keyState );
+    } else {
+        Qt::MouseButtons buttons = keyStateToMouseButtons( keyState );
+        if ( !( m_currentButtons & buttons ) )
+            return DRAGDROP_S_DROP;
+    }
+
+    QApplication::processEvents();
+
+    return S_OK;
+}
+
+STDMETHODIMP ShellDropSource::GiveFeedback( DWORD /*effect*/ )
+{
+    return DRAGDROP_S_USEDEFAULTCURSORS;
+}
+
+bool ShellSelection::doDragDrop()
+{
+    bool result = false;
+
+    QVector<LPCITEMIDLIST> pidls( d->m_sourceItems.count() );
+    for ( int i = 0; i < d->m_sourceItems.count(); i++ )
+        pidls[ i ] = d->m_sourceItems.at( i ).d->m_pidl;
+
+    IDataObject* dataObject;
+    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
+
+    if ( SUCCEEDED( hr ) ) {
+        ShellDropSource* dropSource = new ShellDropSource();
+
+        DWORD effect = 0;
+        hr = DoDragDrop( dataObject, dropSource, DROPEFFECT_COPY | DROPEFFECT_MOVE | DROPEFFECT_LINK, &effect );
+
+        if ( SUCCEEDED( hr ) )
+            result = true;
+
+        dropSource->Release();
+        dataObject->Release();
     }
 
     return result;

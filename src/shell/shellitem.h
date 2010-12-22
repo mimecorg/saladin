@@ -85,6 +85,7 @@ private:
     friend class ShellSelection;
     friend class ShellSelectionPrivate;
     friend class ShellComputer;
+    friend class ShellDropDataPrivate;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ShellItem::Attributes )

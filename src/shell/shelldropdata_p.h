@@ -16,41 +16,29 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef FOLDERITEMVIEW_H
-#define FOLDERITEMVIEW_H
+#ifndef SHELLDROPDATA_P_H
+#define SHELLDROPDATA_P_H
 
-#include <QTreeView>
+#include "shelldropdata.h"
 
-class FolderItemView : public QTreeView
+class ShellDropDataPrivate
 {
-    Q_OBJECT
 public:
-    explicit FolderItemView( QWidget* parent );
-    ~FolderItemView();
+    ShellDropDataPrivate();
+    ~ShellDropDataPrivate();
 
 public:
-    bool isEditing() const;
+    bool dragDropHelper( QDropEvent* e, ShellFolder* folder, bool doDrop );
+    bool dragDropHelper( QDropEvent* e, ShellFolder* folder, const ShellItem& item, bool doDrop );
+    bool dragDropHelper( QDropEvent* e, IDropTarget* dropTarget, LPITEMIDLIST targetPidl, bool doDrop );
 
-    QModelIndex movePageUp();
-    QModelIndex movePageDown();
+public:
+    ShellDropData* q;
 
-    void setAnchor( const QModelIndex& index );
-    QModelIndex anchor() const;
+    IDataObject* m_dataObject;
 
-    bool isDragging() const;
-    void setDragging( bool dragging );
-
-    void highlightDropItem( const QModelIndex& index );
-
-    void checkAutoScroll( const QPoint& pos );
-
-protected: // overrides
-    void drawRow( QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index ) const;
-
-    void currentChanged( const QModelIndex& current, const QModelIndex& previous );
-
-private:
-    QPersistentModelIndex m_anchor;
+    Qt::DropActions m_possibleActions;
+    Qt::DropAction m_dropAction;
 };
 
 #endif

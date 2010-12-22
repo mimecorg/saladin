@@ -116,6 +116,7 @@ private:
     friend class ShellComputer;
     friend class ShellSelection;
     friend class ShellSelectionPrivate;
+    friend class ShellDropDataPrivate;
 };
 
 class ItemChange

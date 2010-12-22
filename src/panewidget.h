@@ -31,6 +31,7 @@ class DriveStripManager;
 class ShellFolder;
 class ShellDrive;
 class ShellPidl;
+class ShellDropData;
 class Bookmark;
 
 class PaneWidget : public QWidget
@@ -106,6 +107,22 @@ private slots:
     void updateStatus();
 
 private:
+    bool editFocusInEvent( QFocusEvent* e );
+    bool editFocusOutEvent( QFocusEvent* e );
+
+    bool editKeyPressEvent( QKeyEvent* e );
+
+    bool viewKeyPressEvent( QKeyEvent* e );
+
+    bool viewMouseButtonPressEvent( QMouseEvent* e );
+    bool viewMouseMoveEvent( QMouseEvent* e );
+    bool viewMouseButtonReleaseEvent( QMouseEvent* e );
+
+    bool viewDragEnterEvent( QDragEnterEvent* e );
+    bool viewDragMoveEvent( QDragMoveEvent* e );
+    bool viewDragLeaveEvent( QDragLeaveEvent* e );
+    bool viewDropEvent( QDropEvent* e );
+
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );
 
@@ -145,6 +162,10 @@ private:
     QList<ShellPidl> m_history;
     int m_historyIndex;
     bool m_lockHistory;
+
+    QPoint m_startDragPosition;
+
+    ShellDropData* m_dropData;
 };
 
 #endif

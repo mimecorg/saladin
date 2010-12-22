@@ -16,41 +16,38 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef FOLDERITEMVIEW_H
-#define FOLDERITEMVIEW_H
+#ifndef SHELLDROPDATA_H
+#define SHELLDROPDATA_H
 
-#include <QTreeView>
+#include <QObject>
 
-class FolderItemView : public QTreeView
+class ShellDropDataPrivate;
+class ShellFolder;
+class ShellItem;
+
+class ShellDropData : public QObject
 {
     Q_OBJECT
 public:
-    explicit FolderItemView( QWidget* parent );
-    ~FolderItemView();
+    ShellDropData( QDropEvent* e, QWidget* parent );
+    ~ShellDropData();
 
 public:
-    bool isEditing() const;
+    bool isValid() const;
 
-    QModelIndex movePageUp();
-    QModelIndex movePageDown();
+    Qt::DropAction dropAction() const;
 
-    void setAnchor( const QModelIndex& index );
-    QModelIndex anchor() const;
+    bool dragMove( QDragMoveEvent* e, ShellFolder* folder );
+    bool dragMove( QDragMoveEvent* e, ShellFolder* folder, const ShellItem& item );
 
-    bool isDragging() const;
-    void setDragging( bool dragging );
+    bool drop( QDropEvent* e, ShellFolder* folder );
+    bool drop( QDropEvent* e, ShellFolder* folder, const ShellItem& item );
 
-    void highlightDropItem( const QModelIndex& index );
-
-    void checkAutoScroll( const QPoint& pos );
-
-protected: // overrides
-    void drawRow( QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index ) const;
-
-    void currentChanged( const QModelIndex& current, const QModelIndex& previous );
+public: // overrides
+    QWidget* parent() const { return qobject_cast<QWidget*>( QObject::parent() ); }
 
 private:
-    QPersistentModelIndex m_anchor;
+    ShellDropDataPrivate* d;
 };
 
 #endif

@@ -28,6 +28,7 @@
 #include "shell/shellfolder.h"
 #include "shell/shellitem.h"
 #include "shell/shellpidl.h"
+#include "shell/shelldropdata.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 
@@ -39,7 +40,8 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_isSource( false ),
     m_movingSection( false ),
     m_historyIndex( 0 ),
-    m_lockHistory( false )
+    m_lockHistory( false ),
+    m_dropData( NULL )
 {
     QVBoxLayout* layout = new QVBoxLayout( this );
     layout->setSpacing( 0 );
@@ -79,9 +81,9 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_edit->setFrame( false );
     innerLayout->addWidget( m_edit );
 
-    connect( m_edit, SIGNAL( returnPressed() ), this, SLOT( changeDirectory() ) );
+    updateEditPalette();
 
-    m_edit->installEventFilter( this );
+    connect( m_edit, SIGNAL( returnPressed() ), this, SLOT( changeDirectory() ) );
 
     m_bookmarkButton = new XmlUi::ActionButton( parent );
     m_bookmarkButton->setToolButtonStyle( Qt::ToolButtonIconOnly );
@@ -111,6 +113,9 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->setUniformRowHeights( true );
     m_view->header()->setStretchLastSection( false );
     m_view->setContextMenuPolicy( Qt::CustomContextMenu );
+    m_view->viewport()->setAcceptDrops( true );
+    m_view->setAutoScroll( true );
+    m_view->setAutoScrollMargin( 50 );
     layout->addWidget( m_view, 1 );
 
     connect( m_view, SIGNAL( doubleClicked( const QModelIndex& ) ), this, SLOT( openItem( const QModelIndex& ) ) );
@@ -118,9 +123,6 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
     connect( m_view->header(), SIGNAL( sectionResized( int, int, int ) ), this, SLOT( sectionResized( int, int, int ) ) );
     connect( m_view->header(), SIGNAL( sectionMoved( int, int, int ) ), this, SLOT( sectionMoved( int, int, int ) ) );
-
-    m_view->installEventFilter( this );
-    m_view->viewport()->installEventFilter( this );
 
     m_model = new FolderItemModel( this );
     m_view->setModel( m_model );
@@ -164,9 +166,11 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     connect( m_model, SIGNAL( layoutChanged() ), this, SLOT( updateStatus() ) );
     connect( m_model, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ), this, SLOT( updateStatus() ) );
 
-    setFocusProxy( m_view );
+    m_edit->installEventFilter( this );
+    m_view->installEventFilter( this );
+    m_view->viewport()->installEventFilter( this );
 
-    updateEditPalette();
+    setFocusProxy( m_view );
 
     setFolder( new ShellFolder( QDir::toNativeSeparators( QDir::rootPath() ), this ) );
 }
@@ -180,198 +184,353 @@ PaneWidget::~PaneWidget()
 
 bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
 {
-    if ( watched == m_view && e->type() == QEvent::KeyPress ) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>( e );
-        switch ( ( keyEvent->key() | keyEvent->modifiers() ) & ~Qt::KeypadModifier ) {
-            case Qt::Key_Enter:
-            case Qt::Key_Return:
-                if ( !m_view->isEditing() ) {
-                    openItem( m_view->currentIndex() );
-                    return true;
-                }
-                break;
-
-            case Qt::Key_Right:
-                if ( m_model->isParentFolder( m_view->currentIndex() ) )
-                    openParent();
-                else
-                    enterDirectory( m_model->itemAt( m_view->currentIndex() ) );
-                return true;
-
-            case Qt::ControlModifier + Qt::Key_PageDown:
-                enterDirectory( m_model->itemAt( m_view->currentIndex() ) );
-                return true;
-
-            case Qt::Key_Backspace:
-            case Qt::Key_Left:
-            case Qt::ControlModifier + Qt::Key_PageUp:
-                openParent();
-                return true;
-
-            case Qt::Key_Space:
-                if ( !m_model->isItemSelected(  m_view->currentIndex() ) )
-                    m_model->calculateSize(  m_view->currentIndex() );
-                m_model->toggleItemSelected( m_view->currentIndex() );
-                return true;
-
-            case Qt::Key_Insert: {
-                m_model->toggleItemSelected( m_view->currentIndex() );
-                QModelIndex index = m_view->indexBelow( m_view->currentIndex() );
-                if ( index.isValid() )
-                    m_view->setCurrentIndex( index );
-                return true;
-            }
-
-            case Qt::ShiftModifier + Qt::Key_Up:
-            case Qt::ShiftModifier + Qt::Key_Down: {
-                m_model->toggleItemSelected( m_view->currentIndex() );
-                QModelIndex index = ( keyEvent->key() == Qt::Key_Up ) ? m_view->indexAbove( m_view->currentIndex() ) : m_view->indexBelow( m_view->currentIndex() );
-                if ( index.isValid() )
-                    m_view->setCurrentIndex( index );
-                return true;
-            }
-
-            case Qt::ShiftModifier + Qt::Key_PageUp: {
-                QModelIndex fromIndex = m_view->currentIndex();
-                if ( fromIndex.isValid() ) {
-                    QModelIndex toIndex = m_view->movePageUp();
-                    if ( toIndex.isValid() ) {
-                        int toRow = toIndex.row();
-                        if ( toRow == 0 )
-                            toRow--;
-                        for ( int i = fromIndex.row(); i > toRow; i-- )
-                            m_model->toggleItemSelected( m_model->index( i, 0 ) );
-                        m_view->setCurrentIndex( toIndex );
-                    }
-                }
-                return true;
-            }
-
-            case Qt::ShiftModifier + Qt::Key_PageDown: {
-                QModelIndex fromIndex = m_view->currentIndex();
-                if ( fromIndex.isValid() ) {
-                    QModelIndex toIndex = m_view->movePageDown();
-                    if ( toIndex.isValid() ) {
-                        int toRow = toIndex.row();
-                        if ( toRow == m_model->rowCount() - 1 )
-                            toRow++;
-                        for ( int i = fromIndex.row(); i < toRow; i++ )
-                            m_model->toggleItemSelected( m_model->index( i, 0 ) );
-                        m_view->setCurrentIndex( toIndex );
-                    }
-                }
-                return true;
-            }
-
-            case Qt::ShiftModifier + Qt::Key_Home: {
-                QModelIndex fromIndex = m_view->currentIndex();
-                if ( fromIndex.isValid() ) {
-                    for ( int i = fromIndex.row(); i >= 0; i-- )
-                        m_model->toggleItemSelected( m_model->index( i, 0 ) );
-                    m_view->setCurrentIndex( fromIndex.sibling( 0, 0 ) );
-                }
-                return true;
-            }
-
-            case Qt::ShiftModifier + Qt::Key_End: {
-                QModelIndex fromIndex = m_view->currentIndex();
-                if ( fromIndex.isValid() ) {
-                    for ( int i = fromIndex.row(); i < m_model->rowCount(); i++ )
-                        m_model->toggleItemSelected( m_model->index( i, 0 ) );
-                    m_view->setCurrentIndex( fromIndex.sibling( m_model->rowCount() - 1, 0 ) );
-                }
-                return true;
-            }
-
-            case Qt::ALT + Qt::Key_Left: {
-                if ( m_historyIndex < m_history.count() - 1 )
-                    setHistoryIndex( m_historyIndex + 1 );
-                return true;
-            }
-
-            case Qt::ALT + Qt::Key_Right: {
-                if ( m_historyIndex > 0 )
-                    setHistoryIndex( m_historyIndex - 1 );
-                return true;
-            }
-        }
-    }
-
-    if ( m_view && watched == m_view->viewport() && e->type() == QEvent::MouseButtonPress ) {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( e );
-        if ( mouseEvent->button() == Qt::LeftButton ) {
-            QModelIndex index = m_view->indexAt( mouseEvent->pos() );
-            if ( index.isValid() && index == m_view->currentIndex() )
-                m_renameIndex = index;
-            else
-                m_renameIndex = QModelIndex();
-
-            if ( mouseEvent->modifiers().testFlag( Qt::ShiftModifier ) ) {
-                if ( index.isValid() ) {
-                    QModelIndex anchor = m_view->anchor();
-                    if ( !anchor.isValid() )
-                        anchor = m_view->currentIndex();
-                    if ( anchor.isValid() ) {
-                        int from = qMin( anchor.row(), index.row() );
-                        int to = qMax( anchor.row(), index.row() );
-                        if ( mouseEvent->modifiers().testFlag( Qt::ControlModifier ) ) {
-                            bool isSelected = m_model->isItemSelected( index );
-                            for ( int i = from; i <= to; i++ )
-                                m_model->setItemSelected( m_model->index( i, 0 ), !isSelected );
-                        } else {
-                            for ( int i = 0; i < m_model->rowCount(); i++ )
-                                m_model->setItemSelected( m_model->index( i, 0 ), i >= from && i <= to );
-                        }
-                        m_view->setCurrentIndex( index );
-                        m_view->setAnchor( anchor );
-                        return true;
-                    }
-                }
-            } else if ( mouseEvent->modifiers().testFlag( Qt::ControlModifier ) ) {
-                if ( index.isValid() ) {
-                    if ( index != m_view->currentIndex() && m_model->selectedItems().isEmpty() )
-                        m_model->setItemSelected( m_view->currentIndex(), true );
-                    m_model->toggleItemSelected( index );
-                }
-            } else {
-                m_model->unselectAll();
-            }
-        } else {
-            m_renameIndex = QModelIndex();
-        }
-        m_view->setAnchor( QModelIndex() );
-        m_renameTimer->stop();
-    }
-
-    if ( m_view && watched == m_view->viewport() && e->type() == QEvent::MouseButtonRelease ) {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( e );
-        if ( mouseEvent->button() == Qt::LeftButton ) {
-            QModelIndex index = m_view->indexAt( mouseEvent->pos() );
-            if ( index.isValid() && index == m_view->currentIndex() && index == m_renameIndex )
-                m_renameTimer->start();
-            else
-                m_renameIndex = QModelIndex();
-        } else {
-            m_renameIndex = QModelIndex();
-        }
-    }
-
     if ( watched == m_edit ) {
-        if ( e->type() == QEvent::FocusIn ) {
-            m_edit->setPalette( palette() );
-        } else if ( e->type() == QEvent::FocusOut ) {
-            updateEditPalette();
-            updateLocation();
-        } else if ( e->type() == QEvent::KeyPress ) {
-            QKeyEvent* keyEvent = static_cast<QKeyEvent*>( e );
-            if ( keyEvent->key() == Qt::Key_Escape ) {
-                m_view->setFocus();
-                return true;
-            }
+        switch ( e->type() ) {
+            case QEvent::FocusIn:
+                return editFocusInEvent( static_cast<QFocusEvent*>( e ) );
+            case QEvent::FocusOut:
+                return editFocusOutEvent( static_cast<QFocusEvent*>( e ) );
+            case QEvent::KeyPress:
+                return editKeyPressEvent( static_cast<QKeyEvent*>( e ) );
+            default:
+                break;
+        }
+    }
+
+    if ( watched == m_view || watched == m_view->viewport() ) {
+        switch ( e->type() ) {
+            case QEvent::KeyPress:
+                return viewKeyPressEvent( static_cast<QKeyEvent*>( e ) );
+            case QEvent::MouseButtonPress:
+                return viewMouseButtonPressEvent( static_cast<QMouseEvent*>( e ) );
+            case QEvent::MouseMove:
+                return viewMouseMoveEvent( static_cast<QMouseEvent*>( e ) );
+            case QEvent::MouseButtonRelease:
+                return viewMouseButtonReleaseEvent( static_cast<QMouseEvent*>( e ) );
+            case QEvent::DragEnter:
+                return viewDragEnterEvent( static_cast<QDragEnterEvent*>( e ) );
+            case QEvent::DragMove:
+                return viewDragMoveEvent( static_cast<QDragMoveEvent*>( e ) );
+            case QEvent::DragLeave:
+                return viewDragLeaveEvent( static_cast<QDragLeaveEvent*>( e ) );
+            case QEvent::Drop:
+                return viewDropEvent( static_cast<QDropEvent*>( e ) );
+            default:
+                break;
         }
     }
 
     return false;
+}
+
+bool PaneWidget::editFocusInEvent( QFocusEvent* e )
+{
+    m_edit->setPalette( palette() );
+    return false;
+}
+
+bool PaneWidget::editFocusOutEvent( QFocusEvent* e )
+{
+    updateEditPalette();
+    updateLocation();
+    return false;
+}
+
+bool PaneWidget::editKeyPressEvent( QKeyEvent* e )
+{
+    switch ( e->key() ) {
+        case Qt::Key_Escape:
+            m_view->setFocus();
+            return true;
+        default:
+            break;
+    }
+    return false;
+}
+
+bool PaneWidget::viewKeyPressEvent( QKeyEvent* e )
+{
+    switch ( ( e->key() | e->modifiers() ) & ~Qt::KeypadModifier ) {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            if ( !m_view->isEditing() ) {
+                openItem( m_view->currentIndex() );
+                return true;
+            }
+            break;
+
+        case Qt::Key_Right:
+            if ( m_model->isParentFolder( m_view->currentIndex() ) )
+                openParent();
+            else
+                enterDirectory( m_model->itemAt( m_view->currentIndex() ) );
+            return true;
+
+        case Qt::ControlModifier + Qt::Key_PageDown:
+            enterDirectory( m_model->itemAt( m_view->currentIndex() ) );
+            return true;
+
+        case Qt::Key_Backspace:
+        case Qt::Key_Left:
+        case Qt::ControlModifier + Qt::Key_PageUp:
+            openParent();
+            return true;
+
+        case Qt::Key_Space:
+            if ( !m_model->isItemSelected( m_view->currentIndex() ) )
+                m_model->calculateSize( m_view->currentIndex() );
+            m_model->toggleItemSelected( m_view->currentIndex() );
+            return true;
+
+        case Qt::Key_Insert: {
+            m_model->toggleItemSelected( m_view->currentIndex() );
+            QModelIndex index = m_view->indexBelow( m_view->currentIndex() );
+            if ( index.isValid() )
+                m_view->setCurrentIndex( index );
+            return true;
+        }
+
+        case Qt::ShiftModifier + Qt::Key_Up:
+        case Qt::ShiftModifier + Qt::Key_Down: {
+            m_model->toggleItemSelected( m_view->currentIndex() );
+            QModelIndex index = ( e->key() == Qt::Key_Up ) ? m_view->indexAbove( m_view->currentIndex() ) : m_view->indexBelow( m_view->currentIndex() );
+            if ( index.isValid() )
+                m_view->setCurrentIndex( index );
+            return true;
+        }
+
+        case Qt::ShiftModifier + Qt::Key_PageUp: {
+            QModelIndex fromIndex = m_view->currentIndex();
+            if ( fromIndex.isValid() ) {
+                QModelIndex toIndex = m_view->movePageUp();
+                if ( toIndex.isValid() ) {
+                    int toRow = toIndex.row();
+                    if ( toRow == 0 )
+                        toRow--;
+                    for ( int i = fromIndex.row(); i > toRow; i-- )
+                        m_model->toggleItemSelected( m_model->index( i, 0 ) );
+                    m_view->setCurrentIndex( toIndex );
+                }
+            }
+            return true;
+        }
+
+        case Qt::ShiftModifier + Qt::Key_PageDown: {
+            QModelIndex fromIndex = m_view->currentIndex();
+            if ( fromIndex.isValid() ) {
+                QModelIndex toIndex = m_view->movePageDown();
+                if ( toIndex.isValid() ) {
+                    int toRow = toIndex.row();
+                    if ( toRow == m_model->rowCount() - 1 )
+                        toRow++;
+                    for ( int i = fromIndex.row(); i < toRow; i++ )
+                        m_model->toggleItemSelected( m_model->index( i, 0 ) );
+                    m_view->setCurrentIndex( toIndex );
+                }
+            }
+            return true;
+        }
+
+        case Qt::ShiftModifier + Qt::Key_Home: {
+            QModelIndex fromIndex = m_view->currentIndex();
+            if ( fromIndex.isValid() ) {
+                for ( int i = fromIndex.row(); i >= 0; i-- )
+                    m_model->toggleItemSelected( m_model->index( i, 0 ) );
+                m_view->setCurrentIndex( fromIndex.sibling( 0, 0 ) );
+            }
+            return true;
+        }
+
+        case Qt::ShiftModifier + Qt::Key_End: {
+            QModelIndex fromIndex = m_view->currentIndex();
+            if ( fromIndex.isValid() ) {
+                for ( int i = fromIndex.row(); i < m_model->rowCount(); i++ )
+                    m_model->toggleItemSelected( m_model->index( i, 0 ) );
+                m_view->setCurrentIndex( fromIndex.sibling( m_model->rowCount() - 1, 0 ) );
+            }
+            return true;
+        }
+
+        case Qt::ALT + Qt::Key_Left: {
+            if ( m_historyIndex < m_history.count() - 1 )
+                setHistoryIndex( m_historyIndex + 1 );
+            return true;
+        }
+
+        case Qt::ALT + Qt::Key_Right: {
+            if ( m_historyIndex > 0 )
+                setHistoryIndex( m_historyIndex - 1 );
+            return true;
+        }
+
+        default:
+            break;
+    }
+
+    return false;
+}
+
+bool PaneWidget::viewMouseButtonPressEvent( QMouseEvent* e )
+{
+    m_startDragPosition = e->pos();
+
+    m_renameIndex = QModelIndex();
+    m_renameTimer->stop();
+
+    if ( e->button() == Qt::LeftButton ) {
+        QModelIndex index = m_view->indexAt( e->pos() );
+        if ( index.isValid() && index == m_view->currentIndex() )
+            m_renameIndex = index;
+
+        if ( e->modifiers().testFlag( Qt::ShiftModifier ) ) {
+            if ( index.isValid() ) {
+                QModelIndex anchor = m_view->anchor();
+                if ( !anchor.isValid() )
+                    anchor = m_view->currentIndex();
+                if ( anchor.isValid() ) {
+                    int from = qMin( anchor.row(), index.row() );
+                    int to = qMax( anchor.row(), index.row() );
+                    if ( e->modifiers().testFlag( Qt::ControlModifier ) ) {
+                        bool isSelected = m_model->isItemSelected( index );
+                        for ( int i = from; i <= to; i++ )
+                            m_model->setItemSelected( m_model->index( i, 0 ), !isSelected );
+                    } else {
+                        for ( int i = 0; i < m_model->rowCount(); i++ )
+                            m_model->setItemSelected( m_model->index( i, 0 ), i >= from && i <= to );
+                    }
+                    m_view->setCurrentIndex( index );
+                    m_view->setAnchor( anchor );
+                    return true;
+                }
+            }
+        } else if ( e->modifiers().testFlag( Qt::ControlModifier ) ) {
+            if ( index.isValid() ) {
+                if ( index != m_view->currentIndex() && m_model->selectedItems().isEmpty() )
+                    m_model->setItemSelected( m_view->currentIndex(), true );
+                m_model->toggleItemSelected( index );
+            }
+        } else {
+            m_model->unselectAll();
+        }
+    }
+
+    m_view->setAnchor( QModelIndex() );
+
+    return false;
+}
+
+bool PaneWidget::viewMouseMoveEvent( QMouseEvent* e )
+{
+    if ( !m_startDragPosition.isNull() && ( m_startDragPosition - e->pos() ).manhattanLength() > QApplication::startDragDistance() ) {
+        m_startDragPosition = QPoint();
+
+        QList<ShellItem> items = m_model->selectedItems();
+
+        if ( items.isEmpty() ) {
+            ShellItem item = m_model->itemAt( m_view->currentIndex() );
+            if ( item.isValid() ) {
+                m_model->setItemSelected( m_view->currentIndex(), true );
+                items.append( item );
+            }
+        }
+
+        if ( !items.isEmpty() ) {
+            ShellSelection selection( m_model->folder(), items, this );
+            selection.doDragDrop();
+        }
+    }
+
+    return false;
+}
+
+bool PaneWidget::viewMouseButtonReleaseEvent( QMouseEvent* e )
+{
+    m_startDragPosition = QPoint();
+
+    if ( e->button() == Qt::LeftButton ) {
+        QModelIndex index = m_view->indexAt( e->pos() );
+        if ( index.isValid() && index == m_view->currentIndex() && index == m_renameIndex )
+            m_renameTimer->start();
+    }
+
+    return false;
+}
+
+bool PaneWidget::viewDragEnterEvent( QDragEnterEvent* e )
+{
+    m_dropData = new ShellDropData( e, this );
+
+    m_view->setDragging( true );
+    e->accept();
+
+    return true;
+}
+
+bool PaneWidget::viewDragMoveEvent( QDragMoveEvent* e )
+{
+    if ( m_dropData && m_dropData->isValid() ) {
+        bool result = false;
+
+        QModelIndex index = m_view->indexAt( e->pos() );
+        ShellItem item = m_model->itemAt( index );
+
+        if ( item.isValid() )
+            result = m_dropData->dragMove( e, m_model->folder(), item );
+
+        if ( !result ) {
+            result = m_dropData->dragMove( e, m_model->folder() );
+            index = QModelIndex();
+        }
+
+        m_view->highlightDropItem( index );
+
+        e->setDropAction( m_dropData->dropAction() );
+        e->setAccepted( result );
+    } else {
+        e->ignore();
+    }
+
+    m_view->checkAutoScroll( e->pos() );
+
+    return true;
+}
+
+bool PaneWidget::viewDragLeaveEvent( QDragLeaveEvent* e )
+{
+    delete m_dropData;
+    m_dropData = NULL;
+
+    m_view->setDragging( false );
+
+    return true;
+}
+
+bool PaneWidget::viewDropEvent( QDropEvent* e )
+{
+    if ( m_dropData && m_dropData->isValid() ) {
+        bool result = false;
+
+        QModelIndex index = m_view->indexAt( e->pos() );
+        ShellItem item = m_model->itemAt( index );
+
+        if ( item.isValid() )
+            result = m_dropData->drop( e, m_model->folder(), item );
+
+        if ( !result )
+            result = m_dropData->drop( e, m_model->folder() );
+
+        e->setDropAction( m_dropData->dropAction() );
+        e->setAccepted( result );
+    } else {
+        e->ignore();
+    }
+
+    delete m_dropData;
+    m_dropData = NULL;
+
+    m_view->setDragging( false );
+
+    return true;
 }
 
 ShellFolder* PaneWidget::folder() const

@@ -5,6 +5,8 @@ HEADERS += shell/changenotifywatcher_p.h \
            shell/shellcomputer_p.h \
            shell/shelldrive.h \
            shell/shelldrive_p.h \
+           shell/shelldropdata.h \
+           shell/shelldropdata_p.h \
            shell/shellfolder.h \
            shell/shellfolder_p.h \
            shell/shellitem.h \
@@ -19,6 +21,7 @@ SOURCES += shell/changenotifywatcher.cpp \
            shell/shellbase.cpp \
            shell/shellcomputer.cpp \
            shell/shelldrive.cpp \
+           shell/shelldropdata.cpp \
            shell/shellfolder.cpp \
            shell/shellitem.cpp \
            shell/shellpidl.cpp \

@@ -71,6 +71,8 @@ public:
 
     bool invokeCommand( const char* verb );
 
+    bool doDragDrop();
+
 public: // overrides
     QWidget* parent() const { return qobject_cast<QWidget*>( QObject::parent() ); }
 
