@@ -118,7 +118,6 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->setAutoScrollMargin( 50 );
     layout->addWidget( m_view, 1 );
 
-    connect( m_view, SIGNAL( doubleClicked( const QModelIndex& ) ), this, SLOT( openItem( const QModelIndex& ) ) );
     connect( m_view, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( viewContextMenuRequested( const QPoint& ) ) );
 
     connect( m_view->header(), SIGNAL( sectionResized( int, int, int ) ), this, SLOT( sectionResized( int, int, int ) ) );
@@ -207,6 +206,8 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
                 return viewMouseMoveEvent( static_cast<QMouseEvent*>( e ) );
             case QEvent::MouseButtonRelease:
                 return viewMouseButtonReleaseEvent( static_cast<QMouseEvent*>( e ) );
+            case QEvent::MouseButtonDblClick:
+                return viewMouseDoubleClickEvent( static_cast<QMouseEvent*>( e ) );
             case QEvent::DragEnter:
                 return viewDragEnterEvent( static_cast<QDragEnterEvent*>( e ) );
             case QEvent::DragMove:
@@ -422,6 +423,16 @@ bool PaneWidget::viewMouseButtonPressEvent( QMouseEvent* e )
             m_model->unselectAll();
     }
 
+    if ( e->button() == Qt::XButton1 ) {
+        if ( m_historyIndex < m_history.count() - 1 )
+            setHistoryIndex( m_historyIndex + 1 );
+    }
+
+    if ( e->button() == Qt::XButton2 ) {
+        if ( m_historyIndex > 0 )
+            setHistoryIndex( m_historyIndex - 1 );
+    }
+
     m_view->setAnchor( QModelIndex() );
 
     return false;
@@ -465,6 +476,24 @@ bool PaneWidget::viewMouseButtonReleaseEvent( QMouseEvent* e )
     }
 
     return false;
+}
+
+bool PaneWidget::viewMouseDoubleClickEvent( QMouseEvent* e )
+{
+    if ( e->button() == Qt::LeftButton )
+        openItem( m_view->indexAt( e->pos() ) );
+
+    if ( e->button() == Qt::XButton1 ) {
+        if ( m_historyIndex < m_history.count() - 1 )
+            setHistoryIndex( m_historyIndex + 1 );
+    }
+
+    if ( e->button() == Qt::XButton2 ) {
+        if ( m_historyIndex > 0 )
+            setHistoryIndex( m_historyIndex - 1 );
+    }
+
+    return true;
 }
 
 bool PaneWidget::viewDragEnterEvent( QDragEnterEvent* e )

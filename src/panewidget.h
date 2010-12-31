@@ -117,6 +117,7 @@ private:
     bool viewMouseButtonPressEvent( QMouseEvent* e );
     bool viewMouseMoveEvent( QMouseEvent* e );
     bool viewMouseButtonReleaseEvent( QMouseEvent* e );
+    bool viewMouseDoubleClickEvent( QMouseEvent* e );
 
     bool viewDragEnterEvent( QDragEnterEvent* e );
     bool viewDragMoveEvent( QDragMoveEvent* e );
