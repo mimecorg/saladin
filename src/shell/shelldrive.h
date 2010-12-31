@@ -41,11 +41,16 @@ public:
 
     bool getFreeSpace( qint64* free, qint64* total ) const;
 
+public:
+    friend bool operator ==( const ShellDrive& lhs, const ShellDrive& rhs );
+    friend bool operator !=( const ShellDrive& lhs, const ShellDrive& rhs );
+
 private:
     QSharedDataPointer<ShellDrivePrivate> d;
 
     friend class ShellComputer;
     friend class ShellComputerPrivate;
+    friend class ShellDropData;
 };
 
 #endif

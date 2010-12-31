@@ -55,6 +55,8 @@ private slots:
 
 private:
     ShellComputerPrivate* d;
+
+    friend class ShellDropData;
 };
 
 #endif

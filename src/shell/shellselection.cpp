@@ -86,7 +86,7 @@ bool ShellSelection::transferTo( ShellFolder* targetFolder, TransferType type, F
 
         fileOperation->SetOperationFlags( operationFlags );
 
-        bool sameTarget = targetFolder->match( d->m_sourceFolder );
+        bool sameTarget = targetFolder->isEqual( d->m_sourceFolder );
 
         IShellItem* targetItem;
         hr = SHCreateItemFromIDList( targetFolder->d->m_pidl, IID_PPV_ARGS( &targetItem ) );

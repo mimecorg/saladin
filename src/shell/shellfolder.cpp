@@ -505,7 +505,7 @@ QString ShellFolder::itemPath( const ShellItem& item )
     return result;
 }
 
-bool ShellFolder::match( const ShellFolder* other )
+bool ShellFolder::isEqual( const ShellFolder* other ) const
 {
     return ILIsEqual( d->m_pidl, other->d->m_pidl );
 }

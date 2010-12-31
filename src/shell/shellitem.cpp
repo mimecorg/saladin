@@ -114,7 +114,12 @@ bool ShellItem::isSelected() const
     return d->m_state & IsSelected;
 }
 
-bool ShellItem::match( const ShellItem& other ) const
+bool operator ==( const ShellItem& lhs, const ShellItem& rhs )
 {
-    return ILIsEqual( d->m_pidl, other.d->m_pidl );
+    return ILIsEqual( lhs.d->m_pidl, rhs.d->m_pidl );
+}
+
+bool operator !=( const ShellItem& lhs, const ShellItem& rhs )
+{
+    return !( lhs == rhs );
 }

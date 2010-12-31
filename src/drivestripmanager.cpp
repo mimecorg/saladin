@@ -19,6 +19,7 @@
 #include "drivestripmanager.h"
 
 #include "shell/shellfolder.h"
+#include "shell/shelldropdata.h"
 
 class ShellDriveLessThan
 {
@@ -33,7 +34,8 @@ public:
     }
 };
 
-DriveStripManager::DriveStripManager( QWidget* parent ) : QObject( parent )
+DriveStripManager::DriveStripManager( QWidget* parent ) : QObject( parent ),
+    m_dropData( NULL )
 {
     m_computer = new ShellComputer( parent );
 
@@ -99,6 +101,9 @@ void DriveStripManager::registerToolStrip( XmlUi::ToolStrip* strip, QObject* rec
     populateToolStrip( info );
 
     m_strips.append( info );
+
+    strip->setAcceptDrops( true );
+    strip->installEventFilter( this );
 }
 
 void DriveStripManager::populateToolStrip( StripInfo& info )
@@ -165,4 +170,84 @@ void DriveStripManager::showDrivesMenu( XmlUi::ToolStrip* strip )
             break;
         }
     }
+}
+
+bool DriveStripManager::eventFilter( QObject* watched, QEvent* e )
+{
+    XmlUi::ToolStrip* strip = qobject_cast<XmlUi::ToolStrip*>( watched );
+    if ( strip ) {
+        switch ( e->type() ) {
+            case QEvent::DragEnter:
+                return stripDragEnterEvent( strip, static_cast<QDragEnterEvent*>( e ) );
+            case QEvent::DragMove:
+                return stripDragMoveEvent( strip, static_cast<QDragMoveEvent*>( e ) );
+            case QEvent::DragLeave:
+                return stripDragLeaveEvent( strip, static_cast<QDragLeaveEvent*>( e ) );
+            case QEvent::Drop:
+                return stripDropEvent( strip, static_cast<QDropEvent*>( e ) );
+            default:
+                break;
+        }
+    }
+
+    return false;
+}
+
+bool DriveStripManager::stripDragEnterEvent( XmlUi::ToolStrip* strip, QDragEnterEvent* e )
+{
+    m_dropData = new ShellDropData( e, m_computer, strip );
+
+    e->accept();
+
+    return true;
+}
+
+bool DriveStripManager::stripDragMoveEvent( XmlUi::ToolStrip* strip, QDragMoveEvent* e )
+{
+    dragDropHelper( strip, e, false );
+
+    return true;
+}
+
+bool DriveStripManager::stripDragLeaveEvent( XmlUi::ToolStrip* /*strip*/, QDragLeaveEvent* /*e*/ )
+{
+    delete m_dropData;
+    m_dropData = NULL;
+
+    return true;
+}
+
+bool DriveStripManager::stripDropEvent( XmlUi::ToolStrip* strip, QDropEvent* e )
+{
+    dragDropHelper( strip, e, true );
+
+    delete m_dropData;
+    m_dropData = NULL;
+
+    return true;
+}
+
+bool DriveStripManager::dragDropHelper( XmlUi::ToolStrip* strip, QDropEvent* e, bool doDrop )
+{
+    if ( !m_dropData || !m_dropData->isValid() )
+        return false;
+
+    bool result = false;
+
+    ShellDrive drive = driveAt( strip, e->pos() );
+
+    if ( drive.isValid() )
+        result = m_dropData->dragToDrive( e, drive );
+
+    if ( result && doDrop )
+        result = m_dropData->drop();
+
+    if ( result ) {
+        e->setDropAction( m_dropData->dropAction() );
+        e->accept();
+    } else {
+        e->ignore();
+    }
+
+    return result;
 }

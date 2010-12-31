@@ -223,13 +223,13 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
     return false;
 }
 
-bool PaneWidget::editFocusInEvent( QFocusEvent* e )
+bool PaneWidget::editFocusInEvent( QFocusEvent* /*e*/ )
 {
     m_edit->setPalette( palette() );
     return false;
 }
 
-bool PaneWidget::editFocusOutEvent( QFocusEvent* e )
+bool PaneWidget::editFocusOutEvent( QFocusEvent* /*e*/ )
 {
     updateEditPalette();
     updateLocation();
@@ -469,7 +469,7 @@ bool PaneWidget::viewMouseButtonReleaseEvent( QMouseEvent* e )
 
 bool PaneWidget::viewDragEnterEvent( QDragEnterEvent* e )
 {
-    m_dropData = new ShellDropData( e, this );
+    m_dropData = new ShellDropData( e, m_model->folder(), this );
 
     m_view->setDragging( true );
     e->accept();
@@ -479,34 +479,14 @@ bool PaneWidget::viewDragEnterEvent( QDragEnterEvent* e )
 
 bool PaneWidget::viewDragMoveEvent( QDragMoveEvent* e )
 {
-    if ( m_dropData && m_dropData->isValid() ) {
-        bool result = false;
-
-        QModelIndex index = m_view->indexAt( e->pos() );
-        ShellItem item = m_model->itemAt( index );
-
-        if ( item.isValid() )
-            result = m_dropData->dragMove( e, m_model->folder(), item );
-
-        if ( !result ) {
-            result = m_dropData->dragMove( e, m_model->folder() );
-            index = QModelIndex();
-        }
-
-        m_view->highlightDropItem( index );
-
-        e->setDropAction( m_dropData->dropAction() );
-        e->setAccepted( result );
-    } else {
-        e->ignore();
-    }
+    dragDropHelper( e, false );
 
     m_view->checkAutoScroll( e->pos() );
 
     return true;
 }
 
-bool PaneWidget::viewDragLeaveEvent( QDragLeaveEvent* e )
+bool PaneWidget::viewDragLeaveEvent( QDragLeaveEvent* /*e*/ )
 {
     delete m_dropData;
     m_dropData = NULL;
@@ -518,23 +498,7 @@ bool PaneWidget::viewDragLeaveEvent( QDragLeaveEvent* e )
 
 bool PaneWidget::viewDropEvent( QDropEvent* e )
 {
-    if ( m_dropData && m_dropData->isValid() ) {
-        bool result = false;
-
-        QModelIndex index = m_view->indexAt( e->pos() );
-        ShellItem item = m_model->itemAt( index );
-
-        if ( item.isValid() )
-            result = m_dropData->drop( e, m_model->folder(), item );
-
-        if ( !result )
-            result = m_dropData->drop( e, m_model->folder() );
-
-        e->setDropAction( m_dropData->dropAction() );
-        e->setAccepted( result );
-    } else {
-        e->ignore();
-    }
+    dragDropHelper( e, true );
 
     delete m_dropData;
     m_dropData = NULL;
@@ -542,6 +506,43 @@ bool PaneWidget::viewDropEvent( QDropEvent* e )
     m_view->setDragging( false );
 
     return true;
+}
+
+bool PaneWidget::dragDropHelper( QDropEvent* e, bool doDrop )
+{
+    if ( !m_dropData || !m_dropData->isValid() )
+        return false;
+
+    bool result = false;
+
+    QModelIndex index = m_view->indexAt( e->pos() );
+
+    if ( m_model->isParentFolder( index ) ) {
+        result = m_dropData->dragToParent( e );
+    } else {
+        if ( index.isValid() )
+            result = m_dropData->dragToItem( e, m_model->itemAt( index ) );
+
+        if ( !result ) {
+            result = m_dropData->dragToFolder( e );
+            index = QModelIndex();
+        }
+    }
+
+    if ( !doDrop )
+        m_view->highlightDropItem( index );
+
+    if ( result && doDrop )
+        result = m_dropData->drop();
+
+    if ( result ) {
+        e->setDropAction( m_dropData->dropAction() );
+        e->accept();
+    } else {
+        e->ignore();
+    }
+
+    return result;
 }
 
 ShellFolder* PaneWidget::folder() const

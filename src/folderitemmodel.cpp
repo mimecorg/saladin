@@ -158,7 +158,7 @@ void FolderItemModel::applyChanges()
             for ( int j = 0; j < m_items.count(); j++ ) {
                 ShellItem& item = m_items[ j ];
 
-                if ( item.match( change.item1() ) ) {
+                if ( item == change.item1() ) {
                     switch ( change.type() ) {
                         case ItemChange::ItemAdded:
                         case ItemChange::ItemUpdated:
@@ -287,7 +287,7 @@ ShellItem FolderItemModel::itemAt( const QModelIndex& index ) const
 QModelIndex FolderItemModel::indexOf( const ShellItem& item, int column /*= 0*/ ) const
 {
     for ( int i = 0; i < m_items.count(); i++ ) {
-        if ( m_items.at( i ).match( item ) )
+        if ( m_items.at( i ) == item )
             return rowToIndex( i, column );
     }
     return QModelIndex();
@@ -435,7 +435,7 @@ void FolderItemModel::compareWith( const QList<ShellItem>& items )
     for ( int i = 0; i < m_items.count(); i++ ) {
         bool match = false;
         for ( int j = 0; j < items.count(); j++ ) {
-            if ( m_items.at( i ).match( items.at( j ) ) ) {
+            if ( m_items.at( i ) == items.at( j ) ) {
                 if ( !m_items.at( i ).state().testFlag( ShellItem::HasProperties ) || !items.at( j ).state().testFlag( ShellItem::HasProperties )
                      || m_items.at( i ).lastModified() <= items.at( j ).lastModified() ) {
                     match = true;

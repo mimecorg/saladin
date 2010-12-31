@@ -93,3 +93,13 @@ bool ShellDrive::getFreeSpace( qint64* free, qint64* total ) const
 
     return false;
 }
+
+bool operator ==( const ShellDrive& lhs, const ShellDrive& rhs )
+{
+    return ILIsEqual( lhs.d->m_pidl, rhs.d->m_pidl );
+}
+
+bool operator !=( const ShellDrive& lhs, const ShellDrive& rhs )
+{
+    return !( lhs == rhs );
+}

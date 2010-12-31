@@ -20,24 +20,53 @@
 #define SHELLDROPDATA_P_H
 
 #include "shelldropdata.h"
+#include "shellitem.h"
+#include "shelldrive.h"
 
 class ShellDropDataPrivate
 {
+public:
+    enum Target
+    {
+        NoTarget,
+        FolderTarget,
+        ParentTarget,
+        ItemTarget,
+        DriveTarget
+    };
+
 public:
     ShellDropDataPrivate();
     ~ShellDropDataPrivate();
 
 public:
-    bool dragDropHelper( QDropEvent* e, ShellFolder* folder, bool doDrop );
-    bool dragDropHelper( QDropEvent* e, ShellFolder* folder, const ShellItem& item, bool doDrop );
-    bool dragDropHelper( QDropEvent* e, IDropTarget* dropTarget, LPITEMIDLIST targetPidl, bool doDrop );
+    bool dragOver( QDropEvent* e );
+
+    void dragLeave();
 
 public:
     ShellDropData* q;
 
     IDataObject* m_dataObject;
 
-    Qt::DropActions m_possibleActions;
+    Target m_target;
+
+    ShellFolder* m_folder;
+    ShellComputer* m_computer;
+
+    ShellItem m_item;
+    ShellDrive m_drive;
+
+    bool m_ignoreItem;
+
+    IDropTarget* m_dropTarget;
+    LPITEMIDLIST m_targetPidl;
+
+    POINTL m_point;
+    DWORD m_keyState;
+    DWORD m_possibleEffect;
+
+    bool m_dragEntered;
     Qt::DropAction m_dropAction;
 };
 

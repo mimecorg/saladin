@@ -75,7 +75,9 @@ public:
     void setSelected( bool selected );
     bool isSelected() const;
 
-    bool match( const ShellItem& other ) const;
+public:
+    friend bool operator ==( const ShellItem& lhs, const ShellItem& rhs );
+    friend bool operator !=( const ShellItem& lhs, const ShellItem& rhs );
 
 private:
     QSharedDataPointer<ShellItemPrivate> d;
@@ -85,7 +87,7 @@ private:
     friend class ShellSelection;
     friend class ShellSelectionPrivate;
     friend class ShellComputer;
-    friend class ShellDropDataPrivate;
+    friend class ShellDropData;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ShellItem::Attributes )

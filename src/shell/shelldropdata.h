@@ -23,13 +23,16 @@
 
 class ShellDropDataPrivate;
 class ShellFolder;
+class ShellComputer;
 class ShellItem;
+class ShellDrive;
 
 class ShellDropData : public QObject
 {
     Q_OBJECT
 public:
-    ShellDropData( QDropEvent* e, QWidget* parent );
+    ShellDropData( QDropEvent* e, ShellFolder* folder, QWidget* parent );
+    ShellDropData( QDropEvent* e, ShellComputer* computer, QWidget* parent );
     ~ShellDropData();
 
 public:
@@ -37,11 +40,12 @@ public:
 
     Qt::DropAction dropAction() const;
 
-    bool dragMove( QDragMoveEvent* e, ShellFolder* folder );
-    bool dragMove( QDragMoveEvent* e, ShellFolder* folder, const ShellItem& item );
+    bool dragToFolder( QDropEvent* e );
+    bool dragToParent( QDropEvent* e );
+    bool dragToItem( QDropEvent* e, const ShellItem& item );
+    bool dragToDrive( QDropEvent* e, const ShellDrive& drive );
 
-    bool drop( QDropEvent* e, ShellFolder* folder );
-    bool drop( QDropEvent* e, ShellFolder* folder, const ShellItem& item );
+    bool drop();
 
 public: // overrides
     QWidget* parent() const { return qobject_cast<QWidget*>( QObject::parent() ); }

@@ -44,6 +44,9 @@ public:
 
     void showDrivesMenu( XmlUi::ToolStrip* strip );
 
+public: // overrides
+    bool eventFilter( QObject* watched, QEvent* e );
+
 private slots:
     void driveChanged( const ShellDrive& drive );
     void computerUpdated();
@@ -59,11 +62,20 @@ private:
 private:
     void populateToolStrip( StripInfo& info );
 
+    bool stripDragEnterEvent( XmlUi::ToolStrip* strip, QDragEnterEvent* e );
+    bool stripDragMoveEvent( XmlUi::ToolStrip* strip, QDragMoveEvent* e );
+    bool stripDragLeaveEvent( XmlUi::ToolStrip* strip, QDragLeaveEvent* e );
+    bool stripDropEvent( XmlUi::ToolStrip* strip, QDropEvent* e );
+
+    bool dragDropHelper( XmlUi::ToolStrip* strip, QDropEvent* e, bool doDrop );
+
 private:
     ShellComputer* m_computer;
     QList<ShellDrive> m_drives;
 
     QList<StripInfo> m_strips;
+
+    ShellDropData* m_dropData;
 
     friend class ShellDriveLessThan;
 };

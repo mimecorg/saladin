@@ -123,6 +123,8 @@ private:
     bool viewDragLeaveEvent( QDragLeaveEvent* e );
     bool viewDropEvent( QDropEvent* e );
 
+    bool dragDropHelper( QDropEvent* e, bool doDrop );
+
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );
 

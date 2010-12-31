@@ -66,7 +66,7 @@ public:
 
     QString itemPath( const ShellItem& item );
 
-    bool match( const ShellFolder* other );
+    bool isEqual( const ShellFolder* other ) const;
 
     ShellFolder* clone();
 
@@ -116,7 +116,7 @@ private:
     friend class ShellComputer;
     friend class ShellSelection;
     friend class ShellSelectionPrivate;
-    friend class ShellDropDataPrivate;
+    friend class ShellDropData;
 };
 
 class ItemChange

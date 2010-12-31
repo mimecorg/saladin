@@ -661,7 +661,7 @@ void MainWindow::transferItems( ShellFolder* sourceFolder, const QList<ShellItem
     if ( !canTransfer && !canDragDrop )
         return;
 
-    bool sameTarget = targetFolder->match( sourceFolder );
+    bool sameTarget = targetFolder->isEqual( sourceFolder );
 
     OperationDialog::Flags operationFlags;
     if ( sameTarget )
@@ -953,7 +953,7 @@ void MainWindow::compareFiles()
 
 void MainWindow::compareDirectories()
 {
-    if ( !m_sourcePane->folder()->match( m_targetPane->folder() ) )
+    if ( !m_sourcePane->folder()->isEqual( m_targetPane->folder() ) )
         m_sourcePane->compareWith( m_targetPane->items() );
 }
 

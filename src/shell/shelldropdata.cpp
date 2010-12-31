@@ -20,13 +20,23 @@
 #include "shelldropdata_p.h"
 #include "shellfolder.h"
 #include "shellfolder_p.h"
+#include "shellcomputer.h"
+#include "shellcomputer_p.h"
 #include "shellitem_p.h"
+#include "shelldrive_p.h"
 
 #include <private/qdnd_p.h>
 
 ShellDropDataPrivate::ShellDropDataPrivate() :
     q( NULL ),
     m_dataObject( NULL ),
+    m_target( NoTarget ),
+    m_folder( NULL ),
+    m_computer( NULL ),
+    m_ignoreItem( false ),
+    m_dropTarget( NULL ),
+    m_targetPidl( NULL ),
+    m_dragEntered( false ),
     m_dropAction( Qt::IgnoreAction )
 {
 }
@@ -37,19 +47,37 @@ ShellDropDataPrivate::~ShellDropDataPrivate()
         m_dataObject->Release();
         m_dataObject = NULL;
     }
+
+    dragLeave();
 }
 
-ShellDropData::ShellDropData( QDropEvent* e, QWidget* parent ) : QObject( parent ),
+ShellDropData::ShellDropData( QDropEvent* e, ShellFolder* folder, QWidget* parent ) : QObject( parent ),
     d( new ShellDropDataPrivate() )
 {
     d->q = this;
 
     if ( e->mimeData()->inherits( "QDropData" ) ) {
         const QDropData* dropData = static_cast<const QDropData*>( e->mimeData() );
+
         d->m_dataObject = dropData->currentDataObject;
         d->m_dataObject->AddRef();
 
-        d->m_possibleActions = e->possibleActions();
+        d->m_folder = folder;
+    }
+}
+
+ShellDropData::ShellDropData( QDropEvent* e, ShellComputer* computer, QWidget* parent ) : QObject( parent ),
+    d( new ShellDropDataPrivate() )
+{
+    d->q = this;
+
+    if ( e->mimeData()->inherits( "QDropData" ) ) {
+        const QDropData* dropData = static_cast<const QDropData*>( e->mimeData() );
+
+        d->m_dataObject = dropData->currentDataObject;
+        d->m_dataObject->AddRef();
+
+        d->m_computer = computer;
     }
 }
 
@@ -68,59 +96,91 @@ Qt::DropAction ShellDropData::dropAction() const
     return d->m_dropAction;
 }
 
-bool ShellDropData::dragMove( QDragMoveEvent* e, ShellFolder* folder )
+bool ShellDropData::dragToFolder( QDropEvent* e )
 {
-    return d->dragDropHelper( e, folder, false );
-}
+    if ( d->m_target != ShellDropDataPrivate::FolderTarget ) {
+        d->dragLeave();
 
-bool ShellDropData::dragMove( QDragMoveEvent* e, ShellFolder* folder, const ShellItem& item )
-{
-    return d->dragDropHelper( e, folder, item, false );
-}
+        HRESULT hr = d->m_folder->d->m_folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &d->m_dropTarget ) );
 
-bool ShellDropData::drop( QDropEvent* e, ShellFolder* folder )
-{
-    return d->dragDropHelper( e, folder, true );
-}
+        if ( SUCCEEDED( hr ) ) {
+            d->m_targetPidl = ILClone( d->m_folder->d->m_pidl );
 
-bool ShellDropData::drop( QDropEvent* e, ShellFolder* folder, const ShellItem& item )
-{
-    return d->dragDropHelper( e, folder, item, true );
-}
-
-bool ShellDropDataPrivate::dragDropHelper( QDropEvent* e, ShellFolder* folder, bool doDrop )
-{
-    bool result = false;
-
-    IDropTarget* dropTarget;
-    HRESULT hr = folder->d->m_folder->CreateViewObject( q->parent()->effectiveWinId(), IID_PPV_ARGS( &dropTarget ) );
-
-    if ( SUCCEEDED( hr ) ) {
-        result = dragDropHelper( e, dropTarget, folder->d->m_pidl, doDrop );
-
-        dropTarget->Release();
+            d->m_target = ShellDropDataPrivate::FolderTarget;
+        }
     }
+
+    return d->dragOver( e );
+}
+
+bool ShellDropData::dragToParent( QDropEvent* e )
+{
+    if ( d->m_target != ShellDropDataPrivate::ParentTarget ) {
+        d->dragLeave();
+
+        IShellFolder* folder;
+        LPCITEMIDLIST pidlLast;
+        HRESULT hr = SHBindToParent( d->m_folder->d->m_pidl, IID_PPV_ARGS( &folder ), &pidlLast );
+
+        if ( SUCCEEDED( hr ) ) {
+            hr = folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &d->m_dropTarget ) );
+
+            if ( SUCCEEDED( hr ) ) {
+                SHGetIDListFromObject( folder, &d->m_targetPidl );
+
+                d->m_target = ShellDropDataPrivate::ParentTarget;
+            }
+        }
+
+        folder->Release();
+    }
+
+    return d->dragOver( e );
+}
+
+bool ShellDropData::dragToItem( QDropEvent* e, const ShellItem& item )
+{
+    if ( d->m_ignoreItem && item == d->m_item )
+        return false;
+
+    if ( d->m_target != ShellDropDataPrivate::ItemTarget || item != d->m_item ) {
+        d->dragLeave();
+
+        d->m_item = item;
+
+        HRESULT hr = d->m_folder->d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&item.d->m_pidl, IID_IDropTarget, NULL, (void**)&d->m_dropTarget );
+
+        if ( SUCCEEDED( hr ) ) {
+            d->m_targetPidl = ILCombine( d->m_folder->d->m_pidl, item.d->m_pidl );
+
+            d->m_target = ShellDropDataPrivate::ItemTarget;
+        }
+    }
+
+    bool result = d->dragOver( e );
+
+    d->m_ignoreItem = !result;
 
     return result;
 }
 
-bool ShellDropDataPrivate::dragDropHelper( QDropEvent* e, ShellFolder* folder, const ShellItem& item, bool doDrop )
+bool ShellDropData::dragToDrive( QDropEvent* e, const ShellDrive& drive )
 {
-    bool result = false;
+    if ( d->m_target != ShellDropDataPrivate::DriveTarget || drive != d->m_drive ) {
+        d->dragLeave();
 
-    IDropTarget* dropTarget;
-    HRESULT hr = folder->d->m_folder->GetUIObjectOf( q->parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&item.d->m_pidl, IID_IDropTarget, NULL, (void**)&dropTarget );
+        d->m_drive = drive;
 
-    if ( SUCCEEDED( hr ) ) {
-        LPITEMIDLIST absolutePidl = ILCombine( folder->d->m_pidl, item.d->m_pidl );
+        HRESULT hr = d->m_computer->d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&drive.d->m_pidl, IID_IDropTarget, NULL, (void**)&d->m_dropTarget );
 
-        result = dragDropHelper( e, dropTarget, absolutePidl, doDrop );
+        if ( SUCCEEDED( hr ) ) {
+            d->m_targetPidl = ILCombine( d->m_computer->d->m_pidl, drive.d->m_pidl );
 
-        CoTaskMemFree( absolutePidl );
-        dropTarget->Release();
+            d->m_target = ShellDropDataPrivate::DriveTarget;
+        }
     }
 
-    return result;
+    return d->dragOver( e );
 }
 
 static DWORD dropActionsToEffect( Qt::DropActions actions )
@@ -168,39 +228,77 @@ static DWORD makeKeyState( Qt::MouseButtons buttons, Qt::KeyboardModifiers modif
     return state;
 }
 
-bool ShellDropDataPrivate::dragDropHelper( QDropEvent* e, IDropTarget* dropTarget, LPITEMIDLIST targetPidl, bool doDrop )
+bool ShellDropDataPrivate::dragOver( QDropEvent* e )
 {
+    if ( m_target == ShellDropDataPrivate::NoTarget )
+        return false;
+
     bool result = false;
-    m_dropAction = Qt::IgnoreAction;
 
     QPoint position = QCursor::pos();
-    POINTL point = { position.x(), position.y() };
+    m_point.x = position.x();
+    m_point.y = position.y();
 
-    DWORD keyState = makeKeyState( e->mouseButtons(), e->keyboardModifiers() );
+    m_keyState = makeKeyState( e->mouseButtons(), e->keyboardModifiers() );
 
-    DWORD possibleEffect = dropActionsToEffect( m_possibleActions );
+    m_possibleEffect = dropActionsToEffect( e->possibleActions() );
 
-    DWORD dragEffect = possibleEffect;
-    HRESULT hr = dropTarget->DragEnter( m_dataObject, keyState, point, &dragEffect );
+    DWORD dragEffect = m_possibleEffect;
+    HRESULT hr;
+    if ( !m_dragEntered )
+        hr = m_dropTarget->DragEnter( m_dataObject, m_keyState, m_point, &dragEffect );
+    else
+        hr = m_dropTarget->DragOver( m_keyState, m_point, &dragEffect );
 
-    if ( SUCCEEDED( hr ) && ( dragEffect & possibleEffect ) != 0 ) {
-        if ( doDrop ) {
-            DWORD dropEffect = possibleEffect;
-            hr = dropTarget->Drop( m_dataObject, keyState, point, &dropEffect );
+    if ( SUCCEEDED( hr ) ) {
+        m_dragEntered = true;
+        m_dropAction = effectToDropAction( dragEffect & m_possibleEffect );
 
-            if ( SUCCEEDED( hr ) ) {
-                SHChangeNotify( SHCNE_UPDATEDIR, SHCNF_IDLIST, targetPidl, NULL );
-
-                m_dropAction = effectToDropAction( dropEffect );
-                result = true;
-            }
-        } else {
-            dropTarget->DragLeave();
-
-            m_dropAction = effectToDropAction( dragEffect );
+        if ( m_dropAction != Qt::IgnoreAction )
             result = true;
-        }
     }
 
     return result;
+}
+
+bool ShellDropData::drop()
+{
+    if ( !d->m_dragEntered || d->m_dropAction == Qt::IgnoreAction )
+        return false;
+
+    bool result = false;
+
+    DWORD dropEffect = d->m_possibleEffect;
+    HRESULT hr = d->m_dropTarget->Drop( d->m_dataObject, d->m_keyState, d->m_point, &dropEffect );
+
+    if ( SUCCEEDED( hr ) ) {
+        if ( d->m_targetPidl != NULL )
+            SHChangeNotify( SHCNE_UPDATEDIR, SHCNF_IDLIST, d->m_targetPidl, NULL );
+
+        d->m_dropAction = effectToDropAction( dropEffect );
+        result = true;
+    }
+
+    return result;
+}
+
+void ShellDropDataPrivate::dragLeave()
+{
+    if ( m_dropTarget ) {
+        if ( m_dragEntered )
+            m_dropTarget->DragLeave();
+
+        m_dropTarget->Release();
+        m_dropTarget = NULL;
+    }
+
+    if ( m_targetPidl ) {
+        CoTaskMemFree( m_targetPidl );
+        m_targetPidl = NULL;
+    }
+
+    m_target = NoTarget;
+
+    m_dragEntered = false;
+    m_dropAction = Qt::IgnoreAction;
 }
