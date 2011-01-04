@@ -147,7 +147,14 @@ void OpenFtpDialog::setUser( const QString& user )
 {
     m_anonymousCheckBox->setChecked( false );
     m_userEdit->setText( user );
-    m_passwordEdit->setFocus();
+    m_userEdit->setFocus();
+}
+
+void OpenFtpDialog::setPassword( const QString& password )
+{
+    m_passwordEdit->setText( password );
+    if ( password.isEmpty() )
+        m_passwordEdit->setFocus();
 }
 
 QString OpenFtpDialog::path()

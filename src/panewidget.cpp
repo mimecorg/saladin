@@ -920,10 +920,11 @@ void PaneWidget::showBookmarks()
 
 void PaneWidget::setBookmark( const Bookmark& bookmark )
 {
-    if ( !bookmark.user().isEmpty() && bookmark.password().isEmpty() ) {
+    if ( !bookmark.user().isEmpty() ) {
         OpenFtpDialog dialog( this );
         dialog.setPath( bookmark.path() );
         dialog.setUser( bookmark.user() );
+        dialog.setPassword( bookmark.password() );
 
         if ( dialog.exec() != QDialog::Accepted )
             return;

@@ -31,6 +31,7 @@ public:
 public:
     void setPath( const QString& path );
     void setUser( const QString& user );
+    void setPassword( const QString& password );
 
     QString path();
 
