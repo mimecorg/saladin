@@ -22,6 +22,8 @@
 #include "utils/localsettings.h"
 #include "utils/dataserializer.h"
 #include "utils/iconloader.h"
+#include "shell/shellfolder.h"
+#include "shell/shellpidl.h"
 
 Application* application = NULL;
 
@@ -33,8 +35,20 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
 
     application = this;
 
+    ShellPidl::registerMetaType();
+
     m_settings = new LocalSettings( locateDataFile( "settings.dat" ), this );
+    initializeSettings();
+
     loadBookmarks();
+
+    QString language = m_settings->value( "Language" ).toString();
+    if ( language.isEmpty() )
+        language = QLocale::system().name();
+    QLocale::setDefault( QLocale( language ) );
+
+    loadTranslation( "qt", true );
+    loadTranslation( "saladin", false );
 
     setStyle( "XmlUi::WindowsStyle" );
 
@@ -43,6 +57,7 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
     m_mainWindow = new MainWindow();
     m_mainWindow->initialize();
     m_mainWindow->show();
+    m_mainWindow->openDirectories();
 }
 
 Application::~Application()
@@ -107,8 +122,32 @@ QString Application::version() const
     return QString( "0.1" );
 }
 
+bool Application::loadTranslation( const QString& name, bool tryQtDir )
+{
+    QString fullName = name + "_" + QLocale().name();
+
+    QTranslator* translator = new QTranslator( this );
+
+    if ( translator->load( fullName, m_translationsPath ) ) {
+        installTranslator( translator );
+        return true;
+    }
+
+    if ( tryQtDir && translator->load( fullName, QLibraryInfo::location( QLibraryInfo::TranslationsPath ) ) ) {
+        installTranslator( translator );
+        return true;
+    }
+
+    delete translator;
+    return false;
+}
+
 void Application::initializeDefaultPaths()
 {
+    QString appPath = applicationDirPath();
+
+    m_translationsPath = QDir::cleanPath( appPath + "/../translations" );
+
     wchar_t appDataPath[ MAX_PATH ];
     if ( SHGetSpecialFolderPath( 0, appDataPath, CSIDL_APPDATA, FALSE ) )
         m_dataPath = QDir::fromNativeSeparators( QString::fromWCharArray( appDataPath ) );
@@ -126,6 +165,29 @@ void Application::initializeDefaultPaths()
     m_cachePath += QLatin1String( "/Saladin/cache" );
 
     m_tempPath = QDir::tempPath() + "/Saladin";
+}
+
+void Application::initializeSettings()
+{
+    if ( !m_settings->contains( "Directory1" ) )
+        m_settings->setValue( "Directory1", QVariant::fromValue( ShellFolder::defaultFolder() ) );
+    if ( !m_settings->contains( "Directory2" ) )
+        m_settings->setValue( "Directory2", QVariant::fromValue( ShellFolder::defaultFolder() ) );
+
+    if ( !m_settings->contains( "RememberDirectories" ) )
+        m_settings->setValue( "RememberDirectories", false );
+
+    if ( !m_settings->contains( "EditorTool" ) ) {
+        wchar_t buffer[ MAX_PATH ];
+        if ( SHGetSpecialFolderPath( 0, buffer, CSIDL_WINDOWS, FALSE ) )
+            m_settings->setValue( "EditorTool", QString::fromWCharArray( buffer ) + "\\notepad.exe" );
+    }
+
+    if ( !m_settings->contains( "ConsoleTool" ) ) {
+        wchar_t buffer[ MAX_PATH ];
+        if ( SHGetSpecialFolderPath( 0, buffer, CSIDL_SYSTEM, FALSE ) )
+            m_settings->setValue( "ConsoleTool", QString::fromWCharArray( buffer ) + "\\cmd.exe" );
+    }
 }
 
 QString Application::locateDataFile( const QString& name )

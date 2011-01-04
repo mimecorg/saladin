@@ -611,6 +611,56 @@ ShellFolder* ShellFolder::browseFolder()
     return result;
 }
 
+ShellPidl ShellFolder::browseFolder( QWidget* parent, const QString& title, const ShellPidl& startPidl )
+{
+    ShellPidl result;
+
+    wchar_t buffer[ MAX_PATH ];
+
+    BROWSEINFO info = { 0 };
+    info.hwndOwner = parent->effectiveWinId();
+    info.pidlRoot = NULL;
+    info.pszDisplayName = buffer;
+    info.lpszTitle = title.utf16();
+    info.ulFlags = BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
+    info.lpfn = ShellFolderBrowseCallbackProc;
+    info.lParam = (LPARAM)startPidl.d->pidl();
+
+    LPITEMIDLIST pidl = SHBrowseForFolder( &info );
+
+    if ( pidl ) {
+        result.d->m_data = QByteArray( (const char*)pidl, (int)ILGetSize( pidl ) );
+
+        wchar_t realPath[ 1024 ];
+        if ( SHGetPathFromIDListEx( pidl, realPath, 1024, GPFIDL_DEFAULT ) )
+            result.d->m_path = QString::fromWCharArray( realPath );
+        else
+            result.d->m_path = QString::fromWCharArray( buffer );
+
+        CoTaskMemFree( pidl );
+    }
+
+    return result;
+}
+
+ShellPidl ShellFolder::defaultFolder()
+{
+    ShellPidl result;
+
+    result.d->m_path = QDir::toNativeSeparators( QDir::rootPath() );
+
+    LPITEMIDLIST pidl;
+    HRESULT hr = SHParseDisplayName( (PCWSTR)result.d->m_path.utf16(), NULL, &pidl, 0, NULL );
+
+    if ( SUCCEEDED( hr ) ) {
+        result.d->m_data = QByteArray( (const char*)pidl, (int)ILGetSize( pidl ) );
+
+        CoTaskMemFree( pidl );
+    }
+
+    return result;
+}
+
 bool ShellFolder::canCreateFolder()
 {
     bool result = false;

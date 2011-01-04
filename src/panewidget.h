@@ -58,6 +58,8 @@ public:
     QList<ShellItem> selectedItems() const;
     ShellItem currentItem() const;
 
+    void activateView( const ShellItem& item = ShellItem() );
+
     void refresh();
     void viewHidden( bool on );
 
@@ -128,8 +130,6 @@ private:
 
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );
-
-    void activateView( const ShellItem& item = ShellItem() );
 
     void updateLocation();
     void updateEditPalette();

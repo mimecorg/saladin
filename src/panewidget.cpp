@@ -170,8 +170,6 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->viewport()->installEventFilter( this );
 
     setFocusProxy( m_view );
-
-    setFolder( new ShellFolder( QDir::toNativeSeparators( QDir::rootPath() ), this ) );
 }
 
 PaneWidget::~PaneWidget()

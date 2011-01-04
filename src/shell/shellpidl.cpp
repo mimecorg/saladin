@@ -82,3 +82,8 @@ QDataStream& operator >>( QDataStream& stream, ShellPidl& pidl )
 {
     return stream >> pidl.d->m_data >> pidl.d->m_path;
 }
+
+void ShellPidl::registerMetaType()
+{
+    qRegisterMetaTypeStreamOperators<ShellPidl>( "ShellPidl" );
+}

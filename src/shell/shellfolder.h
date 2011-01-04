@@ -96,6 +96,11 @@ public:
 
     bool startWatching();
 
+public:
+    static ShellPidl defaultFolder();
+
+    static ShellPidl browseFolder( QWidget* parent, const QString& title, const ShellPidl& startPidl );
+
 public: // overrides
     QWidget* parent() const { return qobject_cast<QWidget*>( QObject::parent() ); }
 

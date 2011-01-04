@@ -37,12 +37,16 @@ public:
 public:
     void initialize();
 
+    void openDirectories();
+
     DriveStripManager* driveStripManager() const { return m_driveStripManager; }
 
 public: // overrides
     bool eventFilter( QObject* object, QEvent* e );
 
 private slots:
+    void configure();
+
     void paste();
     void cut();
     void copy();
@@ -102,8 +106,10 @@ private slots:
 private:
     enum Tool
     {
-        Viewer,
-        Editor
+        ViewerTool,
+        EditorTool,
+        ConsoleTool,
+        DiffTool
     };
 
 private:
@@ -116,6 +122,9 @@ private:
 
     void startTool( Tool tool, ShellFolder* folder, ShellItem item );
     void startTool( Tool tool, const QString& path, const QString& directory );
+
+    QString toolPath( Tool tool );
+    QString toolName( Tool tool );
 
 private:
     DriveStripManager* m_driveStripManager;

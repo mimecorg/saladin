@@ -38,6 +38,8 @@ public:
 
     MainWindow* mainWindow() const { return m_mainWindow; }
 
+    QString translationsPath() const { return m_translationsPath; }
+
     QString locateDataFile( const QString& name );
     QString locateCacheFile( const QString& name );
     QString locateTempFile( const QString& name );
@@ -52,7 +54,11 @@ public slots:
     void about();
 
 private:
+    bool loadTranslation( const QString& name, bool tryQtDir );
+
     void initializeDefaultPaths();
+
+    void initializeSettings();
 
     bool checkAccess( const QString& path );
 
@@ -61,6 +67,8 @@ private:
 
 private:
     MainWindow* m_mainWindow;
+
+    QString m_translationsPath;
 
     QString m_dataPath;
     QString m_cachePath;

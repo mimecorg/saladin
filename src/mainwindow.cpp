@@ -23,6 +23,7 @@
 #include "operationdialog.h"
 #include "openftpdialog.h"
 #include "bookmarksdialog.h"
+#include "settingsdialog.h"
 
 #include "shell/shellfolder.h"
 #include "shell/shellselection.h"
@@ -48,6 +49,17 @@ MainWindow::~MainWindow()
     settings->setValue( "MainWindowGeometry", saveGeometry() );
 
     settings->setValue( "ViewHiddenFiles", action( "viewHidden" )->isChecked() );
+
+    if ( settings->value( "RememberDirectories" ).toBool() ) {
+        for ( int i = 0; i < 2; i++ ) {
+            ShellFolder* folder = m_panes[ i ]->folder();
+            QString path = folder->path();
+            if ( !path.startsWith( QLatin1String( "ftp://" ), Qt::CaseInsensitive ) ) {
+                QString key = QString( "Directory%1" ).arg( i + 1 );
+                settings->setValue( key, QVariant::fromValue( folder->pidl() ) );
+            }
+        }
+    }
 }
 
 void MainWindow::initialize()
@@ -59,6 +71,10 @@ void MainWindow::initialize()
     action = new QAction( IconLoader::icon( "help" ), tr( "About Saladin" ), this );
     connect( action, SIGNAL( triggered() ), application, SLOT( about() ) );
     setAction( "about", action );
+
+    action = new QAction( IconLoader::icon( "configure" ), tr( "Saladin Settings" ), this );
+    connect( action, SIGNAL( triggered() ), this, SLOT( configure() ) );
+    setAction( "configure", action );
 
     action = new QAction( IconLoader::icon( "edit-paste" ), tr( "Paste" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_V ) );
@@ -305,6 +321,7 @@ void MainWindow::initialize()
     loadXmlUiFile( ":/resources/mainwindow.xml" );
 
     XmlUi::ToolStrip* strip = new XmlUi::ToolStrip( this );
+    strip->addAuxiliaryAction( this->action( "configure" ) );
     strip->addAuxiliaryAction( this->action( "about" ) );
     setMenuWidget( strip );
 
@@ -357,8 +374,26 @@ void MainWindow::initialize()
     connect( m_panes[ 1 ], SIGNAL( headerSectionMoved( int, int ) ), m_panes[ 0 ], SLOT( moveHeaderSection( int, int ) ) );
 
     application->installEventFilter( this );
+}
 
-    m_panes[ 0 ]->setFocus();
+void MainWindow::openDirectories()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    for ( int i = 0; i < 2; i++ ) {
+        QString key = QString( "Directory%1" ).arg( i + 1 );
+        ShellPidl pidl = settings->value( key ).value<ShellPidl>();
+
+        ShellFolder* folder = new ShellFolder( pidl, m_panes[ i ] );
+        if ( !folder->isValid() ) {
+            delete folder;
+            folder = new ShellFolder( ShellFolder::defaultFolder(), m_panes[ i ] );
+        }
+
+        m_panes[ i ]->setFolder( folder );
+    }
+
+    m_panes[ 0 ]->activateView();
 }
 
 bool MainWindow::eventFilter( QObject* object, QEvent* e )
@@ -409,6 +444,12 @@ void MainWindow::setSourcePane( int index )
 
     m_sourcePane->setSourcePane( true );
     m_targetPane->setSourcePane( false );
+}
+
+void MainWindow::configure()
+{
+    SettingsDialog dialog( this );
+    dialog.exec();
 }
 
 void MainWindow::paste()
@@ -554,12 +595,12 @@ void MainWindow::renameCurrent()
 
 void MainWindow::viewCurrent()
 {
-    startTool( Viewer, m_sourcePane->folder(), m_sourcePane->currentItem() ); 
+    startTool( ViewerTool, m_sourcePane->folder(), m_sourcePane->currentItem() ); 
 }
 
 void MainWindow::editCurrent()
 {
-    startTool( Editor, m_sourcePane->folder(), m_sourcePane->currentItem() ); 
+    startTool( EditorTool, m_sourcePane->folder(), m_sourcePane->currentItem() ); 
 }
 
 void MainWindow::editNew()
@@ -590,7 +631,9 @@ void MainWindow::editNew()
     if ( !item.isValid() )
         return;
 
-    startTool( Editor, folder->itemPath( item ), folder->path() ); 
+    QString path = folder->itemPath( item );
+
+    startTool( EditorTool, QString( "\"%1\"" ).arg( path ), folder->path() ); 
 }
 
 void MainWindow::startTool( Tool tool, ShellFolder* folder, ShellItem item )
@@ -602,30 +645,66 @@ void MainWindow::startTool( Tool tool, ShellFolder* folder, ShellItem item )
     if ( path.isEmpty() )
         return;
 
-    startTool( tool, path, folder->path() );
+    startTool( tool, QString( "\"%1\"" ).arg( path ), folder->path() );
 }
 
-void MainWindow::startTool( Tool tool, const QString& path, const QString& directory )
+void MainWindow::startTool( Tool tool, const QString& parameters, const QString& directory )
 {
-    QString parameters = QString( "\"%1\"" ).arg( path );
+    QString path = toolPath( tool );
 
-    wchar_t buffer[ MAX_PATH ];
-    if ( !SHGetSpecialFolderPath( effectiveWinId(), buffer, CSIDL_PROGRAM_FILESX86, FALSE ) )
+    if ( path.isEmpty() )
         return;
 
-    QString programFiles = QString::fromWCharArray( buffer );
+    HINSTANCE result = ShellExecute( effectiveWinId(), NULL, path.utf16(), parameters.utf16(), directory.utf16(), SW_SHOWNORMAL );
 
-    QString toolPath;
+    if ( (int)result <= 32 ) {
+        QString name = toolName( tool );
+        QMessageBox::warning( this, tr( "Tool failed" ), tr( "The %1 tool could not be started.\nMake sure it is correctly configured in Saladin settings and try again." ).arg( name ) );
+    }
+}
+
+QString MainWindow::toolPath( Tool tool )
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    QString path;
     switch ( tool ) {
-        case Viewer:
-            toolPath = programFiles + "\\Universal Viewer\\Viewer.exe";
+        case ViewerTool:
+            path = settings->value( "ViewerTool" ).toString();
             break;
-        case Editor:
-            toolPath = programFiles + "\\Notepad++\\notepad++.exe";
+        case EditorTool:
+            path = settings->value( "EditorTool" ).toString();
+            break;
+        case ConsoleTool:
+            path = settings->value( "ConsoleTool" ).toString();
+            break;
+        case DiffTool:
+            path = settings->value( "DiffTool" ).toString();
             break;
     }
 
-    ShellExecute( effectiveWinId(), NULL, toolPath.utf16(), parameters.utf16(), directory.utf16(), SW_SHOWNORMAL );
+    if ( path.isEmpty() ) {
+        QString name = toolName( tool );
+        QMessageBox::warning( this, tr( "Missing tool" ), tr( "There is no %1 tool configured.\nSelect the tool in Saladin settings and try again." ).arg( name ) );
+    }
+
+    return path;
+}
+
+QString MainWindow::toolName( Tool tool )
+{
+    switch ( tool ) {
+        case ViewerTool:
+            return tr( "viewer" );
+        case EditorTool:
+            return tr( "editor" );
+        case ConsoleTool:
+            return tr( "console" );
+        case DiffTool:
+            return tr( "file compare" );
+        default:
+            return QString();
+    }
 }
 
 void MainWindow::copySelected()
@@ -815,9 +894,7 @@ void MainWindow::openTerminal()
     if ( !attributes.testFlag( ShellItem::FileSystem ) || !attributes.testFlag( ShellItem::Directory ) )
         return;
 
-    QString path = folder->path();
-
-    ShellExecute( effectiveWinId(), NULL, L"cmd.exe", NULL, path.utf16(), SW_SHOWNORMAL );
+    startTool( ConsoleTool, QString(), folder->path() );
 }
 
 void MainWindow::packToZip()
@@ -940,15 +1017,7 @@ void MainWindow::compareFiles()
 
     QString parameters = QString( "\"%1\" \"%2\"" ).arg( paths.at( 0 ), paths.at( 1 ) );
 
-    wchar_t buffer[ MAX_PATH ];
-    if ( !SHGetSpecialFolderPath( effectiveWinId(), buffer, CSIDL_PROGRAM_FILES, FALSE ) )
-        return;
-
-    QString toolPath = QString::fromWCharArray( buffer ) + "\\TortoiseSVN\\bin\\TortoiseMerge.exe";
-
-    QString directory = m_sourcePane->folder()->path();
-
-    ShellExecute( effectiveWinId(), NULL, toolPath.utf16(), parameters.utf16(), directory.utf16(), SW_SHOWNORMAL );
+    startTool( DiffTool, parameters, m_sourcePane->folder()->path() );
 }
 
 void MainWindow::compareDirectories()

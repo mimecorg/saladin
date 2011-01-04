@@ -16,43 +16,23 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef SHELLPIDL_H
-#define SHELLPIDL_H
+#ifndef SEPARATORCOMBOBOX_H
+#define SEPARATORCOMBOBOX_H
 
-#include <QSharedData>
+#include <QComboBox>
 
-class ShellPidlPrivate;
-
-class ShellPidl
+class SeparatorComboBox : public QComboBox
 {
+    Q_OBJECT
 public:
-    ShellPidl();
-    ~ShellPidl();
-
-    ShellPidl( const ShellPidl& other );
-    ShellPidl& operator =( const ShellPidl& other );
+    SeparatorComboBox( QWidget* parent );
+    ~SeparatorComboBox();
 
 public:
-    bool isValid() const;
+    void addSeparator();
 
-    QString path() const;
-
-public:
-    static void registerMetaType();
-
-public:
-    friend bool operator ==( const ShellPidl& lhs, const ShellPidl& rhs );
-    friend bool operator !=( const ShellPidl& lhs, const ShellPidl& rhs );
-
-    friend QDataStream& operator <<( QDataStream& stream, const ShellPidl& pidl );
-    friend QDataStream& operator >>( QDataStream& stream, ShellPidl& pidl );
-
-private:
-    QSharedDataPointer<ShellPidlPrivate> d;
-
-    friend class ShellFolder;
+    void addParentItem( const QString& text );
+    void addChildItem( const QString& text, const QVariant& data = QVariant() );
 };
-
-Q_DECLARE_METATYPE( ShellPidl )
 
 #endif

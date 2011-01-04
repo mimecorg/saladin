@@ -18,7 +18,8 @@ HEADERS += application.h \
            multirenamewidget.h \
            openftpdialog.h \
            operationdialog.h \
-           panewidget.h
+           panewidget.h \
+           settingsdialog.h
 
 SOURCES += application.cpp \
            bookmark.cpp \
@@ -32,7 +33,8 @@ SOURCES += application.cpp \
            multirenamewidget.cpp \
            openftpdialog.cpp \
            operationdialog.cpp \
-           panewidget.cpp
+           panewidget.cpp \
+           settingsdialog.cpp
 
 include( icons/icons.pri )
 include( resources/resources.pri )
