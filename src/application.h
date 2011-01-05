@@ -25,6 +25,8 @@
 
 class MainWindow;
 class LocalSettings;
+class UpdateClient;
+class AboutBoxSection;
 
 class Application : public QApplication
 {
@@ -53,6 +55,16 @@ public:
 public slots:
     void about();
 
+    void showQuickGuide();
+
+    void showUpdateState();
+
+    void openDonations();
+    void openReleaseNotes();
+    void openDownloads();
+
+    void settingsChanged();
+
 private:
     bool loadTranslation( const QString& name, bool tryQtDir );
 
@@ -77,6 +89,13 @@ private:
     LocalSettings* m_settings;
 
     QList<Bookmark> m_bookmarks;
+
+    UpdateClient* m_updateClient;
+
+    QPointer<AboutBoxSection> m_updateSection;
+    QPointer<QPushButton> m_updateButton;
+
+    QString m_shownVersion;
 };
 
 extern Application* application;

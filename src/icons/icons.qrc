@@ -1,5 +1,6 @@
 <RCC version="1.0">
 <qresource prefix="/icons">
+  <file>about-16.png</file>
   <file>arrow-down-16.png</file>
   <file>arrow-left-16.png</file>
   <file>arrow-right-16.png</file>
@@ -13,6 +14,7 @@
   <file>calculate-22.png</file>
   <file>clone-16.png</file>
   <file>clone-22.png</file>
+  <file>close-16.png</file>
   <file>compare-16.png</file>
   <file>compare-22.png</file>
   <file>configure-16.png</file>
@@ -45,6 +47,7 @@
   <file>help-16.png</file>
   <file>history-16.png</file>
   <file>info-16.png</file>
+  <file>info-22.png</file>
   <file>move-16.png</file>
   <file>move-22.png</file>
   <file>multi-rename-16.png</file>
@@ -85,5 +88,7 @@
   <file>view-22.png</file>
   <file>view-hidden-16.png</file>
   <file>view-hidden-22.png</file>
+  <file>warning-16.png</file>
+  <file>web-16.png</file>
 </qresource>
 </RCC>

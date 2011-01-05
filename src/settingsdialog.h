@@ -61,6 +61,8 @@ private:
     QLineEdit* m_rightPaneEdit;
     QCheckBox* m_rememberCheckBox;
 
+    QCheckBox* m_updateCheckBox;
+
     QLineEdit* m_viewerEdit;
     QLineEdit* m_editorEdit;
     QLineEdit* m_consoleEdit;

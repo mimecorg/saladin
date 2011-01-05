@@ -68,7 +68,8 @@ void MainWindow::initialize()
 
     QAction* action;
 
-    action = new QAction( IconLoader::icon( "help" ), tr( "About Saladin" ), this );
+    action = new QAction( IconLoader::icon( "about" ), tr( "About Saladin" ), this );
+    action->setShortcut( QKeySequence( Qt::Key_F1 ) );
     connect( action, SIGNAL( triggered() ), application, SLOT( about() ) );
     setAction( "about", action );
 

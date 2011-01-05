@@ -21,6 +21,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QtNetwork>
 #include <QtXml>
 
 #include <shlobj.h>

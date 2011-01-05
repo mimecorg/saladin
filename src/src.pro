@@ -4,9 +4,10 @@ TEMPLATE = app
 TARGET   = saladin
 
 CONFIG  += qt
-QT      += xml
+QT      += network xml
 
-HEADERS += application.h \
+HEADERS += aboutbox.h \
+           application.h \
            bookmark.h \
            bookmark_p.h \
            bookmarksdialog.h \
@@ -21,7 +22,8 @@ HEADERS += application.h \
            panewidget.h \
            settingsdialog.h
 
-SOURCES += application.cpp \
+SOURCES += aboutbox.cpp \
+           application.cpp \
            bookmark.cpp \
            bookmarksdialog.cpp \
            drivestripmanager.cpp \

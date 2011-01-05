@@ -118,6 +118,13 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     connect( m_rememberCheckBox, SIGNAL( toggled( bool ) ), leftPaneButton, SLOT( setDisabled( bool ) ) );
     connect( m_rememberCheckBox, SIGNAL( toggled( bool ) ), m_leftPaneEdit, SLOT( setDisabled( bool ) ) );
 
+    QGroupBox* updateGroup = new QGroupBox( tr( "Automatic Update" ), generalTab );
+    QGridLayout* updateLayout = new QGridLayout( updateGroup );
+    generalLayout->addWidget( updateGroup );
+
+    m_updateCheckBox = new QCheckBox( tr( "&Enable automatic checking for latest version of Saladin" ), directoriesGroup );
+    updateLayout->addWidget( m_updateCheckBox, 0, 0 );
+
     generalLayout->addStretch( 1 );
 
     QWidget* toolsTab = new QWidget( m_tabWidget );
@@ -198,6 +205,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     m_rememberCheckBox->setChecked( settings->value( "RememberDirectories" ).toBool() );
 
+    m_updateCheckBox->setChecked( settings->value( "AutoUpdate" ).toBool() );
+
     m_viewerEdit->setText( settings->value( "ViewerTool" ).toString() );
     m_editorEdit->setText( settings->value( "EditorTool" ).toString() );
     m_consoleEdit->setText( settings->value( "ConsoleTool" ).toString() );
@@ -228,6 +237,7 @@ bool SettingsDialog::apply()
     settings->setValue( "Directory1", QVariant::fromValue( m_pidls[ 0 ] ) );
     settings->setValue( "Directory2", QVariant::fromValue( m_pidls[ 1 ] ) );
     settings->setValue( "RememberDirectories", m_rememberCheckBox->isChecked() );
+    settings->setValue( "AutoUpdate", m_updateCheckBox->isChecked() );
 
     settings->setValue( "ViewerTool", m_viewerEdit->text() );
     settings->setValue( "EditorTool", m_editorEdit->text() );

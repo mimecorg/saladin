@@ -18,9 +18,11 @@
 
 #include "application.h"
 #include "mainwindow.h"
+#include "aboutbox.h"
 
 #include "utils/localsettings.h"
 #include "utils/dataserializer.h"
+#include "utils/updateclient.h"
 #include "utils/iconloader.h"
 #include "shell/shellfolder.h"
 #include "shell/shellpidl.h"
@@ -58,10 +60,28 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
     m_mainWindow->initialize();
     m_mainWindow->show();
     m_mainWindow->openDirectories();
+
+    m_updateClient = new UpdateClient( "saladin", version(), this );
+
+    connect( m_updateClient, SIGNAL( stateChanged() ), this, SLOT( showUpdateState() ) );
+
+    settingsChanged();
+
+    connect( m_settings, SIGNAL( settingsChanged() ), this, SLOT( settingsChanged() ) );
+
+    if ( m_settings->value( "LastVersion" ).toString() != version() ) {
+        m_settings->setValue( "LastVersion", version() );
+        about();
+    }
 }
 
 Application::~Application()
 {
+    delete m_updateSection;
+
+    delete m_updateClient;
+    m_updateClient = NULL;
+
     delete m_mainWindow;
     m_mainWindow = NULL;
 
@@ -106,15 +126,147 @@ void Application::about()
     QString message;
     message += "<h3>" + tr( "Saladin %1" ).arg( version() ) + "</h3>";
     message += "<p>" + tr( "Dual-pane file manager for Windows." ) + "</p>";
-    message += "<p>" + tr( "Built on %1 in %2-bit %3 mode." ).arg( compiled.toString( "yyyy-MM-dd HH:mm" ), configBits, configMode );
-    message += "<br>" + tr( "Using Qt %1 (%2 linking) and Windows Shell %3." ).arg( qtVersion, configLink, shellVersion ) + "</p>";
     message += "<p>" + tr( "This program is free software: you can redistribute it and/or modify"
         " it under the terms of the GNU General Public License as published by"
         " the Free Software Foundation, either version 3 of the License, or"
         " (at your option) any later version." ) + "</p>";
     message += "<p>" + trUtf8( "Copyright (C) 2010 Michał Męciński" ) + "</p>";
 
-    QMessageBox::about( activeWindow(), tr( "About Saladin" ), message );
+    QString link = "<a href=\"http://saladin.mimec.org\">saladin.mimec.org</a>";
+
+    QString helpMessage;
+    helpMessage += "<h4>" + tr( "Help" ) + "</h4>";
+    helpMessage += "<p>" + tr( "Open the Saladin Quick Guide for help." ) + "</p>";
+
+    QString webMessage;
+    webMessage += "<h4>" + tr( "Web Page" ) + "</h4>";
+    webMessage += "<p>" + tr( "Visit %1 for more information about Saladin." ).arg( link ) + "</p>";
+
+    QString donateMessage;
+    donateMessage += "<h4>" + tr( "Donations" ) + "</h4>";
+    donateMessage += "<p>" + tr( "If you like this program, your donation will help me dedicate more time for it, support it and implement new features." ) + "</p>";
+
+    QString updateMessage;
+    updateMessage += "<h4>" + tr( "Latest Version" ) + "</h4>";
+    updateMessage += "<p>" + tr( "Automatic checking for latest version is disabled. You can enable it in program settings." ) + "</p>";
+
+    QString infoMessage;
+    infoMessage += "<h4>" + tr( "Technical Information" ) + "</h4>";
+    infoMessage += "<p>" + tr( "Built on %1 in %2-bit %3 mode." ).arg( compiled.toString( "yyyy-MM-dd HH:mm" ), configBits, configMode );
+    infoMessage += " " + tr( "Using Qt %1 (%2 linking) and Windows Shell %3." ).arg( qtVersion, configLink, shellVersion ) + "</p>";
+
+    AboutBox aboutBox( tr( "About Saladin" ), message, m_mainWindow );
+
+    AboutBoxSection* helpSection = aboutBox.addSection( IconLoader::pixmap( "help" ), helpMessage );
+
+    QPushButton* helpButton = helpSection->addButton( tr( "Quick Guide" ) );
+    connect( helpButton, SIGNAL( clicked() ), this, SLOT( showQuickGuide() ) );
+
+    aboutBox.addSection( IconLoader::pixmap( "web" ), webMessage );
+
+    AboutBoxSection* donateSection = aboutBox.addSection( IconLoader::pixmap( "bookmark" ), donateMessage );
+
+    QPushButton* donateButton = donateSection->addButton( tr( "Donate" ) );
+    connect( donateButton, SIGNAL( clicked() ), this, SLOT( openDonations() ) );
+
+    delete m_updateSection;
+
+    m_updateSection = aboutBox.addSection( IconLoader::pixmap( "info" ), updateMessage );
+
+    if ( m_updateClient->autoUpdate() ) {
+        showUpdateState();
+    } else {
+        m_updateButton = m_updateSection->addButton( tr( "Check Now" ) );
+        connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
+    }
+
+    aboutBox.addSection( IconLoader::pixmap( "info" ), infoMessage );
+
+    aboutBox.exec();
+}
+
+void Application::showQuickGuide()
+{
+}
+
+void Application::showUpdateState()
+{
+    AboutBoxToolSection* toolSection = NULL;
+
+    if ( !m_updateSection ) {
+        if ( m_updateClient->state() != UpdateClient::UpdateAvailableState || m_updateClient->updateVersion() == m_shownVersion )
+            return;
+
+        m_updateSection = toolSection = new AboutBoxToolSection();
+    }
+
+    m_updateSection->clearButtons();
+
+    QString header = "<h4>" + tr( "Latest Version" ) + "</h4>";
+
+    switch ( m_updateClient->state() ) {
+        case UpdateClient::CheckingState: {
+            m_updateSection->setPixmap( IconLoader::pixmap( "info" ) );
+            m_updateSection->setMessage( header + "<p>" + tr( "Checking for latest version..." ) + "</p>" );
+            break;
+        }
+
+        case UpdateClient::ErrorState: {
+            m_updateSection->setPixmap( IconLoader::pixmap( "warning" ) );
+            m_updateSection->setMessage( header + "<p>" + tr( "Checking for latest version failed." ) + "</p>" );
+
+            m_updateButton = m_updateSection->addButton( tr( "Retry" ) );
+            connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
+            break;
+        }
+
+        case UpdateClient::CurrentVersionState: {
+            m_updateSection->setPixmap( IconLoader::pixmap( "info" ) );
+            m_updateSection->setMessage( header + "<p>" + tr( "You version of Saladin is up to date." ) + "</p>" );
+            break;
+        }
+
+        case UpdateClient::UpdateAvailableState: {
+            m_updateSection->setPixmap( IconLoader::pixmap( "warning" ) );
+            m_updateSection->setMessage( header + "<p>" + tr( "The latest version of Saladin is %1." ).arg( m_updateClient->updateVersion() ) + "</p>" );
+
+            QPushButton* notesButton = m_updateSection->addButton( tr( "Release Notes" ) );
+            connect( notesButton, SIGNAL( clicked() ), this, SLOT( openReleaseNotes() ) );
+
+            QPushButton* downloadButton = m_updateSection->addButton( tr( "Download" ) );
+            connect( downloadButton, SIGNAL( clicked() ), this, SLOT( openDownloads() ) );
+
+            m_shownVersion = m_updateClient->updateVersion();
+            break;
+        }
+    }
+
+    if ( toolSection ) {
+        toolSection->updatePosition();
+        toolSection->addCloseButton( IconLoader::icon( "close" ) );
+        toolSection->show();
+    }
+}
+
+void Application::openDonations()
+{
+    QDesktopServices::openUrl( QUrl( "http://saladin.mimec.org/donations" ) );
+}
+
+void Application::openReleaseNotes()
+{
+    QDesktopServices::openUrl( m_updateClient->notesUrl() );
+}
+
+void Application::openDownloads()
+{
+    QDesktopServices::openUrl( m_updateClient->downloadUrl() );
+}
+
+void Application::settingsChanged()
+{
+    if ( m_updateClient )
+        m_updateClient->setAutoUpdate( m_settings->value( "AutoUpdate" ).toBool() );
 }
 
 QString Application::version() const
@@ -176,6 +328,9 @@ void Application::initializeSettings()
 
     if ( !m_settings->contains( "RememberDirectories" ) )
         m_settings->setValue( "RememberDirectories", false );
+
+    if ( !m_settings->contains( "AutoUpdate" ) )
+        m_settings->setValue( "AutoUpdate", true );
 
     if ( !m_settings->contains( "EditorTool" ) ) {
         wchar_t buffer[ MAX_PATH ];
