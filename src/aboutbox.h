@@ -48,7 +48,7 @@ protected:
 
 public:
     void setPixmap( const QPixmap& pixmap );
-    virtual void setMessage( const QString& message );
+    void setMessage( const QString& message );
 
     QPushButton* addButton( const QString& text );
 
@@ -72,12 +72,14 @@ public:
     AboutBoxToolSection();
     ~AboutBoxToolSection();
 
-public:
-    void updatePosition();
-    void addCloseButton( const QIcon& icon );
-
 public: // overrides
-    void setMessage( const QString& message );
+    bool event( QEvent* e );
+
+private slots:
+    void updatePosition();
+
+private:
+    QToolButton* m_closeButton;
 };
 
 class AboutBoxScrollArea : public QScrollArea

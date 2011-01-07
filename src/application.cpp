@@ -191,16 +191,14 @@ void Application::showQuickGuide()
 
 void Application::showUpdateState()
 {
-    AboutBoxToolSection* toolSection = NULL;
-
     if ( !m_updateSection ) {
         if ( m_updateClient->state() != UpdateClient::UpdateAvailableState || m_updateClient->updateVersion() == m_shownVersion )
             return;
 
-        m_updateSection = toolSection = new AboutBoxToolSection();
+        m_updateSection = new AboutBoxToolSection();
+    } else {
+        m_updateSection->clearButtons();
     }
-
-    m_updateSection->clearButtons();
 
     QString header = "<h4>" + tr( "Latest Version" ) + "</h4>";
 
@@ -239,12 +237,6 @@ void Application::showUpdateState()
             m_shownVersion = m_updateClient->updateVersion();
             break;
         }
-    }
-
-    if ( toolSection ) {
-        toolSection->updatePosition();
-        toolSection->addCloseButton( IconLoader::icon( "close" ) );
-        toolSection->show();
     }
 }
 

@@ -19,6 +19,7 @@
 #include "aboutbox.h"
 #include "application.h"
 
+#include "utils/iconloader.h"
 #include "xmlui/gradientwidget.h"
 
 AboutBox::AboutBox( const QString& title, const QString& message, QWidget* parent ) : QDialog( parent )
@@ -171,47 +172,52 @@ AboutBoxToolSection::AboutBoxToolSection() : AboutBoxSection( Qt::Tool | Qt::Fra
 
     setBackgroundRole( QPalette::ToolTipBase );
     setAutoFillBackground( true );
+
+    m_closeButton = new QToolButton( this );
+    m_closeButton->setAutoRaise( true );
+    m_closeButton->setIconSize( QSize( 16, 16 ) );
+    m_closeButton->setIcon( IconLoader::icon( "close" ) );
+    m_closeButton->setToolTip( tr( "Close" ) );
+
+    connect( m_closeButton, SIGNAL( clicked() ), this, SLOT( close() ) );
+
+    connect( QApplication::desktop(), SIGNAL( workAreaResized( int ) ), this, SLOT( updatePosition() ) );
 }
 
 AboutBoxToolSection::~AboutBoxToolSection()
 {
 }
 
+bool AboutBoxToolSection::event( QEvent* e )
+{
+    if ( e->type() == QEvent::LayoutRequest ) {
+        int w = 450;
+        int h = heightForWidth( w );
+        resize( w, h );
+
+        m_closeButton->adjustSize();
+        m_closeButton->move( w - m_closeButton->width() - 2, 2 );
+
+        updatePosition();
+
+        show();
+    }
+
+    return AboutBoxSection::event( e );
+}
+
 void AboutBoxToolSection::updatePosition()
 {
-    QDesktopWidget desktop;
-    QRect screen = desktop.screenGeometry();
-    QRect available = desktop.availableGeometry();
-
-    int w = 450;
-    int h = sizeHint().height();
-    resize( w, h );
+    QDesktopWidget* desktop = QApplication::desktop();
+    QRect screen = desktop->screenGeometry();
+    QRect available = desktop->availableGeometry();
 
     if ( available.left() > screen.left() )
-        move( available.left(), available.bottom() - h + 1 );
+        move( available.left(), available.bottom() - height() + 1 );
+    else if ( available.top() > screen.top() )
+        move( available.right() - width() + 1, available.top() );
     else
-        move( available.right() - w, available.bottom() - h + 1 );
-}
-
-void AboutBoxToolSection::addCloseButton( const QIcon& icon )
-{
-    QToolButton* button = new QToolButton( this );
-    button->setAutoRaise( true );
-    button->setIconSize( QSize( 16, 16 ) );
-    button->setIcon( icon );
-    button->setToolTip( tr( "Close" ) );
-
-    button->resize( button->sizeHint() );
-    button->move( width() - button->width() - 2, 2 );
-
-    connect( button, SIGNAL( clicked() ), this, SLOT( close() ) );
-}
-
-void AboutBoxToolSection::setMessage( const QString& message )
-{
-    AboutBoxSection::setMessage( message );
-
-    updatePosition();
+        move( available.right() - width() + 1, available.bottom() - height() + 1 );
 }
 
 AboutBoxScrollArea::AboutBoxScrollArea( QWidget* parent ) : QScrollArea( parent )
