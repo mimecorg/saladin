@@ -33,7 +33,7 @@ public:
     };
 
 public:
-    UpdateClient( const QString& application, const QString& version, QObject* parent );
+    UpdateClient( const QString& application, const QString& version, QNetworkAccessManager* manager );
     ~UpdateClient();
 
 public:

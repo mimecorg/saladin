@@ -38,8 +38,6 @@ public:
 public:
     QString version() const;
 
-    MainWindow* mainWindow() const { return m_mainWindow; }
-
     QString translationsPath() const { return m_translationsPath; }
 
     QString locateDataFile( const QString& name );
@@ -78,8 +76,6 @@ private:
     void saveBookmarks();
 
 private:
-    MainWindow* m_mainWindow;
-
     QString m_translationsPath;
 
     QString m_dataPath;

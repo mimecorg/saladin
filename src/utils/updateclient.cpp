@@ -18,15 +18,14 @@
 
 #include "updateclient.h"
 
-UpdateClient::UpdateClient( const QString& application, const QString& version, QObject* parent ) : QObject( parent ),
+UpdateClient::UpdateClient( const QString& application, const QString& version, QNetworkAccessManager* manager ) : QObject( manager ),
+    m_manager( manager ),
     m_currentReply( NULL ),
     m_timer( NULL ),
     m_application( application ),
     m_version( version ),
     m_state( ErrorState )
 {
-    m_manager = new QNetworkAccessManager( this );
-
     connect( m_manager, SIGNAL( finished( QNetworkReply* ) ), this, SLOT( finished( QNetworkReply* ) ) );
 }
 

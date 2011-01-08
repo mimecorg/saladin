@@ -49,6 +49,11 @@ public:
     ~PaneWidget();
 
 public:
+    void restoreSettings();
+    void saveSettings();
+
+    void populateDrives();
+
     void setSourcePane( bool source );
 
     void setFolder( ShellFolder* folder );
@@ -127,6 +132,8 @@ private:
     bool viewDropEvent( QDropEvent* e );
 
     bool dragDropHelper( QDropEvent* e, bool doDrop );
+
+    void resizeColumns();
 
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );

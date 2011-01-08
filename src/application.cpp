@@ -56,12 +56,12 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
 
     setWindowIcon( IconLoader::icon( "saladin" ) );
 
-    m_mainWindow = new MainWindow();
-    m_mainWindow->initialize();
-    m_mainWindow->show();
-    m_mainWindow->openDirectories();
+    mainWindow = new MainWindow();
+    mainWindow->restoreSettings();
 
-    m_updateClient = new UpdateClient( "saladin", version(), this );
+    QNetworkAccessManager* manager = new QNetworkAccessManager( this );
+
+    m_updateClient = new UpdateClient( "saladin", version(), manager );
 
     connect( m_updateClient, SIGNAL( stateChanged() ), this, SLOT( showUpdateState() ) );
 
@@ -77,16 +77,13 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
 
 Application::~Application()
 {
+    mainWindow->saveSettings();
+    m_settings->save();
+
     delete m_updateSection;
 
-    delete m_updateClient;
-    m_updateClient = NULL;
-
-    delete m_mainWindow;
-    m_mainWindow = NULL;
-
-    delete m_settings;
-    m_settings = NULL;
+    delete mainWindow;
+    mainWindow = NULL;
 }
 
 extern "C" IMAGE_DOS_HEADER __ImageBase;
@@ -155,7 +152,7 @@ void Application::about()
     infoMessage += "<p>" + tr( "Built on %1 in %2-bit %3 mode." ).arg( compiled.toString( "yyyy-MM-dd HH:mm" ), configBits, configMode );
     infoMessage += " " + tr( "Using Qt %1 (%2 linking) and Windows Shell %3." ).arg( qtVersion, configLink, shellVersion ) + "</p>";
 
-    AboutBox aboutBox( tr( "About Saladin" ), message, m_mainWindow );
+    AboutBox aboutBox( tr( "About Saladin" ), message, mainWindow );
 
     AboutBoxSection* helpSection = aboutBox.addSection( IconLoader::pixmap( "help" ), helpMessage );
 
@@ -257,8 +254,7 @@ void Application::openDownloads()
 
 void Application::settingsChanged()
 {
-    if ( m_updateClient )
-        m_updateClient->setAutoUpdate( m_settings->value( "AutoUpdate" ).toBool() );
+    m_updateClient->setAutoUpdate( m_settings->value( "AutoUpdate" ).toBool() );
 }
 
 QString Application::version() const

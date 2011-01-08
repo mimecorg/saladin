@@ -27,7 +27,6 @@ LocalSettings::LocalSettings( const QString& path, QObject* parent ) : QObject( 
 
 LocalSettings::~LocalSettings()
 {
-    save();
 }
 
 bool LocalSettings::contains( const QString& key ) const

@@ -35,9 +35,8 @@ public:
     ~MainWindow();
 
 public:
-    void initialize();
-
-    void openDirectories();
+    void restoreSettings();
+    void saveSettings();
 
     DriveStripManager* driveStripManager() const { return m_driveStripManager; }
 
@@ -134,5 +133,7 @@ private:
     PaneWidget* m_sourcePane;
     PaneWidget* m_targetPane;
 };
+
+extern MainWindow* mainWindow;
 
 #endif

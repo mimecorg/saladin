@@ -32,38 +32,15 @@
 #include "xmlui/toolstrip.h"
 #include "xmlui/builder.h"
 
+MainWindow* mainWindow = NULL;
+
 MainWindow::MainWindow() : QMainWindow(),
+    m_driveStripManager( NULL ),
     m_sourcePane( NULL ),
     m_targetPane( NULL )
 {
-    m_panes[ 0 ] = m_panes[ 1 ] = NULL;
+    mainWindow = this;
 
-    m_driveStripManager = new DriveStripManager( this );
-}
-
-MainWindow::~MainWindow()
-{
-    application->removeEventFilter( this );
-
-    LocalSettings* settings = application->applicationSettings();
-    settings->setValue( "MainWindowGeometry", saveGeometry() );
-
-    settings->setValue( "ViewHiddenFiles", action( "viewHidden" )->isChecked() );
-
-    if ( settings->value( "RememberDirectories" ).toBool() ) {
-        for ( int i = 0; i < 2; i++ ) {
-            ShellFolder* folder = m_panes[ i ]->folder();
-            QString path = folder->path();
-            if ( !path.startsWith( QLatin1String( "ftp://" ), Qt::CaseInsensitive ) ) {
-                QString key = QString( "Directory%1" ).arg( i + 1 );
-                settings->setValue( key, QVariant::fromValue( folder->pidl() ) );
-            }
-        }
-    }
-}
-
-void MainWindow::initialize()
-{
     setWindowTitle( tr( "Saladin" ) );
 
     QAction* action;
@@ -361,14 +338,6 @@ void MainWindow::initialize()
     layout->addWidget( m_panes[ 0 ] );
     layout->addWidget( m_panes[ 1 ] );
 
-    LocalSettings* settings = application->applicationSettings();
-    if ( settings->contains( "MainWindowGeometry" ) )
-        restoreGeometry( settings->value( "MainWindowGeometry" ).toByteArray() );
-    else
-        resize( QSize( 1020, 680 ) );
-
-    this->action( "viewHidden" )->setChecked( settings->value( "ViewHiddenFiles" ).toBool() );
-
     connect( m_panes[ 0 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 1 ], SLOT( resizeHeaderSection( int, int ) ) );
     connect( m_panes[ 1 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 0 ], SLOT( resizeHeaderSection( int, int ) ) );
     connect( m_panes[ 0 ], SIGNAL( headerSectionMoved( int, int ) ), m_panes[ 1 ], SLOT( moveHeaderSection( int, int ) ) );
@@ -377,9 +346,39 @@ void MainWindow::initialize()
     application->installEventFilter( this );
 }
 
-void MainWindow::openDirectories()
+MainWindow::~MainWindow()
+{
+}
+
+void MainWindow::restoreSettings()
 {
     LocalSettings* settings = application->applicationSettings();
+
+    action( "viewHidden" )->setChecked( settings->value( "ViewHiddenFiles" ).toBool() );
+
+    if ( settings->contains( "MainWindowGeometry" ) ) {
+        restoreGeometry( settings->value( "MainWindowGeometry" ).toByteArray() );
+    } else {
+        QRect available = QApplication::desktop()->availableGeometry( this );
+        resize( available.width() * 4 / 5, available.height() * 4 / 5 );
+        setWindowState( Qt::WindowMaximized );
+    }
+
+    for ( int i = 0; i < 2; i++ )
+        m_panes[ i ]->restoreSettings();
+
+    show();
+
+    QApplication::processEvents();
+
+    QApplication::setOverrideCursor( Qt::BusyCursor );
+
+    m_driveStripManager = new DriveStripManager( this );
+
+    for ( int i = 0; i < 2; i++ )
+        m_panes[ i ]->populateDrives();
+
+    QApplication::processEvents();
 
     for ( int i = 0; i < 2; i++ ) {
         QString key = QString( "Directory%1" ).arg( i + 1 );
@@ -395,6 +394,31 @@ void MainWindow::openDirectories()
     }
 
     m_panes[ 0 ]->activateView();
+
+    QApplication::restoreOverrideCursor();
+}
+
+void MainWindow::saveSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    settings->setValue( "ViewHiddenFiles", action( "viewHidden" )->isChecked() );
+
+    settings->setValue( "MainWindowGeometry", saveGeometry() );
+
+    for ( int i = 0; i < 2; i++ )
+        m_panes[ i ]->saveSettings();
+
+    if ( settings->value( "RememberDirectories" ).toBool() ) {
+        for ( int i = 0; i < 2; i++ ) {
+            ShellFolder* folder = m_panes[ i ]->folder();
+            QString path = folder->path();
+            if ( !path.startsWith( QLatin1String( "ftp://" ), Qt::CaseInsensitive ) ) {
+                QString key = QString( "Directory%1" ).arg( i + 1 );
+                settings->setValue( key, QVariant::fromValue( folder->pidl() ) );
+            }
+        }
+    }
 }
 
 bool MainWindow::eventFilter( QObject* object, QEvent* e )

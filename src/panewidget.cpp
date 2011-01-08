@@ -55,16 +55,12 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
     connect( m_strip, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( stripContextMenuRequested( const QPoint& ) ) );
 
-    MainWindow* mainWindow = application->mainWindow();
-
     m_strip->addAuxiliaryAction( mainWindow->action( "openRoot" ) );
     m_strip->addAuxiliaryAction( mainWindow->action( "openParent" ) );
     if ( location == LeftPane )
         m_strip->addAuxiliaryAction( mainWindow->action( "copyToRightPane" ) );
     else
         m_strip->addAuxiliaryAction( mainWindow->action( "copyToLeftPane" ) );
-
-    mainWindow->driveStripManager()->registerToolStrip( m_strip, this, SLOT( driveSelected( int ) ) );
 
     QHBoxLayout* editLayout = new QHBoxLayout();
 
@@ -132,17 +128,6 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->setSortingEnabled( true );
     m_view->sortByColumn( 0, Qt::AscendingOrder );
 
-    LocalSettings* settings = application->applicationSettings();
-    QString key = QString( "HeaderState%1" ).arg( location + 1 );
-    if ( settings->contains( key ) ) {
-        m_view->header()->restoreState( settings->value( key ).toByteArray() );
-    } else {
-        m_view->setColumnWidth( 0, 210 );
-        m_view->setColumnWidth( 1, 90 );
-        m_view->setColumnWidth( 2, 110 );
-        m_view->setColumnWidth( 3, 70 );
-    }
-
     m_renameTimer = new QTimer( this );
     m_renameTimer->setInterval( qApp->doubleClickInterval() + 200 );
     m_renameTimer->setSingleShot( true );
@@ -174,9 +159,34 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
 PaneWidget::~PaneWidget()
 {
+}
+
+void PaneWidget::restoreSettings()
+{
     LocalSettings* settings = application->applicationSettings();
+
+    QString key = QString( "HeaderState%1" ).arg( m_location + 1 );
+    if ( settings->contains( key ) ) {
+        m_view->header()->restoreState( settings->value( key ).toByteArray() );
+    } else {
+        m_view->setColumnWidth( 0, 210 );
+        m_view->setColumnWidth( 1, 90 );
+        m_view->setColumnWidth( 2, 110 );
+        m_view->setColumnWidth( 3, 70 );
+    }
+}
+
+void PaneWidget::saveSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
     QString key = QString( "HeaderState%1" ).arg( m_location + 1 );
     settings->setValue( key, m_view->header()->saveState() );
+}
+
+void PaneWidget::populateDrives()
+{
+    mainWindow->driveStripManager()->registerToolStrip( m_strip, this, SLOT( driveSelected( int ) ) );
 }
 
 bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
@@ -214,6 +224,10 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
                 return viewDragLeaveEvent( static_cast<QDragLeaveEvent*>( e ) );
             case QEvent::Drop:
                 return viewDropEvent( static_cast<QDropEvent*>( e ) );
+            case QEvent::Resize:
+                if ( watched == m_view )
+                    resizeColumns();
+                return false;
             default:
                 break;
         }
@@ -572,6 +586,17 @@ bool PaneWidget::dragDropHelper( QDropEvent* e, bool doDrop )
     return result;
 }
 
+void PaneWidget::resizeColumns()
+{
+    int w = width() - m_view->verticalScrollBar()->sizeHint().width() - m_view->frameWidth() * 2;
+    for ( int i = 1; i < m_model->columnCount(); i++ )
+        w -= m_view->columnWidth( i );
+
+    bool block = blockSignals( true );
+    m_view->setColumnWidth( 0, qMax( w, 150 ) );
+    blockSignals( block );
+}
+
 ShellFolder* PaneWidget::folder() const
 {
     return m_model->folder();
@@ -668,13 +693,13 @@ void PaneWidget::browse()
 
 void PaneWidget::driveSelected( int index )
 {
-    DriveStripManager* manager = application->mainWindow()->driveStripManager();
+    DriveStripManager* manager = mainWindow->driveStripManager();
     openDrive( manager->driveAt( index ) );
 }
 
 void PaneWidget::openDrive( const ShellDrive& drive )
 {
-    DriveStripManager* manager = application->mainWindow()->driveStripManager();
+    DriveStripManager* manager = mainWindow->driveStripManager();
     ShellFolder* folder = manager->computer()->openRootFolder( drive );
     if ( folder ) {
         setFolder( folder );
@@ -843,8 +868,8 @@ void PaneWidget::compareWith( const QList<ShellItem>& items )
 
 void PaneWidget::showDrivesMenu()
 {
-    MainWindow* mainWindow = application->mainWindow();
-    mainWindow->driveStripManager()->showDrivesMenu( m_strip );
+    DriveStripManager* manager = mainWindow->driveStripManager();
+    manager->showDrivesMenu( m_strip );
 }
 
 void PaneWidget::showHistory()
@@ -904,7 +929,6 @@ void PaneWidget::showBookmarks()
     if ( !actions.isEmpty() )
         menu.addSeparator();
 
-    MainWindow* mainWindow = application->mainWindow();
     menu.addAction( mainWindow->action( "addBookmark" ) );
     menu.addAction( mainWindow->action( "editBookmarks" ) );
 
@@ -983,7 +1007,7 @@ void PaneWidget::viewContextMenuRequested( const QPoint& pos )
 
 void PaneWidget::stripContextMenuRequested( const QPoint& pos )
 {
-    DriveStripManager* manager = application->mainWindow()->driveStripManager();
+    DriveStripManager* manager = mainWindow->driveStripManager();
 
     ShellDrive drive = manager->driveAt( m_strip, pos );
 
@@ -1028,6 +1052,10 @@ void PaneWidget::moveHeaderSection( int from, int to )
 
 void PaneWidget::updateStatus()
 {
+    DriveStripManager* manager = mainWindow->driveStripManager();
+    if ( !manager )
+        return;
+
     int selectedCount = m_model->selectedItemsCount();
     int totalCount = m_model->totalItemsCount();
 
@@ -1037,7 +1065,6 @@ void PaneWidget::updateStatus()
     m_selectionStatus->setText( QString( "%1 of %2 items selected (%3 of %4)" ).arg( QString::number( selectedCount ), QString::number( totalCount ),
         formatSize( selectedSize, false ), formatSize( totalSize, true ) ) );
 
-    DriveStripManager* manager = application->mainWindow()->driveStripManager();
     ShellDrive drive = manager->driveFromFolder( m_model->folder() );
 
     if ( drive.isValid() ) {
