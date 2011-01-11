@@ -72,7 +72,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "copy", action );
 
-    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "Copy File Names" ), this );
+    action = new QAction( IconLoader::icon( "copy-names" ), tr( "Copy File Names" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_C ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( copyNames() ) );
     setAction( "copyNames", action );

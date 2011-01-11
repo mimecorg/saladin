@@ -9,36 +9,30 @@
   <file>bookmark-16.png</file>
   <file>bookmark-22.png</file>
   <file>browse-16.png</file>
-  <file>browse-22.png</file>
   <file>calculate-16.png</file>
-  <file>calculate-22.png</file>
   <file>clone-16.png</file>
   <file>clone-22.png</file>
   <file>close-16.png</file>
   <file>compare-16.png</file>
-  <file>compare-22.png</file>
   <file>configure-16.png</file>
   <file>configure-22.png</file>
   <file>copy-16.png</file>
   <file>copy-22.png</file>
+  <file>copy-names-16.png</file>
   <file>delete-16.png</file>
   <file>delete-22.png</file>
   <file>edit-16.png</file>
   <file>edit-22.png</file>
   <file>edit-copy-16.png</file>
-  <file>edit-copy-22.png</file>
   <file>edit-cut-16.png</file>
-  <file>edit-cut-22.png</file>
   <file>edit-paste-16.png</file>
   <file>edit-paste-22.png</file>
   <file>explore-16.png</file>
-  <file>explore-22.png</file>
   <file>file-new-16.png</file>
   <file>file-new-22.png</file>
   <file>find-16.png</file>
   <file>find-22.png</file>
   <file>folder-compare-16.png</file>
-  <file>folder-compare-22.png</file>
   <file>folder-new-16.png</file>
   <file>folder-new-22.png</file>
   <file>ftp-16.png</file>
@@ -47,23 +41,16 @@
   <file>help-16.png</file>
   <file>history-16.png</file>
   <file>info-16.png</file>
-  <file>info-22.png</file>
   <file>move-16.png</file>
   <file>move-22.png</file>
   <file>multi-rename-16.png</file>
   <file>multi-rename-22.png</file>
   <file>open-16.png</file>
-  <file>open-22.png</file>
   <file>pack-16.png</file>
   <file>pack-22.png</file>
   <file>pane-same-16.png</file>
-  <file>pane-same-22.png</file>
   <file>pane-swap-16.png</file>
-  <file>pane-swap-22.png</file>
-  <file>properties-16.png</file>
-  <file>properties-22.png</file>
   <file>refresh-16.png</file>
-  <file>refresh-22.png</file>
   <file>rename-16.png</file>
   <file>rename-22.png</file>
   <file>saladin-16.png</file>
@@ -73,9 +60,7 @@
   <file>select-16.png</file>
   <file>select-22.png</file>
   <file>select-all-16.png</file>
-  <file>select-all-22.png</file>
   <file>select-invert-16.png</file>
-  <file>select-invert-22.png</file>
   <file>terminal-16.png</file>
   <file>terminal-22.png</file>
   <file>trashcan-16.png</file>
@@ -83,11 +68,9 @@
   <file>unselect-16.png</file>
   <file>unselect-22.png</file>
   <file>unselect-all-16.png</file>
-  <file>unselect-all-22.png</file>
   <file>view-16.png</file>
   <file>view-22.png</file>
   <file>view-hidden-16.png</file>
-  <file>view-hidden-22.png</file>
   <file>warning-16.png</file>
   <file>web-16.png</file>
 </qresource>
