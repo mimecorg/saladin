@@ -228,6 +228,10 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
                 if ( watched == m_view )
                     resizeColumns();
                 return false;
+            case QEvent::Paint:
+                if ( watched == m_view->viewport() )
+                    gotoItem();
+                return false;
             default:
                 break;
         }
@@ -597,6 +601,13 @@ void PaneWidget::resizeColumns()
     blockSignals( block );
 }
 
+void PaneWidget::gotoItem()
+{
+    QModelIndex index = m_model->gotoItemIndex();
+    if ( index.isValid() )
+        m_view->selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+}
+
 ShellFolder* PaneWidget::folder() const
 {
     return m_model->folder();
@@ -623,6 +634,11 @@ QList<ShellItem> PaneWidget::selectedItems() const
 ShellItem PaneWidget::currentItem() const
 {
     return m_model->itemAt( m_view->currentIndex() );
+}
+
+void PaneWidget::setGotoItemName( const QString& name )
+{
+    m_model->setGotoItemName( name );
 }
 
 void PaneWidget::refresh()

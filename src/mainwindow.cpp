@@ -656,6 +656,8 @@ void MainWindow::editNew()
     if ( !item.isValid() )
         return;
 
+    m_sourcePane->setGotoItemName( item.name() );
+
     QString path = folder->itemPath( item );
 
     startTool( EditorTool, QString( "\"%1\"" ).arg( path ), folder->path() ); 
@@ -861,6 +863,9 @@ void MainWindow::transferItems( ShellFolder* sourceFolder, const QList<ShellItem
 
     if ( done )
         m_sourcePane->unselectAll();
+
+    if ( done && sameTarget && items.count() == 1 )
+        m_sourcePane->setGotoItemName( dialog.name() );
 }
 
 void MainWindow::createFolder()
@@ -883,9 +888,18 @@ void MainWindow::createFolder()
 
     QString name = dialog.name();
 
+    bool done = false;
+
     ShellItem item = folder->childItem( name );
-    if ( !item.isValid() )
-        folder->createFolder( name );
+    if ( item.isValid() ) {
+        name = item.name();
+        done = item.attributes().testFlag( ShellItem::Directory );
+    } else {
+        done = folder->createFolder( name );
+    }
+
+    if ( done )
+        m_sourcePane->setGotoItemName( name );
 }
 
 void MainWindow::moveToTrashCan()

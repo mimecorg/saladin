@@ -78,6 +78,9 @@ public:
 
     void refresh();
 
+    void setGotoItemName( const QString& name );
+    const QModelIndex gotoItemIndex();
+
 public: // overrides
     int columnCount( const QModelIndex& parent = QModelIndex() ) const;
     QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
@@ -128,6 +131,8 @@ private:
     QList<ItemChange> m_changes;
     bool m_pendingRefresh;
     bool m_pendingUpdate;
+
+    QString m_gotoItemName;
 
     friend class ShellItemLessThan;
 };

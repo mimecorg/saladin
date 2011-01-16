@@ -63,6 +63,8 @@ public:
     QList<ShellItem> selectedItems() const;
     ShellItem currentItem() const;
 
+    void setGotoItemName( const QString& name );
+
     void activateView( const ShellItem& item = ShellItem() );
 
     void refresh();
@@ -134,6 +136,7 @@ private:
     bool dragDropHelper( QDropEvent* e, bool doDrop );
 
     void resizeColumns();
+    void gotoItem();
 
     void enterDirectory( const ShellItem& item );
     void openDrive( const ShellDrive& drive );

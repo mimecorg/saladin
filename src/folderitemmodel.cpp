@@ -109,10 +109,31 @@ void FolderItemModel::refresh()
     m_extractQueue.clear();
     m_changes.clear();
     m_pendingRefresh = false;
+    m_gotoItemName.clear();
 
     emit layoutChanged();
 
     QApplication::restoreOverrideCursor();
+}
+
+void FolderItemModel::setGotoItemName( const QString& name )
+{
+    m_gotoItemName = name;
+}
+
+const QModelIndex FolderItemModel::gotoItemIndex()
+{
+    if ( m_gotoItemName.isEmpty() )
+        return QModelIndex();
+
+    for ( int j = 0; j < m_items.count(); j++ ) {
+        if ( m_items.at( j ).name() == m_gotoItemName ) {
+            m_gotoItemName.clear();
+            return rowToIndex( j, 0 );
+        }
+    }
+
+    return QModelIndex();
 }
 
 void FolderItemModel::itemChanged( const ItemChange& change )
@@ -170,8 +191,14 @@ void FolderItemModel::applyChanges()
                         case ItemChange::ItemRemoved:
                             for ( int k = 0; k < names.count(); k++ ) {
                                 QString& name = names[ k ];
-                                if ( name == item.name() )
-                                    name.clear();
+                                if ( name == item.name() ) {
+                                    if ( j < m_items.count() - 1 )
+                                        name = m_items.at( j + 1 ).name();
+                                    else if ( j > 0 )
+                                        name = m_items.at( j - 1 ).name();
+                                    else
+                                        name.clear();
+                                }
                             }
                             m_items.removeAt( j );
                             break;
