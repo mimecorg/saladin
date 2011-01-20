@@ -274,6 +274,7 @@ void MultiRenameWidget::transformNames()
         bool isRegExp = m_regExpCheckBox->isChecked();
         if ( isRegExp ) {
             regExp.setCaseSensitivity( sensitivity );
+            regExp.setPatternSyntax( QRegExp::RegExp2 );
             regExp.setPattern( search );
         }
 
