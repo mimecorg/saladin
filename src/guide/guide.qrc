@@ -1,0 +1,13 @@
+<RCC version="1.0">
+<qresource prefix="/guide">
+  <file>functions.html</file>
+  <file>index.html</file>
+  <file>lists.html</file>
+  <file>masks.html</file>
+  <file>regexps.html</file>
+  <file>shortcuts.html</file>
+  <file>style.css</file>
+  <file>tools.html</file>
+  <file>wildcards.html</file>
+</qresource>
+</RCC>

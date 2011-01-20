@@ -1,6 +1,7 @@
 <RCC version="1.0">
 <qresource prefix="/resources">
   <file>bookmarksdialog.xml</file>
+  <file>guidedialog.xml</file>
   <file>mainwindow.xml</file>
 </qresource>
 </RCC>

@@ -1,0 +1,136 @@
+<html>
+<head>
+  <title>Regular Expressions</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<h1>Regular Expressions</h1>
+
+<p>The following regular expressions can be used in the search pattern when renaming or cloning multiple files and the regular expressions option is enabled:</p>
+
+<table width="100%">
+<tr>
+ <th>Expression</th>
+ <th>Description</th>
+</tr>
+<tr>
+ <td valign="top">.</td>
+ <td>Matches any single character.</td>
+</tr>
+<tr>
+ <td valign="top">\</td>
+ <td>Escapes the character following the backslash.</td>
+</tr>
+<tr>
+ <td valign="top">\x<i>xxxx</i></td>
+ <td>Matches the Unicode character corresponding to the hexadecimal number <i>hhhh</i>.</td>
+</tr>
+<tr>
+ <td valign="top">\0<i>ooo</i></td>
+ <td>Matches the ASCII character corresponding to the octal number <i>ooo</i>.</td>
+</tr>
+<tr>
+ <td valign="top">\d</td>
+ <td>Matches a digit.</td>
+</tr>
+<tr>
+ <td valign="top">\D</td>
+ <td>Matches a non-digit.</td>
+</tr>
+<tr>
+ <td valign="top">\s</td>
+ <td>Matches a whitespace character.</td>
+</tr>
+<tr>
+ <td valign="top">\S</td>
+ <td>Matches a non-whitespace character.</td>
+</tr>
+<tr>
+ <td valign="top">\w</td>
+ <td>Matches a word character (a letter, digit or undescore).</td>
+</tr>
+<tr>
+ <td valign="top">\W</td>
+ <td>Matches a non-word character.</td>
+</tr>
+<tr>
+ <td valign="top">[...]</td>
+ <td>Matches any character listed in the set. Within the set a dash can be used to indicate a range of characters, e.g. [0-9] matches any digit.</td>
+</tr>
+<tr>
+ <td valign="top">[^...]</td>
+ <td>Matches any character not listed in the set.</td>
+</tr>
+<tr>
+ <td valign="top">|</i></td>
+ <td>Matches either expression it separates.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>?</td>
+ <td>Matches zero or one occurrences of <i>E</i> (where <i>E</i> is a single character, set of characters or group).</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>*</td>
+ <td>Matches zero or more occurrences of <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>+</td>
+ <td>Matches one or more occurrences of <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{<i>n</i>}</td>
+ <td>Matches exactly <i>n</i> occurrences of <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{<i>n</i>,}</td>
+ <td>Matches at least <i>n</i> occurrences of <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{,<i>m</i>}</td>
+ <td>Matches at most <i>m</i> occurrences of <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{<i>n</i>,<i>m</i>}</td>
+ <td>Matches at least <i>n</i> and at most <i>m</i> occurrences of <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top">(...)</td>
+ <td>Groups a subexpression together so it can be quantified and captured.</td>
+</tr>
+<tr>
+ <td valign="top">\1, \2, ...</td>
+ <td>Backreference; matches the same text as previously matched within first, second, etc., set of parentheses. It can also be used in the replacement text to insert a captured group.</td>
+</tr>
+<tr>
+ <td valign="top">^</td>
+ <td>Matches only at the beginning of the string.</td>
+</tr>
+<tr>
+ <td valign="top">$</td>
+ <td>Matches only at the end of the string.</td>
+</tr>
+<tr>
+ <td valign="top">\b</td>
+ <td>Matches only at a word boundary (the beginning or the end of a word).</td>
+</tr>
+<tr>
+ <td valign="top">\B</td>
+ <td>Matches only at a non-word boundary.</td>
+</tr>
+<tr>
+ <td valign="top">(?=<i>E</i>)</td>
+ <td>Positive lookahead; matches only if <i>E</t> matches at the current position.</td>
+</tr>
+<tr>
+ <td valign="top">(?!<i>E</i>)</td>
+ <td>Negative lookahead; matches only if <i>E</t> does not match at the current position.</td>
+</tr>
+<tr>
+ <td valign="top">(?:<i>E</i>)</td>
+ <td>Non-capturing group.</td>
+</tr>
+</table>
+
+</body>
+</html>

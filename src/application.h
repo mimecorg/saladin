@@ -26,7 +26,9 @@
 class MainWindow;
 class LocalSettings;
 class UpdateClient;
+class AboutBox;
 class AboutBoxSection;
+class GuideDialog;
 
 class Application : public QApplication
 {
@@ -75,6 +77,8 @@ private:
     void loadBookmarks();
     void saveBookmarks();
 
+    QString technicalInformation();
+
 private:
     QString m_translationsPath;
 
@@ -88,10 +92,14 @@ private:
 
     UpdateClient* m_updateClient;
 
+    QPointer<AboutBox> m_aboutBox;
+
     QPointer<AboutBoxSection> m_updateSection;
     QPointer<QPushButton> m_updateButton;
 
     QString m_shownVersion;
+
+    QPointer<GuideDialog> m_guideDialog;
 };
 
 extern Application* application;

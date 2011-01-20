@@ -1,0 +1,36 @@
+body
+{
+  font-size: large;
+}
+h1
+{
+  font-size: x-large;
+  font-weight: bold;
+  color: #358;
+  margin: 0 0 1em 0;
+}
+h2
+{
+  font-size: large;
+  font-weight: bold;
+  color: #358;
+  margin: 0 0 1em 0;
+}
+p
+{
+  margin: 0 0 0.8em 0;
+}
+table
+{
+  margin: 0.8em 0 0.8em 0;
+}
+th
+{
+  background-color: #ccf;
+  padding: 0.2em;
+}
+td
+{
+  background-color: #eee;
+  padding: 0.2em;
+}

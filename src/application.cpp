@@ -19,6 +19,7 @@
 #include "application.h"
 #include "mainwindow.h"
 #include "aboutbox.h"
+#include "guidedialog.h"
 
 #include "utils/localsettings.h"
 #include "utils/dataserializer.h"
@@ -88,7 +89,7 @@ Application::~Application()
 
 extern "C" IMAGE_DOS_HEADER __ImageBase;
 
-void Application::about()
+QString Application::technicalInformation()
 {
 #if defined( Q_OS_WIN64 )
     QString configBits = "64";
@@ -120,70 +121,91 @@ void Application::about()
     const IMAGE_NT_HEADERS* header = (const IMAGE_NT_HEADERS*)( (char*)&__ImageBase + __ImageBase.e_lfanew );
     QDateTime compiled = QDateTime::fromTime_t( header->FileHeader.TimeDateStamp );
 
-    QString message;
-    message += "<h3>" + tr( "Saladin %1" ).arg( version() ) + "</h3>";
-    message += "<p>" + tr( "Dual-pane file manager for Windows." ) + "</p>";
-    message += "<p>" + tr( "This program is free software: you can redistribute it and/or modify"
-        " it under the terms of the GNU General Public License as published by"
-        " the Free Software Foundation, either version 3 of the License, or"
-        " (at your option) any later version." ) + "</p>";
-    message += "<p>" + trUtf8( "Copyright (C) 2010 Michał Męciński" ) + "</p>";
-
-    QString link = "<a href=\"http://saladin.mimec.org\">saladin.mimec.org</a>";
-
-    QString helpMessage;
-    helpMessage += "<h4>" + tr( "Help" ) + "</h4>";
-    helpMessage += "<p>" + tr( "Open the Saladin Quick Guide for help." ) + "</p>";
-
-    QString webMessage;
-    webMessage += "<h4>" + tr( "Web Page" ) + "</h4>";
-    webMessage += "<p>" + tr( "Visit %1 for more information about Saladin." ).arg( link ) + "</p>";
-
-    QString donateMessage;
-    donateMessage += "<h4>" + tr( "Donations" ) + "</h4>";
-    donateMessage += "<p>" + tr( "If you like this program, your donation will help me dedicate more time for it, support it and implement new features." ) + "</p>";
-
-    QString updateMessage;
-    updateMessage += "<h4>" + tr( "Latest Version" ) + "</h4>";
-    updateMessage += "<p>" + tr( "Automatic checking for latest version is disabled. You can enable it in program settings." ) + "</p>";
-
     QString infoMessage;
     infoMessage += "<h4>" + tr( "Technical Information" ) + "</h4>";
     infoMessage += "<p>" + tr( "Built on %1 in %2-bit %3 mode." ).arg( compiled.toString( "yyyy-MM-dd HH:mm" ), configBits, configMode );
     infoMessage += " " + tr( "Using Qt %1 (%2 linking) and Windows Shell %3." ).arg( qtVersion, configLink, shellVersion ) + "</p>";
 
-    AboutBox aboutBox( tr( "About Saladin" ), message, mainWindow );
+    return infoMessage;
+}
 
-    AboutBoxSection* helpSection = aboutBox.addSection( IconLoader::pixmap( "help" ), helpMessage );
+void Application::about()
+{
+    if ( !m_aboutBox ) {
+        QString message;
+        message += "<h3>" + tr( "Saladin %1" ).arg( version() ) + "</h3>";
+        message += "<p>" + tr( "Dual-pane file manager for Windows." ) + "</p>";
+        message += "<p>" + tr( "This program is free software: you can redistribute it and/or modify"
+            " it under the terms of the GNU General Public License as published by"
+            " the Free Software Foundation, either version 3 of the License, or"
+            " (at your option) any later version." ) + "</p>";
+        message += "<p>" + trUtf8( "Copyright (C) 2010 Michał Męciński" ) + "</p>";
 
-    QPushButton* helpButton = helpSection->addButton( tr( "Quick Guide" ) );
-    connect( helpButton, SIGNAL( clicked() ), this, SLOT( showQuickGuide() ) );
+        QString link = "<a href=\"http://saladin.mimec.org\">saladin.mimec.org</a>";
 
-    aboutBox.addSection( IconLoader::pixmap( "web" ), webMessage );
+        QString helpMessage;
+        helpMessage += "<h4>" + tr( "Help" ) + "</h4>";
+        helpMessage += "<p>" + tr( "Open the Saladin Quick Guide for help." ) + "</p>";
 
-    AboutBoxSection* donateSection = aboutBox.addSection( IconLoader::pixmap( "bookmark" ), donateMessage );
+        QString webMessage;
+        webMessage += "<h4>" + tr( "Web Page" ) + "</h4>";
+        webMessage += "<p>" + tr( "Visit %1 for more information about Saladin." ).arg( link ) + "</p>";
 
-    QPushButton* donateButton = donateSection->addButton( tr( "Donate" ) );
-    connect( donateButton, SIGNAL( clicked() ), this, SLOT( openDonations() ) );
+        QString donateMessage;
+        donateMessage += "<h4>" + tr( "Donations" ) + "</h4>";
+        donateMessage += "<p>" + tr( "If you like this program, your donation will help me dedicate more time for it, support it and implement new features." ) + "</p>";
 
-    delete m_updateSection;
+        QString updateMessage;
+        updateMessage += "<h4>" + tr( "Latest Version" ) + "</h4>";
+        updateMessage += "<p>" + tr( "Automatic checking for latest version is disabled. You can enable it in program settings." ) + "</p>";
 
-    m_updateSection = aboutBox.addSection( IconLoader::pixmap( "info" ), updateMessage );
+        QString infoMessage = technicalInformation();
 
-    if ( m_updateClient->autoUpdate() ) {
-        showUpdateState();
-    } else {
-        m_updateButton = m_updateSection->addButton( tr( "Check Now" ) );
-        connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
+        m_aboutBox = new AboutBox( tr( "About Saladin" ), message, mainWindow );
+
+        AboutBoxSection* helpSection = m_aboutBox->addSection( IconLoader::pixmap( "help" ), helpMessage );
+
+        QPushButton* helpButton = helpSection->addButton( tr( "&Quick Guide" ) );
+        connect( helpButton, SIGNAL( clicked() ), this, SLOT( showQuickGuide() ) );
+
+        m_aboutBox->addSection( IconLoader::pixmap( "web" ), webMessage );
+
+        AboutBoxSection* donateSection = m_aboutBox->addSection( IconLoader::pixmap( "bookmark" ), donateMessage );
+
+        QPushButton* donateButton = donateSection->addButton( tr( "&Donate" ) );
+        connect( donateButton, SIGNAL( clicked() ), this, SLOT( openDonations() ) );
+
+        delete m_updateSection;
+
+        m_updateSection = m_aboutBox->addSection( IconLoader::pixmap( "info" ), updateMessage );
+
+        if ( m_updateClient->autoUpdate() ) {
+            showUpdateState();
+        } else {
+            m_updateButton = m_updateSection->addButton( tr( "&Check Now" ) );
+            connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
+        }
+
+        m_aboutBox->addSection( IconLoader::pixmap( "info" ), infoMessage );
     }
 
-    aboutBox.addSection( IconLoader::pixmap( "info" ), infoMessage );
-
-    aboutBox.exec();
+    m_aboutBox->show();
+    m_aboutBox->activateWindow();
 }
 
 void Application::showQuickGuide()
 {
+    m_aboutBox->close();
+
+    if ( !m_guideDialog ) {
+        m_guideDialog = new GuideDialog( mainWindow );
+
+        m_guideDialog->resize( mainWindow->width() / 2, mainWindow->height() - 100 );
+        m_guideDialog->move( mainWindow->pos().x() + mainWindow->width() / 2 - 50, mainWindow->pos().y() + 50 );
+    }
+
+    m_guideDialog->show();
+    m_guideDialog->activateWindow();
 }
 
 void Application::showUpdateState()
@@ -210,7 +232,7 @@ void Application::showUpdateState()
             m_updateSection->setPixmap( IconLoader::pixmap( "warning" ) );
             m_updateSection->setMessage( header + "<p>" + tr( "Checking for latest version failed." ) + "</p>" );
 
-            m_updateButton = m_updateSection->addButton( tr( "Retry" ) );
+            m_updateButton = m_updateSection->addButton( tr( "&Retry" ) );
             connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
             break;
         }
@@ -225,10 +247,10 @@ void Application::showUpdateState()
             m_updateSection->setPixmap( IconLoader::pixmap( "warning" ) );
             m_updateSection->setMessage( header + "<p>" + tr( "The latest version of Saladin is %1." ).arg( m_updateClient->updateVersion() ) + "</p>" );
 
-            QPushButton* notesButton = m_updateSection->addButton( tr( "Release Notes" ) );
+            QPushButton* notesButton = m_updateSection->addButton( tr( "&Release Notes" ) );
             connect( notesButton, SIGNAL( clicked() ), this, SLOT( openReleaseNotes() ) );
 
-            QPushButton* downloadButton = m_updateSection->addButton( tr( "Download" ) );
+            QPushButton* downloadButton = m_updateSection->addButton( tr( "Do&wnload" ) );
             connect( downloadButton, SIGNAL( clicked() ), this, SLOT( openDownloads() ) );
 
             m_shownVersion = m_updateClient->updateVersion();

@@ -1,0 +1,39 @@
+<html>
+<head>
+  <title>Tools</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<h1>Tools</h1>
+
+<h2>ZIP Archives</h2>
+
+<p>Saladin can handle ZIP archives using standard functionality of Windows Explorer. You can open a ZIP archive like a regular directory using double click or <b>Enter</b>. You can extract files from ZIP archives and add files to existing archives using standard copy operation or drag and drop. You can also create folders and rename and delete files and folders in a ZIP archive. To create a new ZIP archive, select files to pack, select the <b>Tools &gt; <img src="../icons/pack-16.png" /> Pack</b> command (<b>Ctrl+P</b>) and enter the name of the achive to create in the target panel.</p>
+
+<h2>FTP Sites</h2>
+
+<p>Saladin also has basic support for the FTP protocol through Windows Explorer functionality. To connect to an FTP site, select <b>Tools &gt; Open &gt; <img src="../icons/ftp-16.png" /> Open FTP Site</b> command (<b>Ctrl+F</b>) and enter the host name or IP address and optionally change the port number and the start path. You can also enter user name and password if the server requires authentication. The URL of the site can also be entered directly in the location bar. Standard file operations like copying, moving, renaming and deleting are supported for FTP sites.</p>
+
+<h2>Search &amp; Explore</h2>
+
+<p>To search for files in the current directory, select <b>Tools &gt; <img src="../icons/find-16.png" /> Search</b> (<b>Ctrl+S</b>). Currently the standard Windows search is invoked. Future version of Saladin will support a custom search engine. You can also open the current directory in Windows Explorer using <b>Tools &gt; <img src="../icons/explore-16.png" /> Explore</b> (<b>Ctrl+Shift+E</b>).</p>
+
+<h2>Compare</h2>
+
+<p>You can compare two files using an external tool such as <a href="http://winmerge.org/">WinMerge</a> or the TortoiseMerge utility from <a href="http://tortoisesvn.net/">TortoiseSVN</a>. To configure the tool open <b><img src="../icons/configure-16.png" /> Saladin Settings</b> and select the path to the tool's executable file. You can select two files in the active panel or one in the active and the other one in the target pane and then select the <b>Tools &gt; <img src="../icons/compare-16.png" /> Compare</b> command (<b>Ctrl+M</b>) to run the compare tool.</p>
+
+<p>Use the <b>Tools &gt; Compare &gt; <img src="../icons/compare-16.png" /> Folder Compare</b> command (<b>Ctrl+Shift+M</b>) to compare items in the current and the target directories. This command selects all files and folders from the current directory which are not present in the target directory and files that are newer than those in the target directory. This is useful for synchronizing the contents of two directories.</p>
+
+<h2>Bookmarks</h2>
+
+<p>Bookmark can be used to remember frequently used local directories and FTP sites. Click on the <b><img src="../icons/bookmark-16.png" /> Bookmarks</b> icon and select <b><img src="../icons/bookmark-16.png" /> Add Bookmark</b> (<b>Ctrl+Shift+D</b>) to save the current location as a bookmark with the given name. When an FTP site is added as a bookmark, you can choose to store the password.</p>
+
+<p>To open a bookmark, click on the <b><img src="../icons/bookmark-16.png" /> Bookmarks</b> icon or press <b>Ctrl+D</b> and select the bookmark from the list. When an FTP bookmark is activated, the <b>Open FTP Site</b> window is opened allowing to enter password or change the details of the FTP site without modifying the original bookmark. You can delete and rename existing bookmarks by selecting the <b><img src="../icons/edit-16.png" /> Edit Bookmarks</b> command from the <b>Bookmarks</b> menu. Bookmarks are shared by both panels and automatically remembered when Saladin is closed.</p>
+
+<h2>History</h2>
+
+<p>Each panel remembers last visited directories. You can navigate to previous or next location using <b>Alt+Right</b> and <b>Alt+Left</b> keys, respectively, or using the additional mouse buttons if your mouse supports ones. You can also select one of the locations from the list by clicking on the <b><img src="../icons/history-16.png" /> History</b> icon or pressing <b>Ctrl+G<b>.</p>
+
+</body>
+</html>

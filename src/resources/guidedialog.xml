@@ -1,0 +1,7 @@
+<xmlui>
+  <strip id="stripGuide">
+    <action id="goBack"/>
+    <action id="goForward"/>
+    <action id="goHome"/>
+  </strip>
+</xmlui>

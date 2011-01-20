@@ -1,0 +1,49 @@
+<html>
+<head>
+  <title>Rename Masks</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<h1>Rename Masks</h1>
+
+<p>The following commans can be used in the name and extension masks when renaming or cloning multiple files:</p>
+
+<table width="100%">
+<tr>
+ <th>Command</th>
+ <th>Description</th>
+</tr>
+<tr>
+ <td valign="top">[n:<i>from</i>:<i>to</i>]</td>
+ <td>
+  Insert part of the original file name (without extension). Optional start and end position can be entered (positive value means offset from the start, negative value means offset from the start). For example:
+  <ul>
+   <li>[n] - entire file name</li>
+   <li>[n:3] - 3rd character of the file name</li>
+   <li>[n:3:] - file name from 3rd character to the end</li>
+   <li>[n:3:6] - file name from 3rd character to 6th character</li>
+   <li>[n:3:-2] - file name from 3rd character to 2nd character from the end</li>
+  </ul>
+ </td>
+</tr>
+<tr>
+ <td valign="top">[e:<i>from</i>:<i>to</i>]</td>
+ <td>Insert part of the original extension. Optional start and end position can be entered (analogous to the [n] pattern).</td>
+</tr>
+<tr>
+ <td valign="top">[c:<i>width</i>:<i>from</i>:<i>step</i>]</td>
+ <td>
+  Insert the value of a counter. Optional width, start number and step can be entered. For example:
+  <ul>
+   <li>[c] - 1, 2, 3...</li>
+   <li>[c:3] - 001, 002, 003...</li>
+   <li>[c:3:100] - 100, 101, 102...</li>
+   <li>[c:3:100:10] - 100, 110, 120...</li>
+  </ul>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

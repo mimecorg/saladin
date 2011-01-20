@@ -24,6 +24,8 @@
 
 AboutBox::AboutBox( const QString& title, const QString& message, QWidget* parent ) : QDialog( parent )
 {
+    setAttribute( Qt::WA_DeleteOnClose, true );
+
     setWindowTitle( title );
 
     QVBoxLayout* topLayout = new QVBoxLayout( this );

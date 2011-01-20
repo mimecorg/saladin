@@ -15,6 +15,7 @@ HEADERS += aboutbox.h \
            folderitemdelegate.h \
            folderitemmodel.h \
            folderitemview.h \
+           guidedialog.h \
            mainwindow.h \
            multirenamewidget.h \
            openftpdialog.h \
@@ -30,6 +31,7 @@ SOURCES += aboutbox.cpp \
            folderitemdelegate.cpp \
            folderitemmodel.cpp \
            folderitemview.cpp \
+           guidedialog.cpp \
            main.cpp \
            mainwindow.cpp \
            multirenamewidget.cpp \
@@ -38,8 +40,10 @@ SOURCES += aboutbox.cpp \
            panewidget.cpp \
            settingsdialog.cpp
 
-include( icons/icons.pri )
-include( resources/resources.pri )
+RESOURCES += guide/guide.qrc \
+             icons/icons.qrc \
+             resources/resources.qrc
+
 include( shell/shell.pri )
 include( utils/utils.pri )
 include( xmlui/xmlui.pri )
