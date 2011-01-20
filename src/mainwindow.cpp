@@ -150,7 +150,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
     setAction( "viewCurrent", action );
 
-    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit / Create" ), this );
+    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit" ), this );
     setAction( "popupEdit", action );
 
     action = new QAction( IconLoader::icon( "edit" ), tr( "Edit File" ), this );
@@ -158,33 +158,33 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( editCurrent() ) );
     setAction( "editCurrent", action );
 
-    action = new QAction( IconLoader::icon( "file-new" ), tr( "Create && Edit" ), this );
+    action = new QAction( IconLoader::icon( "file-new" ), tr( "Create File..." ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F4 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( editNew() ) );
     setAction( "editNew", action );
 
-    action = new QAction( IconLoader::icon( "copy" ), tr( "Copy / Clone" ), this );
+    action = new QAction( IconLoader::icon( "copy" ), tr( "Copy" ), this );
     setAction( "popupCopy", action );
 
-    action = new QAction( IconLoader::icon( "copy" ), tr( "Copy To Target Directory" ), this );
+    action = new QAction( IconLoader::icon( "copy" ), tr( "Copy To Target Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::Key_F5 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( copySelected() ) );
     setAction( "copySelected", action );
 
-    action = new QAction( IconLoader::icon( "clone" ), tr( "Clone In Source Directory" ), this );
+    action = new QAction( IconLoader::icon( "clone" ), tr( "Clone In Source Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F5 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( cloneSelected() ) );
     setAction( "cloneSelected", action );
 
-    action = new QAction( IconLoader::icon( "move" ), tr( "Move / Rename" ), this );
+    action = new QAction( IconLoader::icon( "move" ), tr( "Move" ), this );
     setAction( "popupMove", action );
 
-    action = new QAction( IconLoader::icon( "move" ), tr( "Move To Target Directory" ), this );
+    action = new QAction( IconLoader::icon( "move" ), tr( "Move To Target Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::Key_F6 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( moveSelected() ) );
     setAction( "moveSelected", action );
 
-    action = new QAction( IconLoader::icon( "multi-rename" ), tr( "Rename In Source Directory" ), this );
+    action = new QAction( IconLoader::icon( "multi-rename" ), tr( "Rename In Source Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F6 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( renameSelected() ) );
     setAction( "renameSelected", action );
@@ -225,12 +225,12 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( openDirectory() ) );
     setAction( "openDirectory", action );
 
-    action = new QAction( IconLoader::icon( "browse" ), tr( "Browse For Folder" ), this );
+    action = new QAction( IconLoader::icon( "browse" ), tr( "Browse For Folder..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_O ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( browse() ) );
     setAction( "browse", action );
 
-    action = new QAction( IconLoader::icon( "ftp" ), tr( "Open FTP Site" ), this );
+    action = new QAction( IconLoader::icon( "ftp" ), tr( "Open FTP Site..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_F ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openFtpSite() ) );
     setAction( "openFtpSite", action );
