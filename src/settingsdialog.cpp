@@ -132,7 +132,7 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     QVBoxLayout* toolsLayout = new QVBoxLayout( toolsTab );
 
-    QGroupBox* viewerGroup = new QGroupBox( tr( "Viewer" ), toolsTab );
+    QGroupBox* viewerGroup = new QGroupBox( tr( "File Viewer" ), toolsTab );
     QGridLayout* viewerLayout = new QGridLayout( viewerGroup );
     toolsLayout->addWidget( viewerGroup );
 
@@ -143,7 +143,7 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     QToolButton* viewerButton = browseButton( viewerGroup, SLOT( browseViewer() ) );
     viewerLayout->addWidget( viewerButton, 0, 1 );
 
-    QGroupBox* editorGroup = new QGroupBox( tr( "Editor" ), toolsTab );
+    QGroupBox* editorGroup = new QGroupBox( tr( "Text Editor" ), toolsTab );
     QGridLayout* editorLayout = new QGridLayout( editorGroup );
     toolsLayout->addWidget( editorGroup );
 

@@ -40,9 +40,10 @@ SOURCES += aboutbox.cpp \
            panewidget.cpp \
            settingsdialog.cpp
 
-RESOURCES += guide/guide.qrc \
-             icons/icons.qrc \
-             resources/resources.qrc
+RESOURCES += \
+           guide/guide.qrc \
+           icons/icons.qrc \
+           resources/resources.qrc
 
 include( shell/shell.pri )
 include( utils/utils.pri )
@@ -51,6 +52,10 @@ include( xmlui/xmlui.pri )
 INCLUDEPATH += .
 
 PRECOMPILED_HEADER = precompiled.h
+
+TRANSLATIONS += \
+           ../translations/saladin_untranslated.ts \
+           ../translations/saladin_pl.ts
 
 RC_FILE = saladin.rc
 LIBS += -lshell32 -lshlwapi -lcrypt32

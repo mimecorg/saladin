@@ -923,7 +923,7 @@ void PaneWidget::setHistoryIndex( int index )
         activateView();
     } else {
         delete folder;
-        QMessageBox::warning( this, tr( "Invalid Path" ), tr( "The path you selected cannot be opened.\nMake sure the location is available and try again." ) );
+        QMessageBox::warning( this, tr( "Invalid Path" ), tr( "The path you selected cannot be opened.\nMake sure the device is available and try again." ) );
     }
 
     m_lockHistory = false;
@@ -977,7 +977,7 @@ void PaneWidget::setBookmark( const Bookmark& bookmark )
             activateView();
         } else {
             delete folder;
-            QMessageBox::warning( this, tr( "Invalid Bookmark" ), tr( "The bookmark you selected cannot be opened.\nMake sure the location is available and try again." ) );
+            QMessageBox::warning( this, tr( "Invalid Bookmark" ), tr( "The bookmark you selected cannot be opened.\nMake sure the device is available and try again." ) );
         }
     }
 }

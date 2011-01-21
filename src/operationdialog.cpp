@@ -86,7 +86,7 @@ OperationDialog::OperationDialog( Flags flags, QWidget* parent ) : QDialog( pare
     }
 
     if ( flags.testFlag( WithLocation ) ) {
-        QLabel* label = new QLabel( tr( "Location:" ), this );
+        QLabel* label = new QLabel( tr( "Directory:" ), this );
         gridLayout->addWidget( label, row, 0 );
 
         m_locationEdit = new QLineEdit( this );

@@ -145,7 +145,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( renameCurrent() ) );
     setAction( "renameCurrent", action );
 
-    action = new QAction( IconLoader::icon( "view" ), tr( "View" ), this );
+    action = new QAction( IconLoader::icon( "view" ), tr( "View", "action name" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F3 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
     setAction( "viewCurrent", action );
@@ -230,7 +230,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( browse() ) );
     setAction( "browse", action );
 
-    action = new QAction( IconLoader::icon( "ftp" ), tr( "Open FTP Site..." ), this );
+    action = new QAction( IconLoader::icon( "ftp" ), tr( "Connect To FTP..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_F ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openFtpSite() ) );
     setAction( "openFtpSite", action );
@@ -284,7 +284,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     setTitle( "sectionFunctions", tr( "Functions" ) );
     setTitle( "sectionClipboard", tr( "Clipboard" ) );
-    setTitle( "sectionView", tr( "View" ) );
+    setTitle( "sectionView", tr( "View", "section name" ) );
     setTitle( "sectionSelect", tr( "Select" ) );
     setTitle( "sectionTools", tr( "Tools" ) );
 
@@ -722,9 +722,9 @@ QString MainWindow::toolName( Tool tool )
 {
     switch ( tool ) {
         case ViewerTool:
-            return tr( "viewer" );
+            return tr( "file viewer" );
         case EditorTool:
-            return tr( "editor" );
+            return tr( "text editor" );
         case ConsoleTool:
             return tr( "console" );
         case DiffTool:

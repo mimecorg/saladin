@@ -492,7 +492,7 @@ QVariant FolderItemModel::headerData( int section, Qt::Orientation orientation, 
             case Column_Size:
                 return tr( "Size" );
             case Column_LastModified:
-                return tr( "Modified" );
+                return tr( "Date" );
             case Column_Attributes:
                 return tr( "Attributes" );
         }

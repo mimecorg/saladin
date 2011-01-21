@@ -121,7 +121,7 @@ OpenFtpDialog::OpenFtpDialog( QWidget* parent ) : QDialog( parent )
     connect( buttonBox, SIGNAL( accepted() ), this, SLOT( accept() ) );
     connect( buttonBox, SIGNAL( rejected() ), this, SLOT( reject() ) );
 
-    setWindowTitle( tr( "Open FTP Site" ) );
+    setWindowTitle( tr( "Connect To FTP" ) );
     promptPixmap->setPixmap( IconLoader::pixmap( "ftp", 22 ) );
     promptLabel->setText( tr( "Enter the FTP connection details:" ) );
 
