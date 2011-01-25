@@ -241,7 +241,7 @@ void Application::showUpdateState()
 
         case UpdateClient::CurrentVersionState: {
             m_updateSection->setPixmap( IconLoader::pixmap( "info" ) );
-            m_updateSection->setMessage( header + "<p>" + tr( "You version of Saladin is up to date." ) + "</p>" );
+            m_updateSection->setMessage( header + "<p>" + tr( "Your version of Saladin is up to date." ) + "</p>" );
             break;
         }
 
