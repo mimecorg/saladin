@@ -1,5 +1,5 @@
 Saladin
-Version 0.1
+Version 0.1 (2011-01-26)
 
 Dual-pane file manager for Windows.
 
@@ -14,7 +14,7 @@ NOTE: Windows Vista or newer is required to run this program.
 Copyrights
 ==========
 
-Copyright (C) 2010 Michał Męciński
+Copyright (C) 2011 Michał Męciński
 
 Icons based on the KDE Crystal theme copyright (C) 2002 and following
 years KDE Artists
@@ -35,3 +35,19 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Resources
+=========
+
+Website
+    http://saladin.mimec.org/
+
+Forum
+    http://saladin.mimec.org/forum/general
+
+Bugs & Requests
+    http://saladin.mimec.org/forum/tracker
+
+Development
+    http://wiki.mimec.org/wiki/Saladin
