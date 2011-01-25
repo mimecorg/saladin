@@ -60,6 +60,8 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
     mainWindow = new MainWindow();
     mainWindow->restoreSettings();
 
+    QNetworkProxyFactory::setUseSystemConfiguration( true );
+
     QNetworkAccessManager* manager = new QNetworkAccessManager( this );
 
     m_updateClient = new UpdateClient( "saladin", version(), manager );
