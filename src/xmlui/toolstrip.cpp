@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2009 Michał Męciński
+* Copyright (C) 2007-2011 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -37,6 +37,7 @@
 #include <QStyle>
 #include <QStylePainter>
 #include <QStyleOption>
+#include <QActionEvent>
 #include <qdrawutil.h>
 
 using namespace XmlUi;

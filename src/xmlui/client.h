@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2009 Michał Męciński
+* Copyright (C) 2007-2011 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -113,14 +113,21 @@ public:
     * @param id The identifier of the action.
     * @return The identifier of the menu.
     */
-    QString popupMenu( const QString& id );
+    QString popupMenu( const QString& actionId );
 
     /**
-    * Return the default action in the popup menu for the given action.
-    * @param id The identifier of the action.
+    * Set the default action in the contextual menu.
+    * @param menuId The identifier of the menu.
+    * @param defaultId The identifier of the default action in the menu.
+    */
+    void setDefaultMenuAction( const QString& menuId, const QString& defaultId );
+
+    /**
+    * Return the default action in the popup or contextual menu.
+    * @param menuId The identifier of the menu.
     * @return The identifier of the default action in the menu.
     */
-    QString defaultMenuAction( const QString& id );
+    QString defaultMenuAction( const QString& menuId );
 
     /**
     * Load the UI layout from the given XML file.

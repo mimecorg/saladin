@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2009 Michał Męciński
+* Copyright (C) 2007-2011 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -31,6 +31,7 @@
 
 #include <QDomDocument>
 #include <QFile>
+#include <QAction>
 
 using namespace XmlUi;
 
@@ -68,19 +69,24 @@ QString Client::title( const QString& id ) const
 void Client::setPopupMenu( const QString& actionId, const QString& menuId, const QString& defaultId )
 {
     m_menus.insert( actionId, menuId );
-    m_defaultActions.insert( actionId, defaultId );
+    m_defaultActions.insert( menuId, defaultId );
 
     QObject::connect( action( actionId ), SIGNAL( triggered() ), action( defaultId ), SIGNAL( triggered() ) );
 }
 
-QString Client::popupMenu( const QString& id )
+QString Client::popupMenu( const QString& actionId )
 {
-    return m_menus.value( id, QString() );
+    return m_menus.value( actionId, QString() );
 }
 
-QString Client::defaultMenuAction( const QString& id )
+void Client::setDefaultMenuAction( const QString& menuId, const QString& defaultId )
 {
-    return m_defaultActions.value( id, QString() );
+    m_defaultActions.insert( menuId, defaultId );
+}
+
+QString Client::defaultMenuAction( const QString& menuId )
+{
+    return m_defaultActions.value( menuId, QString() );
 }
 
 bool Client::loadXmlUiFile( const QString& path )

@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2009 Michał Męciński
+* Copyright (C) 2007-2011 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -334,8 +334,9 @@ void Builder::addToolAction( ToolStrip* strip, QAction* action, const QString& i
         if ( !menuId.isEmpty() ) {
             QMenu* menu = contextMenu( menuId );
             action->setMenu( menu );
-            QString defaultId = m_clients.at( i )->defaultMenuAction( id );
-            menu->setDefaultAction( findAction( defaultId ) );
+            QString defaultId = m_clients.at( i )->defaultMenuAction( menuId );
+            if ( !defaultId.isEmpty() )
+                menu->setDefaultAction( findAction( defaultId ) );
             break;
         }
     }
@@ -356,8 +357,17 @@ QMenu* Builder::contextMenu( const QString& id )
         }
     }
 
-    if ( menu )
+    if ( menu ) {
+        for ( int i = m_clients.count() - 1; i >= 0; i-- ) {
+            QString defaultId = m_clients.at( i )->defaultMenuAction( id );
+            if ( !defaultId.isEmpty() ) {
+                menu->setDefaultAction( findAction( defaultId ) );
+                break;
+            }
+        }
+
         m_contextMenus.insert( id, menu );
+    }
 
     return menu;
 }
