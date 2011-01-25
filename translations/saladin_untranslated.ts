@@ -20,133 +20,133 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../src/application.cpp" line="125"/>
+        <location filename="../src/application.cpp" line="127"/>
         <source>Technical Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="126"/>
+        <location filename="../src/application.cpp" line="128"/>
         <source>Built on %1 in %2-bit %3 mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="127"/>
+        <location filename="../src/application.cpp" line="129"/>
         <source>Using Qt %1 (%2 linking) and Windows Shell %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="136"/>
+        <location filename="../src/application.cpp" line="138"/>
         <source>Saladin %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="137"/>
+        <location filename="../src/application.cpp" line="139"/>
         <source>Dual-pane file manager for Windows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="138"/>
+        <location filename="../src/application.cpp" line="140"/>
         <source>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../src/application.cpp" line="142"/>
+        <location filename="../src/application.cpp" line="144"/>
         <source>Copyright (C) 2011 Michał Męciński</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="147"/>
+        <location filename="../src/application.cpp" line="149"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="148"/>
+        <location filename="../src/application.cpp" line="150"/>
         <source>Open the Saladin Quick Guide for help.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="151"/>
+        <location filename="../src/application.cpp" line="153"/>
         <source>Web Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="152"/>
+        <location filename="../src/application.cpp" line="154"/>
         <source>Visit %1 for more information about Saladin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="155"/>
+        <location filename="../src/application.cpp" line="157"/>
         <source>Donations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="156"/>
+        <location filename="../src/application.cpp" line="158"/>
         <source>If you like this program, your donation will help me dedicate more time for it, support it and implement new features.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="159"/>
-        <location filename="../src/application.cpp" line="222"/>
+        <location filename="../src/application.cpp" line="161"/>
+        <location filename="../src/application.cpp" line="224"/>
         <source>Latest Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="160"/>
+        <location filename="../src/application.cpp" line="162"/>
         <source>Automatic checking for latest version is disabled. You can enable it in program settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="164"/>
+        <location filename="../src/application.cpp" line="166"/>
         <source>About Saladin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="168"/>
+        <location filename="../src/application.cpp" line="170"/>
         <source>&amp;Quick Guide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="175"/>
+        <location filename="../src/application.cpp" line="177"/>
         <source>&amp;Donate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="185"/>
+        <location filename="../src/application.cpp" line="187"/>
         <source>&amp;Check Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="227"/>
+        <location filename="../src/application.cpp" line="229"/>
         <source>Checking for latest version...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="233"/>
+        <location filename="../src/application.cpp" line="235"/>
         <source>Checking for latest version failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="235"/>
+        <location filename="../src/application.cpp" line="237"/>
         <source>&amp;Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="242"/>
-        <source>You version of Saladin is up to date.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/application.cpp" line="248"/>
-        <source>The latest version of Saladin is %1.</source>
+        <location filename="../src/application.cpp" line="244"/>
+        <source>Your version of Saladin is up to date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/application.cpp" line="250"/>
+        <source>The latest version of Saladin is %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/application.cpp" line="252"/>
         <source>&amp;Release Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="253"/>
+        <location filename="../src/application.cpp" line="255"/>
         <source>Do&amp;wnload</source>
         <translation type="unfinished"></translation>
     </message>
