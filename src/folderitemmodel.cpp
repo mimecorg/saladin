@@ -89,6 +89,9 @@ void FolderItemModel::setFolder( ShellFolder* folder )
 
 void FolderItemModel::refresh()
 {
+    if ( !m_folder )
+        return;
+
     QApplication::setOverrideCursor( Qt::WaitCursor );
 
     emit layoutAboutToBeChanged();
