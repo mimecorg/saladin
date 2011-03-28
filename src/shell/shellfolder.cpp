@@ -84,18 +84,11 @@ ShellFolderPrivate::~ShellFolderPrivate()
 void ShellFolderPrivate::readProperties()
 {
     wchar_t* name;
-    HRESULT hr = SHGetNameFromIDList( m_pidl, SIGDN_FILESYSPATH, &name );
+    HRESULT hr = SHGetNameFromIDList( m_pidl, SIGDN_DESKTOPABSOLUTEEDITING, &name );
 
     if ( SUCCEEDED( hr ) ) {
         m_path = QString::fromWCharArray( name );
         CoTaskMemFree( name );
-    } else {
-        hr = SHGetNameFromIDList( m_pidl, SIGDN_DESKTOPABSOLUTEEDITING, &name );
-
-        if ( SUCCEEDED( hr ) ) {
-            m_path = QString::fromWCharArray( name );
-            CoTaskMemFree( name );
-        }
     }
 
     if ( m_path.startsWith( QLatin1String( "ftp://" ), Qt::CaseInsensitive ) ) {
