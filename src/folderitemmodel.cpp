@@ -721,7 +721,7 @@ bool FolderItemModel::shellItemLessThan( const ShellItem& item1, const ShellItem
     }
 
     if ( result == 0 )
-        result = QString::localeAwareCompare( item1.name(), item2.name() );
+        result = StrCmpLogicalW( item1.name().utf16(), item2.name().utf16() );
 
     if ( m_sortOrder == Qt::AscendingOrder )
         return result < 0;
