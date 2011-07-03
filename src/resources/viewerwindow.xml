@@ -1,0 +1,8 @@
+<xmlui>
+  <strip id="stripMain">
+    <action id="switchToText"/>
+    <action id="switchToBinary"/>
+    <action id="switchToImage"/>
+    <separator/>
+  </strip>
+</xmlui>

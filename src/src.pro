@@ -47,6 +47,7 @@ RESOURCES += \
 
 include( shell/shell.pri )
 include( utils/utils.pri )
+include( viewer/viewer.pri )
 include( xmlui/xmlui.pri )
 
 INCLUDEPATH += .

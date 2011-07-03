@@ -1,7 +1,10 @@
 <RCC version="1.0">
 <qresource prefix="/resources">
+  <file>binaryview.xml</file>
   <file>bookmarksdialog.xml</file>
   <file>guidedialog.xml</file>
   <file>mainwindow.xml</file>
+  <file>textview.xml</file>
+  <file>viewerwindow.xml</file>
 </qresource>
 </RCC>

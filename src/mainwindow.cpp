@@ -29,6 +29,7 @@
 #include "shell/shellselection.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
+#include "viewer/viewmanager.h"
 #include "xmlui/toolstrip.h"
 #include "xmlui/builder.h"
 
@@ -36,6 +37,7 @@ MainWindow* mainWindow = NULL;
 
 MainWindow::MainWindow() : QMainWindow(),
     m_driveStripManager( NULL ),
+    m_viewManager( NULL ),
     m_sourcePane( NULL ),
     m_targetPane( NULL )
 {
@@ -378,6 +380,8 @@ void MainWindow::restoreSettings()
     for ( int i = 0; i < 2; i++ )
         m_panes[ i ]->populateDrives();
 
+    m_viewManager = new ViewManager();
+
     QApplication::processEvents();
 
     for ( int i = 0; i < 2; i++ ) {
@@ -419,6 +423,9 @@ void MainWindow::saveSettings()
             }
         }
     }
+
+    delete m_viewManager;
+    m_viewManager = NULL;
 }
 
 bool MainWindow::eventFilter( QObject* object, QEvent* e )
@@ -620,7 +627,16 @@ void MainWindow::renameCurrent()
 
 void MainWindow::viewCurrent()
 {
-    startTool( ViewerTool, m_sourcePane->folder(), m_sourcePane->currentItem() ); 
+    ShellItem item = m_sourcePane->currentItem();
+
+    if ( !item.isValid() || !item.attributes().testFlag( ShellItem::FileSystem ) || item.attributes().testFlag( ShellItem::Directory ) )
+        return;
+
+    ShellPidl pidl = m_sourcePane->folder()->itemPidl( item );
+
+    m_viewManager->openView( pidl );
+
+    //startTool( ViewerTool, m_sourcePane->folder(), m_sourcePane->currentItem() );
 }
 
 void MainWindow::editCurrent()

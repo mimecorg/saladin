@@ -483,7 +483,7 @@ bool ShellFolder::setItemName( ShellItem& item, const QString& name )
     return result;
 }
 
-QString ShellFolder::itemPath( const ShellItem& item )
+QString ShellFolder::itemPath( const ShellItem& item ) const
 {
     QString result;
 
@@ -496,6 +496,23 @@ QString ShellFolder::itemPath( const ShellItem& item )
     CoTaskMemFree( absolutePidl );
 
     return result;
+}
+
+ShellPidl ShellFolder::itemPidl( const ShellItem& item ) const
+{
+    ShellPidl pidl;
+
+    LPITEMIDLIST absolutePidl = ILCombine( d->m_pidl, item.d->m_pidl );
+
+    pidl.d->m_data = QByteArray( (const char*)absolutePidl, (int)ILGetSize( absolutePidl ) );
+
+    wchar_t buffer[ 1024 ];
+    if ( SHGetPathFromIDListEx( absolutePidl, buffer, 1024, GPFIDL_DEFAULT ) )
+        pidl.d->m_path = QString::fromWCharArray( buffer );
+
+    CoTaskMemFree( absolutePidl );
+
+    return pidl;
 }
 
 bool ShellFolder::isEqual( const ShellFolder* other ) const

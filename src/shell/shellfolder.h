@@ -64,7 +64,8 @@ public:
 
     bool setItemName( ShellItem& item, const QString& name );
 
-    QString itemPath( const ShellItem& item );
+    QString itemPath( const ShellItem& item ) const;
+    ShellPidl itemPidl( const ShellItem& item ) const;
 
     bool isEqual( const ShellFolder* other ) const;
 

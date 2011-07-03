@@ -26,6 +26,7 @@
 
 class PaneWidget;
 class DriveStripManager;
+class ViewManager;
 
 class MainWindow : public QMainWindow, public XmlUi::Client
 {
@@ -39,6 +40,8 @@ public:
     void saveSettings();
 
     DriveStripManager* driveStripManager() const { return m_driveStripManager; }
+
+    ViewManager* viewManager() const { return m_viewManager; }
 
 public: // overrides
     bool eventFilter( QObject* object, QEvent* e );
@@ -127,6 +130,8 @@ private:
 
 private:
     DriveStripManager* m_driveStripManager;
+
+    ViewManager* m_viewManager;
 
     PaneWidget* m_panes[ 2 ];
 

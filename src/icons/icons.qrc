@@ -27,6 +27,7 @@
   <file>edit-cut-16.png</file>
   <file>edit-paste-16.png</file>
   <file>edit-paste-22.png</file>
+  <file>encoding-16.png</file>
   <file>explore-16.png</file>
   <file>file-new-16.png</file>
   <file>file-new-22.png</file>
@@ -40,6 +41,7 @@
   <file>gear-16.png</file>
   <file>help-16.png</file>
   <file>help-22.png</file>
+  <file>hex-mode-16.png</file>
   <file>history-16.png</file>
   <file>home-16.png</file>
   <file>info-16.png</file>
@@ -67,6 +69,9 @@
   <file>terminal-22.png</file>
   <file>trashcan-16.png</file>
   <file>trashcan-22.png</file>
+  <file>type-binary-16.png</file>
+  <file>type-image-16.png</file>
+  <file>type-text-16.png</file>
   <file>unselect-16.png</file>
   <file>unselect-22.png</file>
   <file>unselect-all-16.png</file>
@@ -75,5 +80,6 @@
   <file>view-hidden-16.png</file>
   <file>warning-16.png</file>
   <file>web-16.png</file>
+  <file>word-wrap-16.png</file>
 </qresource>
 </RCC>

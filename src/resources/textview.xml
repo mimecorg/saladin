@@ -1,0 +1,6 @@
+<xmlui>
+  <strip id="stripMain">
+    <action id="wordWrap"/>
+    <action id="selectEncoding"/>
+  </strip>
+</xmlui>
