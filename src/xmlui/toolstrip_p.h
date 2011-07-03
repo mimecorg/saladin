@@ -54,6 +54,8 @@ public:
 
     void clear();
 
+    void clearAuxiliaryButtons();
+
 public: // overrides
     Qt::Orientations expandingDirections() const;
 

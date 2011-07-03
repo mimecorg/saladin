@@ -227,6 +227,15 @@ QSize WindowsStyle::sizeFromContents( ContentsType type, const QStyleOption* opt
             }
             break;
 
+        case CT_ToolButton:
+            if ( const QStyleOptionToolButton* optionToolButton = qstyleoption_cast<const QStyleOptionToolButton*>( option ) ) {
+                QSize size = contentsSize + QSize( 7, 6 );
+                if ( !( optionToolButton->subControls & SC_ToolButtonMenu ) && ( optionToolButton->features & QStyleOptionToolButton::HasMenu ) )
+                    size += QSize( 5, 0 );
+                return size;
+            }
+            break;
+
         default:
             break;
     }

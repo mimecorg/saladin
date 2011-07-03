@@ -84,6 +84,11 @@ public:
     void addToolAction( QAction* action );
 
     /**
+    * Add a separator between buttons.
+    */
+    void addSeparator();
+
+    /**
     * Begin a section containing actions.
     * @param title The title of the section.
     */
@@ -127,6 +132,16 @@ public:
     */
     void addAuxiliaryAction( QAction* action );
 
+    /**
+    * Remove all auxiliary actions.
+    */
+    void clearAuxiliaryActions();
+
+    /**
+    * Set the margins for tool strip contents.
+    */
+    void setContentsMargins( int left, int top, int right, int bottom );
+
 protected: // overrides
     void childEvent( QChildEvent* e );
     void paintEvent( QPaintEvent* e );
@@ -153,6 +168,48 @@ private:
     QBoxLayout* m_rowLayout;
 
     QList<QToolButton*> m_toolButtons;
+};
+
+/**
+* Action with extended properties.
+*/
+class ToolStripAction : public QAction
+{
+    Q_OBJECT
+public:
+    /**
+    * Constructor.
+    * @param text The text of the action.
+    * @param parent The parent object.
+    */
+    ToolStripAction( const QString& text, QObject* parent );
+
+    /**
+    * Constructor.
+    * @param icon The icon of the action.
+    * @param text The text of the action.
+    * @param parent The parent object.
+    */
+    ToolStripAction( const QIcon& icon, const QString& text, QObject* parent );
+
+    /**
+    * Destructor.
+    */
+    ~ToolStripAction();
+
+public:
+    /**
+    * Set the menu popup mode for the tool button.
+    */
+    void setPopupMode( QToolButton::ToolButtonPopupMode mode );
+
+    /**
+    * Return the menu popup mode for the tool button.
+    */
+    QToolButton::ToolButtonPopupMode popupMode() const { return m_popupMode; }
+
+private:
+    QToolButton::ToolButtonPopupMode m_popupMode;
 };
 
 }

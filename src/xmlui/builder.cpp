@@ -239,6 +239,9 @@ void Builder::populateToolStrip( const Node& node )
 
     strip->clearToolActions();
 
+    bool separator = false;
+    bool added = false;
+
     foreach ( Node child, node.children() ) {
         if ( child.type() == Section ) {
             bool section = false;
@@ -321,8 +324,21 @@ void Builder::populateToolStrip( const Node& node )
         if ( child.type() == Action ) {
             QAction* action = findAction( child.id() );
 
-            if ( action && action->isVisible() )
+            if ( action && action->isVisible() ) {
+                if ( separator ) {
+                    strip->addSeparator();
+                    separator = false;
+                }
+
                 addToolAction( strip, action, child.id() );
+
+                added = true;
+            }
+        }
+
+        if ( child.type() == Separator ) {
+            if ( added )
+                separator = true;
         }
     }
 }

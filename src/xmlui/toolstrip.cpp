@@ -94,6 +94,11 @@ void ToolStrip::addToolAction( QAction* action )
     m_toolButtons.append( button );
 }
 
+void ToolStrip::addSeparator()
+{
+    m_layout->addItem( new QSpacerItem( 7, 0 ) );
+}
+
 void ToolStrip::beginSection( const QString& title )
 {
     m_sectionLayout = new ToolStripSectionLayout( title );
@@ -158,6 +163,16 @@ void ToolStrip::addAuxiliaryAction( QAction* action )
     m_layout->addAuxiliaryButton( button );
 }
 
+void ToolStrip::clearAuxiliaryActions()
+{
+    m_layout->clearAuxiliaryButtons();
+}
+
+void ToolStrip::setContentsMargins( int left, int top, int right, int bottom )
+{
+    m_layout->setContentsMargins( left, top, right, bottom );
+}
+
 QToolButton* ToolStrip::createButton( QAction* action, ButtonSize size )
 {
     ActionButton* button = new ActionButton( this );
@@ -180,6 +195,9 @@ QToolButton* ToolStrip::createButton( QAction* action, ButtonSize size )
     button->setDefaultAction( action );
     button->adjustText();
 
+    if ( ToolStripAction* tsAction = qobject_cast<ToolStripAction*>( action ) )
+        button->setPopupMode( tsAction->popupMode() );
+
     return button;
 }
 
@@ -189,6 +207,22 @@ void ToolStrip::childEvent( QChildEvent* e )
 
     if ( e->type() == QEvent::ChildRemoved && e->child() == m_layout->headerWidget() )
         m_layout->setHeaderWidget( NULL );
+}
+
+static void drawSeparator( const QRect& rect, QPainter* painter, QWidget* widget )
+{
+#if ( QT_VERSION >= 0x040500 )
+    QStyleOptionFrameV3 option;
+    option.init( widget );
+    option.frameShape = QFrame::VLine;
+    option.state |= QStyle::State_Sunken;
+    option.rect = rect;
+    option.lineWidth = 1;
+    widget->style()->drawControl( QStyle::CE_ShapedFrame, &option, painter, widget );
+#else
+    int x = ( rect.left() + rect.right() ) / 2;
+    qDrawShadeLine( painter, QPoint( x, rect.top() ), QPoint( x, rect.bottom() ), widget->palette(), true, 1, 0 );
+#endif
 }
 
 void ToolStrip::paintEvent( QPaintEvent* /*e*/ )
@@ -202,7 +236,33 @@ void ToolStrip::paintEvent( QPaintEvent* /*e*/ )
             if ( sectionLayout && !sectionLayout->isCollapsed() )
                 sectionLayout->drawSection( &painter, this );
         }
+
+        QSpacerItem* spacer = m_layout->itemAt( i )->spacerItem();
+        if ( spacer ) {
+            QRect rect = spacer->geometry();
+            if ( !rect.isEmpty() )
+                drawSeparator( rect, &painter, this );
+        }
     }
+}
+
+ToolStripAction::ToolStripAction( const QString& text, QObject* parent ) : QAction( text, parent ),
+    m_popupMode( QToolButton::MenuButtonPopup )
+{
+}
+
+ToolStripAction::ToolStripAction( const QIcon& icon, const QString& text, QObject* parent ) : QAction( icon, text, parent ),
+    m_popupMode( QToolButton::MenuButtonPopup )
+{
+}
+
+ToolStripAction::~ToolStripAction()
+{
+}
+
+void ToolStripAction::setPopupMode( QToolButton::ToolButtonPopupMode mode )
+{
+    m_popupMode = mode;
 }
 
 ToolStripLayout::ToolStripLayout( QWidget* parent ) : QLayout( parent ),
@@ -248,6 +308,16 @@ void ToolStripLayout::clear()
 {
     while ( !m_items.isEmpty() )
         delete m_items.takeFirst();
+    invalidate();
+}
+
+void ToolStripLayout::clearAuxiliaryButtons()
+{
+    while ( !m_auxiliaryButtons.isEmpty() ) {
+        QToolButton* button = m_auxiliaryButtons.takeFirst();
+        button->hide();
+        button->deleteLater();
+    }
     invalidate();
 }
 
@@ -298,6 +368,8 @@ void ToolStripLayout::calculateSize()
             m_simpleLayout = false;
         } else if ( QToolButton* button = buttonAt( i ) ) {
             size = button->sizeHint();
+        } else if ( QSpacerItem* spacer = itemAt( i )->spacerItem() ) {
+            size = spacer->sizeHint();
         }
         width += size.width();
         height = qMax( height, size.height() );
@@ -316,22 +388,19 @@ void ToolStripLayout::calculateSize()
 
     if ( m_simpleLayout ) {
         m_auxWidthNoChevron = auxWidth > 0 ? auxWidth + 3 : 0;
-        if ( m_chevronButton->isVisible() )
-            m_auxWidth = m_auxWidthNoChevron + chevronSize.width() + 3;
-        else
-            m_auxWidth = m_auxWidthNoChevron;
+        m_auxWidth = m_auxWidthNoChevron + chevronSize.width() + 3;
     } else {
         m_auxWidthNoChevron = auxWidth > 0 ? auxWidth + 6 : 0;
-        if ( m_chevronButton->isVisible() )
-            m_auxWidth = qMax( m_auxWidthNoChevron, chevronSize.width() + 6 );
-        else
-            m_auxWidth = m_auxWidthNoChevron;
+        m_auxWidth = qMax( m_auxWidthNoChevron, chevronSize.width() + 6 );
         auxHeight += chevronSize.height() + 9;
     }
 
-    m_sizeHint = QSize( width + m_auxWidth, qMax( height, auxHeight ) );
-    m_minimumSize = QSize( m_auxWidth, qMax( height, auxHeight ) );
-    m_maximumSize = QSize( QLAYOUTSIZE_MAX, qMax( height, auxHeight ) );
+    int ml, mt, mr, mb;
+    getContentsMargins( &ml, &mt, &mr, &mb );
+
+    m_sizeHint = QSize( width + m_auxWidthNoChevron + ml + mr, qMax( height, auxHeight ) + mt + mb );
+    m_minimumSize = QSize( m_auxWidth + ml + mr, qMax( height, auxHeight ) + mt + mb );
+    m_maximumSize = QSize( QLAYOUTSIZE_MAX, qMax( height, auxHeight ) + mt + mb );
 
     m_dirty = false;
 }
@@ -400,18 +469,20 @@ void ToolStripLayout::setGeometry( const QRect& rect )
 
     QLayout::setGeometry( rect );
 
-    int left = rect.left();
+    QRect contents = contentsRect();
+
+    int left = contents.left();
 
     bool collapsed = false;
 
     if ( m_headerWidget ) {
         QSize size = m_headerWidget->sizeHint();
-        if ( left + size.width() > rect.right() - m_auxWidth )
+        if ( left + size.width() > contents.right() - ( m_items.isEmpty() ? m_auxWidthNoChevron : m_auxWidth ) )
             collapsed = true;
 
         m_headerWidget->setVisible( !collapsed );
         if ( !collapsed ) {
-            m_headerWidget->setGeometry( QRect( rect.left(), rect.top(), size.width(), rect.height() ) );
+            m_headerWidget->setGeometry( QRect( contents.left(), contents.top(), size.width(), contents.height() ) );
             left += size.width();
         }
     }
@@ -424,10 +495,19 @@ void ToolStripLayout::setGeometry( const QRect& rect )
             size = layout->sizeHint();
         else if ( QToolButton* button = buttonAt( i ) )
             size = button->sizeHint();
+        else if ( QSpacerItem* spacer = itemAt( i )->spacerItem() )
+            size = spacer->sizeHint();
 
-        if ( left + size.width() > rect.right() - m_auxWidth + 1 ) {
-            if ( i < m_items.count() - 1 || left + size.width() > rect.right() - m_auxWidthNoChevron + 1 )
+        if ( !collapsed && left + size.width() > contents.right() - m_auxWidth + 1 ) {
+            if ( i < m_items.count() - 1 || left + size.width() > contents.right() - m_auxWidthNoChevron + 1 ) {
+                if ( i > 0 ) {
+                    if ( QSpacerItem* lastSpacer = itemAt( i - 1 )->spacerItem() ) {
+                        left -= 7;
+                        lastSpacer->setGeometry( QRect( left, contents.top(), 0, contents.height() ) );
+                    }
+                }
                 collapsed = true;
+            }
         }
 
         if ( ToolStripSectionLayout* layout = layoutAt( i ) ) {
@@ -441,35 +521,41 @@ void ToolStripLayout::setGeometry( const QRect& rect )
             button->setVisible( !collapsed );
             if ( collapsed && button->defaultAction() )
                 m_chevronButton->menu()->addAction( button->defaultAction() );
+        } else if ( QSpacerItem* spacer = itemAt( i )->spacerItem() ) {
+            if ( collapsed ) {
+                spacer->setGeometry( QRect( left, contents.top(), 0, contents.height() ) );
+                if ( !m_chevronButton->menu()->isEmpty() )
+                    m_chevronButton->menu()->addSeparator();
+            }
         }
 
         if ( !collapsed ) {
-            itemAt( i )->setGeometry( QRect( left, rect.top(), size.width(), rect.height() ) );
+            itemAt( i )->setGeometry( QRect( left, contents.top(), size.width(), contents.height() ) );
             left += size.width();
         }
     }
 
-    int right = rect.right() + 1;
+    int right = contents.right() + 1;
 
     for ( int i = m_auxiliaryButtons.count() - 1; i >= 0; i-- ) {
         QToolButton* button = m_auxiliaryButtons.at( i );
         QSize size = button->sizeHint();
         if ( m_simpleLayout )
-            button->setGeometry( QRect( right - size.width(), rect.top(), size.width(), size.height() ) );
+            button->setGeometry( QRect( right - size.width(), contents.top(), size.width(), size.height() ) );
         else
-            button->setGeometry( QRect( right - size.width() - 3, rect.top() + 3, size.width(), size.height() ) );
+            button->setGeometry( QRect( right - size.width() - 3, contents.top() + 3, size.width(), size.height() ) );
         right -= size.width();
     }
 
-    if ( !collapsed ) {
+    if ( !collapsed || m_chevronButton->menu()->isEmpty() ) {
         m_chevronButton->hide();
     } else {
         m_chevronButton->show();
         QSize size = m_chevronButton->sizeHint();
         if ( m_simpleLayout )
-            m_chevronButton->setGeometry( QRect( left + 3, rect.top(), size.width(), size.height() ) );
+            m_chevronButton->setGeometry( QRect( left + 3, contents.top(), size.width(), size.height() ) );
         else
-            m_chevronButton->setGeometry( QRect( left + 3, rect.bottom() - size.height() - 2, size.width(), size.height() ) );
+            m_chevronButton->setGeometry( QRect( left + 3, contents.bottom() - size.height() - 2, size.width(), size.height() ) );
     }
 }
 
@@ -477,6 +563,9 @@ void ToolStripLayout::invalidate()
 {
     m_dirty = true;
     QLayout::invalidate();
+
+    if ( parentWidget() )
+        parentWidget()->update();
 }
 
 ToolStripSectionLayout::ToolStripSectionLayout( const QString& title ) : QLayout(),
@@ -499,18 +588,7 @@ void ToolStripSectionLayout::addLayout( QLayout* layout )
 
 void ToolStripSectionLayout::drawSection( QPainter* painter, QWidget* widget )
 {
-#if ( QT_VERSION >= 0x040500 )
-    QStyleOptionFrameV3 option;
-    option.init( widget );
-    option.frameShape = QFrame::VLine;
-    option.state |= QStyle::State_Sunken;
-    option.rect = m_separatorRect;
-    option.lineWidth = 1;
-    widget->style()->drawControl( QStyle::CE_ShapedFrame, &option, painter, widget );
-#else
-    int x = ( m_separatorRect.left() + m_separatorRect.right() ) / 2;
-    qDrawShadeLine( painter, QPoint( x, m_separatorRect.top() ), QPoint( x, m_separatorRect.bottom() ), widget->palette(), true, 1, 0 );
-#endif
+    drawSeparator( m_separatorRect, painter, widget );
 
     widget->style()->drawItemText( painter, m_titleRect, Qt::AlignCenter, widget->palette(), true, m_titleText, QPalette::Text );
 }
@@ -663,9 +741,6 @@ void ToolStripSectionLayout::invalidate()
 {
     m_dirty = true;
     QLayout::invalidate();
-
-    if ( parentWidget() )
-        parentWidget()->update();
 }
 
 ChevronButton::ChevronButton( QWidget* parent ) : QToolButton( parent )
