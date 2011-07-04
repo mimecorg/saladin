@@ -101,7 +101,7 @@ void ViewManager::openView( const ShellPidl& pidl )
     item.m_window->setWindowTitle( QString( "%1 - Saladin" ).arg( info.fileName() ) );
 
     item.m_window->setView( item.m_view );
-    item.m_window->showMaximized();
+    item.m_window->show();
 
     if ( ok )
         item.m_view->load( pidl.path(), format );

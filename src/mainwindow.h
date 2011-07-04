@@ -36,15 +36,15 @@ public:
     ~MainWindow();
 
 public:
-    void restoreSettings();
-    void saveSettings();
-
     DriveStripManager* driveStripManager() const { return m_driveStripManager; }
 
     ViewManager* viewManager() const { return m_viewManager; }
 
 public: // overrides
     bool eventFilter( QObject* object, QEvent* e );
+
+protected: // overrides
+    void closeEvent( QCloseEvent* e );
 
 private slots:
     void configure();
@@ -115,6 +115,9 @@ private:
     };
 
 private:
+    void initializeSettings();
+    void saveSettings();
+
     void setSourcePane( int index );
 
     void invokeCommand( ShellFolder* folder, const QList<ShellItem>& items, const char* verb );

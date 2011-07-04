@@ -18,6 +18,8 @@
 
 #include "textview.h"
 
+#include "application.h"
+#include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/toolstrip.h"
 
@@ -29,7 +31,6 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
     action = new QAction( IconLoader::icon( "word-wrap" ), tr( "Word Wrap" ), this );
     action->setShortcut( Qt::Key_W );
     action->setCheckable( true );
-    action->setChecked( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( toggleWordWrap() ) );
     setAction( "wordWrap", action );
 
@@ -50,6 +51,34 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
     m_encodingMapper = new QSignalMapper( this );
     connect( m_encodingMapper, SIGNAL( mapped( const QString& ) ), this, SLOT( setEncoding( const QString& ) ) );
 
+    encodingAction->setMenu( createEncodingMenu() );
+
+    initializeSettings();
+}
+
+TextView::~TextView()
+{
+    storeSettings();
+}
+
+void TextView::initializeSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    bool wordWrap = settings->value( "WordWrap", true ).toBool();
+    m_edit->setWordWrapMode( wordWrap ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
+    action( "wordWrap" )->setChecked( wordWrap );
+}
+
+void TextView::storeSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    settings->setValue( "WordWrap", action( "wordWrap" )->isChecked() );
+}
+
+QMenu* TextView::createEncodingMenu()
+{
     QMenu* menu = new QMenu( m_edit );
 
     struct Encoding
@@ -68,7 +97,7 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
     };
 
     for ( int i = 0; i < sizeof( stdEncodings ) / sizeof( stdEncodings[ 0 ] ); i++ ) {
-        action = new QAction( tr( stdEncodings[ i ].m_name ), this );
+        QAction* action = new QAction( tr( stdEncodings[ i ].m_name ), this );
         action->setCheckable( true );
 
         if ( stdEncodings[ i ].m_key != 0 )
@@ -127,7 +156,7 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
         QString name = tr( extEncodings[ i ].m_name );
         QString text = QString( "%1 (%2)" ).arg( name, extEncodings[ i ].m_format );
 
-        action = new QAction( text, this );
+        QAction* action = new QAction( text, this );
         action->setCheckable( true );
 
         connect( action, SIGNAL( triggered() ), m_encodingMapper, SLOT( map() ) );
@@ -143,11 +172,7 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
         actions.insert( startIndex + index, action );
     }
 
-    encodingAction->setMenu( menu );
-}
-
-TextView::~TextView()
-{
+    return menu;
 }
 
 View::Type TextView::type() const

@@ -18,8 +18,10 @@
 
 #include "viewerwindow.h"
 
+#include "application.h"
 #include "mainwindow.h"
 #include "viewer/viewmanager.h"
+#include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/builder.h"
 #include "xmlui/toolstrip.h"
@@ -66,10 +68,13 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
     builder->addClient( this );
 
     setStatusBar( new QStatusBar( this ) );
+
+    initializeGeometry();
 }
 
 ViewerWindow::~ViewerWindow()
 {
+    storeGeometry( false );
 }
 
 void ViewerWindow::setView( View* view )
@@ -114,4 +119,45 @@ void ViewerWindow::switchToImage()
         mainWindow->viewManager()->switchViewType( this, View::Image );
     else
         action( "switchToImage" )->setChecked( true );
+}
+
+void ViewerWindow::showEvent( QShowEvent* e )
+{
+    if ( !e->spontaneous() )
+        storeGeometry( true );
+}
+
+void ViewerWindow::initializeGeometry()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    if ( settings->contains( "ViewerWindowGeometry" ) ) {
+        restoreGeometry( settings->value( "ViewerWindowGeometry" ).toByteArray() );
+
+        if ( settings->value( "ViewerWindowOffset" ).toBool() ) {
+            QPoint position = pos() + QPoint( 40, 40 );
+            QRect available = QApplication::desktop()->availableGeometry( this );
+            QRect frame = frameGeometry();
+            if ( position.x() + frame.width() > available.right() )
+                position.rx() = available.left();
+            if ( position.y() + frame.height() > available.bottom() - 20 )
+                position.ry() = available.top();
+            move( position );
+        }
+    } else {
+        QRect available = QApplication::desktop()->availableGeometry( this );
+        resize( available.width() * 4 / 5, available.height() * 4 / 5 );
+        setWindowState( Qt::WindowMaximized );
+    }
+}
+
+void ViewerWindow::storeGeometry( bool offset )
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    QString geometryKey = QString( "%1Geometry" ).arg( m_view->metaObject()->className() );
+    QString offsetKey = QString( "%1Offset" ).arg( m_view->metaObject()->className() );
+
+    settings->setValue( "ViewerWindowGeometry", saveGeometry() );
+    settings->setValue( "ViewerWindowOffset", offset );
 }

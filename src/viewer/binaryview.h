@@ -38,6 +38,10 @@ private slots:
     void toggleHexMode();
 
 private:
+    void initializeSettings();
+    void storeSettings();
+
+private:
     QPlainTextEdit* m_edit;
 
     QString m_path;

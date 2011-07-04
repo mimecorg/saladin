@@ -18,6 +18,8 @@
 
 #include "binaryview.h"
 
+#include "application.h"
+#include "utils/localsettings.h"
 #include "utils/iconloader.h"
 
 BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent ),
@@ -40,10 +42,13 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
     m_edit->setFont( QFont( "Courier New", 10 ) );
 
     setMainWidget( m_edit );
+
+    initializeSettings();
 }
 
 BinaryView::~BinaryView()
 {
+    storeSettings();
 }
 
 View::Type BinaryView::type() const
@@ -56,6 +61,21 @@ void BinaryView::load( const QString& path, const QByteArray& /*format*/ )
     m_path = path;
 
     reload();
+}
+
+void BinaryView::initializeSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    m_hexMode = settings->value( "HexMode", false ).toBool();
+    action( "hexMode" )->setChecked( m_hexMode );
+}
+
+void BinaryView::storeSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    settings->setValue( "HexMode", m_hexMode );
 }
 
 void BinaryView::reload()

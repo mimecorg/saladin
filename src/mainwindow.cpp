@@ -346,13 +346,19 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( m_panes[ 1 ], SIGNAL( headerSectionMoved( int, int ) ), m_panes[ 0 ], SLOT( moveHeaderSection( int, int ) ) );
 
     application->installEventFilter( this );
+
+    initializeSettings();
 }
 
 MainWindow::~MainWindow()
 {
+    saveSettings();
+
+    delete m_viewManager;
+    m_viewManager = NULL;
 }
 
-void MainWindow::restoreSettings()
+void MainWindow::initializeSettings()
 {
     LocalSettings* settings = application->applicationSettings();
 
@@ -423,9 +429,12 @@ void MainWindow::saveSettings()
             }
         }
     }
+}
 
-    delete m_viewManager;
-    m_viewManager = NULL;
+void MainWindow::closeEvent( QCloseEvent* e )
+{
+    application->quit();
+    e->ignore();
 }
 
 bool MainWindow::eventFilter( QObject* object, QEvent* e )

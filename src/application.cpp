@@ -58,7 +58,6 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
     setWindowIcon( IconLoader::icon( "saladin" ) );
 
     mainWindow = new MainWindow();
-    mainWindow->restoreSettings();
 
     QNetworkProxyFactory::setUseSystemConfiguration( true );
 
@@ -80,13 +79,13 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
 
 Application::~Application()
 {
-    mainWindow->saveSettings();
-    m_settings->save();
+    delete mainWindow;
+    mainWindow = NULL;
 
     delete m_updateSection;
 
-    delete mainWindow;
-    mainWindow = NULL;
+    delete m_settings;
+    m_settings = NULL;
 }
 
 extern "C" IMAGE_DOS_HEADER __ImageBase;

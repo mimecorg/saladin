@@ -39,6 +39,12 @@ private slots:
     void setEncoding( const QString& format );
 
 private:
+    void initializeSettings();
+    void storeSettings();
+
+    QMenu* createEncodingMenu();
+
+private:
     QPlainTextEdit* m_edit;
 
     QString m_path;

@@ -24,7 +24,6 @@
 
 #include <QMainWindow>
 
-
 class ViewerWindow : public QMainWindow, public XmlUi::Client
 {
     Q_OBJECT
@@ -35,10 +34,17 @@ public:
 public:
     void setView( View* view );
 
+protected: // overrides
+    void showEvent( QShowEvent* e );
+
 private slots:
     void switchToText();
     void switchToBinary();
     void switchToImage();
+
+private:
+    void initializeGeometry();
+    void storeGeometry( bool offset );
 
 private:
     View* m_view;
