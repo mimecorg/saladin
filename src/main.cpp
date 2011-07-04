@@ -18,6 +18,24 @@
 
 #include "application.h"
 
+#if !defined( QT_DLL )
+#if defined( HAVE_PLUGIN_GIF )
+Q_IMPORT_PLUGIN( qgif )
+#endif
+#if defined( HAVE_PLUGIN_JPEG )
+Q_IMPORT_PLUGIN( qjpeg )
+#endif
+#if defined( HAVE_PLUGIN_TIFF )
+Q_IMPORT_PLUGIN( qtiff )
+#endif
+Q_IMPORT_PLUGIN( qico )
+Q_IMPORT_PLUGIN( qsvg )
+Q_IMPORT_PLUGIN( qcncodecs )
+Q_IMPORT_PLUGIN( qjpcodecs )
+Q_IMPORT_PLUGIN( qkrcodecs )
+Q_IMPORT_PLUGIN( qtwcodecs )
+#endif
+
 int main( int argc, char** argv )
 {
     Application application( argc, argv );

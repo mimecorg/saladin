@@ -50,6 +50,23 @@ include( utils/utils.pri )
 include( viewer/viewer.pri )
 include( xmlui/xmlui.pri )
 
+static {
+    !contains( QT_CONFIG, gif ) {
+        DEFINES = HAVE_PLUGIN_GIF
+        QTPLUGIN += qgif
+    }
+    !contains( QT_CONFIG, jpeg ) {
+        DEFINES = HAVE_PLUGIN_JPEG
+        QTPLUGIN += qjpeg
+    }
+    !contains( QT_CONFIG, tiff ) {
+        DEFINES = HAVE_PLUGIN_TIFF
+        QTPLUGIN += qtiff
+    }
+    QTPLUGIN += qico qsvg qcncodecs qjpcodecs qkrcodecs qtwcodecs
+    QT += svg
+}
+
 INCLUDEPATH += .
 
 PRECOMPILED_HEADER = precompiled.h
