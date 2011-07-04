@@ -121,6 +121,8 @@ void ViewManager::switchViewType( ViewerWindow* window, View::Type type )
 
             if ( ok )
                 item.m_view->load( item.m_pidl.path(), format );
+
+            item.m_view->mainWidget()->setFocus();
             break;
         }
     }

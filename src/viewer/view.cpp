@@ -22,12 +22,14 @@
 #include "viewer/binaryview.h"
 #include "viewer/imageview.h"
 
-View::View( QObject* parent ) : QObject( parent )
+View::View( QObject* parent ) : QObject( parent ),
+    m_mainWidget( NULL )
 {
 }
 
 View::~View()
 {
+    delete m_mainWidget;
 }
 
 void View::setMainWidget( QWidget* widget )
