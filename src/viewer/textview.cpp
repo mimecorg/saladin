@@ -169,6 +169,7 @@ void TextView::reload()
 
     if ( file.open( QIODevice::ReadOnly ) ) {
         QTextStream stream( &file );
+        stream.setAutoDetectUnicode( false );
         stream.setCodec( m_format );
 
         m_edit->setPlainText( stream.readAll() );
