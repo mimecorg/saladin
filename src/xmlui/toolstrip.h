@@ -30,6 +30,8 @@
 #define XMLUI_TOOLSTRIP_H
 
 #include <QWidget>
+#include <QAction>
+#include <QToolButton>
 
 namespace XmlUi
 {
@@ -39,7 +41,6 @@ class ToolStripSectionLayout;
 
 class QBoxLayout;
 class QGridLayout;
-class QToolButton;
 
 namespace XmlUi
 {
