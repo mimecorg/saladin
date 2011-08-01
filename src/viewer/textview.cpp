@@ -288,6 +288,7 @@ void TextView::find()
 
     m_findBar->show();
     m_findBar->setFocus();
+    m_findBar->selectAll();
 }
 
 void TextView::findText( const QString& text )
@@ -301,14 +302,18 @@ void TextView::findText( const QString& text )
 
 void TextView::findNext()
 {
-    if ( m_isFindEnabled )
+    if ( m_isFindEnabled ) {
         findText( m_findBar->text(), m_edit->textCursor().selectionStart() + 1, m_findBar->flags() );
+        m_findBar->selectAll();
+    }
 }
 
 void TextView::findPrevious()
 {
-    if ( m_isFindEnabled )
+    if ( m_isFindEnabled ) {
         findText( m_findBar->text(), m_edit->textCursor().selectionStart(), m_findBar->flags() | QTextDocument::FindBackward );
+        m_findBar->selectAll();
+    }
 }
 
 void TextView::findText( const QString& text, int from, QTextDocument::FindFlags flags )

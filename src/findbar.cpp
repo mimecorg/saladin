@@ -112,7 +112,6 @@ FindBar::~FindBar()
 void FindBar::setText( const QString& text )
 {
     m_edit->setText( text );
-    m_edit->selectAll();
 }
 
 QString FindBar::text() const
@@ -142,6 +141,11 @@ void FindBar::showWarning( bool on )
 void FindBar::setBoundWidget( QWidget* widget )
 {
     m_boundWidget = widget;
+}
+
+void FindBar::selectAll()
+{
+    m_edit->selectAll();
 }
 
 void FindBar::hideEvent( QHideEvent* e )
