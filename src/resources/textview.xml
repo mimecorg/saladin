@@ -2,5 +2,9 @@
   <strip id="stripMain">
     <action id="wordWrap"/>
     <action id="selectEncoding"/>
+    <separator/>
+    <action id="find"/>
+    <action id="findPrevious"/>
+    <action id="findNext"/>
   </strip>
 </xmlui>

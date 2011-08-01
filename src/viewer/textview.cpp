@@ -19,11 +19,14 @@
 #include "textview.h"
 
 #include "application.h"
+#include "findbar.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/toolstrip.h"
 
-TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
+TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
+    m_isFindEnabled( false ),
+    m_isFindInitialized( false )
 {
     QAction* action;
     XmlUi::ToolStripAction* encodingAction;
@@ -39,14 +42,55 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent )
     connect( encodingAction, SIGNAL( triggered() ), this, SLOT( selectEncoding() ) );
     setAction( "selectEncoding", encodingAction );
 
+    action = new QAction( IconLoader::icon( "find-text" ), tr( "&Find..." ), this );
+    action->setShortcut( QKeySequence::Find );
+    connect( action, SIGNAL( triggered() ), this, SLOT( find() ) );
+    setAction( "find", action );
+
+    action = new QAction( IconLoader::icon( "find-next" ), tr( "Find &Next" ), this );
+    action->setShortcut( QKeySequence::FindNext );
+    connect( action, SIGNAL( triggered() ), this, SLOT( findNext() ) );
+    setAction( "findNext", action );
+
+    action = new QAction( IconLoader::icon( "find-previous" ), tr( "Find &Previous" ), this );
+    action->setShortcut( QKeySequence::FindPrevious );
+    connect( action, SIGNAL( triggered() ), this, SLOT( findPrevious() ) );
+    setAction( "findPrevious", action );
+
     loadXmlUiFile( ":/resources/textview.xml" );
 
-    m_edit = new QPlainTextEdit( parentWidget );
+    QWidget* main = new QWidget( parentWidget );
+    QVBoxLayout* mainLayout = new QVBoxLayout( main );
+    mainLayout->setMargin( 0 );
+    mainLayout->setSpacing( 0 );
+
+    m_edit = new QPlainTextEdit( main );
     m_edit->setReadOnly( true );
 
     m_edit->setFont( QFont( "Courier New", 10 ) );
 
-    setMainWidget( m_edit );
+    QPalette palette = m_edit->palette();
+    palette.setBrush( QPalette::Inactive, QPalette::Highlight, palette.brush( QPalette::Active, QPalette::Highlight ) );
+    palette.setBrush( QPalette::Inactive, QPalette::HighlightedText, palette.brush( QPalette::Active, QPalette::HighlightedText ) );
+    m_edit->setPalette( palette );
+
+    mainLayout->addWidget( m_edit );
+
+    m_findBar = new FindBar( main );
+    m_findBar->setBoundWidget( m_edit );
+    m_findBar->setAutoFillBackground( true );
+    m_findBar->hide();
+
+    mainLayout->addWidget( m_findBar );
+
+    connect( m_findBar, SIGNAL( find( const QString& ) ), this, SLOT( findText( const QString& ) ) );
+    connect( m_findBar, SIGNAL( findPrevious() ), this, SLOT( findPrevious() ) );
+    connect( m_findBar, SIGNAL( findNext() ), this, SLOT( findNext() ) );
+    connect( m_findBar, SIGNAL( findEnabled( bool ) ), this, SLOT( updateActions() ) );
+
+    setMainWidget( main );
+
+    main->installEventFilter( this );
 
     m_encodingMapper = new QSignalMapper( this );
     connect( m_encodingMapper, SIGNAL( mapped( const QString& ) ), this, SLOT( setEncoding( const QString& ) ) );
@@ -68,6 +112,8 @@ void TextView::initializeSettings()
     bool wordWrap = settings->value( "WordWrap", true ).toBool();
     m_edit->setWordWrapMode( wordWrap ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
     action( "wordWrap" )->setChecked( wordWrap );
+
+    updateActions();
 }
 
 void TextView::storeSettings()
@@ -219,4 +265,102 @@ void TextView::setEncoding( const QString& format )
     m_format = format.toLatin1();
 
     reload();
+}
+
+void TextView::updateActions()
+{
+    m_isFindEnabled = m_findBar->isFindEnabled();
+
+    action( "findNext" )->setEnabled( m_isFindEnabled );
+    action( "findPrevious" )->setEnabled( m_isFindEnabled );
+}
+
+void TextView::find()
+{
+    if ( !m_isFindInitialized ) {
+        LocalSettings* settings = application->applicationSettings();
+        QString text = settings->value( "FindText" ).toString();
+        QTextDocument::FindFlags flags = (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt();
+        m_findBar->setText( text );
+        m_findBar->setFlags( flags );
+        m_isFindInitialized = true;
+    }
+
+    m_findBar->show();
+    m_findBar->setFocus();
+}
+
+void TextView::findText( const QString& text )
+{
+    LocalSettings* settings = application->applicationSettings();
+    settings->setValue( "FindText", text );
+    settings->setValue( "FindFlags", (int)m_findBar->flags() );
+
+    findText( text, m_edit->textCursor().selectionStart(), m_findBar->flags() );
+}
+
+void TextView::findNext()
+{
+    if ( m_isFindEnabled )
+        findText( m_findBar->text(), m_edit->textCursor().selectionStart() + 1, m_findBar->flags() );
+}
+
+void TextView::findPrevious()
+{
+    if ( m_isFindEnabled )
+        findText( m_findBar->text(), m_edit->textCursor().selectionStart(), m_findBar->flags() | QTextDocument::FindBackward );
+}
+
+void TextView::findText( const QString& text, int from, QTextDocument::FindFlags flags )
+{
+    QTextCursor found;
+    bool warn = false;
+
+    if ( !text.isEmpty() ) {
+        found = m_edit->document()->find( text, from, flags );
+
+        if ( found.isNull() ) {
+            if ( flags & QTextDocument::FindBackward ) {
+                QTextCursor end( m_edit->document() );
+                end.movePosition( QTextCursor::End );
+                from = end.position();
+            } else {
+                from = 0;
+            }
+
+            found = m_edit->document()->find( text, from, flags );
+
+            if ( found.isNull() )
+                warn = true;
+        }
+    }
+
+    if ( found.isNull() ) {
+        found = m_edit->textCursor();
+        found.setPosition( found.selectionStart() );
+    }
+
+    m_findBar->show();
+    m_findBar->setFocus();
+
+    m_edit->setTextCursor( found );
+
+    m_findBar->showWarning( warn );
+}
+
+bool TextView::eventFilter( QObject* obj, QEvent* e )
+{
+    if ( obj == mainWidget() ) {
+        if ( e->type() == QEvent::ShortcutOverride ) {
+            QKeyEvent* ke = (QKeyEvent*)e;
+            if ( ke->key() == Qt::Key_F3 && ( ke->modifiers() & ~Qt::ShiftModifier ) == 0 ) {
+                if ( !m_isFindEnabled ) {
+                    find();
+                    ke->accept();
+                    return true;
+                }
+            }
+        }
+    }
+    return View::eventFilter( obj, e );
 }

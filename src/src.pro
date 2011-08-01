@@ -12,6 +12,7 @@ HEADERS += aboutbox.h \
            bookmark_p.h \
            bookmarksdialog.h \
            drivestripmanager.h \
+           findbar.h \
            folderitemdelegate.h \
            folderitemmodel.h \
            folderitemview.h \
@@ -28,6 +29,7 @@ SOURCES += aboutbox.cpp \
            bookmark.cpp \
            bookmarksdialog.cpp \
            drivestripmanager.cpp \
+           findbar.cpp \
            folderitemdelegate.cpp \
            folderitemmodel.cpp \
            folderitemview.cpp \

@@ -21,6 +21,8 @@
 
 #include "viewer/view.h"
 
+class FindBar;
+
 class TextView : public View
 {
     Q_OBJECT
@@ -33,16 +35,28 @@ public: // overrides
 
     void load( const QString& path, const QByteArray& format );
 
+    bool eventFilter( QObject* obj, QEvent* e );
+
 private slots:
     void reload();
     void toggleWordWrap();
     void setEncoding( const QString& format );
+
+    void updateActions();
+
+    void find();
+    void findNext();
+    void findPrevious();
+
+    void findText( const QString& text );
 
 private:
     void initializeSettings();
     void storeSettings();
 
     QMenu* createEncodingMenu();
+
+    void findText( const QString& text, int from, QTextDocument::FindFlags flags );
 
 private:
     QPlainTextEdit* m_edit;
@@ -52,6 +66,11 @@ private:
     QByteArray m_format;
 
     QSignalMapper* m_encodingMapper;
+
+    FindBar* m_findBar;
+
+    bool m_isFindEnabled;
+    bool m_isFindInitialized;
 };
 
 #endif
