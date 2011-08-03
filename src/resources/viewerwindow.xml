@@ -1,5 +1,7 @@
 <xmlui>
   <strip id="stripMain">
+    <action id="reload"/>
+    <separator/>
     <action id="switchToText"/>
     <action id="switchToBinary"/>
     <action id="switchToImage"/>

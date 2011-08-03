@@ -44,18 +44,36 @@ public:
 public:
     QWidget* mainWidget() const { return m_mainWidget; }
 
+    void setPath( const QString& path );
+    const QString& path() const { return m_path; }
+
+    void setFormat( const QByteArray& format );
+    const QByteArray& format() const { return m_format; }
+
+    const QString& status() const { return m_status; }
+
     static View* createView( Type type, QObject* parent, QWidget* parentWidget );
 
 public:
     virtual Type type() const = 0;
 
-    virtual void load( const QString& path, const QByteArray& format ) = 0;
+    virtual void load() = 0;
+
+signals:
+    void statusChanged( const QString& status );
 
 protected:
     void setMainWidget( QWidget* widget );
 
+    void setStatus( const QString& status );
+
 private:
     QWidget* m_mainWidget;
+
+    QString m_path;
+    QByteArray m_format;
+
+    QString m_status;
 };
 
 #endif

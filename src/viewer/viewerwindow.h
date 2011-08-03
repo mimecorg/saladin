@@ -38,9 +38,13 @@ protected: // overrides
     void showEvent( QShowEvent* e );
 
 private slots:
+    void reload();
+
     void switchToText();
     void switchToBinary();
     void switchToImage();
+
+    void statusChanged( const QString& status );
 
 private:
     void initializeGeometry();
@@ -48,6 +52,8 @@ private:
 
 private:
     View* m_view;
+
+    QLabel* m_statusLabel;
 };
 
 #endif

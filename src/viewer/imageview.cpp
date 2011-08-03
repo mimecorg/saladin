@@ -41,12 +41,18 @@ View::Type ImageView::type() const
     return Image;
 }
 
-void ImageView::load( const QString& path, const QByteArray& format )
+void ImageView::load()
 {
-    QPixmap pixmap( path, format.data() );
+    QString status = tr( "Image" ) + ", " + format().toUpper();
+
+    QPixmap pixmap( path(), format().data() );
 
     if ( !pixmap.isNull() ) {
         m_label->setPixmap( pixmap );
         m_label->resize( pixmap.size() );
+
+        status += QString( " (%1 x %2)" ).arg( pixmap.width() ).arg( pixmap.height() );
     }
+
+    setStatus( status );
 }

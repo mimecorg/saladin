@@ -56,13 +56,6 @@ View::Type BinaryView::type() const
     return Binary;
 }
 
-void BinaryView::load( const QString& path, const QByteArray& /*format*/ )
-{
-    m_path = path;
-
-    reload();
-}
-
 void BinaryView::initializeSettings()
 {
     LocalSettings* settings = application->applicationSettings();
@@ -78,9 +71,11 @@ void BinaryView::storeSettings()
     settings->setValue( "HexMode", m_hexMode );
 }
 
-void BinaryView::reload()
+void BinaryView::load()
 {
-    QFile file( m_path );
+    QString status = tr( "Binary" );
+
+    QFile file( path() );
 
     if ( file.open( QIODevice::ReadOnly ) ) {
         QDataStream stream( &file );
@@ -158,12 +153,16 @@ void BinaryView::reload()
         }
 
         m_edit->setPlainText( text );
+
+        status += " (" + tr( "%1 bytes" ).arg( QLocale::system().toString( pos ) ) + ")";
     }
+
+    setStatus( status );
 }
 
 void BinaryView::toggleHexMode()
 {
     m_hexMode = action( "hexMode" )->isChecked();
 
-    reload();
+    load();
 }

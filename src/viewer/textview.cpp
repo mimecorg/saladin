@@ -226,33 +226,35 @@ View::Type TextView::type() const
     return Text;
 }
 
-void TextView::load( const QString& path, const QByteArray& format )
+void TextView::load()
 {
-    m_path = path;
-    m_format = format;
+    QString status = tr( "Text" );
 
-    reload();
-}
-
-void TextView::reload()
-{
-    QFile file( m_path );
-
-    if ( file.open( QIODevice::ReadOnly ) ) {
-        QTextStream stream( &file );
-        stream.setAutoDetectUnicode( false );
-        stream.setCodec( m_format );
-
-        m_edit->setPlainText( stream.readAll() );
-    }
-
-    QObject* current = m_encodingMapper->mapping( QString( m_format ) );
+    QObject* current = m_encodingMapper->mapping( QString( format() ) );
 
     QList<QAction*> actions = action( "selectEncoding" )->menu()->actions();
     foreach ( QAction* action, actions ) {
         if ( action->isCheckable() )
             action->setChecked( action == current );
+        if ( action == current )
+            status += ", " + action->text();
     }
+
+    QFile file( path() );
+
+    if ( file.open( QIODevice::ReadOnly ) ) {
+        QTextStream stream( &file );
+        stream.setAutoDetectUnicode( false );
+        stream.setCodec( format() );
+
+        QString text = stream.readAll();
+
+        m_edit->setPlainText( text );
+
+        status += " (" + tr( "%1 characters" ).arg( QLocale::system().toString( text.length() ) ) + ")";
+    }
+
+    setStatus( status );
 }
 
 void TextView::toggleWordWrap()
@@ -262,9 +264,9 @@ void TextView::toggleWordWrap()
 
 void TextView::setEncoding( const QString& format )
 {
-    m_format = format.toLatin1();
+    setFormat( format.toLatin1() );
 
-    reload();
+    load();
 }
 
 void TextView::updateActions()

@@ -31,10 +31,9 @@ public:
 public: // overrides
     Type type() const;
 
-    void load( const QString& path, const QByteArray& format );
+    void load();
 
 private slots:
-    void reload();
     void toggleHexMode();
 
 private:
@@ -43,8 +42,6 @@ private:
 
 private:
     QPlainTextEdit* m_edit;
-
-    QString m_path;
 
     bool m_hexMode;
 };

@@ -31,10 +31,12 @@ public:
 public: // overrides
     Type type() const;
 
-    void load( const QString& path, const QByteArray& format );
+    void load();
 
 private:
     QLabel* m_label;
+
+    QByteArray m_format;
 };
 
 #endif

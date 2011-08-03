@@ -33,12 +33,11 @@ public:
 public: // overrides
     Type type() const;
 
-    void load( const QString& path, const QByteArray& format );
+    void load();
 
     bool eventFilter( QObject* obj, QEvent* e );
 
 private slots:
-    void reload();
     void toggleWordWrap();
     void setEncoding( const QString& format );
 
@@ -60,10 +59,6 @@ private:
 
 private:
     QPlainTextEdit* m_edit;
-
-    QString m_path;
-
-    QByteArray m_format;
 
     QSignalMapper* m_encodingMapper;
 

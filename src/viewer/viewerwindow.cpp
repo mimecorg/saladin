@@ -33,6 +33,11 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
 
     QAction* action;
 
+    action = new QAction( IconLoader::icon( "refresh" ), tr( "Reload" ), this );
+    action->setShortcut( Qt::CTRL + Qt::Key_R );
+    connect( action, SIGNAL( triggered() ), this, SLOT( reload() ) );
+    setAction( "reload", action );
+
     action = new QAction( IconLoader::icon( "type-text" ), tr( "Text" ), this );
     action->setShortcut( Qt::Key_1 );
     action->setCheckable( true );
@@ -67,7 +72,12 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
     builder->registerToolStrip( "stripMain", strip );
     builder->addClient( this );
 
-    setStatusBar( new QStatusBar( this ) );
+    QStatusBar* status = new QStatusBar( this );
+    setStatusBar( status );
+
+    m_statusLabel = new QLabel( status );
+    m_statusLabel->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Preferred );
+    status->addWidget( m_statusLabel, 1 );
 
     initializeGeometry();
 }
@@ -88,6 +98,10 @@ void ViewerWindow::setView( View* view )
 
     setCentralWidget( view->mainWidget() );
 
+    statusChanged( view->status() );
+
+    connect( view, SIGNAL( statusChanged( const QString& ) ), this, SLOT( statusChanged( const QString& ) ) );
+
     View::Type type = view->type();
 
     action( "switchToText" )->setChecked( type == View::Text );
@@ -95,6 +109,11 @@ void ViewerWindow::setView( View* view )
     action( "switchToImage" )->setChecked( type == View::Image );
 
     builder()->resumeUpdate();
+}
+
+void ViewerWindow::reload()
+{
+    m_view->load();
 }
 
 void ViewerWindow::switchToText()
@@ -119,6 +138,11 @@ void ViewerWindow::switchToImage()
         mainWindow->viewManager()->switchViewType( this, View::Image );
     else
         action( "switchToImage" )->setChecked( true );
+}
+
+void ViewerWindow::statusChanged( const QString& status )
+{
+    m_statusLabel->setText( status );
 }
 
 void ViewerWindow::showEvent( QShowEvent* e )

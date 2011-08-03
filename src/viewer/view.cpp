@@ -37,6 +37,24 @@ void View::setMainWidget( QWidget* widget )
     m_mainWidget = widget;
 }
 
+void View::setPath( const QString& path )
+{
+    m_path = path;
+}
+
+void View::setFormat( const QByteArray& format )
+{
+    m_format = format;
+}
+
+void View::setStatus( const QString& status )
+{
+    if ( m_status != status ) {
+        m_status = status;
+        emit statusChanged( status );
+    }
+}
+
 View* View::createView( Type type, QObject* parent, QWidget* parentWidget )
 {
     switch ( type ) {

@@ -103,8 +103,11 @@ void ViewManager::openView( const ShellPidl& pidl )
     item.m_window->setView( item.m_view );
     item.m_window->show();
 
-    if ( ok )
-        item.m_view->load( pidl.path(), format );
+    if ( ok ) {
+        item.m_view->setPath( pidl.path() );
+        item.m_view->setFormat( format );
+        item.m_view->load();
+    }
 }
 
 void ViewManager::switchViewType( ViewerWindow* window, View::Type type )
@@ -119,8 +122,11 @@ void ViewManager::switchViewType( ViewerWindow* window, View::Type type )
             item.m_view = View::createView( type, window, window );
             item.m_window->setView( item.m_view );
 
-            if ( ok )
-                item.m_view->load( item.m_pidl.path(), format );
+            if ( ok ) {
+                item.m_view->setPath( item.m_pidl.path() );
+                item.m_view->setFormat( format );
+                item.m_view->load();
+            }
 
             item.m_view->mainWidget()->setFocus();
             break;
