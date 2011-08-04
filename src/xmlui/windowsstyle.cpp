@@ -65,23 +65,12 @@ static bool useVista()
         && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based;
 }
 
-static QColor colorRole( QPalette::ColorRole role )
-{
-    return QApplication::palette().color( role );
-}
-
 static QColor blendColors( const QColor& src, const QColor& dest, double alpha )
 {
     double red = alpha * src.red() + ( 1.0 - alpha ) * dest.red();
     double green = alpha * src.green() + ( 1.0 - alpha ) * dest.green();
     double blue = alpha * src.blue() + ( 1.0 - alpha ) * dest.blue();
     return QColor( (int)( red + 0.5 ), (int)( green + 0.5 ), (int)( blue + 0.5 ) );
-}
-
-static QColor blendRoles( QPalette::ColorRole src, QPalette::ColorRole dest, double alpha )
-{
-    QPalette palette = QApplication::palette();
-    return blendColors( palette.color( src ), palette.color( dest ), alpha );
 }
 
 void WindowsStyle::polish( QApplication* application )
@@ -107,28 +96,38 @@ void WindowsStyle::polish( QPalette& palette )
     else
         QWindowsXPStyle::polish( palette );
 
-    m_colorBackgroundBegin = colorRole( QPalette::Button );
-    m_colorBackgroundEnd = blendRoles( QPalette::Button, QPalette::Base, 0.205 );
-    m_colorMenuBorder = blendRoles( QPalette::Text, QPalette::Dark, 0.2 );
-    m_colorMenuBackground = blendRoles( QPalette::Button, QPalette::Base, 0.143 );
-    m_colorBarBegin = blendRoles( QPalette::Button, QPalette::Base, 0.2 );
-    m_colorBarEnd = blendRoles( QPalette::Button, QPalette::Dark, 0.8 );
-    m_colorSeparator = blendRoles( QPalette::Dark, QPalette::Base, 0.5 );
-    m_colorItemBorder = colorRole( QPalette::Highlight );
-    
-    m_colorItemBackgroundBegin = blendRoles( QPalette::Highlight, QPalette::Base, 0.2 );
-    m_colorItemBackgroundMiddle = blendRoles( QPalette::Highlight, QPalette::Base, 0.4 );
-    m_colorItemBackgroundEnd = blendRoles( QPalette::Highlight, QPalette::Light, 0.1 );
+    QColor button = palette.color( QPalette::Button );
+    QColor base = palette.color( QPalette::Base );
+    QColor text = palette.color( QPalette::Text );
+    QColor dark = palette.color( QPalette::Dark );
+    QColor light = palette.color( QPalette::Light );
+    QColor shadow = palette.color( QPalette::Shadow );
+    QColor highlight = palette.color( QPalette::Highlight );
 
-    m_colorItemCheckedBegin = blendRoles( QPalette::Highlight, QPalette::Base, 0.2 );
-    m_colorItemCheckedMiddle = blendRoles( QPalette::Highlight, QPalette::Light, 0.1 );
-    m_colorItemCheckedEnd = blendRoles( QPalette::Highlight, QPalette::Base, 0.4 );
+    highlight = QColor::fromHsv( highlight.hue(), 204, 255 ).toRgb();
+
+    m_colorBackgroundBegin = button;
+    m_colorBackgroundEnd = blendColors( button, base, 0.205 );
+    m_colorMenuBorder = blendColors( text, dark, 0.2 );
+    m_colorMenuBackground = blendColors( button, base, 0.143 );
+    m_colorBarBegin = blendColors( button, base, 0.2 );
+    m_colorBarEnd = blendColors( button, dark, 0.8 );
+    m_colorSeparator = blendColors( dark, base, 0.5 );
+    m_colorItemBorder = highlight;
     
-    m_colorItemSunkenBegin = blendRoles( QPalette::Highlight, QPalette::Base, 0.3 );
-    m_colorItemSunkenMiddle = blendRoles( QPalette::Highlight, QPalette::Base, 0.5 );
-    m_colorItemSunkenEnd = blendRoles( QPalette::Highlight, QPalette::Light, 0.2 );
+    m_colorItemBackgroundBegin = blendColors( highlight, base, 0.2 );
+    m_colorItemBackgroundMiddle = blendColors( highlight, base, 0.4 );
+    m_colorItemBackgroundEnd = blendColors( highlight, light, 0.1 );
+
+    m_colorItemCheckedBegin = blendColors( highlight, base, 0.2 );
+    m_colorItemCheckedMiddle = blendColors( highlight, light, 0.1 );
+    m_colorItemCheckedEnd = blendColors( highlight, base, 0.4 );
     
-    m_colorToolStripLabel = blendRoles( QPalette::Highlight, QPalette::Shadow, 0.3 );
+    m_colorItemSunkenBegin = blendColors( highlight, base, 0.3 );
+    m_colorItemSunkenMiddle = blendColors( highlight, base, 0.5 );
+    m_colorItemSunkenEnd = blendColors( highlight, light, 0.2 );
+    
+    m_colorToolStripLabel = blendColors( highlight, shadow, 0.3 );
 }
 
 void WindowsStyle::polish( QWidget* widget )

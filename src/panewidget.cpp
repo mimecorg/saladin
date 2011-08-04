@@ -75,6 +75,7 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_edit = new QLineEdit( editFrame );
     m_edit->setFocusPolicy( Qt::ClickFocus );
     m_edit->setFrame( false );
+    m_edit->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
     innerLayout->addWidget( m_edit );
 
     updateEditPalette();
