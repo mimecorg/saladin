@@ -21,15 +21,20 @@
 ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
 {
     QScrollArea* scroll = new QScrollArea( parentWidget );
+    scroll->setWidgetResizable( true );
 
     QPalette scrollPalette = parentWidget->palette();
     scrollPalette.setColor( QPalette::Window, QColor::fromRgb( 255, 255, 255 ) );
     scroll->setPalette( scrollPalette );
 
     m_label = new QLabel( scroll );
+    m_label->setAlignment( Qt::AlignCenter );
+
     scroll->setWidget( m_label );
 
     setMainWidget( scroll );
+
+    setStatus( tr( "Image" ) );
 }
 
 ImageView::~ImageView()
@@ -43,15 +48,20 @@ View::Type ImageView::type() const
 
 void ImageView::load()
 {
-    QString status = tr( "Image" ) + ", " + format().toUpper();
+    QString status = tr( "Image" );
 
-    QPixmap pixmap( path(), format().data() );
+    m_label->clear();
 
-    if ( !pixmap.isNull() ) {
-        m_label->setPixmap( pixmap );
-        m_label->resize( pixmap.size() );
+    if ( !format().isEmpty() ) {
+        status += ", " + format().toUpper();
 
-        status += QString( " (%1 x %2)" ).arg( pixmap.width() ).arg( pixmap.height() );
+        QPixmap pixmap( path(), format().data() );
+
+        if ( !pixmap.isNull() ) {
+            m_label->setPixmap( pixmap );
+
+            status += QString( " (%1 x %2)" ).arg( pixmap.width() ).arg( pixmap.height() );
+        }
     }
 
     setStatus( status );

@@ -23,7 +23,8 @@
 #include "utils/iconloader.h"
 
 BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent ),
-    m_hexMode( false )
+    m_hexMode( false ),
+    m_lastHexMode( false )
 {
     QAction* action;
 
@@ -42,6 +43,8 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
     m_edit->setFont( QFont( "Courier New", 10 ) );
 
     setMainWidget( m_edit );
+
+    setStatus( tr( "Binary" ) );
 
     initializeSettings();
 }
@@ -74,6 +77,11 @@ void BinaryView::storeSettings()
 void BinaryView::load()
 {
     QString status = tr( "Binary" );
+
+    int topLine = m_edit->cursorForPosition( QPoint( 0, 0 ) ).blockNumber();
+    int topPos = topLine * ( m_lastHexMode ? 16 : 80 );
+
+    m_edit->clear();
 
     QFile file( path() );
 
@@ -153,6 +161,20 @@ void BinaryView::load()
         }
 
         m_edit->setPlainText( text );
+
+        topLine = topPos / readSize;
+
+        if ( topLine > 0 ) {
+            m_edit->verticalScrollBar()->triggerAction( QAbstractSlider::SliderToMaximum );
+
+            QTextCursor cursor = m_edit->textCursor();
+            cursor.movePosition( QTextCursor::Start );
+            cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, topLine );
+            m_edit->setTextCursor( cursor );
+            m_edit->ensureCursorVisible();
+        }
+
+        m_lastHexMode = m_hexMode;
 
         status += " (" + tr( "%1 bytes" ).arg( QLocale::system().toString( pos ) ) + ")";
     }

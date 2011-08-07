@@ -44,6 +44,7 @@ private:
     QPlainTextEdit* m_edit;
 
     bool m_hexMode;
+    bool m_lastHexMode;
 };
 
 #endif

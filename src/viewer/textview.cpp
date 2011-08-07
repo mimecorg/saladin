@@ -90,6 +90,8 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
 
     setMainWidget( main );
 
+    setStatus( tr( "Text" ) );
+
     main->installEventFilter( this );
 
     m_encodingMapper = new QSignalMapper( this );
@@ -230,6 +232,10 @@ void TextView::load()
 {
     QString status = tr( "Text" );
 
+    int topLine = m_edit->cursorForPosition( QPoint( 0, 0 ) ).blockNumber();
+
+    m_edit->clear();
+
     QObject* current = m_encodingMapper->mapping( QString( format() ) );
 
     QList<QAction*> actions = action( "selectEncoding" )->menu()->actions();
@@ -250,6 +256,16 @@ void TextView::load()
         QString text = stream.readAll();
 
         m_edit->setPlainText( text );
+
+        if ( topLine > 0 ) {
+            m_edit->verticalScrollBar()->triggerAction( QAbstractSlider::SliderToMaximum );
+
+            QTextCursor cursor = m_edit->textCursor();
+            cursor.movePosition( QTextCursor::Start );
+            cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, topLine );
+            m_edit->setTextCursor( cursor );
+            m_edit->ensureCursorVisible();
+        }
 
         status += " (" + tr( "%1 characters" ).arg( QLocale::system().toString( text.length() ) ) + ")";
     }
