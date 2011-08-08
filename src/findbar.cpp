@@ -111,7 +111,9 @@ FindBar::~FindBar()
 
 void FindBar::setText( const QString& text )
 {
+    bool old = blockSignals( true );
     m_edit->setText( text );
+    blockSignals( old );
 }
 
 QString FindBar::text() const
@@ -121,7 +123,9 @@ QString FindBar::text() const
 
 void FindBar::setFlags( QTextDocument::FindFlags flags )
 {
+    bool old = blockSignals( true );
     m_caseCheckBox->setChecked( ( flags & QTextDocument::FindCaseSensitively ) != 0 );
+    blockSignals( old );
 }
 
 QTextDocument::FindFlags FindBar::flags() const

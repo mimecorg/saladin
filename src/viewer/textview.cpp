@@ -25,8 +25,7 @@
 #include "xmlui/toolstrip.h"
 
 TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
-    m_isFindEnabled( false ),
-    m_isFindInitialized( false )
+    m_isFindEnabled( false )
 {
     QAction* action;
     XmlUi::ToolStripAction* encodingAction;
@@ -115,6 +114,11 @@ void TextView::initializeSettings()
     m_edit->setWordWrapMode( wordWrap ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
     action( "wordWrap" )->setChecked( wordWrap );
 
+    QString text = settings->value( "FindText" ).toString();
+    QTextDocument::FindFlags flags = (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt();
+    m_findBar->setText( text );
+    m_findBar->setFlags( flags );
+
     updateActions();
 }
 
@@ -123,6 +127,9 @@ void TextView::storeSettings()
     LocalSettings* settings = application->applicationSettings();
 
     settings->setValue( "WordWrap", action( "wordWrap" )->isChecked() );
+    
+    settings->setValue( "FindText", m_findBar->text() );
+    settings->setValue( "FindFlags", (int)m_findBar->flags() );
 }
 
 QMenu* TextView::createEncodingMenu()
@@ -295,15 +302,6 @@ void TextView::updateActions()
 
 void TextView::find()
 {
-    if ( !m_isFindInitialized ) {
-        LocalSettings* settings = application->applicationSettings();
-        QString text = settings->value( "FindText" ).toString();
-        QTextDocument::FindFlags flags = (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt();
-        m_findBar->setText( text );
-        m_findBar->setFlags( flags );
-        m_isFindInitialized = true;
-    }
-
     m_findBar->show();
     m_findBar->setFocus();
     m_findBar->selectAll();
@@ -311,10 +309,6 @@ void TextView::find()
 
 void TextView::findText( const QString& text )
 {
-    LocalSettings* settings = application->applicationSettings();
-    settings->setValue( "FindText", text );
-    settings->setValue( "FindFlags", (int)m_findBar->flags() );
-
     findText( text, m_edit->textCursor().selectionStart(), m_findBar->flags() );
 }
 

@@ -65,7 +65,6 @@ private:
     FindBar* m_findBar;
 
     bool m_isFindEnabled;
-    bool m_isFindInitialized;
 };
 
 #endif
