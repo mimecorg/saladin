@@ -66,7 +66,11 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     m_edit = new QPlainTextEdit( main );
     m_edit->setReadOnly( true );
 
-    m_edit->setFont( QFont( "Courier New", 10 ) );
+    QFont font( "Courier New", 10 );
+    m_edit->setFont( font );
+
+    QFontMetrics metrics( font );
+    m_edit->setTabStopWidth( 4 * metrics.width( ' ' ) );
 
     QPalette palette = m_edit->palette();
     palette.setBrush( QPalette::Inactive, QPalette::Highlight, palette.brush( QPalette::Active, QPalette::Highlight ) );
