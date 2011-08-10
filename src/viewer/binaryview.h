@@ -34,7 +34,14 @@ public: // overrides
     void load();
 
 private slots:
+    void updateActions();
+
+    void copy();
+    void selectAll();
+
     void toggleHexMode();
+
+    void contextMenuRequested( const QPoint& pos );
 
 private:
     void initializeSettings();

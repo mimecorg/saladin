@@ -33,6 +33,13 @@ public: // overrides
 
     void load();
 
+private slots:
+    void updateActions();
+
+    void copy();
+
+    void contextMenuRequested( const QPoint& pos );
+
 private:
     QLabel* m_label;
 

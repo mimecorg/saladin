@@ -1,12 +1,8 @@
 <xmlui>
   <strip id="stripMain">
     <action id="copy"/>
-    <separator/>
-    <action id="hexMode"/>
   </strip>
   <menu id="menuContext">
     <action id="copy"/>
-    <separator/>
-    <action id="selectAll"/>
   </menu>
 </xmlui>

@@ -21,6 +21,7 @@
 #include "application.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
+#include "xmlui/builder.h"
 
 BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     m_hexMode( false ),
@@ -34,19 +35,49 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
     connect( action, SIGNAL( triggered() ), this, SLOT( toggleHexMode() ) );
     setAction( "hexMode", action );
 
+    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "&Copy" ), this );
+    action->setShortcut( QKeySequence::Copy );
+    connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
+    setAction( "copy", action );
+
+    action = new QAction( tr( "Select &All" ), this );
+    action->setShortcut( QKeySequence::SelectAll );
+    connect( action, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
+    setAction( "selectAll", action );
+
     loadXmlUiFile( ":/resources/binaryview.xml" );
+
+    QWidget* main = new QWidget( parentWidget );
+    QVBoxLayout* mainLayout = new QVBoxLayout( main );
+    mainLayout->setContentsMargins( 3, 0, 3, 0 );
+    mainLayout->setSpacing( 0 );
 
     m_edit = new QPlainTextEdit( parentWidget );
     m_edit->setReadOnly( true );
     m_edit->setWordWrapMode( QTextOption::NoWrap );
+    m_edit->setContextMenuPolicy( Qt::CustomContextMenu );
 
     m_edit->setFont( QFont( "Courier New", 10 ) );
 
-    setMainWidget( m_edit );
+    QPalette palette = m_edit->palette();
+    palette.setBrush( QPalette::Inactive, QPalette::Highlight, palette.brush( QPalette::Active, QPalette::Highlight ) );
+    palette.setBrush( QPalette::Inactive, QPalette::HighlightedText, palette.brush( QPalette::Active, QPalette::HighlightedText ) );
+    m_edit->setPalette( palette );
+
+    m_edit->document()->setDocumentMargin( 0 );
+
+    mainLayout->addWidget( m_edit );
+
+    setMainWidget( main );
+
+    connect( m_edit, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );
+    connect( m_edit, SIGNAL( selectionChanged() ), this, SLOT( updateActions() ) );
 
     setStatus( tr( "Binary" ) );
 
     initializeSettings();
+
+    updateActions();
 }
 
 BinaryView::~BinaryView()
@@ -182,9 +213,33 @@ void BinaryView::load()
     setStatus( status );
 }
 
+void BinaryView::updateActions()
+{
+    bool hasSelection = m_edit->textCursor().hasSelection();
+
+    action( "copy" )->setEnabled( hasSelection );
+}
+
+void BinaryView::copy()
+{
+    m_edit->copy();
+}
+
+void BinaryView::selectAll()
+{
+    m_edit->selectAll();
+}
+
 void BinaryView::toggleHexMode()
 {
     m_hexMode = action( "hexMode" )->isChecked();
 
     load();
+}
+
+void BinaryView::contextMenuRequested( const QPoint& pos )
+{
+    QMenu* menu = builder()->contextMenu( "menuContext" );
+    if ( menu )
+        menu->popup( m_edit->mapToGlobal( pos ) );
 }

@@ -18,8 +18,25 @@
 
 #include "imageview.h"
 
+#include "utils/iconloader.h"
+#include "xmlui/builder.h"
+
 ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
 {
+    QAction* action;
+
+    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "&Copy" ), this );
+    action->setShortcut( QKeySequence::Copy );
+    connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
+    setAction( "copy", action );
+
+    loadXmlUiFile( ":/resources/imageview.xml" );
+
+    QWidget* main = new QWidget( parentWidget );
+    QVBoxLayout* mainLayout = new QVBoxLayout( main );
+    mainLayout->setContentsMargins( 3, 0, 3, 0 );
+    mainLayout->setSpacing( 0 );
+
     QScrollArea* scroll = new QScrollArea( parentWidget );
     scroll->setWidgetResizable( true );
 
@@ -29,12 +46,19 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
 
     m_label = new QLabel( scroll );
     m_label->setAlignment( Qt::AlignCenter );
+    m_label->setContextMenuPolicy( Qt::CustomContextMenu );
 
     scroll->setWidget( m_label );
 
-    setMainWidget( scroll );
+    connect( m_label, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );
+
+    mainLayout->addWidget( scroll );
+
+    setMainWidget( main );
 
     setStatus( tr( "Image" ) );
+
+    updateActions();
 }
 
 ImageView::~ImageView()
@@ -65,4 +89,27 @@ void ImageView::load()
     }
 
     setStatus( status );
+
+    updateActions();
+}
+
+void ImageView::updateActions()
+{
+    bool hasPixmap = m_label->pixmap() != NULL;
+
+    action( "copy" )->setEnabled( hasPixmap );
+}
+
+void ImageView::copy()
+{
+    const QPixmap* pixmap = m_label->pixmap();
+    if ( pixmap )
+        QApplication::clipboard()->setPixmap( *pixmap );
+}
+
+void ImageView::contextMenuRequested( const QPoint& pos )
+{
+    QMenu* menu = builder()->contextMenu( "menuContext" );
+    if ( menu )
+        menu->popup( m_label->mapToGlobal( pos ) );
 }

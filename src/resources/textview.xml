@@ -1,10 +1,17 @@
 <xmlui>
   <strip id="stripMain">
-    <action id="wordWrap"/>
-    <action id="selectEncoding"/>
+    <action id="copy"/>
     <separator/>
     <action id="find"/>
     <action id="findPrevious"/>
     <action id="findNext"/>
+    <separator/>
+    <action id="wordWrap"/>
+    <action id="selectEncoding"/>
   </strip>
+  <menu id="menuContext">
+    <action id="copy"/>
+    <separator/>
+    <action id="selectAll"/>
+  </menu>
 </xmlui>

@@ -38,16 +38,21 @@ public: // overrides
     bool eventFilter( QObject* obj, QEvent* e );
 
 private slots:
-    void toggleWordWrap();
-    void setEncoding( const QString& format );
-
     void updateActions();
+
+    void copy();
+    void selectAll();
 
     void find();
     void findNext();
     void findPrevious();
 
     void findText( const QString& text );
+
+    void toggleWordWrap();
+    void setEncoding( const QString& format );
+
+    void contextMenuRequested( const QPoint& pos );
 
 private:
     void initializeSettings();

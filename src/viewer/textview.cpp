@@ -23,6 +23,7 @@
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/toolstrip.h"
+#include "xmlui/builder.h"
 
 TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     m_isFindEnabled( false )
@@ -40,6 +41,16 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     encodingAction->setPopupMode( QToolButton::InstantPopup );
     connect( encodingAction, SIGNAL( triggered() ), this, SLOT( selectEncoding() ) );
     setAction( "selectEncoding", encodingAction );
+
+    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "&Copy" ), this );
+    action->setShortcut( QKeySequence::Copy );
+    connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
+    setAction( "copy", action );
+
+    action = new QAction( tr( "Select &All" ), this );
+    action->setShortcut( QKeySequence::SelectAll );
+    connect( action, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
+    setAction( "selectAll", action );
 
     action = new QAction( IconLoader::icon( "find-text" ), tr( "&Find..." ), this );
     action->setShortcut( QKeySequence::Find );
@@ -63,8 +74,13 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     mainLayout->setMargin( 0 );
     mainLayout->setSpacing( 0 );
 
+    QVBoxLayout* editLayout = new QVBoxLayout();
+    editLayout->setContentsMargins( 3, 0, 3, 0 );
+    mainLayout->addLayout( editLayout );
+
     m_edit = new QPlainTextEdit( main );
     m_edit->setReadOnly( true );
+    m_edit->setContextMenuPolicy( Qt::CustomContextMenu );
 
     QFont font( "Courier New", 10 );
     m_edit->setFont( font );
@@ -77,7 +93,12 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     palette.setBrush( QPalette::Inactive, QPalette::HighlightedText, palette.brush( QPalette::Active, QPalette::HighlightedText ) );
     m_edit->setPalette( palette );
 
-    mainLayout->addWidget( m_edit );
+    m_edit->document()->setDocumentMargin( 0 );
+
+    editLayout->addWidget( m_edit );
+
+    connect( m_edit, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );
+    connect( m_edit, SIGNAL( selectionChanged() ), this, SLOT( updateActions() ) );
 
     m_findBar = new FindBar( main );
     m_findBar->setBoundWidget( m_edit );
@@ -91,6 +112,8 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     connect( m_findBar, SIGNAL( findNext() ), this, SLOT( findNext() ) );
     connect( m_findBar, SIGNAL( findEnabled( bool ) ), this, SLOT( updateActions() ) );
 
+    main->setFocusProxy( m_edit );
+
     setMainWidget( main );
 
     setStatus( tr( "Text" ) );
@@ -103,6 +126,8 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     encodingAction->setMenu( createEncodingMenu() );
 
     initializeSettings();
+
+    updateActions();
 }
 
 TextView::~TextView()
@@ -122,8 +147,6 @@ void TextView::initializeSettings()
     QTextDocument::FindFlags flags = (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt();
     m_findBar->setText( text );
     m_findBar->setFlags( flags );
-
-    updateActions();
 }
 
 void TextView::storeSettings()
@@ -284,24 +307,25 @@ void TextView::load()
     setStatus( status );
 }
 
-void TextView::toggleWordWrap()
-{
-    m_edit->setWordWrapMode( action( "wordWrap" )->isChecked() ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
-}
-
-void TextView::setEncoding( const QString& format )
-{
-    setFormat( format.toLatin1() );
-
-    load();
-}
-
 void TextView::updateActions()
 {
     m_isFindEnabled = m_findBar->isFindEnabled();
 
+    bool hasSelection = m_edit->textCursor().hasSelection();
+
+    action( "copy" )->setEnabled( hasSelection );
     action( "findNext" )->setEnabled( m_isFindEnabled );
     action( "findPrevious" )->setEnabled( m_isFindEnabled );
+}
+
+void TextView::copy()
+{
+    m_edit->copy();
+}
+
+void TextView::selectAll()
+{
+    m_edit->selectAll();
 }
 
 void TextView::find()
@@ -369,6 +393,18 @@ void TextView::findText( const QString& text, int from, QTextDocument::FindFlags
     m_findBar->showWarning( warn );
 }
 
+void TextView::toggleWordWrap()
+{
+    m_edit->setWordWrapMode( action( "wordWrap" )->isChecked() ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
+}
+
+void TextView::setEncoding( const QString& format )
+{
+    setFormat( format.toLatin1() );
+
+    load();
+}
+
 bool TextView::eventFilter( QObject* obj, QEvent* e )
 {
     if ( obj == mainWidget() ) {
@@ -384,4 +420,11 @@ bool TextView::eventFilter( QObject* obj, QEvent* e )
         }
     }
     return View::eventFilter( obj, e );
+}
+
+void TextView::contextMenuRequested( const QPoint& pos )
+{
+    QMenu* menu = builder()->contextMenu( "menuContext" );
+    if ( menu )
+        menu->popup( m_edit->mapToGlobal( pos ) );
 }
