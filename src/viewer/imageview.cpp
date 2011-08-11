@@ -37,7 +37,7 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
     mainLayout->setContentsMargins( 3, 0, 3, 0 );
     mainLayout->setSpacing( 0 );
 
-    QScrollArea* scroll = new QScrollArea( parentWidget );
+    QScrollArea* scroll = new QScrollArea( main );
     scroll->setWidgetResizable( true );
 
     QPalette scrollPalette = parentWidget->palette();

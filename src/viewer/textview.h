@@ -21,6 +21,7 @@
 
 #include "viewer/view.h"
 
+class TextEdit;
 class FindBar;
 
 class TextView : public View
@@ -63,7 +64,7 @@ private:
     void findText( const QString& text, int from, QTextDocument::FindFlags flags );
 
 private:
-    QPlainTextEdit* m_edit;
+    TextEdit* m_edit;
 
     QSignalMapper* m_encodingMapper;
 

@@ -22,6 +22,7 @@
 #include "findbar.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
+#include "viewer/textedit.h"
 #include "xmlui/toolstrip.h"
 #include "xmlui/builder.h"
 
@@ -78,7 +79,7 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     editLayout->setContentsMargins( 3, 0, 3, 0 );
     mainLayout->addLayout( editLayout );
 
-    m_edit = new QPlainTextEdit( main );
+    m_edit = new TextEdit( main );
     m_edit->setReadOnly( true );
     m_edit->setContextMenuPolicy( Qt::CustomContextMenu );
 

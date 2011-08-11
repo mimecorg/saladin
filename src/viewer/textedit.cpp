@@ -16,44 +16,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef BINARYVIEW_H
-#define BINARYVIEW_H
+#include "textedit.h"
 
-#include "viewer/view.h"
-
-class TextEdit;
-
-class BinaryView : public View
+TextEdit::TextEdit( QWidget* parent ) : QPlainTextEdit( parent )
 {
-    Q_OBJECT
-public:
-    BinaryView( QObject* parent, QWidget* parentWidget );
-    ~BinaryView();
+    setViewportMargins( 2, 0, 0, 0 );
+    setBackgroundRole( QPalette::Base );
+    setAutoFillBackground( true );
+}
 
-public: // overrides
-    Type type() const;
-
-    void load();
-
-private slots:
-    void updateActions();
-
-    void copy();
-    void selectAll();
-
-    void toggleHexMode();
-
-    void contextMenuRequested( const QPoint& pos );
-
-private:
-    void initializeSettings();
-    void storeSettings();
-
-private:
-    TextEdit* m_edit;
-
-    bool m_hexMode;
-    bool m_lastHexMode;
-};
-
-#endif
+TextEdit::~TextEdit()
+{
+}

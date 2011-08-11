@@ -21,6 +21,7 @@
 #include "application.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
+#include "viewer/textedit.h"
 #include "xmlui/builder.h"
 
 BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent ),
@@ -52,7 +53,7 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
     mainLayout->setContentsMargins( 3, 0, 3, 0 );
     mainLayout->setSpacing( 0 );
 
-    m_edit = new QPlainTextEdit( parentWidget );
+    m_edit = new TextEdit( main );
     m_edit->setReadOnly( true );
     m_edit->setWordWrapMode( QTextOption::NoWrap );
     m_edit->setContextMenuPolicy( Qt::CustomContextMenu );
