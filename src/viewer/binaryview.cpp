@@ -69,6 +69,8 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
 
     mainLayout->addWidget( m_edit );
 
+    main->setFocusProxy( m_edit );
+
     setMainWidget( main );
 
     connect( m_edit, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );

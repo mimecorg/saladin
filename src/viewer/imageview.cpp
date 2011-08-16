@@ -54,6 +54,8 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
 
     mainLayout->addWidget( scroll );
 
+    main->setFocusProxy( scroll );
+
     setMainWidget( main );
 
     setStatus( tr( "Image" ) );
