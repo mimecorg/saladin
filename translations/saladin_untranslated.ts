@@ -20,134 +20,163 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../src/application.cpp" line="127"/>
+        <location filename="../src/application.cpp" line="126"/>
         <source>Technical Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="128"/>
+        <location filename="../src/application.cpp" line="127"/>
         <source>Built on %1 in %2-bit %3 mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="129"/>
+        <location filename="../src/application.cpp" line="128"/>
         <source>Using Qt %1 (%2 linking) and Windows Shell %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="138"/>
+        <location filename="../src/application.cpp" line="137"/>
         <source>Saladin %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="139"/>
+        <location filename="../src/application.cpp" line="138"/>
         <source>Dual-pane file manager for Windows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="140"/>
+        <location filename="../src/application.cpp" line="139"/>
         <source>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../src/application.cpp" line="144"/>
+        <location filename="../src/application.cpp" line="143"/>
         <source>Copyright (C) 2011 Michał Męciński</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="149"/>
+        <location filename="../src/application.cpp" line="148"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="150"/>
+        <location filename="../src/application.cpp" line="149"/>
         <source>Open the Saladin Quick Guide for help.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="153"/>
+        <location filename="../src/application.cpp" line="152"/>
         <source>Web Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="154"/>
+        <location filename="../src/application.cpp" line="153"/>
         <source>Visit %1 for more information about Saladin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="157"/>
+        <location filename="../src/application.cpp" line="156"/>
         <source>Donations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="158"/>
+        <location filename="../src/application.cpp" line="157"/>
         <source>If you like this program, your donation will help me dedicate more time for it, support it and implement new features.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="161"/>
-        <location filename="../src/application.cpp" line="224"/>
+        <location filename="../src/application.cpp" line="160"/>
+        <location filename="../src/application.cpp" line="223"/>
         <source>Latest Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="162"/>
+        <location filename="../src/application.cpp" line="161"/>
         <source>Automatic checking for latest version is disabled. You can enable it in program settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="166"/>
+        <location filename="../src/application.cpp" line="165"/>
         <source>About Saladin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="170"/>
+        <location filename="../src/application.cpp" line="169"/>
         <source>&amp;Quick Guide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="177"/>
+        <location filename="../src/application.cpp" line="176"/>
         <source>&amp;Donate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="187"/>
+        <location filename="../src/application.cpp" line="186"/>
         <source>&amp;Check Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="229"/>
+        <location filename="../src/application.cpp" line="228"/>
         <source>Checking for latest version...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="235"/>
+        <location filename="../src/application.cpp" line="234"/>
         <source>Checking for latest version failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="237"/>
+        <location filename="../src/application.cpp" line="236"/>
         <source>&amp;Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="244"/>
+        <location filename="../src/application.cpp" line="243"/>
         <source>Your version of Saladin is up to date.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="250"/>
+        <location filename="../src/application.cpp" line="249"/>
         <source>The latest version of Saladin is %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="252"/>
+        <location filename="../src/application.cpp" line="251"/>
         <source>&amp;Release Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/application.cpp" line="255"/>
+        <location filename="../src/application.cpp" line="254"/>
         <source>Do&amp;wnload</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BinaryView</name>
+    <message>
+        <location filename="../src/viewer/binaryview.cpp" line="33"/>
+        <source>Hex Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/binaryview.cpp" line="39"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/binaryview.cpp" line="44"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/binaryview.cpp" line="79"/>
+        <location filename="../src/viewer/binaryview.cpp" line="113"/>
+        <source>Binary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/binaryview.cpp" line="213"/>
+        <source>%1 bytes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -211,35 +240,73 @@
     </message>
 </context>
 <context>
+    <name>FindBar</name>
+    <message>
+        <location filename="../src/findbar.cpp" line="35"/>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/findbar.cpp" line="44"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/findbar.cpp" line="50"/>
+        <source>Find:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/findbar.cpp" line="66"/>
+        <source>Find Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/findbar.cpp" line="75"/>
+        <source>Find Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/findbar.cpp" line="83"/>
+        <source>&amp;Match case</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/findbar.cpp" line="94"/>
+        <source>Text not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FolderItemModel</name>
     <message id="Qt::DisplayRole">
-        <location filename="../src/folderitemmodel.cpp" line="491"/>
+        <location filename="../src/folderitemmodel.cpp" line="494"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/folderitemmodel.cpp" line="493"/>
+        <location filename="../src/folderitemmodel.cpp" line="496"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/folderitemmodel.cpp" line="495"/>
+        <location filename="../src/folderitemmodel.cpp" line="498"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/folderitemmodel.cpp" line="497"/>
+        <location filename="../src/folderitemmodel.cpp" line="500"/>
         <source>Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/folderitemmodel.cpp" line="543"/>
-        <location filename="../src/folderitemmodel.cpp" line="559"/>
+        <location filename="../src/folderitemmodel.cpp" line="546"/>
+        <location filename="../src/folderitemmodel.cpp" line="562"/>
         <source>&lt;DIR&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/folderitemmodel.cpp" line="557"/>
+        <location filename="../src/folderitemmodel.cpp" line="560"/>
         <source>&lt;LNK&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -278,430 +345,444 @@
     </message>
 </context>
 <context>
+    <name>ImageView</name>
+    <message>
+        <location filename="../src/viewer/imageview.cpp" line="28"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/imageview.cpp" line="61"/>
+        <location filename="../src/viewer/imageview.cpp" line="77"/>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="44"/>
+        <location filename="../src/mainwindow.cpp" line="46"/>
         <source>Saladin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="48"/>
+        <location filename="../src/mainwindow.cpp" line="50"/>
         <source>About Saladin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="53"/>
+        <location filename="../src/mainwindow.cpp" line="55"/>
         <source>Saladin Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="57"/>
+        <location filename="../src/mainwindow.cpp" line="59"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="62"/>
+        <location filename="../src/mainwindow.cpp" line="64"/>
         <source>Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="67"/>
-        <location filename="../src/mainwindow.cpp" line="166"/>
-        <location filename="../src/mainwindow.cpp" line="799"/>
+        <location filename="../src/mainwindow.cpp" line="69"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
+        <location filename="../src/mainwindow.cpp" line="825"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="70"/>
+        <location filename="../src/mainwindow.cpp" line="72"/>
         <source>Copy Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="75"/>
+        <location filename="../src/mainwindow.cpp" line="77"/>
         <source>Copy File Names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="80"/>
+        <location filename="../src/mainwindow.cpp" line="82"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="85"/>
+        <location filename="../src/mainwindow.cpp" line="87"/>
         <source>Hidden Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="91"/>
+        <location filename="../src/mainwindow.cpp" line="93"/>
         <source>Same Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="96"/>
+        <location filename="../src/mainwindow.cpp" line="98"/>
         <source>Swap Panels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="101"/>
+        <location filename="../src/mainwindow.cpp" line="103"/>
         <source>Root Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="108"/>
         <source>Parent Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="118"/>
-        <location filename="../src/mainwindow.cpp" line="577"/>
+        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="593"/>
         <source>Select Mask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="123"/>
+        <location filename="../src/mainwindow.cpp" line="125"/>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="128"/>
-        <location filename="../src/mainwindow.cpp" line="596"/>
+        <location filename="../src/mainwindow.cpp" line="130"/>
+        <location filename="../src/mainwindow.cpp" line="612"/>
         <source>Unselect Mask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Unselect All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="138"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>Invert Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
-        <location filename="../src/mainwindow.cpp" line="808"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>View</source>
         <comment>action name</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Edit File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="161"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Create File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Copy To Target Directory...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="174"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>Clone In Source Directory...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="179"/>
-        <location filename="../src/mainwindow.cpp" line="815"/>
+        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="841"/>
         <source>Move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="182"/>
+        <location filename="../src/mainwindow.cpp" line="184"/>
         <source>Move To Target Directory...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="187"/>
+        <location filename="../src/mainwindow.cpp" line="189"/>
         <source>Rename In Source Directory...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="192"/>
-        <location filename="../src/mainwindow.cpp" line="880"/>
+        <location filename="../src/mainwindow.cpp" line="194"/>
+        <location filename="../src/mainwindow.cpp" line="906"/>
         <source>Create Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="199"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="200"/>
+        <location filename="../src/mainwindow.cpp" line="202"/>
         <source>Move To Recycle Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="205"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Delete Permanently</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="210"/>
+        <location filename="../src/mainwindow.cpp" line="212"/>
         <source>Open Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="215"/>
+        <location filename="../src/mainwindow.cpp" line="217"/>
         <source>Pack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="220"/>
+        <location filename="../src/mainwindow.cpp" line="222"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="223"/>
+        <location filename="../src/mainwindow.cpp" line="225"/>
         <source>Open Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="228"/>
+        <location filename="../src/mainwindow.cpp" line="230"/>
         <source>Browse For Folder...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="233"/>
+        <location filename="../src/mainwindow.cpp" line="235"/>
         <source>Connect To FTP...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="238"/>
+        <location filename="../src/mainwindow.cpp" line="240"/>
         <source>Show Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="243"/>
+        <location filename="../src/mainwindow.cpp" line="245"/>
         <source>Compare</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="246"/>
+        <location filename="../src/mainwindow.cpp" line="248"/>
         <source>Compare Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
+        <location filename="../src/mainwindow.cpp" line="253"/>
         <source>Compare Directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow.cpp" line="258"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="261"/>
+        <location filename="../src/mainwindow.cpp" line="263"/>
         <source>Explore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="268"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="271"/>
+        <location filename="../src/mainwindow.cpp" line="273"/>
         <source>Bookmarks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="276"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>Add Bookmark...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="281"/>
+        <location filename="../src/mainwindow.cpp" line="283"/>
         <source>Edit Bookmarks...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="285"/>
+        <location filename="../src/mainwindow.cpp" line="287"/>
         <source>Functions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="286"/>
+        <location filename="../src/mainwindow.cpp" line="288"/>
         <source>Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="287"/>
+        <location filename="../src/mainwindow.cpp" line="289"/>
         <source>View</source>
         <comment>section name</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="288"/>
+        <location filename="../src/mainwindow.cpp" line="290"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="289"/>
+        <location filename="../src/mainwindow.cpp" line="291"/>
         <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="595"/>
         <source>Enter the pattern to select:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="598"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Enter the pattern to unselect:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="641"/>
+        <location filename="../src/mainwindow.cpp" line="667"/>
         <source>Create File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="669"/>
         <source>Create a new file:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="689"/>
+        <location filename="../src/mainwindow.cpp" line="715"/>
         <source>Tool failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="689"/>
+        <location filename="../src/mainwindow.cpp" line="715"/>
         <source>The %1 tool could not be started.
 Make sure it is correctly configured in Saladin settings and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="715"/>
+        <location filename="../src/mainwindow.cpp" line="741"/>
         <source>Missing tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="715"/>
+        <location filename="../src/mainwindow.cpp" line="741"/>
         <source>There is no %1 tool configured.
 Select the tool in Saladin settings and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="725"/>
+        <location filename="../src/mainwindow.cpp" line="751"/>
         <source>file viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="753"/>
         <source>text editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="755"/>
         <source>console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="731"/>
+        <location filename="../src/mainwindow.cpp" line="757"/>
         <source>file compare</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="792"/>
+        <location filename="../src/mainwindow.cpp" line="818"/>
         <source>Clone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="795"/>
+        <location filename="../src/mainwindow.cpp" line="821"/>
         <source>Clone &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="797"/>
+        <location filename="../src/mainwindow.cpp" line="823"/>
         <source>Clone &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="802"/>
+        <location filename="../src/mainwindow.cpp" line="828"/>
         <source>Copy &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="804"/>
+        <location filename="../src/mainwindow.cpp" line="830"/>
         <source>Copy &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="811"/>
+        <location filename="../src/mainwindow.cpp" line="837"/>
         <source>Rename &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="813"/>
+        <location filename="../src/mainwindow.cpp" line="839"/>
         <source>Rename &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="818"/>
+        <location filename="../src/mainwindow.cpp" line="844"/>
         <source>Move &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="820"/>
+        <location filename="../src/mainwindow.cpp" line="846"/>
         <source>Move &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="841"/>
+        <location filename="../src/mainwindow.cpp" line="867"/>
         <source>O&amp;verwrite without prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="882"/>
+        <location filename="../src/mainwindow.cpp" line="908"/>
         <source>Create a new folder:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="953"/>
+        <location filename="../src/mainwindow.cpp" line="979"/>
         <source>Pack To Zip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="958"/>
+        <location filename="../src/mainwindow.cpp" line="984"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="965"/>
+        <location filename="../src/mainwindow.cpp" line="991"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1098"/>
+        <location filename="../src/mainwindow.cpp" line="1124"/>
         <source>Add Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1100"/>
+        <location filename="../src/mainwindow.cpp" line="1126"/>
         <source>Add current directory to the list of bookmarks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1105"/>
+        <location filename="../src/mainwindow.cpp" line="1131"/>
         <source>&amp;Remember password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -928,41 +1009,41 @@ Select the tool in Saladin settings and try again.</source>
 <context>
     <name>PaneWidget</name>
     <message>
-        <location filename="../src/panewidget.cpp" line="677"/>
-        <location filename="../src/panewidget.cpp" line="926"/>
+        <location filename="../src/panewidget.cpp" line="678"/>
+        <location filename="../src/panewidget.cpp" line="927"/>
         <source>Invalid Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="677"/>
+        <location filename="../src/panewidget.cpp" line="678"/>
         <source>The path you entered cannot be opened.
 Please check the spelling and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="980"/>
+        <location filename="../src/panewidget.cpp" line="981"/>
         <source>Invalid Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="926"/>
+        <location filename="../src/panewidget.cpp" line="927"/>
         <source>The path you selected cannot be opened.
 Make sure the device is available and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="980"/>
+        <location filename="../src/panewidget.cpp" line="981"/>
         <source>The bookmark you selected cannot be opened.
 Make sure the device is available and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1090"/>
+        <location filename="../src/panewidget.cpp" line="1091"/>
         <source>%1 - %2 of %3 free (%4%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/panewidget.cpp" line="1106"/>
+        <location filename="../src/panewidget.cpp" line="1107"/>
         <source>%n bytes</source>
         <comment>before of</comment>
         <translation type="unfinished">
@@ -970,7 +1051,7 @@ Make sure the device is available and try again.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/panewidget.cpp" line="1106"/>
+        <location filename="../src/panewidget.cpp" line="1107"/>
         <source>%n bytes</source>
         <comment>after of</comment>
         <translation type="unfinished">
@@ -978,17 +1059,17 @@ Make sure the device is available and try again.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1108"/>
+        <location filename="../src/panewidget.cpp" line="1109"/>
         <source>%1 kB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1110"/>
+        <location filename="../src/panewidget.cpp" line="1111"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1111"/>
+        <location filename="../src/panewidget.cpp" line="1112"/>
         <source>%1 GB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1061,72 +1142,77 @@ Make sure the device is available and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="146"/>
+        <location filename="../src/settingsdialog.cpp" line="139"/>
+        <source>Use the internal file viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsdialog.cpp" line="152"/>
         <source>Text Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="157"/>
+        <location filename="../src/settingsdialog.cpp" line="163"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="168"/>
+        <location filename="../src/settingsdialog.cpp" line="174"/>
         <source>Compare Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="186"/>
+        <location filename="../src/settingsdialog.cpp" line="192"/>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="187"/>
+        <location filename="../src/settingsdialog.cpp" line="193"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="188"/>
+        <location filename="../src/settingsdialog.cpp" line="194"/>
         <source>&amp;Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="234"/>
+        <location filename="../src/settingsdialog.cpp" line="241"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="234"/>
+        <location filename="../src/settingsdialog.cpp" line="241"/>
         <source>Language settings will be applied when the application is restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="264"/>
+        <location filename="../src/settingsdialog.cpp" line="272"/>
         <source>Select initial directory:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="293"/>
+        <location filename="../src/settingsdialog.cpp" line="301"/>
         <source>Applications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="293"/>
+        <location filename="../src/settingsdialog.cpp" line="301"/>
         <source>All Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="295"/>
+        <location filename="../src/settingsdialog.cpp" line="303"/>
         <source>Select Tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="302"/>
+        <location filename="../src/settingsdialog.cpp" line="310"/>
         <source>System Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="328"/>
+        <location filename="../src/settingsdialog.cpp" line="336"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1134,8 +1220,210 @@ Make sure the device is available and try again.</source>
 <context>
     <name>ShellFolder</name>
     <message>
-        <location filename="../src/shell/shellfolder.cpp" line="588"/>
+        <location filename="../src/shell/shellfolder.cpp" line="598"/>
         <source>Select the folder to open:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TextView</name>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="35"/>
+        <source>Word Wrap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="41"/>
+        <source>Encoding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="46"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="51"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="56"/>
+        <source>&amp;Find...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="61"/>
+        <source>Find &amp;Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="66"/>
+        <source>Find &amp;Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="120"/>
+        <location filename="../src/viewer/textview.cpp" line="268"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="175"/>
+        <source>ANSI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="176"/>
+        <source>OEM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="177"/>
+        <source>UTF-8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="178"/>
+        <source>Unicode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="179"/>
+        <source>Unicode BE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="203"/>
+        <location filename="../src/viewer/textview.cpp" line="213"/>
+        <source>Central European</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="204"/>
+        <location filename="../src/viewer/textview.cpp" line="216"/>
+        <location filename="../src/viewer/textview.cpp" line="225"/>
+        <location filename="../src/viewer/textview.cpp" line="226"/>
+        <location filename="../src/viewer/textview.cpp" line="227"/>
+        <source>Cyrillic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="205"/>
+        <location filename="../src/viewer/textview.cpp" line="212"/>
+        <location filename="../src/viewer/textview.cpp" line="223"/>
+        <source>Western European</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="206"/>
+        <location filename="../src/viewer/textview.cpp" line="218"/>
+        <source>Greek</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="207"/>
+        <location filename="../src/viewer/textview.cpp" line="220"/>
+        <source>Turkish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="208"/>
+        <location filename="../src/viewer/textview.cpp" line="219"/>
+        <source>Hebrew</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="209"/>
+        <location filename="../src/viewer/textview.cpp" line="217"/>
+        <source>Arabic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="210"/>
+        <location filename="../src/viewer/textview.cpp" line="221"/>
+        <source>Baltic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="211"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="214"/>
+        <source>South European</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="215"/>
+        <source>North European</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="222"/>
+        <source>Celtic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="224"/>
+        <source>Romanian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="228"/>
+        <source>Chinese Simplified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="229"/>
+        <location filename="../src/viewer/textview.cpp" line="230"/>
+        <source>Chinese Traditional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="231"/>
+        <location filename="../src/viewer/textview.cpp" line="232"/>
+        <location filename="../src/viewer/textview.cpp" line="233"/>
+        <source>Japanese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="234"/>
+        <source>Korean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="235"/>
+        <source>Thai</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="305"/>
+        <source>%1 characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewerWindow</name>
+    <message>
+        <location filename="../src/viewer/viewerwindow.cpp" line="36"/>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/viewerwindow.cpp" line="41"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/viewerwindow.cpp" line="47"/>
+        <source>Binary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/viewerwindow.cpp" line="53"/>
+        <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
