@@ -345,7 +345,7 @@ void Application::initializeSettings()
 
     if ( !m_settings->contains( "EditorTool" ) ) {
         wchar_t buffer[ MAX_PATH ];
-        if ( SHGetSpecialFolderPath( 0, buffer, CSIDL_WINDOWS, FALSE ) )
+        if ( SHGetSpecialFolderPath( 0, buffer, CSIDL_SYSTEM, FALSE ) )
             m_settings->setValue( "EditorTool", QString::fromWCharArray( buffer ) + "\\notepad.exe" );
     }
 
