@@ -343,6 +343,9 @@ void Application::initializeSettings()
     if ( !m_settings->contains( "AutoUpdate" ) )
         m_settings->setValue( "AutoUpdate", true );
 
+    if ( !m_settings->contains( "InternalViewer" ) )
+        m_settings->setValue( "InternalViewer", true );
+
     if ( !m_settings->contains( "EditorTool" ) ) {
         wchar_t buffer[ MAX_PATH ];
         if ( SHGetSpecialFolderPath( 0, buffer, CSIDL_SYSTEM, FALSE ) )

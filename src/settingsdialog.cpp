@@ -136,12 +136,18 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     QGridLayout* viewerLayout = new QGridLayout( viewerGroup );
     toolsLayout->addWidget( viewerGroup );
 
+    m_internalViewerCheckBox = new QCheckBox( tr( "Use the internal file viewer" ), viewerGroup );
+    viewerLayout->addWidget( m_internalViewerCheckBox, 0, 0, 1, 2 );
+
     m_viewerEdit = new QLineEdit( viewerGroup );
     m_viewerEdit->setReadOnly( true );
-    viewerLayout->addWidget( m_viewerEdit, 0, 0 );
+    viewerLayout->addWidget( m_viewerEdit, 1, 0 );
 
     QToolButton* viewerButton = browseButton( viewerGroup, SLOT( browseViewer() ) );
-    viewerLayout->addWidget( viewerButton, 0, 1 );
+    viewerLayout->addWidget( viewerButton, 1, 1 );
+
+    connect( m_internalViewerCheckBox, SIGNAL( toggled( bool ) ), m_viewerEdit, SLOT( setDisabled( bool ) ) );
+    connect( m_internalViewerCheckBox, SIGNAL( toggled( bool ) ), viewerButton, SLOT( setDisabled( bool ) ) );
 
     QGroupBox* editorGroup = new QGroupBox( tr( "Text Editor" ), toolsTab );
     QGridLayout* editorLayout = new QGridLayout( editorGroup );
@@ -207,6 +213,7 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     m_updateCheckBox->setChecked( settings->value( "AutoUpdate" ).toBool() );
 
+    m_internalViewerCheckBox->setChecked( settings->value( "InternalViewer" ).toBool() );
     m_viewerEdit->setText( settings->value( "ViewerTool" ).toString() );
     m_editorEdit->setText( settings->value( "EditorTool" ).toString() );
     m_consoleEdit->setText( settings->value( "ConsoleTool" ).toString() );
@@ -239,6 +246,7 @@ bool SettingsDialog::apply()
     settings->setValue( "RememberDirectories", m_rememberCheckBox->isChecked() );
     settings->setValue( "AutoUpdate", m_updateCheckBox->isChecked() );
 
+    settings->setValue( "InternalViewer", m_internalViewerCheckBox->isChecked() );
     settings->setValue( "ViewerTool", m_viewerEdit->text() );
     settings->setValue( "EditorTool", m_editorEdit->text() );
     settings->setValue( "ConsoleTool", m_consoleEdit->text() );

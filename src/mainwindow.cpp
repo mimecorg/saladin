@@ -641,11 +641,12 @@ void MainWindow::viewCurrent()
     if ( !item.isValid() || !item.attributes().testFlag( ShellItem::FileSystem ) || item.attributes().testFlag( ShellItem::Directory ) )
         return;
 
-    ShellPidl pidl = m_sourcePane->folder()->itemPidl( item );
+    LocalSettings* settings = application->applicationSettings();
 
-    m_viewManager->openView( pidl );
-
-    //startTool( ViewerTool, m_sourcePane->folder(), m_sourcePane->currentItem() );
+    if ( settings->value( "InternalViewer" ).toBool() )
+        m_viewManager->openView( m_sourcePane->folder()->itemPidl( item ) );
+    else
+        startTool( ViewerTool, m_sourcePane->folder(), m_sourcePane->currentItem() );
 }
 
 void MainWindow::editCurrent()

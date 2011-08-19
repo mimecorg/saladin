@@ -63,6 +63,8 @@ private:
 
     QCheckBox* m_updateCheckBox;
 
+    QCheckBox* m_internalViewerCheckBox;
+
     QLineEdit* m_viewerEdit;
     QLineEdit* m_editorEdit;
     QLineEdit* m_consoleEdit;
