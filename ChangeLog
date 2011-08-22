@@ -1,2 +1,8 @@
+0.2 (2011-08-22)
+ * first version of the internal file viewer
+ * fixed a crash when "show hidden files" is enabled at startup
+ * improved look and feel with the windows classic theme
+ * use natural order for sorting file names
+
 0.1 (2011-01-26)
  * initial version

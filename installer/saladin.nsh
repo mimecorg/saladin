@@ -16,8 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-!define VERSION "0.1"
-!define BUILDVERSION "0.1.0.4043"
+!define VERSION "0.2"
+!define BUILDVERSION "0.2.0.4251"
 
 !define SRCDIR ".."
 !define BUILDDIR "..\release"
