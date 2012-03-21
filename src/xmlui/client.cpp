@@ -56,6 +56,11 @@ QAction* Client::action( const QString& id ) const
     return m_actions.value( id, NULL );
 }
 
+QList<QAction*> Client::actions() const
+{
+    return m_actions.values();
+}
+
 void Client::setTitle( const QString& id, const QString& title )
 {
     m_titles.insert( id, title );

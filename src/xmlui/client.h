@@ -87,6 +87,11 @@ public:
     QAction* action( const QString& id ) const;
 
     /**
+    * Return all actions contained in the client.
+    */
+    QList<QAction*> actions() const;
+
+    /**
     * Set the title of a menu or section.
     * @param id The identifier of the menu or section.
     * @param title The user-visible name of the element.

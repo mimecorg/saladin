@@ -197,6 +197,21 @@ void Builder::rebuildAll()
         return;
     }
 
+    QList<QAction*> actionsToAdd;
+    QList<QAction*> actionsToRemove = m_parent->actions();
+
+    foreach ( Client* client, m_clients ) {
+        foreach ( QAction* action, client->actions() ) {
+            if ( !actionsToRemove.removeAll( action ) && !actionsToAdd.contains( action ) )
+                actionsToAdd.append( action );
+        }
+    }
+
+    foreach ( QAction* action, actionsToRemove )
+        m_parent->removeAction( action );
+
+    m_parent->addActions( actionsToAdd );
+
     if ( m_clients.isEmpty() )
         return;
 
