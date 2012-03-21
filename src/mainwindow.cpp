@@ -1063,11 +1063,11 @@ void MainWindow::compareFiles()
             QString path = m_targetPane->folder()->itemPath( item );
             if ( path.isEmpty() )
                 return;
-            paths.append( path );
+            paths.prepend( path );
         }
     } else if ( items.count() == 2 ) {
         for ( int i = 0; i < 2; i++ ) {
-            ShellItem item = items.at( i);
+            ShellItem item = items.at( i );
             if ( !item.isValid() || !item.attributes().testFlag( ShellItem::FileSystem ) || item.attributes().testFlag( ShellItem::Directory ) )
                 return;
             QString path = m_sourcePane->folder()->itemPath( item );
