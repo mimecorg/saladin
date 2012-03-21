@@ -82,6 +82,7 @@ RC_FILE = saladin.rc
 LIBS += -lshell32 -lshlwapi -lcrypt32
 
 win32-msvc* {
+    QMAKE_CXXFLAGS += -Fd\$(IntDir)
     CONFIG -= flat
 }
 
