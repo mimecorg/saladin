@@ -16,38 +16,46 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef IMAGEVIEW_H
-#define IMAGEVIEW_H
+#ifndef TEXTLOADER_H
+#define TEXTLOADER_H
 
-#include "viewer/view.h"
+#include <QThread>
 
-class ImageLoader;
-
-class ImageView : public View
+class TextLoader : public QThread
 {
     Q_OBJECT
 public:
-    ImageView( QObject* parent, QWidget* parentWidget );
-    ~ImageView();
+    TextLoader( const QString& path, const QByteArray& format );
+    ~TextLoader();
 
-public: // overrides
-    Type type() const;
+public:
+    QString nextBlock();
 
-    void load();
+    bool atEnd() const { return m_atEnd; }
 
-private slots:
-    void updateActions();
+    qint64 estimatedLength() const { return m_estimatedLength; }
 
-    void copy();
+    void abort();
 
-    void contextMenuRequested( const QPoint& pos );
+signals:
+    void nextBlockAvailable();
 
-    void loadImage();
+protected: // overrides
+    void run();
 
 private:
-    QLabel* m_label;
+    QString m_path;
+    QByteArray m_format;
 
-    ImageLoader* m_loader;
+    QMutex m_mutex;
+
+    QQueue<QString> m_queue;
+
+    bool m_aborted;
+    bool m_signal;
+
+    bool m_atEnd;
+    qint64 m_estimatedLength;
 };
 
 #endif

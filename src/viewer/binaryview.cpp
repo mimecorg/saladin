@@ -17,6 +17,7 @@
 **************************************************************************/
 
 #include "binaryview.h"
+#include "binaryloader.h"
 
 #include "application.h"
 #include "utils/localsettings.h"
@@ -25,8 +26,8 @@
 #include "xmlui/builder.h"
 
 BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent ),
-    m_hexMode( false ),
-    m_lastHexMode( false )
+    m_loader( NULL ),
+    m_hexMode( false )
 {
     QAction* action;
 
@@ -85,6 +86,11 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
 
 BinaryView::~BinaryView()
 {
+    if ( m_loader ) {
+        m_loader->abort();
+        m_loader = NULL;
+    }
+
     storeSettings();
 }
 
@@ -110,110 +116,63 @@ void BinaryView::storeSettings()
 
 void BinaryView::load()
 {
-    QString status = tr( "Binary" );
-
-    int topLine = m_edit->cursorForPosition( QPoint( 0, 0 ) ).blockNumber();
-    int topPos = topLine * ( m_lastHexMode ? 16 : 80 );
+    if ( m_loader ) {
+        m_loader->abort();
+        m_loader = NULL;
+    }
 
     m_edit->clear();
 
-    QFile file( path() );
+    m_length = 0;
 
-    if ( file.open( QIODevice::ReadOnly ) ) {
-        QDataStream stream( &file );
+    m_loader = new BinaryLoader( path(), m_hexMode );
+    m_loader->start();
 
-        char input[ 256 ];
-        for ( int i = 0; i < 256; i++ )
-            input[ i ] = i;
+    connect( m_loader, SIGNAL( nextBlockAvailable() ), this, SLOT( loadNextBlock() ), Qt::QueuedConnection );
 
-        QTextCodec* codec = QTextCodec::codecForLocale();
-        QString output = codec->toUnicode( input, 256 );
-        QChar* map = output.data();
+    QTimer::singleShot( 0, this, SLOT( loadNextBlock() ) );
 
-        for ( int i = 0; i < 256; i++ ) {
-            if ( !map[ i ].isPrint() )
-                map[ i ] = QLatin1Char( '.' );
-            else if ( map[ i ].unicode() == 173 )
-                map[ i ] = QLatin1Char( '-' );
+    setStatus( tr( "Binary" ) );
+}
+
+void BinaryView::loadNextBlock()
+{
+    QTextCursor cursor = m_edit->textCursor();
+    cursor.beginEditBlock();
+    cursor.movePosition( QTextCursor::End );
+
+    bool runTimer = true;
+    bool atEnd = false;
+    quint64 size = 0;
+
+    int count = m_hexMode ? 16 : 64;
+
+    for ( int i = 0; i < count; i++ ) {
+        QString block = m_loader->nextBlock();
+
+        if ( block.isEmpty() ) {
+            runTimer = false;
+            atEnd = m_loader->atEnd();
+            size = m_loader->size();
+            break;
         }
 
-        int readSize = m_hexMode ? 16 : 80;
-        int offset = m_hexMode ? 61 : 0;
+        cursor.insertText( block );
 
-        int lines = (int)( file.size() / readSize ) + 2;
-
-        QString text;
-        text.reserve( lines * ( readSize + offset + 1 ) );
-
-        uint pos = 0;
-
-        char buffer[ 80 ];
-        int len;
-
-        QChar hex[ 16 ];
-        QChar line[ 81 ];
-
-        if ( m_hexMode ) {
-            for ( int i = 0; i < 10; i++ )
-                hex[ i ] = QLatin1Char( i + '0' );
-            for ( int i = 0; i < 6; i++ )
-                hex[ i + 10 ] = QLatin1Char( i + 'A' );
-
-            for ( int i = 0; i < 81; i++ )
-                line[ i ] = QLatin1Char( ' ' );
-            line[ 9 ] = QLatin1Char( '|' );
-            line[ 59 ] = QLatin1Char( '|' );
-        }
-
-        while ( ( len = stream.readRawData( buffer, readSize ) ) > 0 ) {
-            if ( m_hexMode ) {
-                uint p = pos;
-                for ( int i = 7; i >= 0; i-- ) {
-                    line[ i ] = hex[ p & 0xf ];
-                    p >>= 4;
-                }
-
-                for ( int i = 0; i < len; i++ ) {
-                    uchar ch = (uchar)buffer[ i ];
-                    line[ 3 * i + 11 ] = hex[ ( ch >> 4 ) & 0xf ];
-                    line[ 3 * i + 12 ] = hex[ ch & 0xf ];
-                }
-
-                for ( int i = len; i < 16; i++ ) {
-                    line[ 3 * i + 11 ] = QLatin1Char( ' ' );
-                    line[ 3 * i + 12 ] = QLatin1Char( ' ' );
-                }
-            }
-
-            for ( int i = 0; i < len; i++ )
-                line[ i + offset ] = map[ (uchar)buffer[ i ] ];
-            line[ len + offset ] = QLatin1Char( '\n' );
-
-            text.append( QString::fromRawData( line, len + offset + 1 ) );
-
-            pos += len;
-        }
-
-        m_edit->setPlainText( text );
-
-        topLine = topPos / readSize;
-
-        if ( topLine > 0 ) {
-            m_edit->verticalScrollBar()->triggerAction( QAbstractSlider::SliderToMaximum );
-
-            QTextCursor cursor = m_edit->textCursor();
-            cursor.movePosition( QTextCursor::Start );
-            cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, topLine );
-            m_edit->setTextCursor( cursor );
-            m_edit->ensureCursorVisible();
-        }
-
-        m_lastHexMode = m_hexMode;
-
-        status += " (" + tr( "%1 bytes" ).arg( QLocale::system().toString( pos ) ) + ")";
+        m_length += block.length();
     }
 
-    setStatus( status );
+    cursor.endEditBlock();
+
+    qint64 estimatedLength = m_loader->estimatedLength();
+
+    if ( atEnd )
+        setStatus( tr( "Binary" ) + " (" + tr( "%1 bytes" ).arg( QLocale::system().toString( size ) ) + ")" );
+    else if ( estimatedLength > 0 )
+        setStatus( tr( "Binary" ) + " (" + tr( "loading... %1%" ).arg( (int)( m_length * 100 / estimatedLength ) ) + ")" );
+
+    if ( runTimer )
+        QTimer::singleShot( 0, this, SLOT( loadNextBlock() ) );
 }
 
 void BinaryView::updateActions()

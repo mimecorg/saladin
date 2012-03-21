@@ -23,6 +23,7 @@
 
 class TextEdit;
 class FindBar;
+class TextLoader;
 
 class TextView : public View
 {
@@ -55,6 +56,8 @@ private slots:
 
     void contextMenuRequested( const QPoint& pos );
 
+    void loadNextBlock();
+
 private:
     void initializeSettings();
     void storeSettings();
@@ -65,6 +68,12 @@ private:
 
 private:
     TextEdit* m_edit;
+
+    TextLoader* m_loader;
+
+    qint64 m_length;
+
+    QString m_encoding;
 
     QSignalMapper* m_encodingMapper;
 

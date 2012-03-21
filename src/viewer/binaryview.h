@@ -22,6 +22,7 @@
 #include "viewer/view.h"
 
 class TextEdit;
+class BinaryLoader;
 
 class BinaryView : public View
 {
@@ -45,6 +46,8 @@ private slots:
 
     void contextMenuRequested( const QPoint& pos );
 
+    void loadNextBlock();
+
 private:
     void initializeSettings();
     void storeSettings();
@@ -52,8 +55,11 @@ private:
 private:
     TextEdit* m_edit;
 
+    BinaryLoader* m_loader;
+
+    qint64 m_length;
+
     bool m_hexMode;
-    bool m_lastHexMode;
 };
 
 #endif

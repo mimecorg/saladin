@@ -17,11 +17,13 @@
 **************************************************************************/
 
 #include "imageview.h"
+#include "imageloader.h"
 
 #include "utils/iconloader.h"
 #include "xmlui/builder.h"
 
-ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
+ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
+    m_loader( NULL )
 {
     QAction* action;
 
@@ -65,6 +67,10 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent )
 
 ImageView::~ImageView()
 {
+    if ( m_loader ) {
+        m_loader->abort();
+        m_loader = NULL;
+    }
 }
 
 View::Type ImageView::type() const
@@ -74,23 +80,32 @@ View::Type ImageView::type() const
 
 void ImageView::load()
 {
-    QString status = tr( "Image" );
+    if ( m_loader ) {
+        m_loader->abort();
+        m_loader = NULL;
+    }
 
     m_label->clear();
 
-    if ( !format().isEmpty() ) {
-        status += ", " + format().toUpper();
+    m_loader = new ImageLoader( path() );
 
-        QPixmap pixmap( path(), format().data() );
+    connect( m_loader, SIGNAL( imageAvailable() ), this, SLOT( loadImage() ), Qt::QueuedConnection );
 
-        if ( !pixmap.isNull() ) {
-            m_label->setPixmap( pixmap );
+    m_loader->start();
 
-            status += QString( " (%1 x %2)" ).arg( pixmap.width() ).arg( pixmap.height() );
-        }
-    }
+    setStatus( tr( "Image" ) );
+}
 
-    setStatus( status );
+void ImageView::loadImage()
+{
+    QImage image = m_loader->image();
+    QPixmap pixmap = QPixmap::fromImage( image );
+
+    QByteArray format = m_loader->format();
+
+    m_label->setPixmap( pixmap );
+
+    setStatus( tr( "Image" ) + ", " + format.toUpper() + QString( " (%1 x %2)" ).arg( pixmap.width() ).arg( pixmap.height() ) );
 
     updateActions();
 }

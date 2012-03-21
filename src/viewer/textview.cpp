@@ -17,6 +17,7 @@
 **************************************************************************/
 
 #include "textview.h"
+#include "textloader.h"
 
 #include "application.h"
 #include "findbar.h"
@@ -27,6 +28,8 @@
 #include "xmlui/builder.h"
 
 TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
+    m_loader( NULL ),
+    m_length( 0 ),
     m_isFindEnabled( false )
 {
     QAction* action;
@@ -133,6 +136,11 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
 
 TextView::~TextView()
 {
+    if ( m_loader ) {
+        m_loader->abort();
+        m_loader = NULL;
+    }
+
     storeSettings();
 }
 
@@ -265,11 +273,14 @@ View::Type TextView::type() const
 
 void TextView::load()
 {
-    QString status = tr( "Text" );
-
-    int topLine = m_edit->cursorForPosition( QPoint( 0, 0 ) ).blockNumber();
+    if ( m_loader ) {
+        m_loader->abort();
+        m_loader = NULL;
+    }
 
     m_edit->clear();
+
+    m_length = 0;
 
     QObject* current = m_encodingMapper->mapping( QString( format() ) );
 
@@ -278,34 +289,53 @@ void TextView::load()
         if ( action->isCheckable() )
             action->setChecked( action == current );
         if ( action == current )
-            status += ", " + action->text();
+            m_encoding = action->text();
     }
 
-    QFile file( path() );
+    m_loader = new TextLoader( path(), format() );
+    m_loader->start();
 
-    if ( file.open( QIODevice::ReadOnly ) ) {
-        QTextStream stream( &file );
-        stream.setAutoDetectUnicode( false );
-        stream.setCodec( format() );
+    connect( m_loader, SIGNAL( nextBlockAvailable() ), this, SLOT( loadNextBlock() ), Qt::QueuedConnection );
 
-        QString text = stream.readAll();
+    QTimer::singleShot( 0, this, SLOT( loadNextBlock() ) );
 
-        m_edit->setPlainText( text );
+    setStatus( tr( "Text" ) + ", " + m_encoding );
+}
 
-        if ( topLine > 0 ) {
-            m_edit->verticalScrollBar()->triggerAction( QAbstractSlider::SliderToMaximum );
+void TextView::loadNextBlock()
+{
+    QTextCursor cursor = m_edit->textCursor();
+    cursor.beginEditBlock();
+    cursor.movePosition( QTextCursor::End );
 
-            QTextCursor cursor = m_edit->textCursor();
-            cursor.movePosition( QTextCursor::Start );
-            cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, topLine );
-            m_edit->setTextCursor( cursor );
-            m_edit->ensureCursorVisible();
+    bool runTimer = true;
+    bool atEnd = false;
+
+    for ( int i = 0; i < 64; i++ ) {
+        QString block = m_loader->nextBlock();
+
+        if ( block.isEmpty() ) {
+            runTimer = false;
+            atEnd = m_loader->atEnd();
+            break;
         }
 
-        status += " (" + tr( "%1 characters" ).arg( QLocale::system().toString( text.length() ) ) + ")";
+        cursor.insertText( block );
+
+        m_length += block.length();
     }
 
-    setStatus( status );
+    cursor.endEditBlock();
+
+    qint64 estimatedLength = m_loader->estimatedLength();
+
+    if ( atEnd )
+        setStatus( tr( "Text" ) + ", " + m_encoding + " (" + tr( "%1 characters" ).arg( QLocale::system().toString( m_length ) ) + ")" );
+    else if ( estimatedLength > 0 )
+        setStatus( tr( "Text" ) + ", " + m_encoding + " (" + tr( "loading... %1%" ).arg( (int)( m_length * 100 / estimatedLength ) ) + ")" );
+
+    if ( runTimer )
+        QTimer::singleShot( 0, this, SLOT( loadNextBlock() ) );
 }
 
 void TextView::updateActions()
@@ -381,15 +411,11 @@ void TextView::findText( const QString& text, int from, QTextDocument::FindFlags
         }
     }
 
-    if ( found.isNull() ) {
-        found = m_edit->textCursor();
-        found.setPosition( found.selectionStart() );
-    }
-
     m_findBar->show();
     m_findBar->setFocus();
 
-    m_edit->setTextCursor( found );
+    if ( !found.isNull() )
+        m_edit->setTextCursor( found );
 
     m_findBar->showWarning( warn );
 }

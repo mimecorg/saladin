@@ -16,38 +16,34 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef IMAGEVIEW_H
-#define IMAGEVIEW_H
+#include "imageloader.h"
 
-#include "viewer/view.h"
-
-class ImageLoader;
-
-class ImageView : public View
+ImageLoader::ImageLoader( const QString& path ) :
+    m_path( path ),
+    m_aborted( false )
 {
-    Q_OBJECT
-public:
-    ImageView( QObject* parent, QWidget* parentWidget );
-    ~ImageView();
+}
 
-public: // overrides
-    Type type() const;
+ImageLoader::~ImageLoader()
+{
+}
 
-    void load();
+void ImageLoader::run()
+{
+    QImageReader reader( m_path );
 
-private slots:
-    void updateActions();
+    m_format = reader.format();
 
-    void copy();
+    if ( reader.read( &m_image ) && !m_aborted )
+        emit imageAvailable();
+}
 
-    void contextMenuRequested( const QPoint& pos );
+void ImageLoader::abort()
+{
+    m_aborted = true;
 
-    void loadImage();
+    connect( this, SIGNAL( finished() ), this, SLOT( deleteLater() ) );
 
-private:
-    QLabel* m_label;
-
-    ImageLoader* m_loader;
-};
-
-#endif
+    if ( isFinished() )
+        deleteLater();
+}
