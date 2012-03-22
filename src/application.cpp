@@ -340,6 +340,16 @@ void Application::initializeSettings()
     if ( !m_settings->contains( "RememberDirectories" ) )
         m_settings->setValue( "RememberDirectories", false );
 
+    if ( !m_settings->contains( "BinaryFont" ) )
+        m_settings->setValue( "BinaryFont", "Courier New" );
+    if ( !m_settings->contains( "BinaryFontSize" ) )
+        m_settings->setValue( "BinaryFontSize", 10 );
+
+    if ( !m_settings->contains( "TextFont" ) )
+        m_settings->setValue( "TextFont", "Courier New" );
+    if ( !m_settings->contains( "TextFontSize" ) )
+        m_settings->setValue( "TextFontSize", 10 );
+
     if ( !m_settings->contains( "AutoUpdate" ) )
         m_settings->setValue( "AutoUpdate", true );
 

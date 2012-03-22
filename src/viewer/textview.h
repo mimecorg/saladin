@@ -58,6 +58,8 @@ private slots:
 
     void loadNextBlock();
 
+    void settingsChanged();
+
 private:
     void initializeSettings();
     void storeSettings();

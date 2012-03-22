@@ -131,6 +131,10 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
 
     initializeSettings();
 
+    connect( application->applicationSettings(), SIGNAL( settingsChanged() ), this, SLOT( settingsChanged() ) );
+
+    settingsChanged();
+
     updateActions();
 }
 
@@ -142,6 +146,19 @@ TextView::~TextView()
     }
 
     storeSettings();
+}
+
+void TextView::settingsChanged()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    QString family = settings->value( "TextFont" ).toString();
+    int size = settings->value( "TextFontSize" ).toInt();
+
+    QFont font( family, size );
+    font.setStyleHint( QFont::Courier );
+
+    m_edit->setFont( font );
 }
 
 void TextView::initializeSettings()

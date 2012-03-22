@@ -81,6 +81,10 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
 
     initializeSettings();
 
+    connect( application->applicationSettings(), SIGNAL( settingsChanged() ), this, SLOT( settingsChanged() ) );
+
+    settingsChanged();
+
     updateActions();
 }
 
@@ -97,6 +101,19 @@ BinaryView::~BinaryView()
 View::Type BinaryView::type() const
 {
     return Binary;
+}
+
+void BinaryView::settingsChanged()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    QString family = settings->value( "BinaryFont" ).toString();
+    int size = settings->value( "BinaryFontSize" ).toInt();
+
+    QFont font( family, size );
+    font.setStyleHint( QFont::Courier );
+
+    m_edit->setFont( font );
 }
 
 void BinaryView::initializeSettings()

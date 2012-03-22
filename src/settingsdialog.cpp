@@ -118,6 +118,44 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     connect( m_rememberCheckBox, SIGNAL( toggled( bool ) ), leftPaneButton, SLOT( setDisabled( bool ) ) );
     connect( m_rememberCheckBox, SIGNAL( toggled( bool ) ), m_leftPaneEdit, SLOT( setDisabled( bool ) ) );
 
+    QGroupBox* fontsGroup = new QGroupBox( tr( "Fonts" ), generalTab );
+    QGridLayout* fontsLayout = new QGridLayout( fontsGroup );
+    generalLayout->addWidget( fontsGroup );
+
+    QLabel* binaryLabel = new QLabel( tr( "&Binary view:" ), fontsGroup );
+    fontsLayout->addWidget( binaryLabel, 0, 0 );
+
+    m_binaryFontComboBox = new QFontComboBox( fontsGroup );
+    m_binaryFontComboBox->setEditable( false );
+    m_binaryFontComboBox->setWritingSystem( QFontDatabase::Latin );
+    m_binaryFontComboBox->setFontFilters( QFontComboBox::ScalableFonts | QFontComboBox::MonospacedFonts );
+    fontsLayout->addWidget( m_binaryFontComboBox, 0, 1 );
+
+    binaryLabel->setBuddy( m_binaryFontComboBox );
+
+    m_binaryFontSpinBox = new QSpinBox( fontsGroup );
+    m_binaryFontSpinBox->setRange( 8, 36 );
+    m_binaryFontSpinBox->setSuffix( tr( " pt" ) );
+    fontsLayout->addWidget( m_binaryFontSpinBox, 0, 2 );
+
+    QLabel* textLabel = new QLabel( tr( "&Text view:" ), fontsGroup );
+    fontsLayout->addWidget( textLabel, 1, 0 );
+
+    m_textFontComboBox = new QFontComboBox( fontsGroup );
+    m_textFontComboBox->setEditable( false );
+    m_textFontComboBox->setWritingSystem( QFontDatabase::Latin );
+    m_textFontComboBox->setFontFilters( QFontComboBox::ScalableFonts );
+    fontsLayout->addWidget( m_textFontComboBox, 1, 1 );
+
+    textLabel->setBuddy( m_textFontComboBox );
+
+    m_textFontSpinBox = new QSpinBox( fontsGroup );
+    m_textFontSpinBox->setRange( 8, 36 );
+    m_textFontSpinBox->setSuffix( tr( " pt" ) );
+    fontsLayout->addWidget( m_textFontSpinBox, 1, 2 );
+
+    fontsLayout->setColumnStretch( 3, 1 );
+
     QGroupBox* updateGroup = new QGroupBox( tr( "Automatic Update" ), generalTab );
     QGridLayout* updateLayout = new QGridLayout( updateGroup );
     generalLayout->addWidget( updateGroup );
@@ -211,6 +249,16 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     m_rememberCheckBox->setChecked( settings->value( "RememberDirectories" ).toBool() );
 
+    QFont binaryFont( settings->value( "BinaryFont" ).toString() );
+    binaryFont.setStyleHint( QFont::Courier );
+    m_binaryFontComboBox->setCurrentFont( binaryFont );
+    m_binaryFontSpinBox->setValue( settings->value( "BinaryFontSize" ).toInt() );
+
+    QFont textFont( settings->value( "TextFont" ).toString() );
+    textFont.setStyleHint( QFont::Courier );
+    m_textFontComboBox->setCurrentFont( textFont );
+    m_textFontSpinBox->setValue( settings->value( "TextFontSize" ).toInt() );
+
     m_updateCheckBox->setChecked( settings->value( "AutoUpdate" ).toBool() );
 
     m_internalViewerCheckBox->setChecked( settings->value( "InternalViewer" ).toBool() );
@@ -244,6 +292,12 @@ bool SettingsDialog::apply()
     settings->setValue( "Directory1", QVariant::fromValue( m_pidls[ 0 ] ) );
     settings->setValue( "Directory2", QVariant::fromValue( m_pidls[ 1 ] ) );
     settings->setValue( "RememberDirectories", m_rememberCheckBox->isChecked() );
+
+    settings->setValue( "BinaryFont", m_binaryFontComboBox->currentFont().family() );
+    settings->setValue( "BinaryFontSize", m_binaryFontSpinBox->value() );
+    settings->setValue( "TextFont", m_textFontComboBox->currentFont().family() );
+    settings->setValue( "TextFontSize", m_textFontSpinBox->value() );
+
     settings->setValue( "AutoUpdate", m_updateCheckBox->isChecked() );
 
     settings->setValue( "InternalViewer", m_internalViewerCheckBox->isChecked() );
