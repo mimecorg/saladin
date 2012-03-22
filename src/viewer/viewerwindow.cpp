@@ -21,6 +21,7 @@
 #include "application.h"
 #include "mainwindow.h"
 #include "viewer/viewmanager.h"
+#include "utils/elidedlabel.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/builder.h"
@@ -75,8 +76,7 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
     QStatusBar* status = new QStatusBar( this );
     setStatusBar( status );
 
-    m_statusLabel = new QLabel( status );
-    m_statusLabel->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Preferred );
+    m_statusLabel = new ElidedLabel( status );
     status->addWidget( m_statusLabel, 1 );
 
     initializeGeometry();

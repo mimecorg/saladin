@@ -29,6 +29,7 @@
 #include "shell/shellitem.h"
 #include "shell/shellpidl.h"
 #include "shell/shelldropdata.h"
+#include "utils/elidedlabel.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 
@@ -139,12 +140,10 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     status->setSizeGripEnabled( false );
     layout->addWidget( status );
 
-    m_selectionStatus = new QLabel( status );
-    m_selectionStatus->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Preferred );
+    m_selectionStatus = new ElidedLabel( status );
     status->addWidget( m_selectionStatus, 1 );
 
-    m_driveStatus = new QLabel( status );
-    m_driveStatus->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Preferred );
+    m_driveStatus = new ElidedLabel( status );
     status->addWidget( m_driveStatus, 1 );
 
     connect( m_model, SIGNAL( modelReset() ), this, SLOT( updateStatus() ) );
