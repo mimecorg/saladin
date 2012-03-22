@@ -54,6 +54,8 @@ private slots:
     void toggleWordWrap();
     void setEncoding( const QString& format );
 
+    void selectEncoding();
+
     void contextMenuRequested( const QPoint& pos );
 
     void loadNextBlock();

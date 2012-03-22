@@ -42,6 +42,7 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     setAction( "wordWrap", action );
 
     encodingAction = new XmlUi::ToolStripAction( IconLoader::icon( "encoding" ), tr( "Encoding" ), this );
+    encodingAction->setShortcut( Qt::Key_E );
     encodingAction->setPopupMode( QToolButton::InstantPopup );
     connect( encodingAction, SIGNAL( triggered() ), this, SLOT( selectEncoding() ) );
     setAction( "selectEncoding", encodingAction );
@@ -447,6 +448,19 @@ void TextView::setEncoding( const QString& format )
     setFormat( format.toLatin1() );
 
     load();
+}
+
+void TextView::selectEncoding()
+{
+    QList<QWidget*> widgets = action( "selectEncoding" )->associatedWidgets();
+    foreach ( QWidget* widget, widgets ) {
+        if ( QToolButton* button = qobject_cast<QToolButton*>( widget ) ) {
+            button->setDown( true );
+            action( "selectEncoding" )->menu()->exec( widget->mapToGlobal( widget->rect().bottomLeft() + QPoint( 0, 1 ) ) );
+            button->setDown( false );
+            break;
+        }
+    }
 }
 
 bool TextView::eventFilter( QObject* obj, QEvent* e )
