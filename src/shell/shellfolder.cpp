@@ -683,6 +683,12 @@ bool ShellFolder::canCreateFolder()
         result = true;
     }
 
+    if ( !result ) {
+        ShellItem::Attributes attrs = attributes();
+        if ( ( attrs & ShellItem::FileSystem ) && ( attrs & ShellItem::Directory ) )
+            result = true;
+    }
+
     return result;
 }
 
@@ -716,6 +722,15 @@ bool ShellFolder::createFolder( const QString& name )
         }
 
         fileOperation->Release();
+    }
+
+    if ( !result ) {
+        ShellItem::Attributes attrs = attributes();
+        if ( ( attrs & ShellItem::FileSystem ) && ( attrs & ShellItem::Directory ) ) {
+            QString path = d->m_path + QLatin1Char( '\\' ) + name;
+
+            result = CreateDirectory( path.utf16(), NULL );
+        }
     }
 
     return result;
