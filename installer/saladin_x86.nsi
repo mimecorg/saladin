@@ -19,6 +19,6 @@
 !define ARCHITECTURE "win_x86"
 !define SUFFIX ""
 
-!define QTDIR "D:\Qt4-msvc\win32-static"
+!define QTDIR "D:\Qt4-msvc\x86-static"
 
 !include "saladin.nsh"
