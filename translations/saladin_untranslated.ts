@@ -51,7 +51,7 @@
     </message>
     <message utf8="true">
         <location filename="../src/application.cpp" line="143"/>
-        <source>Copyright (C) 2011 Michał Męciński</source>
+        <source>Copyright (C) 2012 Michał Męciński</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <location filename="../src/application.cpp" line="152"/>
-        <source>Web Page</source>
+        <source>Website</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -154,29 +154,36 @@
 <context>
     <name>BinaryView</name>
     <message>
-        <location filename="../src/viewer/binaryview.cpp" line="33"/>
+        <location filename="../src/viewer/binaryview.cpp" line="34"/>
         <source>Hex Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/binaryview.cpp" line="39"/>
+        <location filename="../src/viewer/binaryview.cpp" line="40"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/binaryview.cpp" line="44"/>
+        <location filename="../src/viewer/binaryview.cpp" line="45"/>
         <source>Select &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/binaryview.cpp" line="79"/>
-        <location filename="../src/viewer/binaryview.cpp" line="113"/>
+        <location filename="../src/viewer/binaryview.cpp" line="80"/>
+        <location filename="../src/viewer/binaryview.cpp" line="152"/>
+        <location filename="../src/viewer/binaryview.cpp" line="187"/>
+        <location filename="../src/viewer/binaryview.cpp" line="189"/>
         <source>Binary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/binaryview.cpp" line="213"/>
+        <location filename="../src/viewer/binaryview.cpp" line="187"/>
         <source>%1 bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/binaryview.cpp" line="189"/>
+        <source>loading... %1%</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -347,13 +354,14 @@
 <context>
     <name>ImageView</name>
     <message>
-        <location filename="../src/viewer/imageview.cpp" line="28"/>
+        <location filename="../src/viewer/imageview.cpp" line="30"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/imageview.cpp" line="61"/>
-        <location filename="../src/viewer/imageview.cpp" line="77"/>
+        <location filename="../src/viewer/imageview.cpp" line="63"/>
+        <location filename="../src/viewer/imageview.cpp" line="96"/>
+        <location filename="../src/viewer/imageview.cpp" line="108"/>
         <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1009,41 +1017,41 @@ Select the tool in Saladin settings and try again.</source>
 <context>
     <name>PaneWidget</name>
     <message>
-        <location filename="../src/panewidget.cpp" line="678"/>
-        <location filename="../src/panewidget.cpp" line="927"/>
+        <location filename="../src/panewidget.cpp" line="677"/>
+        <location filename="../src/panewidget.cpp" line="926"/>
         <source>Invalid Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="678"/>
+        <location filename="../src/panewidget.cpp" line="677"/>
         <source>The path you entered cannot be opened.
 Please check the spelling and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="981"/>
+        <location filename="../src/panewidget.cpp" line="980"/>
         <source>Invalid Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="927"/>
+        <location filename="../src/panewidget.cpp" line="926"/>
         <source>The path you selected cannot be opened.
 Make sure the device is available and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="981"/>
+        <location filename="../src/panewidget.cpp" line="980"/>
         <source>The bookmark you selected cannot be opened.
 Make sure the device is available and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1091"/>
+        <location filename="../src/panewidget.cpp" line="1090"/>
         <source>%1 - %2 of %3 free (%4%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/panewidget.cpp" line="1107"/>
+        <location filename="../src/panewidget.cpp" line="1106"/>
         <source>%n bytes</source>
         <comment>before of</comment>
         <translation type="unfinished">
@@ -1051,7 +1059,7 @@ Make sure the device is available and try again.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/panewidget.cpp" line="1107"/>
+        <location filename="../src/panewidget.cpp" line="1106"/>
         <source>%n bytes</source>
         <comment>after of</comment>
         <translation type="unfinished">
@@ -1059,17 +1067,17 @@ Make sure the device is available and try again.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1109"/>
+        <location filename="../src/panewidget.cpp" line="1108"/>
         <source>%1 kB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1111"/>
+        <location filename="../src/panewidget.cpp" line="1110"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/panewidget.cpp" line="1112"/>
+        <location filename="../src/panewidget.cpp" line="1111"/>
         <source>%1 GB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1123,96 +1131,117 @@ Make sure the device is available and try again.</source>
     </message>
     <message>
         <location filename="../src/settingsdialog.cpp" line="121"/>
-        <source>Automatic Update</source>
+        <source>Fonts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settingsdialog.cpp" line="125"/>
-        <source>&amp;Enable automatic checking for latest version of Saladin</source>
+        <source>&amp;Binary view:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="131"/>
-        <source>Tools</source>
+        <location filename="../src/settingsdialog.cpp" line="138"/>
+        <location filename="../src/settingsdialog.cpp" line="154"/>
+        <source> pt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="135"/>
-        <source>File Viewer</source>
+        <location filename="../src/settingsdialog.cpp" line="141"/>
+        <source>&amp;Text view:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="139"/>
-        <source>Use the internal file viewer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/settingsdialog.cpp" line="152"/>
-        <source>Text Editor</source>
+        <location filename="../src/settingsdialog.cpp" line="159"/>
+        <source>Automatic Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settingsdialog.cpp" line="163"/>
+        <source>&amp;Enable automatic checking for latest version of Saladin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsdialog.cpp" line="169"/>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsdialog.cpp" line="173"/>
+        <source>File Viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsdialog.cpp" line="177"/>
+        <source>Use the internal file viewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsdialog.cpp" line="190"/>
+        <source>Text Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsdialog.cpp" line="201"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="174"/>
+        <location filename="../src/settingsdialog.cpp" line="212"/>
         <source>Compare Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="192"/>
+        <location filename="../src/settingsdialog.cpp" line="230"/>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="193"/>
+        <location filename="../src/settingsdialog.cpp" line="231"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="194"/>
+        <location filename="../src/settingsdialog.cpp" line="232"/>
         <source>&amp;Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="241"/>
+        <location filename="../src/settingsdialog.cpp" line="289"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="241"/>
+        <location filename="../src/settingsdialog.cpp" line="289"/>
         <source>Language settings will be applied when the application is restarted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="272"/>
+        <location filename="../src/settingsdialog.cpp" line="326"/>
         <source>Select initial directory:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="301"/>
+        <location filename="../src/settingsdialog.cpp" line="355"/>
         <source>Applications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="301"/>
+        <location filename="../src/settingsdialog.cpp" line="355"/>
         <source>All Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="303"/>
+        <location filename="../src/settingsdialog.cpp" line="357"/>
         <source>Select Tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="310"/>
+        <location filename="../src/settingsdialog.cpp" line="364"/>
         <source>System Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsdialog.cpp" line="336"/>
+        <location filename="../src/settingsdialog.cpp" line="390"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1228,201 +1257,208 @@ Make sure the device is available and try again.</source>
 <context>
     <name>TextView</name>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="35"/>
+        <location filename="../src/viewer/textview.cpp" line="38"/>
         <source>Word Wrap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="41"/>
+        <location filename="../src/viewer/textview.cpp" line="44"/>
         <source>Encoding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="46"/>
+        <location filename="../src/viewer/textview.cpp" line="50"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="51"/>
+        <location filename="../src/viewer/textview.cpp" line="55"/>
         <source>Select &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="56"/>
+        <location filename="../src/viewer/textview.cpp" line="60"/>
         <source>&amp;Find...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="61"/>
+        <location filename="../src/viewer/textview.cpp" line="65"/>
         <source>Find &amp;Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="66"/>
+        <location filename="../src/viewer/textview.cpp" line="70"/>
         <source>Find &amp;Previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="120"/>
-        <location filename="../src/viewer/textview.cpp" line="268"/>
+        <location filename="../src/viewer/textview.cpp" line="124"/>
+        <location filename="../src/viewer/textview.cpp" line="320"/>
+        <location filename="../src/viewer/textview.cpp" line="351"/>
+        <location filename="../src/viewer/textview.cpp" line="353"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="175"/>
+        <location filename="../src/viewer/textview.cpp" line="201"/>
         <source>ANSI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="176"/>
+        <location filename="../src/viewer/textview.cpp" line="202"/>
         <source>OEM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="177"/>
+        <location filename="../src/viewer/textview.cpp" line="203"/>
         <source>UTF-8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="178"/>
+        <location filename="../src/viewer/textview.cpp" line="204"/>
         <source>Unicode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="179"/>
+        <location filename="../src/viewer/textview.cpp" line="205"/>
         <source>Unicode BE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="203"/>
-        <location filename="../src/viewer/textview.cpp" line="213"/>
+        <location filename="../src/viewer/textview.cpp" line="229"/>
+        <location filename="../src/viewer/textview.cpp" line="239"/>
         <source>Central European</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="204"/>
-        <location filename="../src/viewer/textview.cpp" line="216"/>
-        <location filename="../src/viewer/textview.cpp" line="225"/>
-        <location filename="../src/viewer/textview.cpp" line="226"/>
-        <location filename="../src/viewer/textview.cpp" line="227"/>
+        <location filename="../src/viewer/textview.cpp" line="230"/>
+        <location filename="../src/viewer/textview.cpp" line="242"/>
+        <location filename="../src/viewer/textview.cpp" line="251"/>
+        <location filename="../src/viewer/textview.cpp" line="252"/>
+        <location filename="../src/viewer/textview.cpp" line="253"/>
         <source>Cyrillic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="205"/>
-        <location filename="../src/viewer/textview.cpp" line="212"/>
-        <location filename="../src/viewer/textview.cpp" line="223"/>
+        <location filename="../src/viewer/textview.cpp" line="231"/>
+        <location filename="../src/viewer/textview.cpp" line="238"/>
+        <location filename="../src/viewer/textview.cpp" line="249"/>
         <source>Western European</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="206"/>
-        <location filename="../src/viewer/textview.cpp" line="218"/>
+        <location filename="../src/viewer/textview.cpp" line="232"/>
+        <location filename="../src/viewer/textview.cpp" line="244"/>
         <source>Greek</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="207"/>
-        <location filename="../src/viewer/textview.cpp" line="220"/>
+        <location filename="../src/viewer/textview.cpp" line="233"/>
+        <location filename="../src/viewer/textview.cpp" line="246"/>
         <source>Turkish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="208"/>
-        <location filename="../src/viewer/textview.cpp" line="219"/>
+        <location filename="../src/viewer/textview.cpp" line="234"/>
+        <location filename="../src/viewer/textview.cpp" line="245"/>
         <source>Hebrew</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="209"/>
-        <location filename="../src/viewer/textview.cpp" line="217"/>
+        <location filename="../src/viewer/textview.cpp" line="235"/>
+        <location filename="../src/viewer/textview.cpp" line="243"/>
         <source>Arabic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="210"/>
-        <location filename="../src/viewer/textview.cpp" line="221"/>
+        <location filename="../src/viewer/textview.cpp" line="236"/>
+        <location filename="../src/viewer/textview.cpp" line="247"/>
         <source>Baltic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="211"/>
+        <location filename="../src/viewer/textview.cpp" line="237"/>
         <source>Vietnamese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="214"/>
+        <location filename="../src/viewer/textview.cpp" line="240"/>
         <source>South European</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="215"/>
+        <location filename="../src/viewer/textview.cpp" line="241"/>
         <source>North European</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="222"/>
+        <location filename="../src/viewer/textview.cpp" line="248"/>
         <source>Celtic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="224"/>
+        <location filename="../src/viewer/textview.cpp" line="250"/>
         <source>Romanian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="228"/>
+        <location filename="../src/viewer/textview.cpp" line="254"/>
         <source>Chinese Simplified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="229"/>
-        <location filename="../src/viewer/textview.cpp" line="230"/>
+        <location filename="../src/viewer/textview.cpp" line="255"/>
+        <location filename="../src/viewer/textview.cpp" line="256"/>
         <source>Chinese Traditional</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="231"/>
-        <location filename="../src/viewer/textview.cpp" line="232"/>
-        <location filename="../src/viewer/textview.cpp" line="233"/>
+        <location filename="../src/viewer/textview.cpp" line="257"/>
+        <location filename="../src/viewer/textview.cpp" line="258"/>
+        <location filename="../src/viewer/textview.cpp" line="259"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="234"/>
+        <location filename="../src/viewer/textview.cpp" line="260"/>
         <source>Korean</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="235"/>
+        <location filename="../src/viewer/textview.cpp" line="261"/>
         <source>Thai</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="305"/>
+        <location filename="../src/viewer/textview.cpp" line="351"/>
         <source>%1 characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="353"/>
+        <source>loading... %1%</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ViewerWindow</name>
     <message>
-        <location filename="../src/viewer/viewerwindow.cpp" line="36"/>
+        <location filename="../src/viewer/viewerwindow.cpp" line="37"/>
         <source>Reload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/viewerwindow.cpp" line="41"/>
+        <location filename="../src/viewer/viewerwindow.cpp" line="42"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/viewerwindow.cpp" line="47"/>
+        <location filename="../src/viewer/viewerwindow.cpp" line="48"/>
         <source>Binary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/viewerwindow.cpp" line="53"/>
+        <location filename="../src/viewer/viewerwindow.cpp" line="54"/>
         <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
