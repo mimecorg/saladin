@@ -51,8 +51,8 @@
     </message>
     <message utf8="true">
         <location filename="../src/application.cpp" line="143"/>
-        <source>Copyright (C) 2012 Michał Męciński</source>
-        <translation>Copyright (C) 2012 Michał Męciński</translation>
+        <source>Copyright &amp;copy; 2011-2012 Michał Męciński</source>
+        <translation>Copyright &amp;copy; 2011-2012 Michał Męciński</translation>
     </message>
     <message>
         <location filename="../src/application.cpp" line="148"/>

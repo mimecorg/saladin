@@ -1,3 +1,9 @@
+0.3 (2012-04-05)
+ * asynchronous loading in the file viewer
+ * configuring font for binary and text view
+ * compatibility method for creating directories
+ * added Portuguese translation
+
 0.2 (2011-08-22)
  * first version of the internal file viewer
  * fixed a crash when "show hidden files" is enabled at startup

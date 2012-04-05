@@ -1,6 +1,6 @@
 /**************************************************************************
 * This file is part of the Saladin program
-* Copyright (C) 2012 Michał Męciński
+* Copyright (C) 2011-2012 Michał Męciński
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-!define VERSION "0.2"
-!define BUILDVERSION "0.2.0.4251"
+!define VERSION "0.3"
+!define BUILDVERSION "0.3.0.4478"
 
 !define SRCDIR ".."
 !define BUILDDIR "..\release"
@@ -93,7 +93,7 @@ VIProductVersion "${BUILDVERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Michał Męciński"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Saladin Setup"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright (C) 2012 Michał Męciński"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright (C) 2011-2012 Michał Męciński"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "OriginalFilename" "saladin-${VERSION}-${ARCHITECTURE}.exe"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Saladin"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
