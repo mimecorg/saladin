@@ -1,16 +1,16 @@
-HEADERS += xmlui/builder.h \
-           xmlui/client.h \
-           xmlui/gradientwidget.h \
-           xmlui/node_p.h \
-           xmlui/toolstrip.h \
-           xmlui/toolstrip_p.h
+HEADERS += $$PWD/builder.h \
+           $$PWD/client.h \
+           $$PWD/gradientwidget.h \
+           $$PWD/node_p.h \
+           $$PWD/toolstrip.h \
+           $$PWD/toolstrip_p.h
 
-SOURCES += xmlui/builder.cpp \
-           xmlui/client.cpp \
-           xmlui/gradientwidget.cpp \
-           xmlui/toolstrip.cpp
+SOURCES += $$PWD/builder.cpp \
+           $$PWD/client.cpp \
+           $$PWD/gradientwidget.cpp \
+           $$PWD/toolstrip.cpp
 
 win32 {
-    HEADERS += xmlui/windowsstyle.h
-    SOURCES += xmlui/windowsstyle.cpp
+    HEADERS += $$PWD/windowsstyle.h
+    SOURCES += $$PWD/windowsstyle.cpp
 }

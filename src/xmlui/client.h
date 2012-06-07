@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2011 Michał Męciński
+* Copyright (C) 2007-2012 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -115,7 +115,7 @@ public:
 
     /**
     * Return popup menu for the given action.
-    * @param id The identifier of the action.
+    * @param actionId The identifier of the action.
     * @return The identifier of the menu.
     */
     QString popupMenu( const QString& actionId );

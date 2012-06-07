@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2011 Michał Męciński
+* Copyright (C) 2007-2012 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -142,6 +142,11 @@ public:
     * Set the margins for tool strip contents.
     */
     void setContentsMargins( int left, int top, int right, int bottom );
+
+    /**
+    * Execute the popup menu associated with given action.
+    */
+    void execMenu( QAction* action );
 
 protected: // overrides
     void childEvent( QChildEvent* e );

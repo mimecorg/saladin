@@ -452,15 +452,7 @@ void TextView::setEncoding( const QString& format )
 
 void TextView::selectEncoding()
 {
-    QList<QWidget*> widgets = action( "selectEncoding" )->associatedWidgets();
-    foreach ( QWidget* widget, widgets ) {
-        if ( QToolButton* button = qobject_cast<QToolButton*>( widget ) ) {
-            button->setDown( true );
-            action( "selectEncoding" )->menu()->exec( widget->mapToGlobal( widget->rect().bottomLeft() + QPoint( 0, 1 ) ) );
-            button->setDown( false );
-            break;
-        }
-    }
+    builder()->toolStrip( "stripMain" )->execMenu( action( "selectEncoding" ) );
 }
 
 bool TextView::eventFilter( QObject* obj, QEvent* e )

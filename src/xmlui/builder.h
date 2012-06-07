@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2011 Michał Męciński
+* Copyright (C) 2007-2012 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -107,6 +107,11 @@ public:
     * @param strip The ToolStrip to populate with actions.
     */
     void registerToolStrip( const QString& id, ToolStrip* strip );
+
+    /**
+    * Return the toolstrip with given identifier.
+    */
+    ToolStrip* toolStrip( const QString& id ) const;
 
     /**
     * Supress rebuilding the UI.

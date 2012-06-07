@@ -1,6 +1,6 @@
 /****************************************************************************
 * Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2011 Michał Męciński
+* Copyright (C) 2007-2012 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -171,6 +171,18 @@ void ToolStrip::clearAuxiliaryActions()
 void ToolStrip::setContentsMargins( int left, int top, int right, int bottom )
 {
     m_layout->setContentsMargins( left, top, right, bottom );
+}
+
+void ToolStrip::execMenu( QAction* action )
+{
+    foreach ( QToolButton* button, m_toolButtons ) {
+        if ( button->defaultAction() == action ) {
+            button->setDown( true );
+            action->menu()->exec( button->mapToGlobal( button->rect().bottomLeft() + QPoint( 0, 1 ) ) );
+            button->setDown( false );
+            break;
+        }
+    }
 }
 
 QToolButton* ToolStrip::createButton( QAction* action, ButtonSize size )
@@ -801,8 +813,16 @@ void ActionButton::adjustText()
     }
 
     QKeySequence shortcut = defaultAction()->shortcut();
-    if ( !shortcut.isEmpty() )
+    if ( !shortcut.isEmpty() ) {
         setToolTip( QString( "%1 (%2)" ).arg( defaultAction()->toolTip(), shortcut.toString( QKeySequence::NativeText ) ) );
+    } else if ( popupMode() == QToolButton::MenuButtonPopup && defaultAction()->menu() != NULL ) {
+        QAction* defAction = defaultAction()->menu()->defaultAction();
+        if ( defAction != NULL ) {
+            shortcut = defAction->shortcut();
+            if ( !shortcut.isEmpty() )
+                setToolTip( QString( "%1 (%2)" ).arg( defaultAction()->toolTip(), shortcut.toString( QKeySequence::NativeText ) ) );
+        }
+    }
 }
 
 void ActionButton::actionEvent( QActionEvent* e )
