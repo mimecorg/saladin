@@ -53,4 +53,6 @@ private:
     friend class ShellDropData;
 };
 
+Q_DECLARE_TYPEINFO( ShellDrive, Q_MOVABLE_TYPE );
+
 #endif

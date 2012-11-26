@@ -55,4 +55,6 @@ private:
 
 Q_DECLARE_METATYPE( ShellPidl )
 
+Q_DECLARE_TYPEINFO( ShellPidl, Q_MOVABLE_TYPE );
+
 #endif

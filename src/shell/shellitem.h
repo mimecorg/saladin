@@ -93,4 +93,6 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( ShellItem::Attributes )
 Q_DECLARE_OPERATORS_FOR_FLAGS( ShellItem::State )
 
+Q_DECLARE_TYPEINFO( ShellItem, Q_MOVABLE_TYPE );
+
 #endif
