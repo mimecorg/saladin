@@ -73,7 +73,7 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
 
     if ( m_settings->value( "LastVersion" ).toString() != version() ) {
         m_settings->setValue( "LastVersion", version() );
-        about();
+        QTimer::singleShot( 100, this, SLOT( about() ) );
     }
 }
 
