@@ -35,6 +35,9 @@ public:
 
     ShellFolder* m_sourceFolder;
     QList<ShellItem> m_sourceItems;
+
+    static ShellSelection* m_dragSelection;
+    static IDataObject* m_dragObject;
 };
 
 #endif

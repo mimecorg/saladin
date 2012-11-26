@@ -577,8 +577,61 @@ bool PaneWidget::dragDropHelper( QDropEvent* e, bool doDrop )
     if ( !doDrop )
         m_view->highlightDropItem( index );
 
-    if ( result && doDrop )
-        result = m_dropData->drop();
+    if ( result && doDrop ) {
+        LocalSettings* settings = application->applicationSettings();
+
+        if ( !( e->mouseButtons() & Qt::RightButton ) && settings->value( "ConfirmDnd" ).toBool() ) {
+            if ( m_dropData->dropAction() & ( Qt::CopyAction | Qt::MoveAction ) ) {
+                ShellSelection* selection = ShellSelection::draggedSelection( m_dropData );
+                if ( selection ) {
+                    ShellFolder* targetFolder;
+                    if ( m_model->isParentFolder( index ) ) {
+                        ShellItem item;
+                        targetFolder = folder()->parentFolder( item );
+                    } else if ( index.isValid() ) {
+                        targetFolder = folder()->openFolder( m_model->itemAt( index ) );
+                    } else {
+                        targetFolder = folder();
+                    }
+
+                    if ( targetFolder ) {
+                        mainWindow->transferSelection( selection, targetFolder, m_dropData->dropAction() & Qt::CopyAction ? ShellSelection::Copy : ShellSelection::Move, false );
+
+                        if ( targetFolder != folder() )
+                            delete targetFolder;
+
+                        result = false;
+                    }
+                }
+            }
+
+            if ( result ) {
+                QString targetPath;
+                if ( m_model->isParentFolder( index ) ) {
+                    ShellItem item;
+                    ShellFolder* parentFolder = folder()->parentFolder( item );
+                    if ( parentFolder ) {
+                        targetPath = parentFolder->path();
+                        delete parentFolder;
+                    }
+                } else if ( index.isValid() ) {
+                    targetPath = folder()->itemPath( m_model->itemAt( index ) );
+                } else {
+                    targetPath = folder()->path();
+                }
+
+                mainWindow->raise();
+                mainWindow->activateWindow();
+
+                if ( QMessageBox::question( this, tr( "Drag & Drop" ), tr( "Drop selected items to <b>%1</b>?" ).arg( targetPath ),
+                     QMessageBox::Ok | QMessageBox::Cancel ) != QMessageBox::Ok )
+                    result = false;
+            }
+        }
+
+        if ( result )
+            result = m_dropData->drop();
+    }
 
     if ( result ) {
         e->setDropAction( m_dropData->dropAction() );

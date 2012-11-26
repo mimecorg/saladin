@@ -350,6 +350,9 @@ void Application::initializeSettings()
     if ( !m_settings->contains( "TextFontSize" ) )
         m_settings->setValue( "TextFontSize", 10 );
 
+    if ( !m_settings->contains( "ConfirmDnd" ) )
+        m_settings->setValue( "ConfirmDnd", true );
+
     if ( !m_settings->contains( "AutoUpdate" ) )
         m_settings->setValue( "AutoUpdate", true );
 

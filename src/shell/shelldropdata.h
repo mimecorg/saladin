@@ -52,6 +52,8 @@ public: // overrides
 
 private:
     ShellDropDataPrivate* d;
+
+    friend class ShellSelection;
 };
 
 #endif

@@ -23,6 +23,7 @@
 
 class ShellFolder;
 class ShellItem;
+class ShellDropData;
 class ShellSelectionPrivate;
 
 class ShellSelection : public QObject
@@ -58,6 +59,9 @@ public:
     ~ShellSelection();
 
 public:
+    ShellFolder* folder() const;
+    QList<ShellItem> items() const;
+
     bool canTransferTo( ShellFolder* targetFolder, TransferType type );
     bool transferTo( ShellFolder* targetFolder, TransferType type, Flags flags, QStringList newNames );
 
@@ -72,6 +76,8 @@ public:
     bool invokeCommand( const char* verb );
 
     bool doDragDrop();
+
+    static ShellSelection* draggedSelection( ShellDropData* data );
 
 public: // overrides
     QWidget* parent() const { return qobject_cast<QWidget*>( QObject::parent() ); }

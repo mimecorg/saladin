@@ -66,6 +66,8 @@ private:
     QFontComboBox* m_textFontComboBox;
     QSpinBox* m_textFontSpinBox;
 
+    QCheckBox* m_confirmDndCheckBox;
+
     QCheckBox* m_updateCheckBox;
 
     QCheckBox* m_internalViewerCheckBox;

@@ -156,6 +156,13 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     fontsLayout->setColumnStretch( 3, 1 );
 
+    QGroupBox* miscGroup = new QGroupBox( tr( "Misc. Options" ), generalTab );
+    QVBoxLayout* miscLayout = new QVBoxLayout( miscGroup );
+    generalLayout->addWidget( miscGroup );
+
+    m_confirmDndCheckBox = new QCheckBox( tr( "Confirm &Drag && Drop operations" ), miscGroup );
+    miscLayout->addWidget( m_confirmDndCheckBox );
+
     QGroupBox* updateGroup = new QGroupBox( tr( "Automatic Update" ), generalTab );
     QGridLayout* updateLayout = new QGridLayout( updateGroup );
     generalLayout->addWidget( updateGroup );
@@ -259,6 +266,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     m_textFontComboBox->setCurrentFont( textFont );
     m_textFontSpinBox->setValue( settings->value( "TextFontSize" ).toInt() );
 
+    m_confirmDndCheckBox->setChecked( settings->value( "ConfirmDnd" ).toBool() );
+
     m_updateCheckBox->setChecked( settings->value( "AutoUpdate" ).toBool() );
 
     m_internalViewerCheckBox->setChecked( settings->value( "InternalViewer" ).toBool() );
@@ -297,6 +306,8 @@ bool SettingsDialog::apply()
     settings->setValue( "BinaryFontSize", m_binaryFontSpinBox->value() );
     settings->setValue( "TextFont", m_textFontComboBox->currentFont().family() );
     settings->setValue( "TextFontSize", m_textFontSpinBox->value() );
+
+    settings->setValue( "ConfirmDnd", m_confirmDndCheckBox->isChecked() );
 
     settings->setValue( "AutoUpdate", m_updateCheckBox->isChecked() );
 

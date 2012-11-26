@@ -22,6 +22,11 @@
 #include "shellfolder_p.h"
 #include "shellitem.h"
 #include "shellitem_p.h"
+#include "shelldropdata.h"
+#include "shelldropdata_p.h"
+
+ShellSelection* ShellSelectionPrivate::m_dragSelection = NULL;
+IDataObject* ShellSelectionPrivate::m_dragObject = NULL;
 
 ShellSelection::ShellSelection( ShellFolder* folder, const QList<ShellItem>& items, QWidget* parent /*= NULL*/ ) : QObject( parent ),
     d( new ShellSelectionPrivate() )
@@ -44,6 +49,16 @@ ShellSelectionPrivate::ShellSelectionPrivate() :
 
 ShellSelectionPrivate::~ShellSelectionPrivate()
 {
+}
+
+ShellFolder* ShellSelection::folder() const
+{
+    return d->m_sourceFolder;
+}
+
+QList<ShellItem> ShellSelection::items() const
+{
+    return d->m_sourceItems;
 }
 
 bool ShellSelection::canTransferTo( ShellFolder* targetFolder, TransferType /*type*/ )
@@ -507,8 +522,14 @@ bool ShellSelection::doDragDrop()
     if ( SUCCEEDED( hr ) ) {
         ShellDropSource* dropSource = new ShellDropSource();
 
+        ShellSelectionPrivate::m_dragSelection = this;
+        ShellSelectionPrivate::m_dragObject = dataObject;
+
         DWORD effect = 0;
         hr = DoDragDrop( dataObject, dropSource, DROPEFFECT_COPY | DROPEFFECT_MOVE | DROPEFFECT_LINK, &effect );
+
+        ShellSelectionPrivate::m_dragSelection = NULL;
+        ShellSelectionPrivate::m_dragObject = NULL;
 
         if ( SUCCEEDED( hr ) )
             result = true;
@@ -518,4 +539,11 @@ bool ShellSelection::doDragDrop()
     }
 
     return result;
+}
+
+ShellSelection* ShellSelection::draggedSelection( ShellDropData* data )
+{
+    if ( data->d->m_dataObject == ShellSelectionPrivate::m_dragObject )
+        return ShellSelectionPrivate::m_dragSelection;
+    return NULL;
 }

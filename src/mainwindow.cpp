@@ -787,19 +787,31 @@ void MainWindow::transferItems( ShellFolder* sourceFolder, const QList<ShellItem
 
     ShellSelection selection( sourceFolder, items, this );
 
-    bool canTransfer = selection.canTransferTo( targetFolder, type );
-    bool canDragDrop = !canTransfer && selection.canDragDropTo( targetFolder, type );
+    transferSelection( &selection, targetFolder, type, true );
+}
+
+void MainWindow::transferSelection( ShellSelection* selection, ShellFolder* targetFolder, ShellSelection::TransferType type, bool canRename )
+{
+    bool canTransfer = selection->canTransferTo( targetFolder, type );
+    bool canDragDrop = !canTransfer && selection->canDragDropTo( targetFolder, type );
 
     if ( !canTransfer && !canDragDrop )
         return;
 
-    bool sameTarget = targetFolder->isEqual( sourceFolder );
+    bool sameTarget = targetFolder->isEqual( selection->folder() );
+
+    if ( !canRename && sameTarget && type == ShellSelection::Move ) {
+        QMessageBox::information( this, tr( "Drag & Drop" ), tr( "The source and target locations are the same." ) );
+        return;
+    }
 
     OperationDialog::Flags operationFlags;
     if ( sameTarget )
         operationFlags = OperationDialog::WithLocation;
     else
         operationFlags = OperationDialog::WithSource | OperationDialog::WithTarget;
+
+    QList<ShellItem> items = selection->items();
 
     if ( canTransfer ) {
         operationFlags |= OperationDialog::WithCheckBox;
@@ -857,9 +869,9 @@ void MainWindow::transferItems( ShellFolder* sourceFolder, const QList<ShellItem
     }
 
     if ( sameTarget ) {
-        dialog.setLocation( sourceFolder->path() );
+        dialog.setLocation( selection->folder()->path() );
     } else {
-        dialog.setSource( sourceFolder->path() );
+        dialog.setSource( selection->folder()->path() );
         dialog.setTarget( targetFolder->path() );
     }
 
@@ -882,9 +894,9 @@ void MainWindow::transferItems( ShellFolder* sourceFolder, const QList<ShellItem
         else
             newNames = dialog.names();
 
-        done = selection.transferTo( targetFolder, type, transferFlags, newNames );
+        done = selection->transferTo( targetFolder, type, transferFlags, newNames );
     } else {
-        done = selection.dragDropTo( targetFolder, type );
+        done = selection->dragDropTo( targetFolder, type );
     }
 
     if ( done )

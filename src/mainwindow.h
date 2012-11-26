@@ -40,6 +40,8 @@ public:
 
     ViewManager* viewManager() const { return m_viewManager; }
 
+    void transferSelection( ShellSelection* selection, ShellFolder* targetFolder, ShellSelection::TransferType type, bool canRename );
+
 public: // overrides
     bool eventFilter( QObject* object, QEvent* e );
 
