@@ -1,5 +1,6 @@
 HEADERS += viewer/binaryloader.h \
            viewer/binaryview.h \
+           viewer/imagelabel.h \
            viewer/imageloader.h \
            viewer/imageview.h \
            viewer/textedit.h \
@@ -11,6 +12,7 @@ HEADERS += viewer/binaryloader.h \
 
 SOURCES += viewer/binaryloader.cpp \
            viewer/binaryview.cpp \
+           viewer/imagelabel.cpp \
            viewer/imageloader.cpp \
            viewer/imageview.cpp \
            viewer/textedit.cpp \

@@ -16,57 +16,39 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef IMAGEVIEW_H
-#define IMAGEVIEW_H
+#ifndef IMAGELABEL_H
+#define IMAGELABEL_H
 
-#include "viewer/view.h"
-
-class ImageLabel;
-class ImageLoader;
-
-class ImageView : public View
+class ImageLabel : public QWidget
 {
     Q_OBJECT
 public:
-    ImageView( QObject* parent, QWidget* parentWidget );
-    ~ImageView();
+    ImageLabel( QWidget* parent );
+    ~ImageLabel();
+
+public:
+    void setImage( const QImage& image );
+    const QImage& image() const { return m_image; }
+
+    void setZoom( double zoom );
+    double zoom() const { return m_zoom; }
 
 public: // overrides
-    Type type() const;
+    QSize sizeHint() const;
 
-    void load();
+protected: // overrides
+    void paintEvent( QPaintEvent* e );
 
-private slots:
-    void updateActions();
+    void wheelEvent( QWheelEvent* e );
 
-    void copy();
-
-    void zoomFit();
-
+signals:
     void zoomIn();
     void zoomOut();
-    void zoomOriginal();
-
-    void rotateLeft();
-    void rotateRight();
-
-    void contextMenuRequested( const QPoint& pos );
-
-    void loadImage();
 
 private:
-    void initializeSettings();
-    void storeSettings();
+    QImage m_image;
 
-    void zoom( double factor );
-    void adjustScrollBar( QScrollBar* scrollBar, double factor );
-
-private:
-    QScrollArea* m_scroll;
-
-    ImageLabel* m_label;
-
-    ImageLoader* m_loader;
+    double m_zoom;
 };
 
 #endif

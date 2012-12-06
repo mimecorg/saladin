@@ -60,6 +60,8 @@
   <file>refresh-16.png</file>
   <file>rename-16.png</file>
   <file>rename-22.png</file>
+  <file>rotate-left-16.png</file>
+  <file>rotate-right-16.png</file>
   <file>saladin-16.png</file>
   <file>saladin-22.png</file>
   <file>saladin-32.png</file>
@@ -84,5 +86,9 @@
   <file>warning-16.png</file>
   <file>web-16.png</file>
   <file>word-wrap-16.png</file>
+  <file>zoom-fit-16.png</file>
+  <file>zoom-in-16.png</file>
+  <file>zoom-orig-16.png</file>
+  <file>zoom-out-16.png</file>
 </qresource>
 </RCC>

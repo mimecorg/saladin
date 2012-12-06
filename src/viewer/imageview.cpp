@@ -17,8 +17,11 @@
 **************************************************************************/
 
 #include "imageview.h"
+#include "imagelabel.h"
 #include "imageloader.h"
 
+#include "application.h"
+#include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/builder.h"
 
@@ -32,6 +35,37 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "copy", action );
 
+    action = new QAction( IconLoader::icon( "zoom-fit" ), tr( "Zoom To &Fit" ), this );
+    action->setShortcut( Qt::Key_F );
+    action->setCheckable( true );
+    connect( action, SIGNAL( triggered() ), this, SLOT( zoomFit() ) );
+    setAction( "zoomFit", action );
+
+    action = new QAction( IconLoader::icon( "zoom-in" ), tr( "Zoom &In" ), this );
+    action->setShortcut( Qt::CTRL + Qt::Key_Equal );
+    connect( action, SIGNAL( triggered() ), this, SLOT( zoomIn() ) );
+    setAction( "zoomIn", action );
+
+    action = new QAction( IconLoader::icon( "zoom-out" ), tr( "Zoom &Out" ), this );
+    action->setShortcut( Qt::CTRL + Qt::Key_Minus );
+    connect( action, SIGNAL( triggered() ), this, SLOT( zoomOut() ) );
+    setAction( "zoomOut", action );
+
+    action = new QAction( IconLoader::icon( "zoom-orig" ), tr( "Original &Size" ), this );
+    action->setShortcut( Qt::CTRL + Qt::Key_0 );
+    connect( action, SIGNAL( triggered() ), this, SLOT( zoomOriginal() ) );
+    setAction( "zoomOriginal", action );
+
+    action = new QAction( IconLoader::icon( "rotate-left" ), tr( "Rotate &Left" ), this );
+    action->setShortcut( Qt::Key_L );
+    connect( action, SIGNAL( triggered() ), this, SLOT( rotateLeft() ) );
+    setAction( "rotateLeft", action );
+
+    action = new QAction( IconLoader::icon( "rotate-right" ), tr( "Rotate &Right" ), this );
+    action->setShortcut( Qt::Key_R );
+    connect( action, SIGNAL( triggered() ), this, SLOT( rotateRight() ) );
+    setAction( "rotateRight", action );
+
     loadXmlUiFile( ":/resources/imageview.xml" );
 
     QWidget* main = new QWidget( parentWidget );
@@ -39,28 +73,32 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     mainLayout->setContentsMargins( 3, 0, 3, 0 );
     mainLayout->setSpacing( 0 );
 
-    QScrollArea* scroll = new QScrollArea( main );
-    scroll->setWidgetResizable( true );
+    m_scroll = new QScrollArea( main );
+    m_scroll->setWidgetResizable( true );
 
     QPalette scrollPalette = parentWidget->palette();
     scrollPalette.setColor( QPalette::Window, QColor::fromRgb( 255, 255, 255 ) );
-    scroll->setPalette( scrollPalette );
+    m_scroll->setPalette( scrollPalette );
 
-    m_label = new QLabel( scroll );
-    m_label->setAlignment( Qt::AlignCenter );
+    m_label = new ImageLabel( m_scroll );
     m_label->setContextMenuPolicy( Qt::CustomContextMenu );
 
-    scroll->setWidget( m_label );
+    m_scroll->setWidget( m_label );
 
+    connect( m_label, SIGNAL( zoomIn() ), this, SLOT( zoomIn() ) );
+    connect( m_label, SIGNAL( zoomOut() ), this, SLOT( zoomOut() ) );
+    
     connect( m_label, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );
 
-    mainLayout->addWidget( scroll );
+    mainLayout->addWidget( m_scroll );
 
-    main->setFocusProxy( scroll );
+    main->setFocusProxy( m_scroll );
 
     setMainWidget( main );
 
     setStatus( tr( "Image" ) );
+
+    initializeSettings();
 
     updateActions();
 }
@@ -71,11 +109,29 @@ ImageView::~ImageView()
         m_loader->abort();
         m_loader = NULL;
     }
+
+    storeSettings();
 }
 
 View::Type ImageView::type() const
 {
     return Image;
+}
+
+void ImageView::initializeSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    bool fit = settings->value( "ZoomToFit", false ).toBool();
+    action( "zoomFit" )->setChecked( fit );
+    m_label->setZoom( fit ? -1.0 : 1.0 );
+}
+
+void ImageView::storeSettings()
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    settings->setValue( "ZoomToFit", m_label->zoom() < 0.0 );
 }
 
 void ImageView::load()
@@ -85,7 +141,7 @@ void ImageView::load()
         m_loader = NULL;
     }
 
-    m_label->clear();
+    m_label->setImage( QImage() );
 
     m_loader = new ImageLoader( path() );
 
@@ -99,29 +155,91 @@ void ImageView::load()
 void ImageView::loadImage()
 {
     QImage image = m_loader->image();
-    QPixmap pixmap = QPixmap::fromImage( image );
 
     QByteArray format = m_loader->format();
 
-    m_label->setPixmap( pixmap );
+    m_label->setImage( image );
 
-    setStatus( tr( "Image" ) + ", " + format.toUpper() + QString( " (%1 x %2)" ).arg( pixmap.width() ).arg( pixmap.height() ) );
+    setStatus( tr( "Image" ) + ", " + format.toUpper() + QString( " (%1 x %2)" ).arg( image.width() ).arg( image.height() ) );
 
     updateActions();
 }
 
 void ImageView::updateActions()
 {
-    bool hasPixmap = m_label->pixmap() != NULL;
+    bool hasImage = !m_label->image().isNull();
+    double zoom = m_label->zoom();
 
-    action( "copy" )->setEnabled( hasPixmap );
+    action( "copy" )->setEnabled( hasImage );
+    action( "zoomIn" )->setEnabled( hasImage && zoom > 0.0 && zoom < 20.0 );
+    action( "zoomOut" )->setEnabled( hasImage && zoom > 0.05 );
+    action( "zoomOriginal" )->setEnabled( hasImage && zoom > 0.0 && !qFuzzyIsNull( zoom - 1.0 ) );
+    action( "rotateLeft" )->setEnabled( hasImage );
+    action( "rotateRight" )->setEnabled( hasImage );
 }
 
 void ImageView::copy()
 {
-    const QPixmap* pixmap = m_label->pixmap();
-    if ( pixmap )
-        QApplication::clipboard()->setPixmap( *pixmap );
+    QImage image = m_label->image();
+    if ( !image.isNull() )
+        QApplication::clipboard()->setImage( image );
+}
+
+void ImageView::zoomFit()
+{
+    bool checked = action( "zoomFit" )->isChecked();
+
+    m_label->setZoom( checked ? -1.0 : 1.0 );
+
+    updateActions();
+}
+
+void ImageView::zoomIn()
+{
+    if ( m_label->zoom() > 0.0 && m_label->zoom () < 20.0 )
+        zoom( 1.25 );
+}
+
+void ImageView::zoomOut()
+{
+    if ( m_label->zoom() > 0.05 )
+        zoom( 0.8 );
+}
+
+void ImageView::zoomOriginal()
+{
+    zoom( 1.0 / m_label->zoom() );
+}
+
+void ImageView::zoom( double factor )
+{
+    m_label->setZoom( factor * m_label->zoom() );
+
+    adjustScrollBar( m_scroll->horizontalScrollBar(), factor );
+    adjustScrollBar( m_scroll->verticalScrollBar(), factor );
+
+    updateActions();
+}
+
+void ImageView::adjustScrollBar( QScrollBar* scrollBar, double factor )
+{
+    scrollBar->setValue( int( factor * scrollBar->value() + ( ( factor - 1.0 ) * scrollBar->pageStep() / 2.0 ) ) );
+}
+
+void ImageView::rotateLeft()
+{
+    QTransform transform;
+    transform.rotate( -90 );
+
+    m_label->setImage( m_label->image().transformed( transform ) );
+}
+
+void ImageView::rotateRight()
+{
+    QTransform transform;
+    transform.rotate( 90 );
+
+    m_label->setImage( m_label->image().transformed( transform ) );
 }
 
 void ImageView::contextMenuRequested( const QPoint& pos )

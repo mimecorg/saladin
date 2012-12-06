@@ -1,6 +1,15 @@
 <xmlui>
   <strip id="stripMain">
     <action id="copy"/>
+    <separator/>
+    <action id="zoomFit"/>
+    <separator/>
+    <action id="zoomIn"/>
+    <action id="zoomOut"/>
+    <action id="zoomOriginal"/>
+    <separator/>
+    <action id="rotateLeft"/>
+    <action id="rotateRight"/>
   </strip>
   <menu id="menuContext">
     <action id="copy"/>

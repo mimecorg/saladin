@@ -1,0 +1,97 @@
+/**************************************************************************
+* This file is part of the Saladin program
+* Copyright (C) 2011-2012 Michał Męciński
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**************************************************************************/
+
+#include "imagelabel.h"
+
+ImageLabel::ImageLabel( QWidget* parent ) : QWidget( parent ),
+    m_zoom( 1.0 )
+{
+    setBackgroundRole( QPalette::Base );
+    setAutoFillBackground( true );
+
+    setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+}
+
+ImageLabel::~ImageLabel()
+{
+}
+
+void ImageLabel::setImage( const QImage& image )
+{
+    m_image = image;
+    updateGeometry();
+    update();
+}
+
+void ImageLabel::setZoom( double zoom )
+{
+    m_zoom = zoom;
+    if ( zoom < 0.0 )
+        setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
+    else
+        setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+    updateGeometry();
+    update();
+}
+
+QSize ImageLabel::sizeHint() const
+{
+    if ( m_zoom < 0.0 )
+        return QSize();
+    else
+        return m_zoom * m_image.size();
+}
+
+void ImageLabel::paintEvent( QPaintEvent* /*e*/ )
+{
+    if ( m_image.isNull() )
+        return;
+
+    QPainter painter( this );
+    painter.setRenderHint( QPainter::SmoothPixmapTransform );
+
+    double zoom = m_zoom;
+
+    if ( zoom < 0.0 ) {
+        double sx = double( width() ) / m_image.width();
+        double sy = double( height() ) / m_image.height();
+        zoom = qMin( qMin( sx, sy ), 1.0 );
+    }
+
+    QSize scaled = zoom * m_image.size();
+
+    QRect target;
+    target.setTop( ( height() - scaled.height() ) / 2 );
+    target.setLeft( ( width() - scaled.width() ) / 2 );
+    target.setSize( scaled );
+
+    painter.drawImage( target, m_image );
+}
+
+void ImageLabel::wheelEvent( QWheelEvent* e )
+{
+    if ( e->modifiers() & Qt::ControlModifier ) {
+        if ( e->delta() > 0 )
+            emit zoomIn();
+        else
+            emit zoomOut();
+        e->accept();
+    } else {
+        e->ignore();
+    }
+}
