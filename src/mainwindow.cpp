@@ -23,6 +23,7 @@
 #include "operationdialog.h"
 #include "openftpdialog.h"
 #include "bookmarksdialog.h"
+#include "searchdialog.h"
 #include "settingsdialog.h"
 
 #include "shell/shellfolder.h"
@@ -588,14 +589,20 @@ void MainWindow::copyToLeftPane()
 
 void MainWindow::selectMask()
 {
+    LocalSettings* settings = application->applicationSettings();
+
     OperationDialog dialog( OperationDialog::WithPattern, this );
 
     dialog.setWindowTitle( tr( "Select Mask" ) );
     dialog.setPromptPixmap( IconLoader::pixmap( "select", 22 ) );
     dialog.setPrompt( tr( "Enter the pattern to select:" ) );
 
+    dialog.setPattern( settings->value( "Pattern" ).toString() );
+
     if ( dialog.exec() != QDialog::Accepted )
         return;
+
+    settings->setValue( "Pattern", dialog.pattern() );
 
     m_sourcePane->setPatternSelection( dialog.pattern(), true );
 }
@@ -607,14 +614,20 @@ void MainWindow::selectAll()
 
 void MainWindow::unselectMask()
 {
+    LocalSettings* settings = application->applicationSettings();
+
     OperationDialog dialog( OperationDialog::WithPattern, this );
 
     dialog.setWindowTitle( tr( "Unselect Mask" ) );
     dialog.setPromptPixmap( IconLoader::pixmap( "unselect", 22 ) );
     dialog.setPrompt( tr( "Enter the pattern to unselect:" ) );
 
+    dialog.setPattern( settings->value( "Pattern" ).toString() );
+
     if ( dialog.exec() != QDialog::Accepted )
         return;
+
+    settings->setValue( "Pattern", dialog.pattern() );
 
     m_sourcePane->setPatternSelection( dialog.pattern(), false );
 }
@@ -1105,7 +1118,8 @@ void MainWindow::compareDirectories()
 
 void MainWindow::search()
 {
-    m_sourcePane->folder()->search();
+    SearchDialog dialog( m_sourcePane->folder(), this );
+    dialog.exec();
 }
 
 void MainWindow::explore()

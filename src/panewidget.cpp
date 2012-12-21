@@ -895,12 +895,22 @@ void PaneWidget::invertSelection()
 
 void PaneWidget::setPatternSelection( const QString& pattern, bool selected )
 {
-    QRegExp regExp( pattern, Qt::CaseInsensitive, QRegExp::Wildcard );
+    QStringList parts = pattern.split( QLatin1Char( ';' ), QString::SkipEmptyParts );
+
+    QList<QRegExp> filters;
+    foreach ( QString part, parts )
+        filters.append( QRegExp( part, Qt::CaseInsensitive, QRegExp::Wildcard ) );
 
     for ( int i = 0; i < m_model->rowCount(); i++ ) {
         QModelIndex index = m_model->index( i, 0 );
-        if ( !m_model->isParentFolder( index ) && regExp.exactMatch( m_model->itemAt( index ).name() ) )
-            m_model->setItemSelected( index, selected );
+        if ( !m_model->isParentFolder( index ) ) {
+            foreach ( QRegExp filter, filters ) {
+                if ( filter.exactMatch( m_model->itemAt( index ).name() ) ) {
+                    m_model->setItemSelected( index, selected );
+                    break;
+                }
+            }
+        }
     }
 }
 

@@ -22,6 +22,8 @@ HEADERS += aboutbox.h \
            openftpdialog.h \
            operationdialog.h \
            panewidget.h \
+           searchdialog.h \
+           searchitemmodel.h \
            settingsdialog.h
 
 SOURCES += aboutbox.cpp \
@@ -40,6 +42,8 @@ SOURCES += aboutbox.cpp \
            openftpdialog.cpp \
            operationdialog.cpp \
            panewidget.cpp \
+           searchdialog.cpp \
+           searchitemmodel.cpp \
            settingsdialog.cpp
 
 RESOURCES += \
