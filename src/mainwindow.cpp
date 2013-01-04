@@ -569,6 +569,12 @@ void MainWindow::openRoot()
     m_sourcePane->openRoot();
 }
 
+void MainWindow::gotoFile( const ShellPidl& folderPidl, const ShellItem& item )
+{
+    m_sourcePane->setFolder( new ShellFolder( folderPidl, m_sourcePane ) );
+    m_sourcePane->activateView( item );
+}
+
 void MainWindow::swapPanes()
 {
     ShellFolder* folder1 = m_panes[ 0 ]->folder()->clone();
@@ -702,7 +708,7 @@ void MainWindow::editNew()
     startTool( EditorTool, QString( "\"%1\"" ).arg( path ), folder->path() ); 
 }
 
-void MainWindow::startTool( Tool tool, ShellFolder* folder, ShellItem item )
+void MainWindow::startTool( Tool tool, ShellFolder* folder, const ShellItem& item )
 {
     if ( !item.isValid() || !item.attributes().testFlag( ShellItem::FileSystem ) || item.attributes().testFlag( ShellItem::Directory ) )
         return;
@@ -1118,8 +1124,10 @@ void MainWindow::compareDirectories()
 
 void MainWindow::search()
 {
-    SearchDialog dialog( m_sourcePane->folder(), this );
-    dialog.exec();
+    SearchDialog* dialog = new SearchDialog( m_sourcePane->folder(), this );
+    dialog->setAttribute( Qt::WA_DeleteOnClose, true );
+    dialog->setWindowModality( Qt::WindowModal );
+    dialog->show();
 }
 
 void MainWindow::explore()

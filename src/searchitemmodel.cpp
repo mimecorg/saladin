@@ -17,10 +17,13 @@
 **************************************************************************/
 
 #include "searchitemmodel.h"
+#include "searchhelper.h"
 
 #include "utils/iconloader.h"
 
-SearchItemModel::SearchItemModel( QObject* parent ) : QAbstractItemModel( parent )
+SearchItemModel::SearchItemModel( QObject* parent ) : QAbstractItemModel( parent ),
+    m_cs( Qt::CaseInsensitive ),
+    m_helper( NULL )
 {
 }
 
@@ -41,9 +44,14 @@ void SearchItemModel::clear()
     m_filters.clear();
 
     m_extractQueue.clear();
+
+    if ( m_helper ) {
+        m_helper->abort();
+        m_helper = NULL;
+    }
 }
 
-void SearchItemModel::startSearch( ShellFolder* folder, const QString& pattern )
+void SearchItemModel::startSearch( ShellFolder* folder, const QString& pattern, const QString& text, Qt::CaseSensitivity cs )
 {
     clear();
 
@@ -54,12 +62,17 @@ void SearchItemModel::startSearch( ShellFolder* folder, const QString& pattern )
     foreach ( QString part, parts )
         m_filters.append( QRegExp( part, Qt::CaseInsensitive, QRegExp::Wildcard ) );
 
+    m_text = text;
+    m_cs = cs;
+
     scanFolder( QString(), folder );
 
-    if ( !m_pendingFolders.isEmpty() )
-        QTimer::singleShot( 0, this, SLOT( scanNextFolder() ) );
-    else
-        emit searchCompleted();
+    if ( m_pendingItems.isEmpty() ) {
+        if ( !m_pendingFolders.isEmpty() )
+            QTimer::singleShot( 0, this, SLOT( scanNextFolder() ) );
+        else
+            emit searchCompleted();
+    }
 }
 
 void SearchItemModel::abortSearch()
@@ -79,6 +92,8 @@ void SearchItemModel::scanNextFolder()
 
     PendingFolder pendingFolder = m_pendingFolders.takeFirst();
 
+    emit folderEntered( pendingFolder.m_prefix.left( pendingFolder.m_prefix.length() - 1 ) );
+
     ShellFolder* folder = new ShellFolder( pendingFolder.m_pidl, qobject_cast<QWidget*>( QObject::parent() ) );
 
     if ( scanFolder( pendingFolder.m_prefix, folder ) )
@@ -86,10 +101,12 @@ void SearchItemModel::scanNextFolder()
     else
         delete folder;
 
-    if ( !m_pendingFolders.isEmpty() )
-        QTimer::singleShot( 0, this, SLOT( scanNextFolder() ) );
-    else
-        emit searchCompleted();
+    if ( m_pendingItems.isEmpty() ) {
+        if ( !m_pendingFolders.isEmpty() )
+            QTimer::singleShot( 0, this, SLOT( scanNextFolder() ) );
+        else
+            emit searchCompleted();
+    }
 }
 
 bool operator <( const SearchItemModel::PendingFolder& folder1, const SearchItemModel::PendingFolder& folder2 )
@@ -132,13 +149,57 @@ bool SearchItemModel::scanFolder( const QString& prefix, ShellFolder* folder )
     if ( foundItems.isEmpty() )
         return false;
 
-    beginInsertRows( QModelIndex(), m_items.count(), m_items.count() + foundItems.count() - 1 );
+    if ( !m_text.isEmpty() ) {
+        if ( !m_helper ) {
+            m_helper = new SearchHelper( m_text, m_cs );
+            m_helper->start();
 
-    m_items.append( foundItems );
+            connect( m_helper, SIGNAL( completed() ), this, SLOT( helperCompleted() ), Qt::QueuedConnection );
+        }
 
-    endInsertRows();
+        QStringList files;
+
+        foreach ( const FoundItem& item, foundItems )
+            files.append( item.m_folder->itemPath( item.m_item ) );
+
+        m_helper->search( files );
+
+        m_pendingItems = foundItems;
+    } else {
+        beginInsertRows( QModelIndex(), m_items.count(), m_items.count() + foundItems.count() - 1 );
+
+        m_items.append( foundItems );
+
+        endInsertRows();
+
+        m_pendingItems.clear();
+    }
 
     return true;
+}
+
+void SearchItemModel::helperCompleted()
+{
+    if ( m_pendingItems.isEmpty() || m_helper == NULL )
+        return;
+
+    QList<int> results = m_helper->results();
+
+    if ( !results.isEmpty() ) {
+        beginInsertRows( QModelIndex(), m_items.count(), m_items.count() + results.count() - 1 );
+
+        foreach ( int index, results )
+            m_items.append( m_pendingItems.at( index ) );
+
+        endInsertRows();
+    }
+
+    m_pendingItems.clear();
+
+    if ( !m_pendingFolders.isEmpty() )
+        QTimer::singleShot( 0, this, SLOT( scanNextFolder() ) );
+    else
+        emit searchCompleted();
 }
 
 void SearchItemModel::extractNextIcon()
@@ -171,6 +232,14 @@ QString SearchItemModel::pathAt( const QModelIndex& index ) const
     if ( row < 0 )
         return QString();
     return m_items.at( row ).m_prefix+ m_items.at( row ).m_item.name();
+}
+
+ShellFolder* SearchItemModel::folderAt( const QModelIndex& index ) const
+{
+    int row = index.row();
+    if ( row < 0 )
+        return NULL;
+    return m_items.at( row ).m_folder;
 }
 
 int SearchItemModel::columnCount( const QModelIndex& parent /*= QModelIndex()*/ ) const

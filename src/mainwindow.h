@@ -27,6 +27,7 @@
 class PaneWidget;
 class DriveStripManager;
 class ViewManager;
+class ShellPidl;
 
 class MainWindow : public QMainWindow, public XmlUi::Client
 {
@@ -36,11 +37,24 @@ public:
     ~MainWindow();
 
 public:
+    enum Tool
+    {
+        ViewerTool,
+        EditorTool,
+        ConsoleTool,
+        DiffTool
+    };
+
+public:
     DriveStripManager* driveStripManager() const { return m_driveStripManager; }
 
     ViewManager* viewManager() const { return m_viewManager; }
 
     void transferSelection( ShellSelection* selection, ShellFolder* targetFolder, ShellSelection::TransferType type, bool canRename );
+
+    void startTool( Tool tool, ShellFolder* folder, const ShellItem& item );
+
+    void gotoFile( const ShellPidl& folderPidl, const ShellItem& item );
 
 public: // overrides
     bool eventFilter( QObject* object, QEvent* e );
@@ -108,15 +122,6 @@ private slots:
     void otherOpenParent();
 
 private:
-    enum Tool
-    {
-        ViewerTool,
-        EditorTool,
-        ConsoleTool,
-        DiffTool
-    };
-
-private:
     void initializeSettings();
     void saveSettings();
 
@@ -127,7 +132,6 @@ private:
     void transferItems( ShellFolder* sourceFolder, const QList<ShellItem>& items, ShellFolder* targetFolder, ShellSelection::TransferType type );
     void deleteItems( ShellFolder* folder, const QList<ShellItem>& items, ShellSelection::Flags flags );
 
-    void startTool( Tool tool, ShellFolder* folder, ShellItem item );
     void startTool( Tool tool, const QString& path, const QString& directory );
 
     QString toolPath( Tool tool );

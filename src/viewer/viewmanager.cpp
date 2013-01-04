@@ -20,6 +20,7 @@
 
 #include "viewer/viewerwindow.h"
 #include "shell/shellpidl.h"
+#include "utils/formathelper.h"
 
 class ViewItem
 {
@@ -144,69 +145,6 @@ void ViewManager::windowDestroyed( QObject* window )
     }
 }
 
-static bool checkUtf16( const QByteArray& header, QByteArray& format )
-{
-    // this heuristics works for files containing mostly 0000-06FF characters,
-    // which include latin, greek, cyrillic, hebrew and arabic letters
-
-    int le = 0;
-    int be = 0;
-
-    for ( int i = 0; i < header.length(); i += 2 ) {
-        uchar lo = (uchar)header.at( i );
-        uchar hi = (uchar)header.at( i + 1 );
-
-        if ( lo == 0 && hi == 0 || lo == 255 && hi == 255 )
-            return false;
-
-        if ( hi == 0 )
-            le++;
-        else if ( hi > 6 )
-            le--;
-
-        if ( lo == 0 )
-            be++;
-        else if ( lo > 6 )
-            be--;
-    }
-
-    if ( le > 0 && be < 0 ) {
-        format = "UTF-16LE";
-        return true;
-    }
-
-    if ( be > 0 && le < 0 ) {
-        format = "UTF-16BE";
-        return true;
-    }
-
-    return false;
-}
-
-static bool checkUtf8( const QByteArray& header )
-{
-    QTextCodec* codec = QTextCodec::codecForName( "UTF-8" );
-
-    QTextCodec::ConverterState state;
-    codec->toUnicode( header.data(), header.length(), &state );
-
-    if ( state.invalidChars == 0 )
-        return true;
-
-    return false;
-}
-
-static bool checkBinary( const QByteArray& header )
-{
-    for ( int i = 0; i < header.length(); i++ ) {
-        uchar ch = (uchar)header.at( i );
-        if ( ch < 9 || ch > 13 && ch < 32 )
-            return true;
-    }
-
-    return false;
-}
-
 bool ViewManager::checkType( const ShellPidl& pidl, View::Type inType, View::Type& outType, QByteArray& format )
 {
     if ( inType == View::Auto )
@@ -219,57 +157,26 @@ bool ViewManager::checkType( const ShellPidl& pidl, View::Type inType, View::Typ
     if ( !file.open( QIODevice::ReadOnly ) )
         return false;
 
-    QByteArray header = file.peek( 512 );
-    if ( header.isEmpty() )
-        return false;
-
     if ( inType == View::Binary )
         return true;
 
     if ( inType == View::Auto || inType == View::Image ) {
         outType = View::Image;
 
-        QImageReader reader( &file );
-
-        if ( inType == View::Auto ) {
-            reader.setFormat( QFileInfo( file ).suffix().toLower().toLatin1() );
-            reader.setAutoDetectImageFormat( false );
-        }
-
-        if ( reader.canRead() ) {
-            format = reader.format();
+        if ( FormatHelper::checkImage( file, inType == View::Image, format ) )
             return true;
-        }
     }
 
     if ( inType == View::Auto || inType == View::Text ) {
         outType = View::Text;
 
-        QTextCodec* codec = QTextCodec::codecForUtfText( header, NULL );
-        if ( codec != NULL ) {
-            format = codec->name();
+        if ( FormatHelper::checkText( file, inType == View::Text, format ) )
             return true;
-        }
-
-        if ( file.size() % 2 == 0 ) {
-            if ( checkUtf16( header, format ) )
-                return true;
-        }
 
         if ( inType == View::Auto ) {
-            if ( checkBinary( header ) ) {
-                outType = View::Binary;
-                return true;
-            }
-        }
-
-        if ( checkUtf8( header ) ) {
-            format = "UTF-8";
+            outType = View::Binary;
             return true;
         }
-
-        format = QTextCodec::codecForLocale()->name();
-        return true;
     }
 
     return false;

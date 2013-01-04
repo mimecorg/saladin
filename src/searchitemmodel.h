@@ -23,6 +23,8 @@
 #include "shell/shellfolder.h"
 #include "shell/shellpidl.h"
 
+class SearchHelper;
+
 class SearchItemModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -40,13 +42,14 @@ public:
     ~SearchItemModel();
 
 public:
-    void startSearch( ShellFolder* folder, const QString& pattern );
+    void startSearch( ShellFolder* folder, const QString& pattern, const QString& text, Qt::CaseSensitivity cs );
     void abortSearch();
 
     bool isSearching() const;
 
     ShellItem itemAt( const QModelIndex& index ) const;
     QString pathAt( const QModelIndex& index ) const;
+    ShellFolder* folderAt( const QModelIndex& index ) const;
 
 public: // overrides
     int columnCount( const QModelIndex& parent = QModelIndex() ) const;
@@ -61,10 +64,14 @@ public: // overrides
     Qt::ItemFlags flags( const QModelIndex& index ) const;
 
 signals:
+    void folderEntered( const QString& path );
+
     void searchCompleted();
 
 private slots:
     void scanNextFolder();
+
+    void helperCompleted();
 
     void extractNextIcon();
 
@@ -99,6 +106,13 @@ private:
     QList<QRegExp> m_filters;
 
     QList<int> m_extractQueue;
+
+    QString m_text;
+    Qt::CaseSensitivity m_cs;
+
+    SearchHelper* m_helper;
+
+    QList<FoundItem> m_pendingItems;
 };
 
 class SearchProxyModel : public QSortFilterProxyModel

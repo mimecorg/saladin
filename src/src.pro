@@ -23,6 +23,7 @@ HEADERS += aboutbox.h \
            operationdialog.h \
            panewidget.h \
            searchdialog.h \
+           searchhelper.h \
            searchitemmodel.h \
            settingsdialog.h
 
@@ -43,6 +44,7 @@ SOURCES += aboutbox.cpp \
            operationdialog.cpp \
            panewidget.cpp \
            searchdialog.cpp \
+           searchhelper.cpp \
            searchitemmodel.cpp \
            settingsdialog.cpp
 

@@ -25,6 +25,7 @@ class ShellFolder;
 class FolderItemView;
 class SearchItemModel;
 class SearchProxyModel;
+class ElidedLabel;
 
 class SearchDialog : public QDialog
 {
@@ -38,7 +39,20 @@ public: // overrides
     void reject();
 
 private slots:
+    void textToggled( bool on );
+
+    void folderEntered( const QString& path );
+    void updateResults();
+
     void searchCompleted();
+
+    void contextMenuRequested( const QPoint& pos );
+
+    void viewCurrent();
+    void editCurrent();
+    void gotoFile();
+
+    void copyNames();
 
 private:
     ShellFolder* m_folder;
@@ -46,12 +60,19 @@ private:
     QLineEdit* m_locationEdit;
     QLineEdit* m_patternEdit;
 
+    QCheckBox* m_textCheckBox;
+    QLineEdit* m_textEdit;
+    QCheckBox* m_caseCheckBox;
+
     QDialogButtonBox* m_buttonBox;
 
     FolderItemView* m_view;
 
     SearchItemModel* m_model;
     SearchProxyModel* m_proxyModel;
+
+    ElidedLabel* m_searchStatus;
+    ElidedLabel* m_itemsStatus;
 };
 
 #endif
