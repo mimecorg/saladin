@@ -32,6 +32,7 @@
 #include "utils/elidedlabel.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
+#include "xmlui/builder.h"
 
 PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( parent ),
     m_location( location ),
@@ -1095,6 +1096,11 @@ void PaneWidget::stripContextMenuRequested( const QPoint& pos )
 
         if ( command == ShellSelection::Open )
             openDrive( drive );
+    } else {
+        QMenu* menu = mainWindow->builder()->contextMenu( "menuDrives" );
+
+        if ( menu )
+            menu->popup( m_strip->mapToGlobal( pos ) );
     }
 }
 

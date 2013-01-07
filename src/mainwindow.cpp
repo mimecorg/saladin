@@ -85,6 +85,10 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( refresh() ) );
     setAction( "refresh", action );
 
+    action = new QAction( IconLoader::icon( "refresh" ), tr( "Refresh Drives" ), this );
+    connect( action, SIGNAL( triggered() ), this, SLOT( refreshDrives() ) );
+    setAction( "refreshDrives", action );
+
     action = new QAction( IconLoader::icon( "view-hidden" ), tr( "Hidden Files" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_H ) );
     action->setCheckable( true );
@@ -541,6 +545,11 @@ void MainWindow::copyNames()
 void MainWindow::refresh()
 {
     m_sourcePane->refresh();
+}
+
+void MainWindow::refreshDrives()
+{
+    m_driveStripManager->refresh();
 }
 
 void MainWindow::viewHidden( bool on )

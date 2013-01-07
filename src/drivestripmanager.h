@@ -44,12 +44,14 @@ public:
 
     void showDrivesMenu( XmlUi::ToolStrip* strip );
 
+public slots:
+    void refresh();
+
 public: // overrides
     bool eventFilter( QObject* watched, QEvent* e );
 
 private slots:
     void driveChanged( const ShellDrive& drive );
-    void computerUpdated();
 
 private:
     struct StripInfo

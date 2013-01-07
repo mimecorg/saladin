@@ -78,4 +78,7 @@
     <action id="compareFiles"/>
     <action id="compareDirectories"/>
   </menu>
+  <menu id="menuDrives">
+    <action id="refreshDrives"/>
+  </menu>
 </xmlui>

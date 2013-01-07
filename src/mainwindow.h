@@ -71,6 +71,7 @@ private slots:
     void copyNames();
 
     void refresh();
+    void refreshDrives();
     void viewHidden( bool on );
 
     void openDirectory();

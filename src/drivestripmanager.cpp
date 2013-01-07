@@ -46,7 +46,7 @@ DriveStripManager::DriveStripManager( QWidget* parent ) : QObject( parent ),
     qSort( m_drives.begin(), m_drives.end(), ShellDriveLessThan() );
 
     connect( m_computer, SIGNAL( driveChanged( const ShellDrive& ) ), this, SLOT( driveChanged( const ShellDrive& ) ) );
-    connect( m_computer, SIGNAL( computerUpdated() ), this, SLOT( computerUpdated() ) );
+    connect( m_computer, SIGNAL( computerUpdated() ), this, SLOT( refresh() ) );
 
     m_computer->startWatching();
 }
@@ -156,7 +156,7 @@ void DriveStripManager::driveChanged( const ShellDrive& drive )
     }
 }
 
-void DriveStripManager::computerUpdated()
+void DriveStripManager::refresh()
 {
     m_drives = m_computer->listDrives();
     qSort( m_drives.begin(), m_drives.end(), ShellDriveLessThan() );
