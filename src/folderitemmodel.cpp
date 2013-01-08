@@ -486,7 +486,7 @@ int FolderItemModel::columnCount( const QModelIndex& parent /*= QModelIndex()*/ 
     return 0;
 }
 
-QVariant FolderItemModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
+QVariant FolderItemModel::headerData( int section, Qt::Orientation orientation, int role /* = Qt::DisplayRole*/ ) const
 {
     if ( orientation == Qt::Horizontal && role == Qt::DisplayRole ) {
         switch ( section ) {

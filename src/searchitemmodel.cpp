@@ -249,7 +249,7 @@ int SearchItemModel::columnCount( const QModelIndex& parent /*= QModelIndex()*/ 
     return 0;
 }
 
-QVariant SearchItemModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
+QVariant SearchItemModel::headerData( int section, Qt::Orientation orientation, int role /* = Qt::DisplayRole*/ ) const
 {
     if ( orientation == Qt::Horizontal && role == Qt::DisplayRole ) {
         switch ( section ) {
