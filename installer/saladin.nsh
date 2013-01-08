@@ -24,13 +24,43 @@
 
 !define UNINST_KEY "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Saladin"
 
+!ifndef SIGN
+    !verbose 2
+
+    !system "$\"${NSISDIR}\makensis$\" /V2 /DSIGN ${SCRIPTNAME}" = 0
+
+    !system "..\..\sign.bat saladin-${VERSION}-${ARCHITECTURE}.exe" = 0
+
+    SetCompress off
+
+    OutFile "$%TEMP%\signinst.exe"
+
+    Section
+    SectionEnd
+!else
+
 !include "MUI2.nsh"
 
 !include "languages\saladin_en.nsh"
 
-SetCompressor /SOLID lzma
-SetCompressorDictSize 32
-OutFile "saladin-${VERSION}-${ARCHITECTURE}.exe"
+!ifdef INNER
+    SetCompress off
+
+    OutFile "$%TEMP%\innerinst.exe"
+!else
+    !verbose 4
+
+    !system "$\"${NSISDIR}\makensis$\" /V2 /DSIGN /DINNER ${SCRIPTNAME}" = 0
+
+    !system "$%TEMP%\innerinst.exe" = 2
+
+    !system "..\..\sign.bat $%TEMP%\uninstall.exe" = 0
+
+    SetCompressor /SOLID lzma
+    SetCompressorDictSize 32
+
+    OutFile "saladin-${VERSION}-${ARCHITECTURE}.exe"
+!endif
 
 !define MULTIUSER_EXECUTIONLEVEL "Highest"
 !define MULTIUSER_MUI
@@ -42,6 +72,9 @@ OutFile "saladin-${VERSION}-${ARCHITECTURE}.exe"
 !define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME "InstallLocation"
 !if ${ARCHITECTURE} == "win_x64"
   !define MULTIUSER_USE_PROGRAMFILES64
+!endif
+!ifndef INNER
+    !define MULTIUSER_NOUNINSTALL
 !endif
 !include "include\multiuser64.nsh"
 
@@ -76,16 +109,18 @@ ShowInstDetails nevershow
 !define MUI_FINISHPAGE_TITLE "$(TITLE)"
 !insertmacro MUI_PAGE_FINISH
   
-!define MUI_WELCOMEPAGE_TITLE "$(TITLE)"
-!insertmacro MUI_UNPAGE_WELCOME
+!ifdef INNER
+    !define MUI_WELCOMEPAGE_TITLE "$(TITLE)"
+    !insertmacro MUI_UNPAGE_WELCOME
 
-!insertmacro MUI_UNPAGE_CONFIRM
+    !insertmacro MUI_UNPAGE_CONFIRM
 
-ShowUninstDetails nevershow
-!insertmacro MUI_UNPAGE_INSTFILES
+    ShowUninstDetails nevershow
+    !insertmacro MUI_UNPAGE_INSTFILES
 
-!define MUI_FINISHPAGE_TITLE "$(TITLE)"
-!insertmacro MUI_UNPAGE_FINISH
+    !define MUI_FINISHPAGE_TITLE "$(TITLE)"
+    !insertmacro MUI_UNPAGE_FINISH
+!endif
 
 !insertmacro MUI_LANGUAGE "English"
 
@@ -100,13 +135,20 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
 
 Function .onInit
 
+!ifndef INNER
     ${Unless} ${AtLeastWinVista}
         MessageBox MB_ICONEXCLAMATION|MB_OK "$(WINVER_TEXT)"
         Abort
     ${EndIf}
+!endif
 
 !if ${ARCHITECTURE} == "win_x64"
     SetRegView 64
+!endif
+
+!ifdef INNER
+    WriteUninstaller "$%TEMP%\uninstall.exe"
+    Quit
 !endif
 
     !insertmacro MULTIUSER_INIT
@@ -158,9 +200,14 @@ Section
     WriteRegDWORD SHCTX "${UNINST_KEY}" "NoModify" 1
     WriteRegDWORD SHCTX "${UNINST_KEY}" "NoRepair" 1
 
-    WriteUninstaller "uninstall.exe"
+!ifndef INNER
+    SetOutPath "$INSTDIR"
+    File "$%TEMP%\uninstall.exe"
+!endif
 
 SectionEnd
+
+!ifdef INNER
 
 Function un.onInit
 
@@ -189,3 +236,6 @@ Section "Uninstall"
     RMDir "$INSTDIR"
 
 SectionEnd
+
+!endif
+!endif

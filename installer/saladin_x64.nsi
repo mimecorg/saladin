@@ -21,4 +21,6 @@
 
 !define QTDIR "D:\Qt4-msvc\x64-static"
 
+!define SCRIPTNAME "${__FILE__}"
+
 !include "saladin.nsh"
