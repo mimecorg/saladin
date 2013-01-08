@@ -1,6 +1,6 @@
 /**************************************************************************
 * This file is part of the Saladin program
-* Copyright (C) 2011-2012 Michał Męciński
+* Copyright (C) 2011-2013 Michał Męciński
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -140,7 +140,7 @@ void Application::about()
             " it under the terms of the GNU General Public License as published by"
             " the Free Software Foundation, either version 3 of the License, or"
             " (at your option) any later version." ) + "</p>";
-        message += "<p>" + trUtf8( "Copyright &copy; 2011-2012 Michał Męciński" ) + "</p>";
+        message += "<p>" + trUtf8( "Copyright &copy; 2011-2013 Michał Męciński" ) + "</p>";
 
         QString link = "<a href=\"http://saladin.mimec.org\">saladin.mimec.org</a>";
 
