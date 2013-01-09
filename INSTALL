@@ -3,7 +3,7 @@ Requirements
 
  * Microsoft Visual Studio 2008 or newer
 
- * Qt framework, version 4.6 or newer (http://qt.nokia.com/products/)
+ * Qt framework, version 4.6 or newer (http://qt-project.org/)
 
 The program can be built using the standard 'qmake' tool from Qt. Simple configure
 script is available which creates a configuration file and runs qmake with

@@ -1,3 +1,10 @@
+0.4 (2013-01-09)
+ * display confirmation when dragging files
+ * zoom and rotate images in the internal viewer
+ * search files by name and content
+ * select/unselect multiple patterns; remember last pattern
+ * refresh drives bar using contextual menu
+
 0.3 (2012-04-05)
  * asynchronous loading in the file viewer
  * configuring font for binary and text view
