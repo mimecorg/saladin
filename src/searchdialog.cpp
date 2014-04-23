@@ -366,7 +366,7 @@ void SearchDialog::copyNames()
 
     for ( int i = 0; i < m_model->rowCount(); i++ ) {
         QModelIndex index = m_proxyModel->mapToSource( m_proxyModel->index( i, 0 ) );
-        names.append( m_model->pathAt( index ) + m_model->itemAt( index ).name() );
+        names.append( m_model->pathAt( index ) );
     }
 
     QString text;
