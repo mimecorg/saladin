@@ -36,7 +36,7 @@ public:
     ShellDrive makeDrive( LPITEMIDLIST pidl );
     ShellDrive makeRealNotifyDrive( LPITEMIDLIST pidl );
 
-    void readDriveProperties( ShellDrive& drive );
+    bool readDriveProperties( ShellDrive& drive );
 
 public:
     ShellComputer* q;

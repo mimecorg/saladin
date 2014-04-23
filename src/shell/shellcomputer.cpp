@@ -67,8 +67,11 @@ QList<ShellDrive> ShellComputer::listDrives()
 
     if ( SUCCEEDED( hr ) ) {
         LPITEMIDLIST pidl;
-        while ( enumerator->Next( 1, &pidl, NULL ) == S_OK )
-            result.append( d->makeDrive( pidl ) );
+        while ( enumerator->Next( 1, &pidl, NULL ) == S_OK ) {
+            ShellDrive drive = d->makeDrive( pidl );
+            if ( drive.isValid() )
+                result.append( drive );
+        }
 
         enumerator->Release();
     }
@@ -80,7 +83,10 @@ ShellDrive ShellComputerPrivate::makeDrive( LPITEMIDLIST pidl )
 {
     ShellDrive drive;
     drive.d->m_pidl = pidl;
-    readDriveProperties( drive );
+
+    if ( !readDriveProperties( drive ) )
+        return ShellDrive();
+
     return drive;
 }
 
@@ -96,14 +102,20 @@ ShellDrive ShellComputerPrivate::makeRealNotifyDrive( LPITEMIDLIST pidl )
     return drive;
 }
 
-void ShellComputerPrivate::readDriveProperties( ShellDrive& drive )
+bool ShellComputerPrivate::readDriveProperties( ShellDrive& drive )
 {
+    QString path = displayName( drive.d->m_pidl, SHGDN_FORPARSING );
+
+    if ( path.length() != 3 || path.at( 1 ) != ':' || path.at( 2 ) != '\\' )
+        return false;
+
     drive.d->m_name = displayName( drive.d->m_pidl, SHGDN_INFOLDER | SHGDN_FOREDITING );
 
-    QString path = displayName( drive.d->m_pidl, SHGDN_FORPARSING );
-    drive.d->m_letter = !path.isEmpty() ? path.at( 0 ).toUpper().toLatin1() : '?';
+    drive.d->m_letter = path.at( 0 ).toUpper().toLatin1();
 
     drive.d->m_icon = extractIcon( drive.d->m_pidl );
+
+    return true;
 }
 
 ShellFolder* ShellComputer::openRootFolder( const ShellDrive& drive )
