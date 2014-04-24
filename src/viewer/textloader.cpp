@@ -43,8 +43,16 @@ void TextLoader::run()
 
         qint64 length = 0;
 
+        bool cr = false;
+
         while ( !m_aborted && !m_atEnd ) {
             QString block = stream.read( 16 * 1024 );
+
+            if ( cr && !block.isEmpty() && block.at( 0 ) == QLatin1Char( '\n' ) )
+                block.remove( 0, 1 );
+
+            if ( !block.isEmpty() )
+                cr = ( block.at( block.length() - 1 ) == QLatin1Char( '\r' ) );
 
             length += block.size();
 
