@@ -6,6 +6,8 @@
     <action id="findPrevious"/>
     <action id="findNext"/>
     <separator/>
+    <action id="goToLine"/>
+    <separator/>
     <action id="wordWrap"/>
     <action id="selectEncoding"/>
   </strip>

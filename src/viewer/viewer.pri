@@ -1,5 +1,6 @@
 HEADERS += viewer/binaryloader.h \
            viewer/binaryview.h \
+           viewer/gotodialog.h \
            viewer/imagelabel.h \
            viewer/imageloader.h \
            viewer/imageview.h \
@@ -12,6 +13,7 @@ HEADERS += viewer/binaryloader.h \
 
 SOURCES += viewer/binaryloader.cpp \
            viewer/binaryview.cpp \
+           viewer/gotodialog.cpp \
            viewer/imagelabel.cpp \
            viewer/imageloader.cpp \
            viewer/imageview.cpp \

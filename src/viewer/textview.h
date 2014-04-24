@@ -51,6 +51,8 @@ private slots:
 
     void findText( const QString& text );
 
+    void goToLine();
+
     void toggleWordWrap();
     void setEncoding( const QString& format );
 
@@ -84,6 +86,8 @@ private:
     FindBar* m_findBar;
 
     bool m_isFindEnabled;
+
+    int m_currentLine;
 };
 
 #endif

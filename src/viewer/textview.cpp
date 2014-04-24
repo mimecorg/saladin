@@ -24,13 +24,15 @@
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "viewer/textedit.h"
+#include "viewer/gotodialog.h"
 #include "xmlui/toolstrip.h"
 #include "xmlui/builder.h"
 
 TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     m_loader( NULL ),
     m_length( 0 ),
-    m_isFindEnabled( false )
+    m_isFindEnabled( false ),
+    m_currentLine( 0 )
 {
     QAction* action;
     XmlUi::ToolStripAction* encodingAction;
@@ -71,6 +73,11 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     action->setShortcut( QKeySequence::FindPrevious );
     connect( action, SIGNAL( triggered() ), this, SLOT( findPrevious() ) );
     setAction( "findPrevious", action );
+
+    action = new QAction( IconLoader::icon( "goto" ), tr( "&Go To Line..." ), this );
+    action->setShortcut( Qt::CTRL + Qt::Key_G );
+    connect( action, SIGNAL( triggered() ), this, SLOT( goToLine() ) );
+    setAction( "goToLine", action );
 
     loadXmlUiFile( ":/resources/textview.xml" );
 
@@ -299,6 +306,7 @@ void TextView::load()
     m_edit->clear();
 
     m_length = 0;
+    m_currentLine = 0;
 
     QObject* current = m_encodingMapper->mapping( QString( format() ) );
 
@@ -348,7 +356,7 @@ void TextView::loadNextBlock()
     qint64 estimatedLength = m_loader->estimatedLength();
 
     if ( atEnd )
-        setStatus( tr( "Text" ) + ", " + m_encoding + " (" + tr( "%1 characters" ).arg( QLocale::system().toString( m_length ) ) + ")" );
+        setStatus( tr( "Text" ) + ", " + m_encoding + " (" + tr( "%1 characters, %2 lines" ).arg( QLocale::system().toString( m_length ), QLocale::system().toString( m_edit->document()->blockCount() ) ) + ")" );
     else if ( estimatedLength > 0 )
         setStatus( tr( "Text" ) + ", " + m_encoding + " (" + tr( "loading... %1%" ).arg( (int)( m_length * 100 / estimatedLength ) ) + ")" );
 
@@ -359,6 +367,8 @@ void TextView::loadNextBlock()
 void TextView::updateActions()
 {
     m_isFindEnabled = m_findBar->isFindEnabled();
+
+    m_currentLine = m_edit->textCursor().blockNumber() + 1;
 
     bool hasSelection = m_edit->textCursor().hasSelection();
 
@@ -432,10 +442,31 @@ void TextView::findText( const QString& text, int from, QTextDocument::FindFlags
     m_findBar->show();
     m_findBar->setFocus();
 
-    if ( !found.isNull() )
+    if ( !found.isNull() ) {
         m_edit->setTextCursor( found );
+        updateActions();
+    }
 
     m_findBar->showWarning( warn );
+}
+
+void TextView::goToLine()
+{
+    GoToDialog dialog( m_edit->document()->blockCount(), m_currentLine, mainWidget() );
+
+    if ( dialog.exec() == QDialog::Accepted ) {
+        QTextCursor cursor( m_edit->document() );
+        if ( dialog.line() < m_edit->document()->blockCount() ) {
+            cursor.movePosition( QTextCursor::Start );
+            cursor.movePosition( QTextCursor::NextBlock, QTextCursor::MoveAnchor, dialog.line() );
+            cursor.movePosition( QTextCursor::PreviousBlock, QTextCursor::KeepAnchor );
+        } else {
+            cursor.movePosition( QTextCursor::End );
+            cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::KeepAnchor );
+        }
+        m_edit->setTextCursor( cursor );
+        m_edit->centerCursor();
+    }
 }
 
 void TextView::toggleWordWrap()
