@@ -33,6 +33,8 @@ public:
     void setZoom( double zoom );
     double zoom() const { return m_zoom; }
 
+    double actualZoom() const;
+
 public: // overrides
     QSize sizeHint() const;
 
@@ -41,9 +43,13 @@ protected: // overrides
 
     void wheelEvent( QWheelEvent* e );
 
+    void resizeEvent( QResizeEvent* e );
+
 signals:
     void zoomIn();
     void zoomOut();
+
+    void zoomChanged();
 
 private:
     QImage m_image;

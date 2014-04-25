@@ -54,6 +54,8 @@ private slots:
 
     void loadImage();
 
+    void updateStatus();
+
 private:
     void initializeSettings();
     void storeSettings();

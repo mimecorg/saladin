@@ -47,6 +47,19 @@ void ImageLabel::setZoom( double zoom )
         setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
     updateGeometry();
     update();
+
+    emit zoomChanged();
+}
+
+double ImageLabel::actualZoom() const
+{
+    if ( m_zoom < 0.0 ) {
+        double sx = double( width() ) / m_image.width();
+        double sy = double( height() ) / m_image.height();
+        return qMin( qMin( sx, sy ), 1.0 );
+    } else {
+        return m_zoom;
+    }
 }
 
 QSize ImageLabel::sizeHint() const
@@ -65,13 +78,7 @@ void ImageLabel::paintEvent( QPaintEvent* /*e*/ )
     QPainter painter( this );
     painter.setRenderHint( QPainter::SmoothPixmapTransform );
 
-    double zoom = m_zoom;
-
-    if ( zoom < 0.0 ) {
-        double sx = double( width() ) / m_image.width();
-        double sy = double( height() ) / m_image.height();
-        zoom = qMin( qMin( sx, sy ), 1.0 );
-    }
+    double zoom = actualZoom();
 
     QSize scaled = zoom * m_image.size();
 
@@ -94,4 +101,12 @@ void ImageLabel::wheelEvent( QWheelEvent* e )
     } else {
         e->ignore();
     }
+}
+
+void ImageLabel::resizeEvent( QResizeEvent* e )
+{
+    QWidget::resizeEvent( e );
+
+    if ( m_zoom < 0.0 )
+        emit zoomChanged();
 }

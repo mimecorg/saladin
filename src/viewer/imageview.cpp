@@ -87,6 +87,8 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
 
     connect( m_label, SIGNAL( zoomIn() ), this, SLOT( zoomIn() ) );
     connect( m_label, SIGNAL( zoomOut() ), this, SLOT( zoomOut() ) );
+
+    connect( m_label, SIGNAL( zoomChanged() ), this, SLOT( updateStatus() ) );
     
     connect( m_label, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );
 
@@ -160,9 +162,8 @@ void ImageView::loadImage()
 
     m_label->setImage( image );
 
-    setStatus( tr( "Image" ) + ", " + format.toUpper() + QString( " (%1 x %2)" ).arg( image.width() ).arg( image.height() ) );
-
     updateActions();
+    updateStatus();
 }
 
 void ImageView::updateActions()
@@ -176,6 +177,12 @@ void ImageView::updateActions()
     action( "zoomOriginal" )->setEnabled( hasImage && zoom > 0.0 && !qFuzzyIsNull( zoom - 1.0 ) );
     action( "rotateLeft" )->setEnabled( hasImage );
     action( "rotateRight" )->setEnabled( hasImage );
+}
+
+void ImageView::updateStatus()
+{
+    if ( !m_label->image().isNull() )
+        setStatus( tr( "Image" ) + ", " + format().toUpper() + QString( " (%1 x %2, %3%)" ).arg( m_label->image().width() ).arg( m_label->image().height() ).arg( (int)( m_label->actualZoom() * 100.0 ) ) );
 }
 
 void ImageView::copy()
@@ -232,6 +239,8 @@ void ImageView::rotateLeft()
     transform.rotate( -90 );
 
     m_label->setImage( m_label->image().transformed( transform ) );
+
+    updateStatus();
 }
 
 void ImageView::rotateRight()
@@ -240,6 +249,8 @@ void ImageView::rotateRight()
     transform.rotate( 90 );
 
     m_label->setImage( m_label->image().transformed( transform ) );
+
+    updateStatus();
 }
 
 void ImageView::contextMenuRequested( const QPoint& pos )
