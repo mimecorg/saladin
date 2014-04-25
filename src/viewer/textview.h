@@ -37,6 +37,8 @@ public: // overrides
 
     void load();
 
+    void setFullScreen( bool on );
+
     bool eventFilter( QObject* obj, QEvent* e );
 
 private slots:

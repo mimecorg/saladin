@@ -57,6 +57,11 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( switchToImage() ) );
     setAction( "switchToImage", action );
 
+    action = new QAction( IconLoader::icon( "fullscreen" ), tr( "Full Screen" ), this );
+    action->setShortcut( Qt::Key_F11 );
+    connect( action, SIGNAL( triggered() ), this, SLOT( fullScreen() ) );
+    setAction( "fullScreen", action );
+
     QShortcut* shortcut;
 
     shortcut = new QShortcut( Qt::Key_Escape, this );
@@ -84,7 +89,8 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
 
 ViewerWindow::~ViewerWindow()
 {
-    storeGeometry( false );
+    if ( !( windowState() & Qt::WindowFullScreen ) )
+        storeGeometry( false );
 }
 
 void ViewerWindow::setView( View* view )
@@ -97,6 +103,9 @@ void ViewerWindow::setView( View* view )
     builder()->addClient( view );
 
     setCentralWidget( view->mainWidget() );
+
+    if ( windowState() & Qt::WindowFullScreen )
+        view->setFullScreen( true );
 
     statusChanged( view->status() );
 
@@ -140,6 +149,21 @@ void ViewerWindow::switchToImage()
         action( "switchToImage" )->setChecked( true );
 }
 
+void ViewerWindow::fullScreen()
+{
+    if ( windowState() & Qt::WindowFullScreen ) {
+        menuWidget()->show();
+        statusBar()->show();
+        m_view->setFullScreen( false );
+        setWindowState( windowState() & ~Qt::WindowFullScreen );
+    } else {
+        menuWidget()->hide();
+        statusBar()->hide();
+        m_view->setFullScreen( true );
+        setWindowState( windowState() | Qt::WindowFullScreen );
+    }
+}
+
 void ViewerWindow::statusChanged( const QString& status )
 {
     m_statusLabel->setText( status );
@@ -147,7 +171,7 @@ void ViewerWindow::statusChanged( const QString& status )
 
 void ViewerWindow::showEvent( QShowEvent* e )
 {
-    if ( !e->spontaneous() )
+    if ( !e->spontaneous() && !( windowState() & Qt::WindowFullScreen ) )
         storeGeometry( true );
 }
 

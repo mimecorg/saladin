@@ -509,3 +509,17 @@ void TextView::contextMenuRequested( const QPoint& pos )
     if ( menu )
         menu->popup( m_edit->mapToGlobal( pos ) );
 }
+
+void TextView::setFullScreen( bool on )
+{
+    QLayout* layout = mainWidget()->layout()->itemAt( 0 )->layout();
+    if ( on ) {
+        layout->setContentsMargins( 0, 0, 0, 0 );
+        if ( QFrame* frame = qobject_cast<QFrame*>( layout->itemAt( 0 )->widget() ) )
+            frame->setFrameStyle( 0 );
+    } else {
+        layout->setContentsMargins( 3, 0, 3, 0 );
+        if ( QFrame* frame = qobject_cast<QFrame*>( layout->itemAt( 0 )->widget() ) )
+            frame->setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+    }
+}

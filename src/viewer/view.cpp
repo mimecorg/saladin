@@ -68,3 +68,17 @@ View* View::createView( Type type, QObject* parent, QWidget* parentWidget )
             return NULL;
     }
 }
+
+void View::setFullScreen( bool on )
+{
+    QLayout* layout = mainWidget()->layout();
+    if ( on ) {
+        layout->setContentsMargins( 0, 0, 0, 0 );
+        if ( QFrame* frame = qobject_cast<QFrame*>( layout->itemAt( 0 )->widget() ) )
+            frame->setFrameStyle( 0 );
+    } else {
+        layout->setContentsMargins( 3, 0, 3, 0 );
+        if ( QFrame* frame = qobject_cast<QFrame*>( layout->itemAt( 0 )->widget() ) )
+            frame->setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+    }
+}

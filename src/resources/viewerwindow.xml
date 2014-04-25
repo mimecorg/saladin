@@ -6,5 +6,8 @@
     <action id="switchToBinary"/>
     <action id="switchToImage"/>
     <separator/>
+    <merge/>
+    <separator/>
+    <action id="fullScreen"/>
   </strip>
 </xmlui>

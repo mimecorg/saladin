@@ -44,6 +44,8 @@ private slots:
     void switchToBinary();
     void switchToImage();
 
+    void fullScreen();
+
     void statusChanged( const QString& status );
 
 private:

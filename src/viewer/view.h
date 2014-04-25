@@ -59,6 +59,8 @@ public:
 
     virtual void load() = 0;
 
+    virtual void setFullScreen( bool on );
+
 signals:
     void statusChanged( const QString& status );
 
