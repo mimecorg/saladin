@@ -17,13 +17,19 @@
 **************************************************************************/
 
 #include "formathelper.h"
+#include "shell/streamdevice.h"
 
-bool FormatHelper::checkImage( QFile& file, bool force, QByteArray& format )
+bool FormatHelper::checkImage( StreamDevice& file, bool force, QByteArray& format )
 {
     QImageReader reader( &file );
 
     if ( !force ) {
-        reader.setFormat( QFileInfo( file ).suffix().toLower().toLatin1() );
+        QByteArray format;
+        QString name = file.name();
+        int pos = name.lastIndexOf( QLatin1Char( '.' ) );
+        if ( pos > 0 )
+            format = name.mid( pos + 1 ).toLower().toLatin1();
+        reader.setFormat( format );
         reader.setAutoDetectImageFormat( false );
     }
 
@@ -98,7 +104,7 @@ static bool checkBinary( const QByteArray& header )
     return false;
 }
 
-bool FormatHelper::checkText( QFile& file, bool force, QByteArray& format )
+bool FormatHelper::checkText( QIODevice& file, bool force, QByteArray& format )
 {
     QByteArray header = file.peek( 512 );
     if ( header.isEmpty() )

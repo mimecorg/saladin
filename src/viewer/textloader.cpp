@@ -17,9 +17,10 @@
 **************************************************************************/
 
 #include "textloader.h"
+#include "shell/streamdevice.h"
 
-TextLoader::TextLoader( const QString& path, const QByteArray& format ) :
-    m_path( path ),
+TextLoader::TextLoader( const ShellPidl& pidl, const QByteArray& format ) :
+    m_pidl( pidl ),
     m_format( format ),
     m_aborted( false ),
     m_signal( false ),
@@ -34,7 +35,7 @@ TextLoader::~TextLoader()
 
 void TextLoader::run()
 {
-    QFile file( m_path );
+    StreamDevice file( m_pidl );
 
     if ( file.open( QIODevice::ReadOnly ) ) {
         QTextStream stream( &file );

@@ -16,40 +16,36 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-#ifndef IMAGELOADER_H
-#define IMAGELOADER_H
+#ifndef STREAMDEVICE_H
+#define STREAMDEVICE_H
 
-#include "shell/shellpidl.h"
+#include <QIODevice>
 
-#include <QThread>
+class StreamDevicePrivate;
+class ShellPidl;
 
-class ImageLoader : public QThread
+class StreamDevice : public QIODevice
 {
     Q_OBJECT
 public:
-    ImageLoader( const ShellPidl& pidl );
-    ~ImageLoader();
+    explicit StreamDevice( const ShellPidl& pidl );
+    ~StreamDevice();
 
 public:
-    QByteArray format() const { return m_format; }
+    QString name() const;
 
-    QImage image() const { return m_image; }
+public: // overrides
+    bool open( OpenMode mode );
 
-    void abort();
-
-signals:
-    void imageAvailable();
+    qint64 size() const;
+    bool seek( qint64 pos );
 
 protected: // overrides
-    void run();
+    qint64 readData( char* data, qint64 maxSize );
+    qint64 writeData( const char* data, qint64 maxSize );
 
 private:
-    ShellPidl m_pidl;
-    QByteArray m_format;
-
-    QImage m_image;
-
-    bool m_aborted;
+    StreamDevicePrivate* d;
 };
 
 #endif

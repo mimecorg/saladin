@@ -51,6 +51,7 @@ private:
     QSharedDataPointer<ShellPidlPrivate> d;
 
     friend class ShellFolder;
+    friend class StreamDevice;
 };
 
 Q_DECLARE_METATYPE( ShellPidl )

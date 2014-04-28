@@ -145,7 +145,7 @@ void ImageView::load()
 
     m_label->setImage( QImage() );
 
-    m_loader = new ImageLoader( path() );
+    m_loader = new ImageLoader( pidl() );
 
     connect( m_loader, SIGNAL( imageAvailable() ), this, SLOT( loadImage() ), Qt::QueuedConnection );
 

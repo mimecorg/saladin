@@ -318,7 +318,7 @@ void TextView::load()
             m_encoding = action->text();
     }
 
-    m_loader = new TextLoader( path(), format() );
+    m_loader = new TextLoader( pidl(), format() );
     m_loader->start();
 
     connect( m_loader, SIGNAL( nextBlockAvailable() ), this, SLOT( loadNextBlock() ), Qt::QueuedConnection );

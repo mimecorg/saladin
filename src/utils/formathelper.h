@@ -19,12 +19,14 @@
 #ifndef FORMATHELPER_H
 #define FORMATHELPER_H
 
+class StreamDevice;
+
 class FormatHelper
 {
 public:
-    static bool checkImage( QFile& file, bool force, QByteArray& format );
+    static bool checkImage( StreamDevice& file, bool force, QByteArray& format );
 
-    static bool checkText( QFile& file, bool force, QByteArray& format );
+    static bool checkText( QIODevice& file, bool force, QByteArray& format );
 };
 
 #endif

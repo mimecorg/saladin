@@ -14,7 +14,9 @@ HEADERS += shell/changenotifywatcher_p.h \
            shell/shellpidl.h \
            shell/shellpidl_p.h \
            shell/shellselection.h \
-           shell/shellselection_p.h
+           shell/shellselection_p.h \
+           shell/streamdevice.h \
+           shell/streamdevice_p.h
 
 SOURCES += shell/changenotifywatcher.cpp \
            shell/iconcache.cpp \
@@ -25,4 +27,5 @@ SOURCES += shell/changenotifywatcher.cpp \
            shell/shellfolder.cpp \
            shell/shellitem.cpp \
            shell/shellpidl.cpp \
-           shell/shellselection.cpp
+           shell/shellselection.cpp \
+           shell/streamdevice.cpp

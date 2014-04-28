@@ -19,13 +19,15 @@
 #ifndef BINARYLOADER_H
 #define BINARYLOADER_H
 
+#include "shell/shellpidl.h"
+
 #include <QThread>
 
 class BinaryLoader : public QThread
 {
     Q_OBJECT
 public:
-    BinaryLoader( const QString& path, bool hexMode );
+    BinaryLoader( const ShellPidl& pidl, bool hexMode );
     ~BinaryLoader();
 
 public:
@@ -46,7 +48,7 @@ protected: // overrides
     void run();
 
 private:
-    QString m_path;
+    ShellPidl m_pidl;
     bool m_hexMode;
 
     QMutex m_mutex;

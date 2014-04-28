@@ -43,7 +43,7 @@ private slots:
     void windowDestroyed( QObject* window );
 
 private:
-    bool checkType( const ShellPidl& pidl, View::Type inType, View::Type& outType, QByteArray& format );
+    bool checkType( const ShellPidl& pidl, View::Type inType, View::Type& outType, QByteArray& format, QString& name );
 
 private:
     ViewManagerPrivate* d;

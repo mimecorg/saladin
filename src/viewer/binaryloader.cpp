@@ -17,9 +17,10 @@
 **************************************************************************/
 
 #include "binaryloader.h"
+#include "shell/streamdevice.h"
 
-BinaryLoader::BinaryLoader( const QString& path, bool hexMode ) :
-    m_path( path ),
+BinaryLoader::BinaryLoader( const ShellPidl& pidl, bool hexMode ) :
+    m_pidl( pidl ),
     m_hexMode( hexMode ),
     m_aborted( false ),
     m_signal( false ),
@@ -34,7 +35,7 @@ BinaryLoader::~BinaryLoader()
 
 void BinaryLoader::run()
 {
-    QFile file( m_path );
+    StreamDevice file( m_pidl );
 
     if ( file.open( QIODevice::ReadOnly ) ) {
         QDataStream stream( &file );

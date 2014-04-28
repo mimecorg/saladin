@@ -666,7 +666,7 @@ void MainWindow::viewCurrent()
 {
     ShellItem item = m_sourcePane->currentItem();
 
-    if ( !item.isValid() || !item.attributes().testFlag( ShellItem::FileSystem ) || item.attributes().testFlag( ShellItem::Directory ) )
+    if ( !item.isValid() || !item.attributes().testFlag( ShellItem::Stream ) )
         return;
 
     LocalSettings* settings = application->applicationSettings();

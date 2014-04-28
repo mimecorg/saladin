@@ -19,11 +19,10 @@
 #ifndef VIEW_H
 #define VIEW_H
 
+#include "shell/shellpidl.h"
 #include "xmlui/client.h"
 
 #include <QObject>
-
-class ShellPidl;
 
 class View : public QObject, public XmlUi::Client
 {
@@ -44,8 +43,8 @@ public:
 public:
     QWidget* mainWidget() const { return m_mainWidget; }
 
-    void setPath( const QString& path );
-    const QString& path() const { return m_path; }
+    void setPidl( const ShellPidl& pidl );
+    const ShellPidl& pidl() const { return m_pidl; }
 
     void setFormat( const QByteArray& format );
     const QByteArray& format() const { return m_format; }
@@ -72,7 +71,7 @@ protected:
 private:
     QWidget* m_mainWidget;
 
-    QString m_path;
+    ShellPidl m_pidl;
     QByteArray m_format;
 
     QString m_status;

@@ -17,9 +17,10 @@
 **************************************************************************/
 
 #include "imageloader.h"
+#include "shell/streamdevice.h"
 
-ImageLoader::ImageLoader( const QString& path ) :
-    m_path( path ),
+ImageLoader::ImageLoader( const ShellPidl& pidl ) :
+    m_pidl( pidl ),
     m_aborted( false )
 {
 }
@@ -30,12 +31,16 @@ ImageLoader::~ImageLoader()
 
 void ImageLoader::run()
 {
-    QImageReader reader( m_path );
+    StreamDevice file( m_pidl );
 
-    m_format = reader.format();
+    if ( file.open( QIODevice::ReadOnly ) ) {
+        QImageReader reader( &file );
 
-    if ( reader.read( &m_image ) && !m_aborted )
-        emit imageAvailable();
+        m_format = reader.format();
+
+        if ( reader.read( &m_image ) && !m_aborted )
+            emit imageAvailable();
+    }
 }
 
 void ImageLoader::abort()

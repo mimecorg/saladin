@@ -20,6 +20,7 @@
 
 #include "viewer/viewerwindow.h"
 #include "shell/shellpidl.h"
+#include "shell/streamdevice.h"
 #include "utils/formathelper.h"
 
 class ViewItem
@@ -88,7 +89,8 @@ void ViewManager::openView( const ShellPidl& pidl )
 
     QByteArray format;
     View::Type type;
-    bool ok = checkType( pidl, View::Auto, type, format );
+    QString name;
+    bool ok = checkType( pidl, View::Auto, type, format, name );
 
     ViewItem item( pidl );
     item.m_window = new ViewerWindow();
@@ -98,14 +100,16 @@ void ViewManager::openView( const ShellPidl& pidl )
 
     connect( item.m_window, SIGNAL( destroyed( QObject* ) ), this, SLOT( windowDestroyed( QObject* ) ) );
 
-    QFileInfo info( pidl.path() );
-    item.m_window->setWindowTitle( QString( "%1 - Saladin" ).arg( info.fileName() ) );
+    if ( name.isEmpty() )
+        name = tr( "Unknown file" );
+
+    item.m_window->setWindowTitle( QString( "%1 - Saladin" ).arg( name ) );
 
     item.m_window->setView( item.m_view );
     item.m_window->show();
 
     if ( ok ) {
-        item.m_view->setPath( pidl.path() );
+        item.m_view->setPidl( pidl );
         item.m_view->setFormat( format );
         item.m_view->load();
     }
@@ -118,13 +122,14 @@ void ViewManager::switchViewType( ViewerWindow* window, View::Type type )
 
         if ( item.m_window == window ) {
             QByteArray format;
-            bool ok = checkType( item.m_pidl, type, type, format );
+            QString name;
+            bool ok = checkType( item.m_pidl, type, type, format, name );
 
             item.m_view = View::createView( type, window, window );
             item.m_window->setView( item.m_view );
 
             if ( ok ) {
-                item.m_view->setPath( item.m_pidl.path() );
+                item.m_view->setPidl( item.m_pidl );
                 item.m_view->setFormat( format );
                 item.m_view->load();
             }
@@ -145,17 +150,19 @@ void ViewManager::windowDestroyed( QObject* window )
     }
 }
 
-bool ViewManager::checkType( const ShellPidl& pidl, View::Type inType, View::Type& outType, QByteArray& format )
+bool ViewManager::checkType( const ShellPidl& pidl, View::Type inType, View::Type& outType, QByteArray& format, QString& name )
 {
     if ( inType == View::Auto )
         outType = View::Binary;
     else
         outType = inType;
 
-    QFile file( pidl.path() );
+    StreamDevice file( pidl );
 
     if ( !file.open( QIODevice::ReadOnly ) )
         return false;
+
+    name = file.name();
 
     if ( inType == View::Binary )
         return true;

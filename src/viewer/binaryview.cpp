@@ -142,7 +142,7 @@ void BinaryView::load()
 
     m_length = 0;
 
-    m_loader = new BinaryLoader( path(), m_hexMode );
+    m_loader = new BinaryLoader( pidl(), m_hexMode );
     m_loader->start();
 
     connect( m_loader, SIGNAL( nextBlockAvailable() ), this, SLOT( loadNextBlock() ), Qt::QueuedConnection );

@@ -19,13 +19,15 @@
 #ifndef TEXTLOADER_H
 #define TEXTLOADER_H
 
+#include "shell/shellpidl.h"
+
 #include <QThread>
 
 class TextLoader : public QThread
 {
     Q_OBJECT
 public:
-    TextLoader( const QString& path, const QByteArray& format );
+    TextLoader( const ShellPidl& pidl, const QByteArray& format );
     ~TextLoader();
 
 public:
@@ -44,7 +46,7 @@ protected: // overrides
     void run();
 
 private:
-    QString m_path;
+    ShellPidl m_pidl;
     QByteArray m_format;
 
     QMutex m_mutex;

@@ -37,9 +37,9 @@ void View::setMainWidget( QWidget* widget )
     m_mainWidget = widget;
 }
 
-void View::setPath( const QString& path )
+void View::setPidl( const ShellPidl& pidl )
 {
-    m_path = path;
+    m_pidl = pidl;
 }
 
 void View::setFormat( const QByteArray& format )
