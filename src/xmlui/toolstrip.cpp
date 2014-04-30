@@ -99,9 +99,9 @@ void ToolStrip::addSeparator()
     m_layout->addItem( new QSpacerItem( 7, 0 ) );
 }
 
-void ToolStrip::beginSection( const QString& title )
+void ToolStrip::beginSection( const QString& title, bool uniform )
 {
-    m_sectionLayout = new ToolStripSectionLayout( title );
+    m_sectionLayout = new ToolStripSectionLayout( title, uniform );
     m_layout->addLayout( m_sectionLayout );
 }
 
@@ -199,6 +199,7 @@ QToolButton* ToolStrip::createButton( QAction* action, ButtonSize size )
             button->setIconSize( QSize( 16, 16 ) );
             break;
         case LargeButton:
+            button->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::Fixed );
             button->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
             button->setIconSize( QSize( 22, 22 ) );
             break;
@@ -580,8 +581,9 @@ void ToolStripLayout::invalidate()
         parentWidget()->update();
 }
 
-ToolStripSectionLayout::ToolStripSectionLayout( const QString& title ) : QLayout(),
+ToolStripSectionLayout::ToolStripSectionLayout( const QString& title, bool uniform ) : QLayout(),
     m_titleText( title ),
+    m_uniform( uniform ),
     m_collapsed( false ),
     m_dirty( true )
 {
@@ -666,8 +668,15 @@ static int calculateWidth( QLayoutItem* item )
                 width += maxWidth;
             }
         } else {
-            for ( int i = 0; i < layout->count(); i++ )
-                width += calculateWidth( layout->itemAt( i ) );
+            ToolStripSectionLayout* sectionLayout = qobject_cast<ToolStripSectionLayout*>( layout );
+            if ( sectionLayout && sectionLayout->isUniform() ) {
+                for ( int i = 0; i < layout->count(); i++ )
+                    width = qMax( width, calculateWidth( layout->itemAt( i ) ) );
+                width *= layout->count();
+            } else {
+                for ( int i = 0; i < layout->count(); i++ )
+                    width += calculateWidth( layout->itemAt( i ) );
+            }
         }
 
         return width;
@@ -737,9 +746,17 @@ void ToolStripSectionLayout::setGeometry( const QRect& rect )
     QLayout::setGeometry( rect );
 
     int left = rect.left() + 3;
+    int maxWidth = 0;
+
+    if ( m_uniform ) {
+        foreach ( QLayoutItem* item, m_items )
+            maxWidth = qMax( maxWidth, item->sizeHint().width() );
+    }
 
     foreach ( QLayoutItem* item, m_items ) {
         QSize size = item->sizeHint();
+        if ( m_uniform )
+            size.setWidth( maxWidth );
         item->setGeometry( QRect( left, rect.top() + 3, size.width(), rect.height() - m_titleSize.height() - 9 ) );
         left += size.width();
     }

@@ -100,13 +100,15 @@ class ToolStripSectionLayout : public QLayout
 {
     Q_OBJECT
 public:
-    ToolStripSectionLayout( const QString& title );
+    ToolStripSectionLayout( const QString& title, bool uniform );
     ~ToolStripSectionLayout();
 
 public:
     void addLayout( QLayout* layout );
 
     void drawSection( QPainter* painter, QWidget* widget );
+
+    bool isUniform() const { return m_uniform; }
 
     void setCollapsed( bool collapsed );
     bool isCollapsed() const { return m_collapsed; }
@@ -136,6 +138,8 @@ private:
 
     QString m_titleText;
     QRect m_titleRect;
+
+    bool m_uniform;
 
     QRect m_separatorRect;
 

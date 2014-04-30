@@ -78,6 +78,7 @@ Node Builder::mergeNodes( const Node& node1, const Node& node2 )
 
     result.setType( node1.type() );
     result.setId( node1.id() );
+    result.setUniform( node1.isUniform() );
 
     QList<Node> children;
 
@@ -156,6 +157,7 @@ Node Builder::resolveGroups( const Node& node )
 
     result.setType( node.type() );
     result.setId( node.id() );
+    result.setUniform( node.isUniform() );
 
     for ( int i = 0; i < node.children().count(); i++ ) {
         Node child = node.children().at( i );
@@ -281,7 +283,7 @@ void Builder::populateToolStrip( const Node& node )
                                     if ( action && action->isVisible() ) {
                                         if ( !section ) {
                                             QString title = findTitle( child.id() );
-                                            strip->beginSection( title );
+                                            strip->beginSection( title, child.isUniform() );
                                             section = true;
                                         }
                                         if ( !grid ) {
@@ -307,7 +309,7 @@ void Builder::populateToolStrip( const Node& node )
                             if ( action && action->isVisible() ) {
                                 if ( !section ) {
                                     QString title = findTitle( child.id() );
-                                    strip->beginSection( title );
+                                    strip->beginSection( title, child.isUniform() );
                                     section = true;
                                 }
                                 if ( !grid ) {
@@ -329,7 +331,7 @@ void Builder::populateToolStrip( const Node& node )
                     if ( action && action->isVisible() ) {
                         if ( !section ) {
                             QString title = findTitle( child.id() );
-                            strip->beginSection( title );
+                            strip->beginSection( title, child.isUniform() );
                             section = true;
                         }
                         addToolAction( strip, action, sectionChild.id() );
@@ -460,7 +462,7 @@ QAction* Builder::findAction( const QString& id )
     return NULL;
 }
 
-QString Builder::findTitle( const QString& id, const QString& defaultTitle /*= QString()*/ )
+QString Builder::findTitle( const QString& id, const QString& defaultTitle )
 {
     for ( int i = m_clients.count() - 1; i >= 0; i-- ) {
         QString title = m_clients.at( i )->title( id );

@@ -54,12 +54,14 @@ class Node
 {
 public:
     Node() :
-        m_type( Unknown )
+        m_type( Unknown ),
+        m_uniform( false )
     {
     }
 
     Node( NodeType type ) :
-        m_type( type )
+        m_type( type ),
+        m_uniform( false )
     {
     }
 
@@ -72,6 +74,10 @@ public:
 
     const QString& id() const { return m_id; }
 
+    void setUniform( bool uniform ) { m_uniform = uniform; }
+
+    bool isUniform() const { return m_uniform; }
+
     void setChildren( const QList<Node>& children ) { m_children = children; }
 
     const QList<Node>& children() const { return m_children; }
@@ -81,6 +87,7 @@ public:
 private:
     NodeType m_type;
     QString m_id;
+    bool m_uniform;
 
     QList<Node> m_children;
 };

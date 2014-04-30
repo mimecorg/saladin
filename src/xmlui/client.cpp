@@ -130,6 +130,9 @@ Node Client::createNode( const QDomElement& element )
     node.setType( typeFromTag( element.tagName() ) );
     node.setId( element.attribute( "id", QString() ) );
 
+    if ( node.type() == Section && element.attribute( "uniform" ) == "1" )
+        node.setUniform( true );
+
     for ( QDomElement child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement() )
         node.addChild( createNode( child ) );
 

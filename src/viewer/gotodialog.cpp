@@ -54,7 +54,7 @@ GoToDialog::GoToDialog( int lines, int current, QWidget* parent ) : QDialog( par
     QBoxLayout* lineLayout = new QHBoxLayout();
     mainLayout->addLayout( lineLayout );
 
-    QLabel* label = new QLabel( tr( "&Go to line:" ), this );
+    QLabel* label = new QLabel( tr( "&Line number:" ), this );
     lineLayout->addWidget( label );
 
     m_spinBox = new QSpinBox( this );
@@ -78,7 +78,7 @@ GoToDialog::GoToDialog( int lines, int current, QWidget* parent ) : QDialog( par
 
     promptPixmap->setPixmap( IconLoader::pixmap( "goto", 22 ) );
 
-    promptLabel->setText( tr( "Go to the specified line:" ) );
+    promptLabel->setText( tr( "Go to the specified line (1 - %1):" ).arg( lines ) );
     promptLabel->setMinimumWidth( 350 );
     promptLabel->setFixedHeight( promptLabel->heightForWidth( 350 ) );
 

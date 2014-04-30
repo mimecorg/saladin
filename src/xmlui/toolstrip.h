@@ -92,8 +92,9 @@ public:
     /**
     * Begin a section containing actions.
     * @param title The title of the section.
+    * @param uniform When @t true all buttons have uniform width.
     */
-    void beginSection( const QString& title );
+    void beginSection( const QString& title, bool uniform = false );
 
     /**
     * End the current section.
