@@ -28,7 +28,7 @@
         </row>
       </grid>
     </section>
-    <section id="sectionFunctions">
+    <section id="sectionFunctions" uniform="1">
       <action id="renameCurrent"/>
       <action id="viewCurrent"/>
       <action id="popupEdit"/>

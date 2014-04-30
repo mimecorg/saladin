@@ -149,15 +149,18 @@ MainWindow::MainWindow() : QMainWindow(),
 
     action = new QAction( IconLoader::icon( "rename" ), tr( "Rename" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F2 ) );
+    action->setIconText( tr( "Rename\nF2" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( renameCurrent() ) );
     setAction( "renameCurrent", action );
 
     action = new QAction( IconLoader::icon( "view" ), tr( "View", "action name" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F3 ) );
+    action->setIconText( tr( "View\nF3" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
     setAction( "viewCurrent", action );
 
     action = new QAction( IconLoader::icon( "edit" ), tr( "Edit" ), this );
+    action->setIconText( tr( "Edit\nF4" ) );
     setAction( "popupEdit", action );
 
     action = new QAction( IconLoader::icon( "edit" ), tr( "Edit File" ), this );
@@ -171,6 +174,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setAction( "editNew", action );
 
     action = new QAction( IconLoader::icon( "copy" ), tr( "Copy" ), this );
+    action->setIconText( tr( "Copy\nF5" ) );
     setAction( "popupCopy", action );
 
     action = new QAction( IconLoader::icon( "copy" ), tr( "Copy To Target Directory..." ), this );
@@ -184,6 +188,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setAction( "cloneSelected", action );
 
     action = new QAction( IconLoader::icon( "move" ), tr( "Move" ), this );
+    action->setIconText( tr( "Move\nF6" ) );
     setAction( "popupMove", action );
 
     action = new QAction( IconLoader::icon( "move" ), tr( "Move To Target Directory..." ), this );
@@ -198,10 +203,12 @@ MainWindow::MainWindow() : QMainWindow(),
 
     action = new QAction( IconLoader::icon( "folder-new" ), tr( "Create Folder" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F7 ) );
+    action->setIconText( tr( "Folder\nF7" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( createFolder() ) );
     setAction( "createFolder", action );
 
     action = new QAction( IconLoader::icon( "trashcan" ), tr( "Delete" ), this );
+    action->setIconText( tr( "Delete\nF8" ) );
     setAction( "popupDelete", action );
 
     action = new QAction( IconLoader::icon( "trashcan" ), tr( "Move To Recycle Bin" ), this );
@@ -216,6 +223,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     action = new QAction( IconLoader::icon( "terminal" ), tr( "Open Console" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F9 ) );
+    action->setIconText( tr( "Console\nF9" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openTerminal() ) );
     setAction( "openTerminal", action );
 
