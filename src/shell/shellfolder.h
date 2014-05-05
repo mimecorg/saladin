@@ -80,7 +80,7 @@ public:
     bool canCreateFolder();
     bool createFolder( const QString& name );
 
-    bool createFile( const QString& name, const char* data = NULL, int size = 0 );
+    bool createFile( const QString& name, bool overwrite, const char* data = NULL, int size = 0 );
 
     ShellItem childItem( const QString& name );
 

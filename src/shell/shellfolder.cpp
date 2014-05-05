@@ -736,17 +736,17 @@ bool ShellFolder::createFolder( const QString& name )
     return result;
 }
 
-bool ShellFolder::createFile( const QString& name, const char* data /*= NULL*/, int size /*= 0*/ )
+bool ShellFolder::createFile( const QString& name, bool overwrite, const char* data, int size )
 {
     bool result = false;
 
     QString path = d->m_path + QLatin1Char( '\\' ) + name;
 
-    DWORD creation = ( data && size > 0 ) ? CREATE_ALWAYS : OPEN_ALWAYS;
+    DWORD creation = overwrite ? CREATE_ALWAYS : OPEN_ALWAYS;
     HANDLE file = CreateFile( path.utf16(), GENERIC_WRITE, FILE_SHARE_READ, NULL, creation, FILE_ATTRIBUTE_NORMAL, NULL );
 
     if ( file != INVALID_HANDLE_VALUE ) {
-        if ( data && size > 0 ) {
+        if ( data && size > 0 && ( overwrite || GetLastError() == 0 ) ) {
             DWORD written;
             result = WriteFile( file, data, size, &written, NULL );
         } else {

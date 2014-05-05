@@ -711,7 +711,7 @@ void MainWindow::editNew()
 
     QString name = dialog.name();
 
-    if ( !folder->createFile( name ) )
+    if ( !folder->createFile( name, false ) )
         return;
 
     ShellItem item = folder->childItem( name );
@@ -1022,7 +1022,7 @@ void MainWindow::packToZip()
     if ( !attributes.testFlag( ShellItem::FileSystem ) || !attributes.testFlag( ShellItem::Directory ) )
         return;
 
-    OperationDialog dialog( OperationDialog::WithName | OperationDialog::CanEditName | OperationDialog::WithTarget, this );
+    OperationDialog dialog( OperationDialog::WithName | OperationDialog::CanEditName | OperationDialog::WithTarget | OperationDialog::WithCheckBox, this );
 
     dialog.setWindowTitle( tr( "Pack To Zip" ) );
     dialog.setPromptPixmap( IconLoader::pixmap( "pack", 22 ) );
@@ -1042,6 +1042,8 @@ void MainWindow::packToZip()
 
     dialog.setTarget( targetFolder->path() );
 
+    dialog.setCheckBoxText( tr( "O&verwrite without prompt" ) );
+
     if ( dialog.exec() != QDialog::Accepted )
         return;
 
@@ -1049,7 +1051,7 @@ void MainWindow::packToZip()
 
     static const char zipData[ 22 ] = { 'P', 'K', 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    if ( !targetFolder->createFile( name, zipData, sizeof( zipData ) ) )
+    if ( !targetFolder->createFile( name, dialog.checkBoxChecked(), zipData, sizeof( zipData ) ) )
         return;
 
     ShellItem item = targetFolder->childItem( name );
