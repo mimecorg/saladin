@@ -44,7 +44,7 @@ echo.
 echo Exporting...
 echo.
 
-svn export --quiet --force ..\.. "%BUILDDIR%"
+svn export --quiet --force .. "%BUILDDIR%"
 
 pushd "%BUILDDIR%"
 
@@ -60,7 +60,7 @@ echo.
 echo Creating uninstaller...
 echo.
 
-"%NSISDIR%\makensis.exe" /DINNER "/DQTDIR=%QTDIR%" "/DVERSION=%VERSION%" "/DBUILDVERSION=%BUILDVERSION%" "/DARCHITECTURE=%ARCHITECTURE%" "/DSUFFIX=%SUFFIX%" /V2 packages\win32\saladin.nsi
+"%NSISDIR%\makensis.exe" /DINNER "/DQTDIR=%QTDIR%" "/DVERSION=%VERSION%" "/DBUILDVERSION=%BUILDVERSION%" "/DARCHITECTURE=%ARCHITECTURE%" "/DSUFFIX=%SUFFIX%" /V2 installer\saladin.nsi
 
 if errorlevel 1 goto cleanup
 
@@ -72,11 +72,11 @@ echo.
 echo Creating installer...
 echo.
 
-"%NSISDIR%\makensis.exe" "/DQTDIR=%QTDIR%" "/DVERSION=%VERSION%" "/DBUILDVERSION=%BUILDVERSION%" "/DARCHITECTURE=%ARCHITECTURE%" "/DSUFFIX=%SUFFIX%" /V2 packages\win32\saladin.nsi
+"%NSISDIR%\makensis.exe" "/DQTDIR=%QTDIR%" "/DVERSION=%VERSION%" "/DBUILDVERSION=%BUILDVERSION%" "/DARCHITECTURE=%ARCHITECTURE%" "/DSUFFIX=%SUFFIX%" /V2 installer\saladin.nsi
 
 if errorlevel 1 goto cleanup
 
-call ..\sign.bat "packages\win32\saladin-%VERSION%-%ARCHITECTURE%.exe"
+call ..\sign.bat "installer\saladin-%VERSION%-%ARCHITECTURE%.exe"
 
 :cleanup
 
