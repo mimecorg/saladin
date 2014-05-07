@@ -1,3 +1,11 @@
+0.5 (2014-05-07)
+ * full screen mode in the internal viewer
+ * displaying files from zipped folders in the internal viewer
+ * go to line command in the internal text viewer
+ * added "overwrite" option in pack to zip command instead of silently overwriting
+ * do not show media libraries and shared folders in the drives bar
+ * fixed copying file names from search results
+
 0.4 (2013-01-09)
  * display confirmation when dragging files
  * zoom and rotate images in the internal viewer
