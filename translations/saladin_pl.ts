@@ -51,8 +51,8 @@
     </message>
     <message utf8="true">
         <location filename="../src/application.cpp" line="143"/>
-        <source>Copyright &amp;copy; 2011-2013 Michał Męciński</source>
-        <translation>Copyright &amp;copy; 2011-2013 Michał Męciński</translation>
+        <source>Copyright &amp;copy; 2011-2014 Michał Męciński</source>
+        <translation>Copyright &amp;copy; 2011-2014 Michał Męciński</translation>
     </message>
     <message>
         <location filename="../src/application.cpp" line="148"/>
@@ -332,6 +332,34 @@
     </message>
 </context>
 <context>
+    <name>GoToDialog</name>
+    <message>
+        <location filename="../src/viewer/gotodialog.cpp" line="26"/>
+        <source>Go To Line</source>
+        <translation>Idź do linii</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/gotodialog.cpp" line="57"/>
+        <source>&amp;Line number:</source>
+        <translation>&amp;Numer linii:</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/gotodialog.cpp" line="73"/>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/gotodialog.cpp" line="74"/>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Anuluj</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/gotodialog.cpp" line="81"/>
+        <source>Go to the specified line (1 - %1):</source>
+        <translation>Idź do podanej linii (1 - %1):</translation>
+    </message>
+</context>
+<context>
     <name>GuideDialog</name>
     <message>
         <location filename="../src/guidedialog.cpp" line="30"/>
@@ -402,9 +430,9 @@
         <translation>Obróć w &amp;prawo</translation>
     </message>
     <message>
-        <location filename="../src/viewer/imageview.cpp" line="99"/>
-        <location filename="../src/viewer/imageview.cpp" line="152"/>
-        <location filename="../src/viewer/imageview.cpp" line="163"/>
+        <location filename="../src/viewer/imageview.cpp" line="101"/>
+        <location filename="../src/viewer/imageview.cpp" line="154"/>
+        <location filename="../src/viewer/imageview.cpp" line="185"/>
         <source>Image</source>
         <translation>Obraz</translation>
     </message>
@@ -438,8 +466,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="70"/>
-        <location filename="../src/mainwindow.cpp" line="173"/>
-        <location filename="../src/mainwindow.cpp" line="865"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="873"/>
         <source>Copy</source>
         <translation>Kopiuj</translation>
     </message>
@@ -490,7 +518,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="125"/>
-        <location filename="../src/mainwindow.cpp" line="611"/>
+        <location filename="../src/mainwindow.cpp" line="619"/>
         <source>Select Mask</source>
         <translation>Zaznacz maskę</translation>
     </message>
@@ -501,7 +529,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="636"/>
+        <location filename="../src/mainwindow.cpp" line="644"/>
         <source>Unselect Mask</source>
         <translation>Odznacz maskę</translation>
     </message>
@@ -517,340 +545,397 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="150"/>
-        <location filename="../src/mainwindow.cpp" line="874"/>
+        <location filename="../src/mainwindow.cpp" line="882"/>
         <source>Rename</source>
         <translation>Zmień nazwę</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
+        <source>Rename
+F2</source>
+        <translation>Zm. nazwę
+F2</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>View</source>
         <comment>action name</comment>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
+        <source>View
+F3</source>
+        <translation>Podgląd
+F3</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="162"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="163"/>
+        <source>Edit
+F4</source>
+        <translation>Edytuj
+F4</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="166"/>
         <source>Edit File</source>
         <translation>Edytuj plik</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="168"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Create File...</source>
         <translation>Utwórz plik...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="177"/>
+        <source>Copy
+F5</source>
+        <translation>Kopiuj
+F5</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="180"/>
         <source>Copy To Target Directory...</source>
         <translation>Kopiuj do katalogu docelowego...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="185"/>
         <source>Clone In Source Directory...</source>
         <translation>Klonuj w katalogu źródłowym...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="186"/>
-        <location filename="../src/mainwindow.cpp" line="881"/>
+        <location filename="../src/mainwindow.cpp" line="190"/>
+        <location filename="../src/mainwindow.cpp" line="889"/>
         <source>Move</source>
         <translation>Przenieś</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="189"/>
+        <location filename="../src/mainwindow.cpp" line="191"/>
+        <source>Move
+F6</source>
+        <translation>Przenieś
+F6</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="194"/>
         <source>Move To Target Directory...</source>
         <translation>Przenieś do katalogu docelowego...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="194"/>
+        <location filename="../src/mainwindow.cpp" line="199"/>
         <source>Rename In Source Directory...</source>
         <translation>Zmień nazwę w katalogu źródłowym...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="199"/>
-        <location filename="../src/mainwindow.cpp" line="946"/>
+        <location filename="../src/mainwindow.cpp" line="204"/>
+        <location filename="../src/mainwindow.cpp" line="954"/>
         <source>Create Folder</source>
         <translation>Utwórz folder</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="204"/>
+        <location filename="../src/mainwindow.cpp" line="206"/>
+        <source>Folder
+F7</source>
+        <translation>Utw. folder
+F7</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="210"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="211"/>
+        <source>Delete
+F8</source>
+        <translation>Usuń
+F8</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="214"/>
         <source>Move To Recycle Bin</source>
         <translation>Przenieś do Kosza</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="212"/>
+        <location filename="../src/mainwindow.cpp" line="219"/>
         <source>Delete Permanently</source>
         <translation>Usuń trwale</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="217"/>
+        <location filename="../src/mainwindow.cpp" line="224"/>
         <source>Open Console</source>
         <translation>Otwórz konsolę</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="222"/>
+        <location filename="../src/mainwindow.cpp" line="226"/>
+        <source>Console
+F9</source>
+        <translation>Konsola
+F9</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="230"/>
         <source>Pack</source>
         <translation>Spakuj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="227"/>
+        <location filename="../src/mainwindow.cpp" line="235"/>
         <source>Open</source>
         <translation>Otwórz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="230"/>
+        <location filename="../src/mainwindow.cpp" line="238"/>
         <source>Open Directory</source>
         <translation>Otwórz katalog</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="235"/>
+        <location filename="../src/mainwindow.cpp" line="243"/>
         <source>Browse For Folder...</source>
         <translation>Wybierz folder...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="240"/>
+        <location filename="../src/mainwindow.cpp" line="248"/>
         <source>Connect To FTP...</source>
         <translation>Połącz z FTP...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="245"/>
+        <location filename="../src/mainwindow.cpp" line="253"/>
         <source>Show Size</source>
         <translation>Pokaż wielkość</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="250"/>
+        <location filename="../src/mainwindow.cpp" line="258"/>
         <source>Compare</source>
         <translation>Porównaj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="253"/>
+        <location filename="../src/mainwindow.cpp" line="261"/>
         <source>Compare Files</source>
         <translation>Porównaj pliki</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="258"/>
+        <location filename="../src/mainwindow.cpp" line="266"/>
         <source>Compare Directories</source>
         <translation>Porównaj katalogi</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="263"/>
+        <location filename="../src/mainwindow.cpp" line="271"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="268"/>
+        <location filename="../src/mainwindow.cpp" line="276"/>
         <source>Explore</source>
         <translation>Eksploruj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="273"/>
+        <location filename="../src/mainwindow.cpp" line="281"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="278"/>
+        <location filename="../src/mainwindow.cpp" line="286"/>
         <source>Bookmarks</source>
         <translation>Zakładki</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="283"/>
+        <location filename="../src/mainwindow.cpp" line="291"/>
         <source>Add Bookmark...</source>
         <translation>Dodaj zakładkę...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="288"/>
+        <location filename="../src/mainwindow.cpp" line="296"/>
         <source>Edit Bookmarks...</source>
         <translation>Edytuj zakładki...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="292"/>
+        <location filename="../src/mainwindow.cpp" line="300"/>
         <source>Functions</source>
         <translation>Funkcje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="293"/>
+        <location filename="../src/mainwindow.cpp" line="301"/>
         <source>Clipboard</source>
         <translation>Schowek</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="302"/>
         <source>View</source>
         <comment>section name</comment>
         <translation>Widok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="295"/>
+        <location filename="../src/mainwindow.cpp" line="303"/>
         <source>Select</source>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="296"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Tools</source>
         <translation>Narzędzia</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="613"/>
+        <location filename="../src/mainwindow.cpp" line="621"/>
         <source>Enter the pattern to select:</source>
         <translation>Podaj maskę do zaznaczenia:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="638"/>
+        <location filename="../src/mainwindow.cpp" line="646"/>
         <source>Enter the pattern to unselect:</source>
         <translation>Podaj maskę do odznaczenia:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="695"/>
+        <location filename="../src/mainwindow.cpp" line="703"/>
         <source>Create File</source>
         <translation>Utwórz plik</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="697"/>
+        <location filename="../src/mainwindow.cpp" line="705"/>
         <source>Create a new file:</source>
         <translation>Utwórz nowy plik:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="743"/>
+        <location filename="../src/mainwindow.cpp" line="751"/>
         <source>Tool failed</source>
         <translation>Uruchomienie nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="743"/>
+        <location filename="../src/mainwindow.cpp" line="751"/>
         <source>The %1 tool could not be started.
 Make sure it is correctly configured in Saladin settings and try again.</source>
         <translation>Narzędzie %1 nie mogło zostać uruchomione.
 Upewnij się że jest ono prawidłowo skonfigurowane w ustawieniach programu i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="769"/>
+        <location filename="../src/mainwindow.cpp" line="777"/>
         <source>Missing tool</source>
         <translation>Brakujące narzędzie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="769"/>
+        <location filename="../src/mainwindow.cpp" line="777"/>
         <source>There is no %1 tool configured.
 Select the tool in Saladin settings and try again.</source>
         <translation>Narzędzie %1 nie zostało skonfigurowane.
 Wybierz narzędzie w ustawieniach programu i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="779"/>
+        <location filename="../src/mainwindow.cpp" line="787"/>
         <source>file viewer</source>
         <translation>przeglądarki plików</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="781"/>
+        <location filename="../src/mainwindow.cpp" line="789"/>
         <source>text editor</source>
         <translation>edytora tekstu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="783"/>
+        <location filename="../src/mainwindow.cpp" line="791"/>
         <source>console</source>
         <translation>konsoli</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow.cpp" line="793"/>
         <source>file compare</source>
         <translation>porównywania plików</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="832"/>
+        <location filename="../src/mainwindow.cpp" line="840"/>
         <source>Drag &amp; Drop</source>
         <translation>Przeciągnij i upuść</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="832"/>
+        <location filename="../src/mainwindow.cpp" line="840"/>
         <source>The source and target locations are the same.</source>
         <translation>Lokalizacje źródłowa i docelowa są takie same. </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="858"/>
+        <location filename="../src/mainwindow.cpp" line="866"/>
         <source>Clone</source>
         <translation>Klonuj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="861"/>
+        <location filename="../src/mainwindow.cpp" line="869"/>
         <source>Clone &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Klonuj &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="863"/>
+        <location filename="../src/mainwindow.cpp" line="871"/>
         <source>Clone &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Klonuj &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="868"/>
+        <location filename="../src/mainwindow.cpp" line="876"/>
         <source>Copy &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Kopiuj &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="870"/>
+        <location filename="../src/mainwindow.cpp" line="878"/>
         <source>Copy &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Kopiuj &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="877"/>
+        <location filename="../src/mainwindow.cpp" line="885"/>
         <source>Rename &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Zmień nazwę &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="879"/>
+        <location filename="../src/mainwindow.cpp" line="887"/>
         <source>Rename &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Zmień nazwę &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="884"/>
+        <location filename="../src/mainwindow.cpp" line="892"/>
         <source>Move &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Przenieś &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="886"/>
+        <location filename="../src/mainwindow.cpp" line="894"/>
         <source>Move &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Przenieś &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="907"/>
+        <location filename="../src/mainwindow.cpp" line="915"/>
+        <location filename="../src/mainwindow.cpp" line="1045"/>
         <source>O&amp;verwrite without prompt</source>
         <translation>Na&amp;dpisz bez pytania</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="948"/>
+        <location filename="../src/mainwindow.cpp" line="956"/>
         <source>Create a new folder:</source>
         <translation>Utwórz nowy folder:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1019"/>
+        <location filename="../src/mainwindow.cpp" line="1027"/>
         <source>Pack To Zip</source>
         <translation>Spakuj do Zip</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1024"/>
+        <location filename="../src/mainwindow.cpp" line="1032"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Spakuj &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1031"/>
+        <location filename="../src/mainwindow.cpp" line="1039"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Spakuj &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1167"/>
+        <location filename="../src/mainwindow.cpp" line="1177"/>
         <source>Add Bookmark</source>
         <translation>Dodaj zakładkę</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1169"/>
+        <location filename="../src/mainwindow.cpp" line="1179"/>
         <source>Add current directory to the list of bookmarks:</source>
         <translation>Dodaj bieżący katalog do listy zakładek:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1174"/>
+        <location filename="../src/mainwindow.cpp" line="1184"/>
         <source>&amp;Remember password</source>
         <translation>&amp;Zapamiętaj hasło</translation>
     </message>
@@ -1481,193 +1566,206 @@ Upewnij się że urządzenie jest dostępne i spróbuj ponownie.</translation>
     <message>
         <location filename="../src/shell/shellfolder.cpp" line="598"/>
         <source>Select the folder to open:</source>
-        <translation>Wybierz katalog do otwarcia:</translation>
+        <translation>Wybierz folder do otwarcia:</translation>
     </message>
 </context>
 <context>
     <name>TextView</name>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="38"/>
+        <location filename="../src/viewer/textview.cpp" line="40"/>
         <source>Word Wrap</source>
         <translation>Zawijanie wyrazów</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="44"/>
+        <location filename="../src/viewer/textview.cpp" line="46"/>
         <source>Encoding</source>
         <translation>Kodowanie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="50"/>
+        <location filename="../src/viewer/textview.cpp" line="52"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiuj</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="55"/>
+        <location filename="../src/viewer/textview.cpp" line="57"/>
         <source>Select &amp;All</source>
         <translation>Zaznacz &amp;wszystko</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="60"/>
+        <location filename="../src/viewer/textview.cpp" line="62"/>
         <source>&amp;Find...</source>
         <translation>&amp;Znajdź...</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="65"/>
+        <location filename="../src/viewer/textview.cpp" line="67"/>
         <source>Find &amp;Next</source>
         <translation>Znajdź &amp;następny</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="70"/>
+        <location filename="../src/viewer/textview.cpp" line="72"/>
         <source>Find &amp;Previous</source>
         <translation>Znajdź &amp;poprzedni</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="124"/>
-        <location filename="../src/viewer/textview.cpp" line="320"/>
-        <location filename="../src/viewer/textview.cpp" line="351"/>
-        <location filename="../src/viewer/textview.cpp" line="353"/>
+        <location filename="../src/viewer/textview.cpp" line="77"/>
+        <source>&amp;Go To Line...</source>
+        <translation>I&amp;dź do linii...</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/textview.cpp" line="131"/>
+        <location filename="../src/viewer/textview.cpp" line="328"/>
+        <location filename="../src/viewer/textview.cpp" line="359"/>
+        <location filename="../src/viewer/textview.cpp" line="361"/>
         <source>Text</source>
         <translation>Tekst</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="201"/>
+        <location filename="../src/viewer/textview.cpp" line="208"/>
         <source>ANSI</source>
         <translation>ANSI</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="202"/>
+        <location filename="../src/viewer/textview.cpp" line="209"/>
         <source>OEM</source>
         <translation>OEM</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="203"/>
+        <location filename="../src/viewer/textview.cpp" line="210"/>
         <source>UTF-8</source>
         <translation>UTF-8</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="204"/>
+        <location filename="../src/viewer/textview.cpp" line="211"/>
         <source>Unicode</source>
         <translation>Unicode</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="205"/>
+        <location filename="../src/viewer/textview.cpp" line="212"/>
         <source>Unicode BE</source>
         <translation>Unicode BE</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="229"/>
-        <location filename="../src/viewer/textview.cpp" line="239"/>
+        <location filename="../src/viewer/textview.cpp" line="236"/>
+        <location filename="../src/viewer/textview.cpp" line="246"/>
         <source>Central European</source>
         <translation>Środkowo-europejskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="230"/>
-        <location filename="../src/viewer/textview.cpp" line="242"/>
-        <location filename="../src/viewer/textview.cpp" line="251"/>
-        <location filename="../src/viewer/textview.cpp" line="252"/>
-        <location filename="../src/viewer/textview.cpp" line="253"/>
+        <location filename="../src/viewer/textview.cpp" line="237"/>
+        <location filename="../src/viewer/textview.cpp" line="249"/>
+        <location filename="../src/viewer/textview.cpp" line="258"/>
+        <location filename="../src/viewer/textview.cpp" line="259"/>
+        <location filename="../src/viewer/textview.cpp" line="260"/>
         <source>Cyrillic</source>
         <translation>Cyrylica</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="231"/>
         <location filename="../src/viewer/textview.cpp" line="238"/>
-        <location filename="../src/viewer/textview.cpp" line="249"/>
+        <location filename="../src/viewer/textview.cpp" line="245"/>
+        <location filename="../src/viewer/textview.cpp" line="256"/>
         <source>Western European</source>
         <translation>Zachodnio-europejskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="232"/>
-        <location filename="../src/viewer/textview.cpp" line="244"/>
+        <location filename="../src/viewer/textview.cpp" line="239"/>
+        <location filename="../src/viewer/textview.cpp" line="251"/>
         <source>Greek</source>
         <translation>Greckie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="233"/>
-        <location filename="../src/viewer/textview.cpp" line="246"/>
+        <location filename="../src/viewer/textview.cpp" line="240"/>
+        <location filename="../src/viewer/textview.cpp" line="253"/>
         <source>Turkish</source>
         <translation>Tureckie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="234"/>
-        <location filename="../src/viewer/textview.cpp" line="245"/>
+        <location filename="../src/viewer/textview.cpp" line="241"/>
+        <location filename="../src/viewer/textview.cpp" line="252"/>
         <source>Hebrew</source>
         <translation>Hebrajskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="235"/>
-        <location filename="../src/viewer/textview.cpp" line="243"/>
+        <location filename="../src/viewer/textview.cpp" line="242"/>
+        <location filename="../src/viewer/textview.cpp" line="250"/>
         <source>Arabic</source>
         <translation>Arabskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="236"/>
-        <location filename="../src/viewer/textview.cpp" line="247"/>
+        <location filename="../src/viewer/textview.cpp" line="243"/>
+        <location filename="../src/viewer/textview.cpp" line="254"/>
         <source>Baltic</source>
         <translation>Bałtyckie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="237"/>
+        <location filename="../src/viewer/textview.cpp" line="244"/>
         <source>Vietnamese</source>
         <translation>Wietnamskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="240"/>
+        <location filename="../src/viewer/textview.cpp" line="247"/>
         <source>South European</source>
         <translation>Południowo-europejskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="241"/>
+        <location filename="../src/viewer/textview.cpp" line="248"/>
         <source>North European</source>
         <translation>Północno-europejskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="248"/>
+        <location filename="../src/viewer/textview.cpp" line="255"/>
         <source>Celtic</source>
         <translation>Celtyckie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="250"/>
+        <location filename="../src/viewer/textview.cpp" line="257"/>
         <source>Romanian</source>
         <translation>Rumuńskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="254"/>
+        <location filename="../src/viewer/textview.cpp" line="261"/>
         <source>Chinese Simplified</source>
         <translation>Chińskie uproszczone</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="255"/>
-        <location filename="../src/viewer/textview.cpp" line="256"/>
+        <location filename="../src/viewer/textview.cpp" line="262"/>
+        <location filename="../src/viewer/textview.cpp" line="263"/>
         <source>Chinese Traditional</source>
         <translation>Chińskie tradycyjne</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="257"/>
-        <location filename="../src/viewer/textview.cpp" line="258"/>
-        <location filename="../src/viewer/textview.cpp" line="259"/>
+        <location filename="../src/viewer/textview.cpp" line="264"/>
+        <location filename="../src/viewer/textview.cpp" line="265"/>
+        <location filename="../src/viewer/textview.cpp" line="266"/>
         <source>Japanese</source>
         <translation>Japońskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="260"/>
+        <location filename="../src/viewer/textview.cpp" line="267"/>
         <source>Korean</source>
         <translation>Koreańskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="261"/>
+        <location filename="../src/viewer/textview.cpp" line="268"/>
         <source>Thai</source>
         <translation>Tajskie</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="351"/>
-        <source>%1 characters</source>
-        <translation>%1 znaków</translation>
+        <location filename="../src/viewer/textview.cpp" line="359"/>
+        <source>%1 characters, %2 lines</source>
+        <translation>%1 znaków, %2 linii</translation>
     </message>
     <message>
-        <location filename="../src/viewer/textview.cpp" line="353"/>
+        <location filename="../src/viewer/textview.cpp" line="361"/>
         <source>loading... %1%</source>
         <translation>wczytywanie... %1%</translation>
+    </message>
+</context>
+<context>
+    <name>ViewManager</name>
+    <message>
+        <location filename="../src/viewer/viewmanager.cpp" line="104"/>
+        <source>Unknown file</source>
+        <translation>Nieznany plik</translation>
     </message>
 </context>
 <context>
@@ -1691,6 +1789,11 @@ Upewnij się że urządzenie jest dostępne i spróbuj ponownie.</translation>
         <location filename="../src/viewer/viewerwindow.cpp" line="54"/>
         <source>Image</source>
         <translation>Obraz</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/viewerwindow.cpp" line="60"/>
+        <source>Full Screen</source>
+        <translation>Pełny ekran</translation>
     </message>
 </context>
 </TS>
