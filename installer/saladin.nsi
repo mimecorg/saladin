@@ -1,6 +1,6 @@
 /**************************************************************************
 * This file is part of the Saladin program
-* Copyright (C) 2011-2013 Michał Męciński
+* Copyright (C) 2011-2014 Michał Męciński
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,28 +16,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
-!define VERSION "0.4"
-!define BUILDVERSION "0.4.0.4757"
-
 !define SRCDIR ".."
 !define BUILDDIR "..\release"
 
 !define UNINST_KEY "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Saladin"
-
-!ifndef SIGN
-    !verbose 2
-
-    !system "$\"${NSISDIR}\makensis$\" /V2 /DSIGN ${SCRIPTNAME}" = 0
-
-    !system "..\..\sign.bat saladin-${VERSION}-${ARCHITECTURE}.exe" = 0
-
-    SetCompress off
-
-    OutFile "$%TEMP%\signinst.exe"
-
-    Section
-    SectionEnd
-!else
 
 !include "MUI2.nsh"
 
@@ -49,12 +31,6 @@
     OutFile "$%TEMP%\innerinst.exe"
 !else
     !verbose 4
-
-    !system "$\"${NSISDIR}\makensis$\" /V2 /DSIGN /DINNER ${SCRIPTNAME}" = 0
-
-    !system "$%TEMP%\innerinst.exe" = 2
-
-    !system "..\..\sign.bat $%TEMP%\uninstall.exe" = 0
 
     SetCompressor /SOLID lzma
     SetCompressorDictSize 32
@@ -82,7 +58,7 @@
 
 Name "$(NAME)"
 
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install-blue.ico"
+!define MUI_ICON "${SRCDIR}\src\saladin.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall-blue.ico"
 
 !define MUI_WELCOMEFINISHPAGE_BITMAP "images\wizard.bmp"
@@ -128,7 +104,7 @@ VIProductVersion "${BUILDVERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Michał Męciński"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Saladin Setup"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright (C) 2011-2012 Michał Męciński"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright (C) 2011-2014 Michał Męciński"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "OriginalFilename" "saladin-${VERSION}-${ARCHITECTURE}.exe"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Saladin"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
@@ -237,5 +213,4 @@ Section "Uninstall"
 
 SectionEnd
 
-!endif
 !endif
