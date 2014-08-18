@@ -50,6 +50,8 @@ private slots:
     void rotateLeft();
     void rotateRight();
 
+    void blackBackground();
+
     void contextMenuRequested( const QPoint& pos );
 
     void loadImage();

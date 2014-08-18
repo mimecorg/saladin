@@ -19,7 +19,8 @@
 #include "imagelabel.h"
 
 ImageLabel::ImageLabel( QWidget* parent ) : QWidget( parent ),
-    m_zoom( 1.0 )
+    m_zoom( 1.0 ),
+    m_black( false )
 {
     setBackgroundRole( QPalette::Base );
     setAutoFillBackground( true );
@@ -49,6 +50,12 @@ void ImageLabel::setZoom( double zoom )
     update();
 
     emit zoomChanged();
+}
+
+void ImageLabel::setBlackBackground( bool black )
+{
+    m_black = black;
+    update();
 }
 
 double ImageLabel::actualZoom() const
@@ -86,6 +93,9 @@ void ImageLabel::paintEvent( QPaintEvent* /*e*/ )
     target.setTop( ( height() - scaled.height() ) / 2 );
     target.setLeft( ( width() - scaled.width() ) / 2 );
     target.setSize( scaled );
+
+    if ( m_black && m_image.hasAlphaChannel() )
+        painter.fillRect( target, Qt::black );
 
     painter.drawImage( target, m_image );
 }

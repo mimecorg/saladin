@@ -10,6 +10,8 @@
     <separator/>
     <action id="rotateLeft"/>
     <action id="rotateRight"/>
+    <separator/>
+    <action id="blackBackground"/>
   </strip>
   <menu id="menuContext">
     <action id="copy"/>

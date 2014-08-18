@@ -33,6 +33,9 @@ public:
     void setZoom( double zoom );
     double zoom() const { return m_zoom; }
 
+    void setBlackBackground( bool black );
+    bool isBlackBackground() const { return m_black; }
+
     double actualZoom() const;
 
 public: // overrides
@@ -55,6 +58,8 @@ private:
     QImage m_image;
 
     double m_zoom;
+
+    bool m_black;
 };
 
 #endif

@@ -66,6 +66,12 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     connect( action, SIGNAL( triggered() ), this, SLOT( rotateRight() ) );
     setAction( "rotateRight", action );
 
+    action = new QAction( IconLoader::icon( "black-background" ), tr( "&Black Background" ), this );
+    action->setShortcut( Qt::Key_B );
+    action->setCheckable( true );
+    connect( action, SIGNAL( triggered() ), this, SLOT( blackBackground() ) );
+    setAction( "blackBackground", action );
+
     loadXmlUiFile( ":/resources/imageview.xml" );
 
     QWidget* main = new QWidget( parentWidget );
@@ -127,6 +133,10 @@ void ImageView::initializeSettings()
     bool fit = settings->value( "ZoomToFit", false ).toBool();
     action( "zoomFit" )->setChecked( fit );
     m_label->setZoom( fit ? -1.0 : 1.0 );
+
+    bool black = settings->value( "BlackBackground", false ).toBool();
+    action( "blackBackground" )->setChecked( black );
+    m_label->setBlackBackground( black );
 }
 
 void ImageView::storeSettings()
@@ -134,6 +144,7 @@ void ImageView::storeSettings()
     LocalSettings* settings = application->applicationSettings();
 
     settings->setValue( "ZoomToFit", m_label->zoom() < 0.0 );
+    settings->setValue( "BlackBackground", m_label->isBlackBackground() );
 }
 
 void ImageView::load()
@@ -251,6 +262,13 @@ void ImageView::rotateRight()
     m_label->setImage( m_label->image().transformed( transform ) );
 
     updateStatus();
+}
+
+void ImageView::blackBackground()
+{
+    bool black = action( "blackBackground" )->isChecked();
+
+    m_label->setBlackBackground( black );
 }
 
 void ImageView::contextMenuRequested( const QPoint& pos )
