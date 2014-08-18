@@ -1147,7 +1147,7 @@ void PaneWidget::updateStatus()
     qint64 selectedSize = m_model->selectedItemsSize();
     qint64 totalSize = m_model->totalItemsSize();
 
-    m_selectionStatus->setText( QString( "%1 of %2 items selected (%3 of %4)" ).arg( QString::number( selectedCount ), QString::number( totalCount ),
+    m_selectionStatus->setText( tr( "%1 of %2 items selected (%3 of %4)" ).arg( QString::number( selectedCount ), QString::number( totalCount ),
         formatSize( selectedSize, false ), formatSize( totalSize, true ) ) );
 
     ShellDrive drive = manager->driveFromFolder( m_model->folder() );
