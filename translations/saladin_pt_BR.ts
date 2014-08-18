@@ -430,9 +430,14 @@
         <translation>Rotacionar para &amp;Direita</translation>
     </message>
     <message>
-        <location filename="../src/viewer/imageview.cpp" line="101"/>
-        <location filename="../src/viewer/imageview.cpp" line="154"/>
-        <location filename="../src/viewer/imageview.cpp" line="185"/>
+        <location filename="../src/viewer/imageview.cpp" line="69"/>
+        <source>&amp;Black Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/imageview.cpp" line="107"/>
+        <location filename="../src/viewer/imageview.cpp" line="165"/>
+        <location filename="../src/viewer/imageview.cpp" line="196"/>
         <source>Image</source>
         <translation>Imagem</translation>
     </message>
@@ -1202,6 +1207,11 @@ Verifique se o dispositivo está disponível e tente novamente.</translation>
 Make sure the device is available and try again.</source>
         <translation>O marcador selecionado não pode ser aberto.
 Verifique se o dispositivo está disponível e tente novamente.</translation>
+    </message>
+    <message>
+        <location filename="../src/panewidget.cpp" line="1150"/>
+        <source>%1 of %2 items selected (%3 of %4)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/panewidget.cpp" line="1159"/>

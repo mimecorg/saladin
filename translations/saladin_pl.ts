@@ -430,9 +430,14 @@
         <translation>Obróć w &amp;prawo</translation>
     </message>
     <message>
-        <location filename="../src/viewer/imageview.cpp" line="101"/>
-        <location filename="../src/viewer/imageview.cpp" line="154"/>
-        <location filename="../src/viewer/imageview.cpp" line="185"/>
+        <location filename="../src/viewer/imageview.cpp" line="69"/>
+        <source>&amp;Black Background</source>
+        <translation>&amp;Czarne tło</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/imageview.cpp" line="107"/>
+        <location filename="../src/viewer/imageview.cpp" line="165"/>
+        <location filename="../src/viewer/imageview.cpp" line="196"/>
         <source>Image</source>
         <translation>Obraz</translation>
     </message>
@@ -1202,6 +1207,11 @@ Upewnij się że urządzenie jest dostępne i spróbuj ponownie.</translation>
 Make sure the device is available and try again.</source>
         <translation>Zakładka którą wybrałeś nie może zostać otwarta.
 Upewnij się że urządzenie jest dostępne i spróbuj ponownie.</translation>
+    </message>
+    <message>
+        <location filename="../src/panewidget.cpp" line="1150"/>
+        <source>%1 of %2 items selected (%3 of %4)</source>
+        <translation>%1 z %2 elementów zaznaczonych (%3 z %4)</translation>
     </message>
     <message>
         <location filename="../src/panewidget.cpp" line="1159"/>
