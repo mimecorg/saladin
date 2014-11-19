@@ -1,0 +1,45 @@
+<html>
+<head>
+  <title>Tools</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<h1>Tools</h1>
+
+<h2>ZIP Archives</h2>
+
+<p>Saladin can handle ZIP archives using standard functionality of Windows Explorer. You can open a ZIP archive like a regular directory using double click or <b>Enter</b>. You can extract files from ZIP archives and add files to existing archives using standard copy operation or drag and drop. You can also create folders and rename and delete files and folders in a ZIP archive. To add files to a ZIP archive, select files to pack, select the <b>Tools &gt; <img src="../../icons/pack-16.png" /> Pack</b> command (<b>Ctrl+P</b>) and enter the name of the achive in the target directory. For working with other archive types install an external tool which integrates with Windows Shell, for example <a href="http://www.7-zip.org/">7-Zip</a>.</p>
+
+<h2>FTP Connections</h2>
+
+<p>Saladin also has basic support for the FTP protocol through Windows Explorer functionality. To connect to an FTP server, select <b>Tools &gt; Open &gt; <img src="../../icons/ftp-16.png" /> Connect To FTP</b> command (<b>Ctrl+F</b>) and enter the host name or IP address and optionally change the port number and the initial path. You can also enter user name and password if the server requires authentication. The URL of the site can also be entered directly in the location bar. Standard file operations like copying, moving, renaming and deleting are supported for FTP connections.</p>
+
+<h2>Search &amp; Explore</h2>
+
+<p>To search for files in the current directory and its subdirectories, select <b>Tools &gt; <img src="../../icons/find-16.png" /> Search</b> (<b>Ctrl+S</b>). Enter the pattern using <a href="wildcards.html">wildcards</a>, for example <code>*.txt</code>. You can also enter multiple patterns by separating them with a semicolon, for example <code>*.txt;*.ini</code>. You can also search for files containing the given text. Enable the <b>Text</b> option and enter the text you want to search for. Enable <b>Match case</b> if you want to perform a case-sensitive search. When searching for a text, binary files will be automatically excluded.</p>
+
+<p>The list of search results is similar to the lists in the main window, except that the path relative to the current directory is displayed. The list also displays the size of the file in bytes, the date and time when the file was last modified, and the attributes of the file. You can sort the list by any column by clicking on the column header. You can also press the right mouse button on an item to show the contextual menu for that item.</p>
+
+<p>Use the <b><img src="../../icons/view-16.png" /> View</b> command (<b>F3</b>) to open the current file in the search results using the viewer. Use the <b><img src="../../icons/edit-16.png" /> Edit</b> command (<b>F4</b>) to open the current file for editing in a text editor. The <b><img src="../../icons/goto-16.png" /> Go To File</b> command (<b>Ctrl+G</b>) will close the search results and highlight the selected file in the active panel. The <b><img src="../../icons/copy-names-16.png" /> Copy File Names</b> command (<b>Ctrl+Shift+C</b>) can be used to copy the relative paths of all files to the Clipboard.</p>
+
+<p>You can also open the current directory in Windows Explorer using <b>Tools &gt; <img src="../../icons/explore-16.png" /> Explore</b> (<b>Ctrl+Shift+E</b>).</p>
+
+<h2>Compare</h2>
+
+<p>You can compare two files using an external tool such as <a href="http://winmerge.org/">WinMerge</a> or the TortoiseMerge utility from <a href="http://tortoisesvn.net/">TortoiseSVN</a>. To configure the tool open <b><img src="../../icons/configure-16.png" /> Saladin Settings</b> and select the path to the tool's executable file. You can select two files in the active panel or one in the active and the other one in the target pane and then select the <b>Tools &gt; <img src="../../icons/compare-16.png" /> Compare</b> command (<b>Ctrl+M</b>) to run the compare tool.</p>
+
+<p>Use the <b>Tools &gt; Compare &gt; <img src="../../icons/compare-16.png" /> Folder Compare</b> command (<b>Ctrl+Shift+M</b>) to compare items in the current and the target directories. This command selects all files and folders from the current directory which are not present in the target directory and files that are newer than those in the target directory. This is useful for synchronizing the contents of two directories.</p>
+
+<h2>Bookmarks</h2>
+
+<p>Bookmark can be used to remember frequently used local directories and FTP sites. Click on the <b><img src="../../icons/bookmark-16.png" /> Bookmarks</b> icon and select <b><img src="../../icons/bookmark-16.png" /> Add Bookmark</b> (<b>Ctrl+Shift+D</b>) to save the current location as a bookmark with the given name. When an FTP site is added as a bookmark, you can choose to store the password.</p>
+
+<p>To open a bookmark, click on the <b><img src="../../icons/bookmark-16.png" /> Bookmarks</b> icon or press <b>Ctrl+D</b> and select the bookmark from the list. When an FTP bookmark is activated, the <b>Open FTP Site</b> window is opened allowing to enter password or change the details of the FTP site without modifying the original bookmark. You can delete and rename existing bookmarks by selecting the <b><img src="../../icons/edit-16.png" /> Edit Bookmarks</b> command from the <b>Bookmarks</b> menu. Bookmarks are shared by both panels and automatically remembered when Saladin is closed.</p>
+
+<h2>History</h2>
+
+<p>Each panel remembers last visited directories. You can navigate to previous or next location using <b>Alt+Right</b> and <b>Alt+Left</b> keys, respectively, or using the additional mouse buttons if your mouse supports ones. You can also select one of the locations from the list by clicking on the <b><img src="../../icons/history-16.png" /> History</b> icon or pressing <b>Ctrl+G<b>.</p>
+
+</body>
+</html>

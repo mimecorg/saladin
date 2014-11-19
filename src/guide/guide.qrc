@@ -1,14 +1,23 @@
 <RCC version="1.0">
 <qresource prefix="/guide">
-  <file>functions.html</file>
-  <file>index.html</file>
-  <file>lists.html</file>
-  <file>masks.html</file>
-  <file>regexps.html</file>
-  <file>shortcuts.html</file>
   <file>style.css</file>
-  <file>tools.html</file>
-  <file>viewer.html</file>
-  <file>wildcards.html</file>
+  <file>en/functions.html</file>
+  <file>en/index.html</file>
+  <file>en/lists.html</file>
+  <file>en/masks.html</file>
+  <file>en/regexps.html</file>
+  <file>en/shortcuts.html</file>
+  <file>en/tools.html</file>
+  <file>en/viewer.html</file>
+  <file>en/wildcards.html</file>
+  <file>es/functions.html</file>
+  <file>es/index.html</file>
+  <file>es/lists.html</file>
+  <file>es/masks.html</file>
+  <file>es/regexps.html</file>
+  <file>es/shortcuts.html</file>
+  <file>es/tools.html</file>
+  <file>es/viewer.html</file>
+  <file>es/wildcards.html</file>
 </qresource>
 </RCC>

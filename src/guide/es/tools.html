@@ -1,0 +1,46 @@
+<html>
+<head>
+  <title>Herramientas</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1>Herramientas</h1>
+
+<h2>Ficheros ZIP</h2>
+
+<p>Saladin soporta archivos comprimidos en ZIP debido a la funcionalidad est&aacute;ndar del Explorador de Windows. Puede abrir un archivo ZIP haciendo doble clic o pulsando <b>Intro</b>, igual que una carpeta normal. Puede extraer o a&ntilde;adir archivos de ficheros ZIP mediante la operaci&oacute;n de arrastrar y soltar. Tambi&eacute;n puede crear carpetas y renombrar y borrar archivos dentro de un fichero ZIP. Para a&ntilde;adir archivos a un fichero ZIP, seleccione los archivos que desee comprimir, seleccione el comando <b>Herramientas &gt; <img src="../../icons/pack-16.png" /> Comprimir</b> (<b>Ctrl+P</b>) y escriba el nombre del fichero en el directorio de destino. Para trabajar con otros tipos de archivos comprimidos instale una herramienta externa que se integre con Windows Shell como, por ejemplo, <a href="http://www.7-zip.org/">7-Zip</a>.</p>
+
+<h2>Conexiones FTP</h2>
+
+<p>Saladin tambi&eacute;n tiene un soporte b&aacute;sico para el protocolo FTP a trav&eacute;s de la funcionalidad del Explorador de  Windows. Para conectarse a un servidor FTP, seleccione el comando <b>Herramientas &gt; Abrir <img src="../../icons/ftp-16.png" /> Conectar a FTP</b> (<b>Ctrl+F</b>) y escriba el nombre del servidor o direcci&oacute;n IP, opcionalmente puede cambiar el n&uacute;mero de puerto y la ruta de inicio. Tambi&eacute;n puede escribir el usuario y la contrase&ntilde;a si el servidor las pide. La URL del sitio se puede escribir directamente en la barra de direcciones. Las operaciones normales como copiar, mover, cambiar de nombre y eliminar se pueden realizar en conexiones FTP.</p>
+
+<h2>Buscar y explorar</h2>
+
+<p>Para buscar archivos en el directorio actual y en sus subcarpetas, seleccione <b>Herramientas &gt; <img src="../../icons/find-16.png" /> Buscar</b> (<b>Ctrl+S</b>). Introduzca el patr&oacute;n mediante <a href="wildcards.html">caracteres comod&iacute;n</a>, por ejemplo <code>*.txt</code>. Puede introducir varios patrones si los separa con un punto y coma, por ejemplo, <code>*.txt;*.ini</code>. Tambi&eacute;n puede buscar archivos que contengan un texto concreto. Active la opci&oacute;n <b>Texto</b> e introduzca el texto que quiera buscar. Active <b>Diferenciar may&uacute;sculas y min&uacute;sculas</b> si desea realizar una b&uacute;squeda que diferencie las may&uacute;sculas de las min&uacute;sculas. Cuando busque un texto, los archivos binarios se excluir&aacute;n autom&aacute;ticamente.</p>
+
+<p>La lista de resultados de b&uacute;squeda es similar a la lista de la ventana principal, excepto que se muestra la ruta del directorio actual. La lista tambi&eacute;n muestra el tama&ntilde;o del archivo en bytes, la fecha y la hora en la que se modific&oacute; por &uacute;ltima vez, y los atributos del archivo. Puede organizar la lista por cualquier columna al hacer clic en el encabezado de la columna. Pulse el bot&oacute;n derecho del rat&oacute;n en un elemento para mostrar el men&uacute; contextual para ese elemento.</p>
+
+<p>Utilice el comando <b><img src="../../icons/view-16.png" /> Visualizar</b> (<b>F3</b>) para abrir el archivo actual con el visor en los resultados de b&uacute;squeda. Utilice el comando <b><img src="../../icons/edit-16.png" /> Editar</b> (<b>F4</b>) para abrir el archivo actual para su edici&oacute;n en un editor de texto. El comando <b>Ir a archivo</b> (<b>Ctrl+G</b>) cerrar&aacute; los resultados de b&uacute;squeda y resaltar&aacute; el archivo seleccionado en el panel activo. El comando <b><img src="../../icons/copy-names-16.png" /> Copiar los nombres de archivo</b> (<b>Ctrl+Shift+C</b>) se puede usar para copiar las rutas de acceso relativas de todos los archivos al Portapapeles.</p>
+
+<p>Tambi&eacute;n puede abrir el archivo actual en el Explorador de Windows con <b>Herramientas &gt; <img src="../../icons/explore-16.png" /> Explorar</b> (<b>Ctrl+Shift+E</b>).</p>
+
+<h2>Comparar</h2>
+
+<p>Puede comparar dos archivos con una herramienta externa como <a href="http://winmerge.org/">WinMerge</a> o la aplicaci&oacute;n de TortoiseMerge <a href="http://tortoisesvn.net/">TortoiseSVN</a>. Para configurar la herramienta abra la <b><img src="../../icons/configure-16.png" /> Configuraci&oacute;n de Saladin</b> y seleccione la ruta del ejecutable del programa. Puede seleccionar dos archivos en el panel activo o uno en el activo y el otro en el panel de destino, entonces seleccione el comando <b>Herramientas &gt; <img src="../../icons/compare-16.png" /> Comparar</b> (<b>Ctrl+M</b>) para ejecutar la herramienta de comparaci&oacute;n.</p>
+
+<p>Utilice el comando <b>Herramientas &gt; Comparar &gt; <img src="../../icons/compare-16.png" /> Comparar directorios</b> (<b>Ctrl+Shift+M</b>) para comparar los archivos en el directorio actual y en el de destino. Este comando selecciona todos los archivos y carpetas del directorio actual que no est&aacute;n en el directorio de destino, y los archivos que est&aacute;n m&aacute;s actualizados que en el directorio de destino. Es &uacute;til a la hora de sincronizar el contenido de dos directorios.</p>
+
+<h2>Marcadores</h2>
+
+<p>Los marcadores se pueden utilizar para recordar los directorios locales y las direcciones FTP que utilice frecuentemente. Haga clic en el icono <b><img src="../../icons/bookmark-16.png" /></b><b> Marcadores</b> y seleccione <b><img src="../../icons/bookmark-16.png" /> A&ntilde;adir marcador</b> (<b>Ctrl+Shift+D</b>) para guardar la ruta actual como marcador con el nombre que elija.  Cuando guarde un FTP como marcador, puede elegir guardar la contrase&ntilde;a.</p>
+
+<p>Para abrir un marcador, haga clic en el icono <b><img src="../../icons/edit-16.png" /></b><b> Marcadores</b> o pulse <b>Ctrl+D</b> y seleccione el marcador de la lista. Cuando se activa un marcador FTP, la ventana de <b>Abrir FTP</b> aparece para que pueda escribir su contrase&ntilde;a o para cambiar detalles de la direcci&oacute;n sin modificar el marcador original. Puede eliminar y cambiar el nombre a los marcadores existentes accediendo a <b><img src="../../icons/edit-16.png" /> Editar marcadores</b> del men&uacute; de <b>Marcadores</b>. Los marcadores se comparten entre los dos paneles y se guardan autom&aacute;ticamente cuando se cierra Saladin.</p>
+
+<h2>Historial</h2>
+
+<p>Cada panel guarda las carpetas que se han visitado anteriormente. Puede navegar a direcciones anteriores o posteriores con las combinaciones de teclas <b>Alt+Derecha</b> y <b>Alt+Izquierda</b>, respectivamente; o utilizando los botones adicionales del rat&oacute;n si el suyo los tiene. Tambi&eacute;n puede seleccionar una de las direcciones de la lista al hacer clic en el icono <b><img src="../../icons/history-16.png" /> Historial</b> o pulsando <b>Ctrl+G<b>.</p>
+
+</body>
+</html>

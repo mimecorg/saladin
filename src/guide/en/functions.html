@@ -1,0 +1,41 @@
+<html>
+<head>
+  <title>Basic Functions</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<h1>Basic Functions</h1>
+
+<h2>View</h2>
+
+<p>The <b>Functions &gt; <img src="../../icons/view-16.png" /> View</b> command (<b>F3</b>) opens the current file (the one under the cursor) using the internal or external viewer. By default the <a href="viewer.html">internal viewer</a> is used. You can also use an external viewer application and select it in <b><img src="../../icons/configure-16.png" /> Saladin Settings</b>.</p>
+
+<h2>Edit</h2>
+
+<p>The <b>Functions &gt; <img src="../../icons/edit-16.png" /> Edit</b> command (<b>F4</b>) opens the current file for editing in a text editor. By default the standard Notepad application is used but you can install a more powerful editor such as <a href="http://notepad-plus-plus.org/">Notepad++</a> and select it in <b><img src="../../icons/configure-16.png" /> Saladin Settings</b>. You can use the <b>Functions &gt; <img src="../../icons/edit-16.png" /> Edit &gt; <img src="../../icons/file-new-16.png" /> Create File</b> command (<b>Shift+F4</b>) to create a new empty file with the given name in the current directory and open it in the editor.</p>
+
+<h2>Copy &amp; Move</h2>
+
+<p>Selected files and directories can be copied using <b>Functions &gt; <img src="../../icons/copy-16.png" /> Copy</b> (<b>F5</b>) and moved using <b>Functions &gt; <img src="../../icons/move-16.png" /> Move</b> (<b>F6</b>). Use <b>Functions &gt; <img src="../../icons/copy-16.png" /> Copy &gt; <img src="../../icons/clone-16.png" /> Clone In Source Directory</b> (<b>Shift+F5</b>) to clone the selected items in the source directory. Use <b>Functions &gt; <img src="../../icons/move-16.png" /> Move &gt; <img src="../../icons/multi-rename-16.png" /> Rename In Source Directory</b> (<b>Shift+F6</b>) to rename multiple items at once. Cloning or multi-renaming also occurs when the source and target directories are the same.</p>
+
+<p>When copying or moving a single item, its name can be changed directly in the confirmation dialog. When copying or moving multiple items, the multi-rename panel can be opened by clicking the <b>Rename</b> button (it is automatically opened when cloning or renaming). In some cases renaming is not allowed when Windows does not support it.</p>
+
+<p>In the multi-rename panel special <a href="masks.html">masks</a> can be entered in the <b>Name</b> and <b>Extension</b> fields to build the new name of selected items. Also any part of the name can be replaced using <b>Search</b> and <b>Replace</b> options. If the <b>Regular expressions</b> option is enabled, the search string can contain a <a href="regexps.html">regular expression</a>. Replacement is done after building the name from the masks. Finally the characters in the resulting names can be converted to upper/lower case using the <b>Case</b> option. The list in the bottom part of the multi-rename panel displays the original name and the new name of each item.</p>
+
+<p>For long operations a standard progress dialog is displayed while transfering the files. Warning messages are displayed when the operation attempts to overwrite an existing file. When the <b>Overwrite without prompt</b> option is selected files are replaced without additional warnings.</p>
+
+<h2>Create Folder</h2>
+
+<p>Use <b>Functions &gt; <img src="../../icons/folder-new-16.png" />Create Folder</b> (<b>F7</b>) to create a new subdirectory with the given name in the current directory.</p>
+
+<h2>Delete</h2>
+
+<p>Use the <b>Functions &gt; <img src="../../icons/trashcan-16.png" />Delete</b> command or the <b>F8</b> or <b>Delete</b> key to delete selected items. Files and directories are moved to the Recycle Bin if it is enabled on the given drive. The <b>Functions &gt; <img src="../../icons/trashcan-16.png" />Delete &gt; <img src="../../icons/delete-16.png" /> Delete Permanently</b> command or the <b>Shift+F8</b> or <b>Shift+Delete</b> key deletes the items without using the Recycle Bin. In both cases an additional warning is displayed to confirm the operation.</b>
+
+<h2>Open Console</h2>
+
+<p>The last basic function is <b>Functions &gt; <img src="../../icons/terminal-16.png" /> Open Console</b> (<b>F9</b>) which opens the Command Prompt in the current directory. By default the standard <tt>cmd.exe</tt> application is used but you can select a different console. Saladin does not have an integrated command line interpreter.</p>
+
+</body>
+</html>

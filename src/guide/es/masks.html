@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>M&aacute;scaras de cambio de nombre</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1>M&aacute;scaras de cambio de nombre</h1>
+
+<p>Los siguientes comandos se pueden utilizar en los campos de nombre y extensi&oacute;n al cambiar de nombre o clonar varios archivos:</p>
+
+<table width="100%">
+<tr>
+ <th>Comando</th>
+ <th>Descripci&oacute;n</th>
+</tr>
+<tr>
+ <td valign="top">[n:<i>de</i>:<i>a</i>]</td>
+ <td>Introduce parte del nombre original del archivo (sin extensi&oacute;n). Puede a&ntilde;adir opcionalmente la posici&oacute;n de inicio y final (los valores positivos comienzan desde el principio; los negativos, desde el final). Por ejemplo: <ul><li>[n] - nombre del archivo completo</li>
+   <li>[n:3] - tercer car&aacute;cter del nombre del archivo</li>
+   <li>[n:3:] - nombre del archivo desde el tercer car&aacute;cter hasta el final</li>
+   <li>[n:3:6] - nombre del archivo desde el tercer car&aacute;cter hasta el sexto</li>
+   <li>[n:3:-2] - nombre del archivo desde el tercer car&aacute;cter hasta el segundo empezando por el final</li></ul></td>
+</tr>
+<tr>
+ <td valign="top">[e:<i>de</i>:<i>a</i>]</td>
+ <td>Introduce parte de la extensi&oacute;n original. Puede a&ntilde;adir opcionalmente la posici&oacute;n de inicio y final (de igual manera que con el patr&oacute;n [n])</td>
+</tr>
+<tr>
+ <td valign="top">[c:<i>ancho</i>:<i>desde</i>:<i>incremento</i>]</td>
+ <td>A&ntilde;ade el valor de un medidor. Se pueden a&ntilde;adir opcionalmente el ancho, el n&uacute;mero de comienzo y el incremento. Por ejemplo: <ul><li>[c] - 1, 2, 3...</li>
+   <li>[c:3] - 001, 002, 003...</li>
+   <li>[c:3:100] - 100, 101, 102...</li>
+   <li>[c:3:100:10] - 100, 110, 120...</li></ul></td>
+</tr>
+</table>
+
+</body>
+</html>

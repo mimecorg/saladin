@@ -1,0 +1,137 @@
+<html>
+<head>
+  <title>Expresiones regulares</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1>Expresiones regulares</h1>
+
+<p>Las siguientes expresiones regulares pueden usarse al cambiar de nombre o clonar varios archivos si la opci&oacute;n de expresiones regulares est&aacute; activada.</p>
+
+<table width="100%">
+<tr>
+ <th>Expresi&oacute;n</th>
+ <th>Descripci&oacute;n</th>
+</tr>
+<tr>
+ <td valign="top">.</td>
+ <td>Representa cualquier car&aacute;cter.</td>
+</tr>
+<tr>
+ <td valign="top">\</td>
+ <td>Obvia al car&aacute;cter que hay despu&eacute;s de la barra invertida.</td>
+</tr>
+<tr>
+ <td valign="top">\x<i>xxxx</i></td>
+ <td>Representa al car&aacute;cter Unicode correspondiente al n&uacute;mero hexadecimal <i>hhhh</i>.</td>
+</tr>
+<tr>
+ <td valign="top">\0<i>ooo</i></td>
+ <td>Representa al car&aacute;cter ASCII correspondiente al n&uacute;mero octal <i>ooo</i>.</td>
+</tr>
+<tr>
+ <td valign="top">\d</td>
+ <td>Representa un d&iacute;gito.</td>
+</tr>
+<tr>
+ <td valign="top">\D</td>
+ <td>Representa un no d&iacute;gito.</td>
+</tr>
+<tr>
+ <td valign="top">\s</td>
+ <td>Representa un car&aacute;cter de espacio en blanco.</td>
+</tr>
+<tr>
+ <td valign="top">\S</td>
+ <td>Representa un car&aacute;cter que no sea un espacio en blanco.</td>
+</tr>
+<tr>
+ <td valign="top">\w</td>
+ <td>Representa un car&aacute;cter de palabra (una letra, d&iacute;gito o subrayado).</td>
+</tr>
+<tr>
+ <td valign="top">\W</td>
+ <td>Representa un car&aacute;cter que no sea de palabra.</td>
+</tr>
+<tr>
+ <td valign="top">[...]</td>
+ <td>Representa cualquier car&aacute;cter de la lista. Dentro de la lista puede utilizar un guion para indicar un rango de caracteres, por ejemplo, [0-9] representa cualquier d&iacute;gito.</td>
+</tr>
+<tr>
+ <td valign="top">[^...]</td>
+ <td>Representa cualquier car&aacute;cter que no est&eacute; en la lista.</td>
+</tr>
+<tr>
+ <td valign="top">|</i></td>
+ <td>Representa cualquier expresi&oacute;n que separa.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>?</td>
+ <td>Representa cero o una repetici&oacute;n de <i>E</i> (donde <i>E</i> es un car&aacute;cter cualquiera, grupo o conjunto de caracteres).</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>*</td>
+ <td>Representa cero o una repetici&oacute;n de <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>+</td>
+ <td>Representa una o m&aacute;s repeticiones de <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{<i>n</i>}</td>
+ <td>Representa exactamente <i>n</i> repeticiones de <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{<i>n</i>,}</td>
+ <td>Representa al menos <i>n</i> repeticiones de <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{,<i>m</i>}</td>
+ <td>Representa como m&aacute;ximo <i>m</i> repeticiones de <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top"><i>E</i>{<i>n</i>,<i>m</i>}</td>
+ <td>Representa al menos <i>n</i> y como m&aacute;ximo <i>m</i> repeticiones de <i>E</i>.</td>
+</tr>
+<tr>
+ <td valign="top">(...)</td>
+ <td>Agrupa una subexpresi&oacute;n para que se puede cuantificar y grabada.</td>
+</tr>
+<tr>
+ <td valign="top">\1, \2, ...</td>
+ <td>Referencia inversa; representa el mismo texto que se represent&oacute; previamente en el primer, segundo, etc. conjunto de par&eacute;ntesis. Tambi&eacute;n puede usarse en el texto de sustituci&oacute;n para insertar una agrupaci&oacute;n grabada.</td>
+</tr>
+<tr>
+ <td valign="top">^</td>
+ <td>Coincide solo en el comienzo de la cadena de texto.</td>
+</tr>
+<tr>
+ <td valign="top">$</td>
+ <td>Coincide solo en el final de la cadena de texto.</td>
+</tr>
+<tr>
+ <td valign="top">\b</td>
+ <td>Coincide solo en los l&iacute;mites de una palabra (el principio y el final de una palabra).</td>
+</tr>
+<tr>
+ <td valign="top">\B</td>
+ <td>Coincide solo con los l&iacute;mites de una no palabra.</td>
+</tr>
+<tr>
+ <td valign="top">(?=<i>E</i>)</td>
+ <td>Anticipo positivo; coincide solo si <i>E</t> coincide en la posici&oacute;n actual.</td>
+</tr>
+<tr>
+ <td valign="top">(?!<i>E</i>)</td>
+ <td>Anticipo negativo; coincide solo si <i>E</t> no coincide en la posici&oacute;n actual.</td>
+</tr>
+<tr>
+ <td valign="top">(?:<i>E</i>)</td>
+ <td>Grupo sin captura.</td>
+</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>Funciones b&aacute;sicas</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1>Funciones b&aacute;sicas</h1>
+
+<h2>Visualizar</h2>
+
+<p>El comando <b>Funciones &gt; <img src="../../icons/view-16.png" /> Visualizar</b> (<b>F3</b>) abre el archivo actual (el que est&aacute; bajo el cursor) con el visor interno o externo. Por defecto se utiliza el <a href="viewer.html">visor interno</a>. Tambi&eacute;n puede utilizar otra aplicaci&oacute;n como visor y seleccionarla en la <b><img src="../../icons/configure-16.png" /> Configuraci&oacute;n de Saladin</b>.</p>
+
+<h2>Editar</h2>
+
+<p>El comando <b>Funciones &gt; <img src="../../icons/view-16.png" /> Editar</b> (<b>F4</b>) abre el archivo actual para su edici&oacute;n en un editor de texto. Por defecto se utiliza el Bloc de notas, pero puede instalar un editor m&aacute;s potente como el <a href="http://notepad-plus-plus.org/">Notepad++</a> y seleccionarlo en la <b><img src="../../icons/configure-16.png" /> Configuraci&oacute;n de Saladin</b>. Puede utilizar el comando <b>Funciones &gt; <img src="../../icons/edit-16.png" /> Editar &gt; <img src="../../icons/file-new-16.png" /> Crear archivo</b> (<b>Shift+F4</b>) para crear un nuevo archivo vac&iacute;o en la carpeta actual y abrirlo con el editor de texto.</p>
+
+<h2>Copiar y mover</h2>
+
+<p>Se pueden copiar los archivos y las carpetas seleccionados de la siguiente manera: <b>Funciones &gt; <img src="../../icons/copy-16.png" /> Copiar</b> (<b>F5)</b>, o moverlos mediante <b>Funciones &gt; <img src="../../icons/move-16.png" /> Mover</b> (<b>F6</b>). Puede clonar los archivos seleccionados en el directorio de origen mediante <b>Funciones &gt; <img src="../../icons/copy-16.png" /> Copiar &gt; <img src="../../icons/clone-16.png" /> Clonar en el directorio de origen</b> (<b>Shift+F5</b>). Puede cambiar el nombre de varios archivos a la vez mediante <b>Funciones &gt; <img src="../../icons/move-16.png" /> Mover &gt; <img src="../../icons/multi-rename-16.png" /> Renombrar en el directorio de origen</b> (<b>Shift+F6</b>). Tambi&eacute;n se puede clonar o cambiar el nombre a varios archivos cuando los directorios de origen y de destino son el mismo. </p>
+
+<p>Cuando se copia o se mueve un solo elemento, su nombre se puede cambiar directamente en el cuadro de di&aacute;logo para confirmar la acci&oacute;n. Cuando se copian o se mueven varios elementos, puede abrir el panel de cambio de nombre m&uacute;ltiple al hacer clic en el bot&oacute;n <b>Cambiar nombre</b> (se abre autom&aacute;ticamente cuando se clona o se cambia de nombre).   En algunos casos, no se puede cambiar el nombre porque Windows no lo permite.</p>
+
+<p>En el panel de cambio de nombre, se pueden utilizar <a href="masks.html">m&aacute;scaras</a> especiales en los campos <b>Nombre</b> y <b>Extensi&oacute;n</b> para crear el nuevo nombre de los elementos seleccionados. Adem&aacute;s, cualquier parte del nombre se puede reemplazar mediante las opciones de <b>Buscar</b> y <b>Reemplazar</b>. Si est&aacute; activada la opci&oacute;n de <b>Expresiones regulares</b>, la cadena de texto que se vaya a buscar puede contener <a href="regexps.html">expresiones regulares</a>. El reemplazo se realiza despu&eacute;s de la creaci&oacute;n del nombre a partir de las m&aacute;scaras. Por &uacute;ltimo, los caracteres del nombre resultante se pueden convertir a may&uacute;sculas o min&uacute;sculas con la opci&oacute;n <b>May&uacute;sculas y min&uacute;sculas</b>. La lista de la parte final del panel de cambio de nombre m&uacute;ltiple muestra el nombre original y el nuevo de cada archivo.</p>
+
+<p>Cuando la acci&oacute;n de mover archivos requiera tiempo, se mostrar&aacute; un cuadro de di&aacute;logo con el progreso. Se muestran mensajes de aviso cuando se intenta sobrescribir un archivo existente. Cuando la opci&oacute;n de <b>Sobrescribir sin preguntar</b> est&aacute; activada, los archivos seleccionados se reemplazan sin previo aviso.</p>
+
+<h2>Crear carpeta</h2>
+
+<p>Puede crear una nueva carpeta con el nombre que desee en el directorio actual mediante <b>Funciones &gt; <img src="../../icons/folder-new-16.png" /> Crear carpeta</b> (<b>F7</b>).</p>
+
+<h2>Eliminar</h2>
+
+<p>Puede utilizar el comando <b>Funciones &gt; <img src="../../icons/trashcan-16.png" /> Eliminar</b>  o las teclas <b>F8</b> o <b>Suprimir</b> para eliminar los archivos seleccionados. Los archivos y las carpetas se env&iacute;an a la Papelera de reciclaje si est&aacute; habilitada en ese disco. El comando <b>Funciones &gt; <img src="../../icons/trashcan-16.png" /> Eliminar &gt; <img src="../../icons/delete-16.png" /> Eliminar permanentemente</b>  o las teclas <b>Shift+F8</b> o <b>Shift+Supr</b> eliminan los archivos sin enviarlos a la Papelera de reciclaje. En ambos casos se muestra un aviso para confirmar la acci&oacute;n.</b>
+
+<h2>Abrir consola</h2>
+
+<p>La &uacute;ltima opci&oacute;n b&aacute;sica es <b>Funciones &gt; <img src="../../icons/terminal-16.png" /> Abrir consola</b> (<b>F9</b>), que sirve para abrir el S&iacute;mbolo del sistema en el directorio actual. Por defecto, se utiliza el programa <tt>cmd.exe</tt> pero puede seleccionar otra consola. Saladin no tiene ning&uacute;n int&eacute;rprete de comandos incorporado.</p>
+
+</body>
+</html>

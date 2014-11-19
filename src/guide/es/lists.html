@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>Listas de archivos</title>
+  <link href="../style.css" rel="stylesheet" type="text/css" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1>Listas de archivos</h1>
+
+<p>La lista de carpetas y archivos del directorio actual es la parte principal de cada panel. La lista se actualiza autom&aacute;ticamente cuando se producen cambios en el directorio; tambi&eacute;n puede seleccionar <b>Visualizar &gt; <img src="../../icons/refresh-16.png" /> Actualizar</b> (<b>Ctrl+R</b>) para actualizar la lista.</p>
+
+<p>Haga doble clic en un elemento para abrir el archivo, la carpeta o el archivo ZIP. Es lo mismo que pulsar <b>Intro</b> o la tecla de direcci&oacute;n <b>Derecha</b> sobre el elemento actual. Puede utilizar el elemento especial con nombre <tt>..</tt> para acceder a la carpeta anterior, a no ser que la carpeta actual ya sea el directorio ra&iacute;z de una unidad o el Escritorio. Tambi&eacute;n puede utilizar el comando <b><img src="../../icons/arrow-up-16.png" /> Directorio principal</b>, la tecla <b>Retroceso</b> o la tecla de direcci&oacute;n <b>Derecha</b> para ir al directorio principal.</p>
+
+<p>La primera columna de la lista muestra el nombre del archivo con su extensi&oacute;n. La segunda columna muestra el tama&ntilde;o del archivo en bytes, <tt>&lt;DIR&gt;</tt> para las carpetas y <tt>&lt;LNK&gt;</tt> para v&iacute;nculos f&iacute;sicos y uniones. El tama&ntilde;o total de una carpeta puede calcularse y mostrarse si presiona la tecla <b>Espacio</b>, o si selecciona una o m&aacute;s carpetas y elige <b>Herramientas &gt; <img src="../../icons/calculate-16.png" /> Mostrar tama&ntilde;o</b> (<b>Ctrl+L</b>). La tercera columna muestra la fecha y la hora en la que se modific&oacute; por &uacute;ltima vez el archivo.</p>
+
+<p>La &uacute;ltima columna muestra los siguientes atributos: <b>d</b> de carpeta, <b>r</b> de solo lectura, <b>a</b> de archivo, <b>h</b> de oculto, <b>s</b> de sistema, <b>c</b> de comprimido y <b>e</b> de encriptado. Se muestra una letra cuando se ha establecido un atributo, si no es el caso, se muestra un guion. Adem&aacute;s, los archivos ocultos se muestran en color gris y los comprimidos, en color azul oscuro.  Los archivos ocultos o del sistema no se muestran por defecto; pueden aparecer si los activa con la opci&oacute;n <b>Visualizar > <img src="../../icons/view-hidden-16.png" /> Archivos ocultos </b> o <b>Ctrl+H</b>.</p>
+
+<p>Puede organizar la lista por cualquier columna al hacer clic en el encabezado de la columna. Tenga en cuenta que las carpetas se muestran siempre antes que los archivos, aunque se pueden ordenar por tama&ntilde;o, fecha o atributos. Tambi&eacute;n puede reorganizar las columnas o cambiar su tama&ntilde;o si arrastra los encabezados o los separadores. El dise&ntilde;o de las columnas se cambia autom&aacute;ticamente en los dos paneles.</>
+
+<h2>Selecci&oacute;n</h2>
+
+<p>El elemento actual del panel activo se marca con un cursor (un marco fino y azul). Los archivos seleccionados en los dos paneles se muestran con la fuente en color rojo. La mayor&iacute;a de las operaciones se realizan en todos los elementos seleccionados en el panel activo o en el elemento actual si no se ha seleccionado ninguno.</p>
+
+<p>Puede utilizar las teclas de direcci&oacute;n <b>Arriba</b> y <b>Abajo</b>,  las teclas <b>Retroceder p&aacute;gina</b>,  <b>Avanzar p&aacute;gina</b>, <b>Inicio</b> y <b>Fin</b> para mover el cursor entre la lista. Tambi&eacute;n puede hacer clic en un elemento con el bot&oacute;n izquierdo del rat&oacute;n para mover el cursor hasta la posici&oacute;n elegida y quitar la selecci&oacute;n de todos los elementos seleccionados previamente. Teclee la primera letra (o las primeras letras) para llevar el cursor hasta el siguiente elemento que empiece con esas letras.</p>
+
+<p>Puede seleccionar o quitar de la selecci&oacute;n un intervalo de elementos al pulsar la tecla <b>Shift</b> y al hacer clic con el bot&oacute;n izquierdo del rat&oacute;n o cambiando el elemento actual con el teclado. Tambi&eacute;n puede alternar la selecci&oacute;n con elementos individuales al pulsar la tecla <b>Ctrl</b> y haciendo clic en el elemento con el bot&oacute;n izquierdo del rat&oacute;n. La tecla <b>Insert</b> alterna la selecci&oacute;n del elemento actual y mueve el cursor abajo. La tecla <b>Espacio</b> alterna la selecci&oacute;n del elemento actual sin mover el cursor, y tambi&eacute;n calcula el tama&ntilde;o total del directorio seleccionado.</a>
+
+<p>Para seleccionar varios archivos seg&uacute;n su nombre, utilice el comando <b>Seleccionar &gt; <img src="../../icons/select-16.png" /> Seleccionar m&aacute;scara</b> (<b>Ctrl+=</b>). Puede escribir el patr&oacute;n mediante <a href="wildcards.html">caracteres comod&iacute;n</a>, por ejemplo, <code>*.txt</code>. Puede escribir varios patrones si los separa con un punto y coma, por ejemplo, <code>*.txt;*.ini</code>. El comando <b>Seleccionar &gt; <img src="../../icons/unselect-16.png" /> Anular selecci&oacute;n de m&aacute;scara</b> (<b>Ctrl+-</b>) funciona de la misma manera, pero anula la selecci&oacute;n de los archivos que coincidan con la m&aacute;scara. Los comandos <b>Seleccionar &gt; <img src="../../icons/select-all-16.png" /> Seleccionar todo</b> (<b>Ctrl+A</b>), <b>Seleccionar &gt; <img src="../../icons/unselect-all-16.png" /> Anular selecci&oacute;n</b> (<b>Ctrl+Shift+A</b>) y <b>Seleccionar &gt; <img src="../../icons/select-invert-16.png" /> Invertir selecci&oacute;n</b> (<b>Ctrl+-I</b>) tambi&eacute;n pueden utilizarse para modificar la selecci&oacute;n en el panel activo.</p>
+
+<h2>Men&uacute;s contextuales</h2>
+
+<p>Pulse el bot&oacute;n derecho del rat&oacute;n en un elemento para mostrar el men&uacute; contextual para ese elemento. Seleccione varios elementos y haga clic con el bot&oacute;n derecho del rat&oacute;n en uno de los elementos seleccionados para mostrar el men&uacute; contextual para esos elementos. Haga clic fuera de cualquier elemento o en <tt>..</tt> para mostrar el men&uacute; contextual para el directorio actual. Al hacer clic con el bot&oacute;n derecho en la barra de discos, se mostrar&aacute; el men&uacute; contextual del disco.</p>
+
+<h2>Cambio de nombre</h2>
+
+<p> Haga clic en el nombre del archivo actual con el bot&oacute;n izquierdo para cambiarle el nombre; el comando <b>Funciones &gt; <img src="../../icons/rename-16.png" /> Cambiar nombre</b> o la tecla <b>F2</b> tambi&eacute;n se pueden utilizar con este prop&oacute;sito. Pulse <b>Intro</b> para confirmar el nombre nuevo o <b>Esc</b> para cancelar el cambio de nombre.</p>
+
+<h2>Arrastrar y soltar</h2>
+
+<p>Puede arrastrar uno o varios elementos seleccionados al mantener pulsado el bot&oacute;n izquierdo o derecho del rat&oacute;n. Al arrastrar elementos sobre una carpeta o un archivo ZIP, se marca con un marco fino y negro que indica que los elementos pueden copiarse o moverse a esa ruta. Si arrastra un elemento sobre un archivo normal o sobre una zona vac&iacute;a de la lista, se arrastrar&aacute; al directorio actual. Si arrastra archivos al elemento <tt>..</tt>, se enviar&aacute;n al directorio anterior. Si arrastra archivos sobre un bot&oacute;n de la barra de unidades, se arrastrar&aacute;n al directorio ra&iacute;z del disco.</p>
+
+<p>Mant&eacute;n presionado <b>Ctrl</b> para copiar archivos, <b>Shift</b> para mover o <b>Alt</b> para crear un v&iacute;nculo simb&oacute;lico. La operaci&oacute;n por defecto depende del contexto. Cuando est&eacute; arrastrando archivos con el bot&oacute;n derecho del rat&oacute;n, se muestra un men&uacute; contextual para que elija la operaci&oacute;n que prefiera.</p>
+
+<p>Se pueden arrastrar archivos de Saladin a otros programas y viceversa. Las operaciones normales del Portapapeles (cortar, copiar y pegar) pueden usarse para copiar y mover archivos entre directorios dentro de Saladin y desde o hacia otros programas.</p>
+
+</body>
+</html>

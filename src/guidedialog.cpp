@@ -118,7 +118,18 @@ void GuideDialog::goForward()
 
 void GuideDialog::goHome()
 {
-    m_browser->setSource( QUrl::fromLocalFile( ":/guide/index.html" ) );
+    QString language = QLocale().name();
+    QString path = QString( ":/guide/%1/index.html" ).arg( language );
+
+    if ( !QFile::exists( path ) ) {
+        language = language.left( language.indexOf( '_' ) );
+        path = QString( ":/guide/%1/index.html" ).arg( language );
+
+        if ( !QFile::exists( path ) )
+            path = ":/guide/en/index.html";
+    }
+
+    m_browser->setSource( QUrl::fromLocalFile( path ) );
 }
 
 void GuideDialog::updateActions()
