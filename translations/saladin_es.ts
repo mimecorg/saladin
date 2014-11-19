@@ -231,7 +231,7 @@
     </message>
     <message>
         <source>&amp;Match case</source>
-        <translation>Coincidir &amp;mayúsculas y minúsculas</translation>
+        <translation>Diferenciar &amp;mayúsculas y minúsculas</translation>
     </message>
     <message>
         <source>Text not found</source>
@@ -382,7 +382,7 @@
     </message>
     <message>
         <source>Rename &lt;b&gt;%1&lt;/b&gt; selected items:</source>
-        <translation>Renombrar los archivos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
+        <translation>Renombrar los elementos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>Clone</source>
@@ -490,7 +490,7 @@ F2</translation>
     </message>
     <message>
         <source>Parent Directory</source>
-        <translation>Directorio primario</translation>
+        <translation>Directorio principal</translation>
     </message>
     <message>
         <source>Swap Panels</source>
@@ -556,11 +556,11 @@ Verifique que está correctamente configurada en la configuración de Saladin e 
     </message>
     <message>
         <source>Move &lt;b&gt;%1&lt;/b&gt; selected items:</source>
-        <translation>Mover los archivos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
+        <translation>Mover los elementos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>Pack &lt;b&gt;%1&lt;/b&gt; selected items:</source>
-        <translation>Comprimir los archivos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
+        <translation>Comprimir los elementos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>Compare Directories</source>
@@ -572,7 +572,7 @@ Verifique que está correctamente configurada en la configuración de Saladin e 
     </message>
     <message>
         <source>Copy &lt;b&gt;%1&lt;/b&gt; selected items:</source>
-        <translation>Copiar los archivos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
+        <translation>Copiar los elementos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -604,7 +604,7 @@ Verifique que está correctamente configurada en la configuración de Saladin e 
     </message>
     <message>
         <source>Select Mask</source>
-        <translation>Seleccione máscara</translation>
+        <translation>Seleccionar máscara</translation>
     </message>
     <message>
         <source>Compare</source>
@@ -628,7 +628,7 @@ F5</translation>
     </message>
     <message>
         <source>Clone &lt;b&gt;%1&lt;/b&gt; selected items:</source>
-        <translation>Clonar los archivos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
+        <translation>Clonar los elementos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>Create a new file:</source>
@@ -687,11 +687,11 @@ F4</translation>
         <source>View
 F3</source>
         <translation>Visualizar
-F4</translation>
+F3</translation>
     </message>
     <message>
         <source>O&amp;verwrite without prompt</source>
-        <translation>&amp;Sobreescribir sin preguntar</translation>
+        <translation>&amp;Sobrescribir sin preguntar</translation>
     </message>
     <message>
         <source>Move To Recycle Bin</source>
@@ -1061,7 +1061,7 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
     </message>
     <message>
         <source>&amp;Match case</source>
-        <translation>Coincidir &amp;mayúsculas y minúsculas</translation>
+        <translation>Diferenciar &amp;mayúsculas y minúsculas</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
