@@ -350,8 +350,8 @@ MainWindow::MainWindow() : QMainWindow(),
     layout->setContentsMargins( 3, 0, 3, 0 );
     layout->setSpacing( 5 );
 
-    layout->addWidget( m_panes[ 0 ] );
-    layout->addWidget( m_panes[ 1 ] );
+    layout->addWidget( m_panes[ 0 ], 1 );
+    layout->addWidget( m_panes[ 1 ], 1 );
 
     connect( m_panes[ 0 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 1 ], SLOT( resizeHeaderSection( int, int ) ) );
     connect( m_panes[ 1 ], SIGNAL( headerSectionResized( int, int ) ), m_panes[ 0 ], SLOT( resizeHeaderSection( int, int ) ) );
