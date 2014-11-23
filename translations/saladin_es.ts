@@ -351,7 +351,7 @@
     </message>
     <message>
         <source>&amp;Black Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo &amp;negro</translation>
     </message>
 </context>
 <context>
