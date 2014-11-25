@@ -282,7 +282,7 @@ void Application::settingsChanged()
 
 QString Application::version() const
 {
-    return QString( "0.5" );
+    return QString( "0.6" );
 }
 
 bool Application::loadTranslation( const QString& name, bool tryQtDir )

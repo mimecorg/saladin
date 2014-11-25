@@ -1,3 +1,8 @@
+0.6 (2014-11-25)
+ * changing background for transparent areas in image viewer
+ * fixed a problem with changing panel width
+ * added Spanish translation
+
 0.5 (2014-05-07)
  * full screen mode in the internal viewer
  * displaying files from zipped folders in the internal viewer
