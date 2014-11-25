@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/viewer/imageview.cpp" line="69"/>
         <source>&amp;Black Background</source>
-        <translation type="unfinished"></translation>
+        <translation>PanodeFundo &amp;Preto</translation>
     </message>
     <message>
         <location filename="../src/viewer/imageview.cpp" line="107"/>
@@ -1211,7 +1211,7 @@ Verifique se o dispositivo está disponível e tente novamente.</translation>
     <message>
         <location filename="../src/panewidget.cpp" line="1150"/>
         <source>%1 of %2 items selected (%3 of %4)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 de %2 itens selecionados (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/panewidget.cpp" line="1159"/>
