@@ -19,12 +19,14 @@
 #ifndef PRECOMPILED_H
 #define PRECOMPILED_H
 
-#include <QtCore>
-#include <QtGui>
-#include <QtNetwork>
-#include <QtXml>
-
 #include <shlobj.h>
 #include <shlwapi.h>
+
+#include <QtCore>
+#include <QtGui>
+#include <QtWidgets>
+#include <QtNetwork>
+#include <QtXml>
+#include <QtWinExtras>
 
 #endif

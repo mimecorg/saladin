@@ -28,6 +28,7 @@
 
 #include "shell/shellfolder.h"
 #include "shell/shellselection.h"
+#include "shell/shelldropdata.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "viewer/viewmanager.h"
@@ -365,6 +366,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
 MainWindow::~MainWindow()
 {
+    ShellDropData::unregisterDropTarget( windowHandle() );
+
     saveSettings();
 
     delete m_viewManager;
@@ -417,6 +420,8 @@ void MainWindow::initializeSettings()
     }
 
     m_panes[ 0 ]->activateView();
+
+    ShellDropData::registerDropTarget( windowHandle() );
 
     QApplication::restoreOverrideCursor();
 }
@@ -744,7 +749,7 @@ void MainWindow::startTool( Tool tool, const QString& parameters, const QString&
     if ( path.isEmpty() )
         return;
 
-    HINSTANCE result = ShellExecute( effectiveWinId(), NULL, path.utf16(), parameters.utf16(), directory.utf16(), SW_SHOWNORMAL );
+    HINSTANCE result = ShellExecute( (HWND)effectiveWinId(), NULL, (LPCWSTR)path.utf16(), (LPCWSTR)parameters.utf16(), (LPCWSTR)directory.utf16(), SW_SHOWNORMAL );
 
     if ( (int)result <= 32 ) {
         QString name = toolName( tool );

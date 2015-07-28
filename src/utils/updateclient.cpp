@@ -62,12 +62,12 @@ void UpdateClient::checkUpdate()
     m_notesUrl.clear();
     m_downloadUrl.clear();
 
-    QList<QPair<QString, QString> > query;
-    query.append( QPair<QString, QString>( "app", m_application ) );
-    query.append( QPair<QString, QString>( "ver", m_version ) );
+    QUrlQuery query;
+    query.addQueryItem( "app", m_application );
+    query.addQueryItem( "ver", m_version );
 
     QUrl url( "http://update.mimec.org/service.php" );
-    url.setQueryItems( query );
+    url.setQuery( query );
 
     m_currentReply = m_manager->get( QNetworkRequest( url ) );
 

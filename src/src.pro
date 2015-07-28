@@ -4,7 +4,7 @@ TEMPLATE = app
 TARGET   = saladin
 
 CONFIG  += qt
-QT      += network xml
+QT       = core-private gui-private widgets-private network xml winextras
 
 HEADERS += aboutbox.h \
            application.h \
@@ -58,23 +58,6 @@ include( utils/utils.pri )
 include( viewer/viewer.pri )
 include( xmlui/xmlui.pri )
 
-static {
-    !contains( QT_CONFIG, gif ) {
-        DEFINES = HAVE_PLUGIN_GIF
-        QTPLUGIN += qgif
-    }
-    !contains( QT_CONFIG, jpeg ) {
-        DEFINES = HAVE_PLUGIN_JPEG
-        QTPLUGIN += qjpeg
-    }
-    !contains( QT_CONFIG, tiff ) {
-        DEFINES = HAVE_PLUGIN_TIFF
-        QTPLUGIN += qtiff
-    }
-    QTPLUGIN += qico qsvg qcncodecs qjpcodecs qkrcodecs qtwcodecs
-    QT += svg
-}
-
 INCLUDEPATH += .
 
 PRECOMPILED_HEADER = precompiled.h
@@ -85,7 +68,7 @@ TRANSLATIONS += \
            ../translations/saladin_pt_BR.ts
 
 RC_FILE = saladin.rc
-LIBS += -lshell32 -lshlwapi -lcrypt32
+LIBS += -lshell32 -lshlwapi -lcrypt32 -lole32 -loleaut32
 
 win32-msvc* {
     QMAKE_CXXFLAGS += -Fd\$(IntDir)

@@ -23,6 +23,8 @@
 #include "shellitem.h"
 #include "shelldrive.h"
 
+class WindowDropTarget;
+
 class ShellDropDataPrivate
 {
 public:
@@ -68,6 +70,11 @@ public:
 
     bool m_dragEntered;
     Qt::DropAction m_dropAction;
+
+    static WindowDropTarget* m_windowDropTarget;
+
+    static IDataObject* m_dropDataObject;
+    static QMimeData* m_dropMimeData;
 };
 
 #endif

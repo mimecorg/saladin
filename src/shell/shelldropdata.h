@@ -47,6 +47,10 @@ public:
 
     bool drop();
 
+public:
+    static void registerDropTarget( QWindow* window );
+    static void unregisterDropTarget( QWindow* window );
+
 public: // overrides
     QWidget* parent() const { return qobject_cast<QWidget*>( QObject::parent() ); }
 

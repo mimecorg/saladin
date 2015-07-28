@@ -61,6 +61,8 @@ void FolderItemModel::setFolder( ShellFolder* folder )
 {
     QApplication::setOverrideCursor( Qt::WaitCursor );
 
+    beginResetModel();
+
     delete m_folder;
     m_folder = folder;
 
@@ -82,7 +84,7 @@ void FolderItemModel::setFolder( ShellFolder* folder )
     m_changes.clear();
     m_pendingRefresh = false;
 
-    reset();
+    endResetModel();
 
     QApplication::restoreOverrideCursor();
 }
@@ -721,7 +723,7 @@ bool FolderItemModel::shellItemLessThan( const ShellItem& item1, const ShellItem
     }
 
     if ( result == 0 )
-        result = StrCmpLogicalW( item1.name().utf16(), item2.name().utf16() );
+        result = StrCmpLogicalW( (LPCWSTR)item1.name().utf16(), (LPCWSTR)item2.name().utf16() );
 
     if ( m_sortOrder == Qt::AscendingOrder )
         return result < 0;

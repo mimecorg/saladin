@@ -51,7 +51,7 @@ QString ShellBasePrivate::displayName( LPITEMIDLIST pidl, int flags )
         hr = StrRetToBuf( &strret, pidl, buffer, MAX_PATH );
 
         if SUCCEEDED( hr )
-            result = QString::fromUtf16( buffer );
+            result = QString::fromUtf16( (const ushort*)buffer );
     }
 
     return result;
@@ -70,7 +70,7 @@ QPixmap ShellBasePrivate::extractIcon( LPITEMIDLIST pidl )
     CoTaskMemFree( absolutePidl );
 
     if ( status ) {
-        result = QPixmap::fromWinHICON( info.hIcon );
+        result = QtWin::fromHICON( info.hIcon );
         DestroyIcon( info.hIcon );
     }
 

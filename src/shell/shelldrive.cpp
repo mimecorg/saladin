@@ -84,7 +84,7 @@ bool ShellDrive::getFreeSpace( qint64* free, qint64* total ) const
     ULARGE_INTEGER freeBytes;
     ULARGE_INTEGER totalBytes;
 
-    if ( GetDiskFreeSpaceEx( path.utf16(), &freeBytes, &totalBytes, NULL ) )
+    if ( GetDiskFreeSpaceEx( (LPCWSTR)path.utf16(), &freeBytes, &totalBytes, NULL ) )
     {
         *free = freeBytes.QuadPart;
         *total = totalBytes.QuadPart;

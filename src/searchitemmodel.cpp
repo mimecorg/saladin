@@ -53,9 +53,9 @@ void SearchItemModel::clear()
 
 void SearchItemModel::startSearch( ShellFolder* folder, const QString& pattern, const QString& text, Qt::CaseSensitivity cs )
 {
-    clear();
+    beginResetModel();
 
-    reset();
+    clear();
 
     QStringList parts = pattern.split( QLatin1Char( ';' ), QString::SkipEmptyParts );
 
@@ -66,6 +66,8 @@ void SearchItemModel::startSearch( ShellFolder* folder, const QString& pattern, 
     m_cs = cs;
 
     scanFolder( QString(), folder );
+
+    endResetModel();
 
     if ( m_pendingItems.isEmpty() ) {
         if ( !m_pendingFolders.isEmpty() )
@@ -111,7 +113,7 @@ void SearchItemModel::scanNextFolder()
 
 bool operator <( const SearchItemModel::PendingFolder& folder1, const SearchItemModel::PendingFolder& folder2 )
 {
-    return StrCmpLogicalW( folder1.m_prefix.utf16(), folder2.m_prefix.utf16() ) < 0;
+    return StrCmpLogicalW( (LPCWSTR)folder1.m_prefix.utf16(), (LPCWSTR)folder2.m_prefix.utf16() ) < 0;
 }
 
 bool SearchItemModel::scanFolder( const QString& prefix, ShellFolder* folder )
@@ -415,7 +417,7 @@ bool SearchProxyModel::lessThan( const QModelIndex& index1, const QModelIndex& i
         QString path1 = source->pathAt( index1 );
         QString path2 = source->pathAt( index2 );
 
-        result = StrCmpLogicalW( path1.utf16(), path2.utf16() );
+        result = StrCmpLogicalW( (LPCWSTR)path1.utf16(), (LPCWSTR)path2.utf16() );
     }
 
     return result < 0;

@@ -66,13 +66,13 @@ bool ShellSelection::canTransferTo( ShellFolder* targetFolder, TransferType /*ty
     bool result = false;
 
     ITransferSource* source;
-    HRESULT hr = d->m_sourceFolder->d->m_folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &source ) );
+    HRESULT hr = d->m_sourceFolder->d->m_folder->CreateViewObject( (HWND)parent()->effectiveWinId(), IID_PPV_ARGS( &source ) );
 
     if ( SUCCEEDED( hr ) ) {
         source->Release();
 
         ITransferDestination* destination;
-        hr = targetFolder->d->m_folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &destination ) );
+        hr = targetFolder->d->m_folder->CreateViewObject( (HWND)parent()->effectiveWinId(), IID_PPV_ARGS( &destination ) );
 
         if ( SUCCEEDED( hr ) ) {
             destination->Release();
@@ -92,7 +92,7 @@ bool ShellSelection::transferTo( ShellFolder* targetFolder, TransferType type, F
     HRESULT hr = CoCreateInstance( CLSID_FileOperation, NULL, CLSCTX_ALL, IID_PPV_ARGS( &fileOperation ) );
 
     if ( SUCCEEDED( hr ) ) {
-        fileOperation->SetOwnerWindow( parent()->effectiveWinId() );
+        fileOperation->SetOwnerWindow( (HWND)parent()->effectiveWinId() );
 
         DWORD operationFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMMKDIR | FOFX_NOMINIMIZEBOX;
 
@@ -113,11 +113,11 @@ bool ShellSelection::transferTo( ShellFolder* targetFolder, TransferType type, F
 
                 if ( SUCCEEDED( hr ) ) {
                     if ( type == Copy )
-                        hr = fileOperation->CopyItem( item, targetItem, newNames.at( i ).utf16(), NULL );
+                        hr = fileOperation->CopyItem( item, targetItem, (LPCWSTR)newNames.at( i ).utf16(), NULL );
                     else if ( sameTarget )
-                        hr = fileOperation->RenameItem( item, newNames.at( i ).utf16(), NULL );
+                        hr = fileOperation->RenameItem( item, (LPCWSTR)newNames.at( i ).utf16(), NULL );
                     else
-                        hr = fileOperation->MoveItem( item, targetItem, newNames.at( i ).utf16(), NULL );
+                        hr = fileOperation->MoveItem( item, targetItem, (LPCWSTR)newNames.at( i ).utf16(), NULL );
 
                     item->Release();
                 }
@@ -161,11 +161,11 @@ bool ShellSelectionPrivate::dragDropHelper( ShellFolder* targetFolder, ShellSele
         pidls[ i ] = m_sourceItems.at( i ).d->m_pidl;
 
     IDataObject* dataObject;
-    HRESULT hr = m_sourceFolder->d->m_folder->GetUIObjectOf( q->parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
+    HRESULT hr = m_sourceFolder->d->m_folder->GetUIObjectOf( (HWND)q->parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
 
     if ( SUCCEEDED( hr ) ) {
         IDropTarget* dropTarget;
-        hr = targetFolder->d->m_folder->CreateViewObject( q->parent()->effectiveWinId(), IID_PPV_ARGS( &dropTarget ) );
+        hr = targetFolder->d->m_folder->CreateViewObject( (HWND)q->parent()->effectiveWinId(), IID_PPV_ARGS( &dropTarget ) );
 
         if ( SUCCEEDED( hr ) ) {
             POINTL point = { 0, 0 };
@@ -202,7 +202,7 @@ bool ShellSelection::canDelete()
     bool result = false;
 
     ITransferSource* source;
-    HRESULT hr = d->m_sourceFolder->d->m_folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &source ) );
+    HRESULT hr = d->m_sourceFolder->d->m_folder->CreateViewObject( (HWND)parent()->effectiveWinId(), IID_PPV_ARGS( &source ) );
 
     if ( SUCCEEDED( hr ) ) {
         result = true;
@@ -220,7 +220,7 @@ bool ShellSelection::deleteSelection( Flags flags )
     HRESULT hr = CoCreateInstance( CLSID_FileOperation, NULL, CLSCTX_ALL, IID_PPV_ARGS( &fileOperation ) );
 
     if ( SUCCEEDED( hr ) ) {
-        fileOperation->SetOwnerWindow( parent()->effectiveWinId() );
+        fileOperation->SetOwnerWindow( (HWND)parent()->effectiveWinId() );
 
         DWORD operationFlags = FOF_NOCONFIRMMKDIR | FOFX_NOMINIMIZEBOX;
 
@@ -316,7 +316,7 @@ ShellSelection::MenuCommand ShellSelection::showContextMenu( const QPoint& pos, 
         pidls[ i ] = d->m_sourceItems.at( i ).d->m_pidl;
 
     IContextMenu* contextMenu;
-    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IContextMenu, NULL, (void**)&contextMenu );
+    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( (HWND)parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IContextMenu, NULL, (void**)&contextMenu );
 
     if ( SUCCEEDED( hr ) ) {
         HMENU menu = CreatePopupMenu();
@@ -334,12 +334,12 @@ ShellSelection::MenuCommand ShellSelection::showContextMenu( const QPoint& pos, 
         if ( SUCCEEDED( hr ) ) {
             hr = contextMenu->QueryInterface( IID_PPV_ARGS( &g->m_menu ) );
             if ( SUCCEEDED( hr ) )
-                g->m_oldProc = (WNDPROC)SetWindowLongPtr( parent()->effectiveWinId(), GWLP_WNDPROC, (LONG_PTR)ContextMenuProc );
+                g->m_oldProc = (WNDPROC)SetWindowLongPtr( (HWND)parent()->effectiveWinId(), GWLP_WNDPROC, (LONG_PTR)ContextMenuProc );
 
-            int command = TrackPopupMenu( menu, TPM_RETURNCMD, pos.x(), pos.y(), 0, parent()->effectiveWinId(), NULL );
+            int command = TrackPopupMenu( menu, TPM_RETURNCMD, pos.x(), pos.y(), 0, (HWND)parent()->effectiveWinId(), NULL );
 
             if ( SUCCEEDED( hr ) ) {
-                SetWindowLongPtr( parent()->effectiveWinId(), GWLP_WNDPROC, (LONG_PTR)g->m_oldProc );
+                SetWindowLongPtr( (HWND)parent()->effectiveWinId(), GWLP_WNDPROC, (LONG_PTR)g->m_oldProc );
 
                 g->m_menu->Release();
                 g->m_menu = NULL;
@@ -361,7 +361,7 @@ ShellSelection::MenuCommand ShellSelection::showContextMenu( const QPoint& pos, 
                 if ( result == InternalCommand ) {
                     CMINVOKECOMMANDINFO info = { 0 };
                     info.cbSize = sizeof( info );
-                    info.hwnd = parent()->effectiveWinId();
+                    info.hwnd = (HWND)parent()->effectiveWinId();
                     info.lpVerb = MAKEINTRESOURCEA( command - 1000 );
                     info.nShow = SW_SHOWNORMAL;
 
@@ -390,12 +390,12 @@ bool ShellSelection::invokeCommand( const char* verb )
         pidls[ i ] = d->m_sourceItems.at( i ).d->m_pidl;
 
     IContextMenu* contextMenu;
-    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IContextMenu, NULL, (void**)&contextMenu );
+    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( (HWND)parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IContextMenu, NULL, (void**)&contextMenu );
 
     if ( SUCCEEDED( hr ) ) {
         CMINVOKECOMMANDINFO info = { 0 };
         info.cbSize = sizeof( info );
-        info.hwnd = parent()->effectiveWinId();
+        info.hwnd = (HWND)parent()->effectiveWinId();
         info.lpVerb = verb;
         info.nShow = SW_SHOWNORMAL;
 
@@ -517,7 +517,7 @@ bool ShellSelection::doDragDrop()
         pidls[ i ] = d->m_sourceItems.at( i ).d->m_pidl;
 
     IDataObject* dataObject;
-    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
+    HRESULT hr = d->m_sourceFolder->d->m_folder->GetUIObjectOf( (HWND)parent()->effectiveWinId(), pidls.count(), pidls.data(), IID_IDataObject, NULL, (void**)&dataObject );
 
     if ( SUCCEEDED( hr ) ) {
         ShellDropSource* dropSource = new ShellDropSource();

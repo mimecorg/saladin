@@ -1,6 +1,6 @@
 /****************************************************************************
-* Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2012 Michał Męciński
+* Simple XML-based UI builder for Qt
+* Copyright (C) 2007-2015 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -31,13 +31,13 @@
 
 #include <QtGlobal>
 
-#if !defined( Q_WS_WIN ) || ( QT_VERSION < 0x040300 ) || defined( QT_NO_STYLE_WINDOWSVISTA )
+#if !defined( Q_OS_WIN ) || ( QT_VERSION < 0x040600 ) || defined( QT_NO_STYLE_WINDOWSVISTA )
 #define XMLUI_NO_STYLE_WINDOWS
 #endif
 
 #if !defined( XMLUI_NO_STYLE_WINDOWS )
 
-#include <QWindowsVistaStyle>
+#include <QProxyStyle>
 
 namespace XmlUi
 {
@@ -47,7 +47,7 @@ namespace XmlUi
 *
 * The style imitates the look of MS Office.
 */
-class WindowsStyle : public QWindowsVistaStyle
+class WindowsStyle : public QProxyStyle
 {
     Q_OBJECT
 public:
@@ -62,9 +62,6 @@ public:
     ~WindowsStyle();
 
 public: // overrides
-    void polish( QApplication* application );
-    void unpolish( QApplication* application );
-
     void polish( QPalette& palette );
 
     void polish( QWidget* widget );
@@ -72,15 +69,8 @@ public: // overrides
 
     int pixelMetric( PixelMetric metric, const QStyleOption* option, const QWidget* widget ) const;
 
-    int styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget,
-        QStyleHintReturn* returnData = NULL ) const;
-
     QSize sizeFromContents( ContentsType type, const QStyleOption* option,
         const QSize& contentsSize, const QWidget* widget ) const;
-
-    QRect subElementRect( SubElement element, const QStyleOption* option, const QWidget* widget ) const;
-    QRect subControlRect( ComplexControl control, const QStyleOptionComplex* option,
-        SubControl subControl, const QWidget* widget ) const;
 
     void drawPrimitive( PrimitiveElement element, const QStyleOption* option,
         QPainter* painter, const QWidget* widget ) const;

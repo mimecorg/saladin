@@ -27,6 +27,7 @@
 #include "utils/iconloader.h"
 #include "shell/shellfolder.h"
 #include "shell/shellpidl.h"
+#include "xmlui/windowsstyle.h"
 
 Application* application = NULL;
 
@@ -53,7 +54,7 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
     loadTranslation( "qt", true );
     loadTranslation( "saladin", false );
 
-    setStyle( "XmlUi::WindowsStyle" );
+    setStyle( new XmlUi::WindowsStyle() );
 
     setWindowIcon( IconLoader::icon( "saladin" ) );
 
@@ -102,11 +103,6 @@ QString Application::technicalInformation()
 #else
     QString configMode = "release";
 #endif
-#if defined( QT_DLL )
-    QString configLink = "dynamic";
-#else
-    QString configLink = "static";
-#endif
 
     QString qtVersion = qVersion();
 
@@ -125,7 +121,7 @@ QString Application::technicalInformation()
     QString infoMessage;
     infoMessage += "<h4>" + tr( "Technical Information" ) + "</h4>";
     infoMessage += "<p>" + tr( "Built on %1 in %2-bit %3 mode." ).arg( compiled.toString( "yyyy-MM-dd HH:mm" ), configBits, configMode );
-    infoMessage += " " + tr( "Using Qt %1 (%2 linking) and Windows Shell %3." ).arg( qtVersion, configLink, shellVersion ) + "</p>";
+    infoMessage += " " + tr( "Using Qt %1 and Windows Shell %2." ).arg( qtVersion, shellVersion ) + "</p>";
 
     return infoMessage;
 }
@@ -311,21 +307,9 @@ void Application::initializeDefaultPaths()
 
     m_translationsPath = QDir::cleanPath( appPath + "/../translations" );
 
-    wchar_t appDataPath[ MAX_PATH ];
-    if ( SHGetSpecialFolderPath( 0, appDataPath, CSIDL_APPDATA, FALSE ) )
-        m_dataPath = QDir::fromNativeSeparators( QString::fromWCharArray( appDataPath ) );
-    else
-        m_dataPath = QDir::homePath();
-
-    m_dataPath += QLatin1String( "/Saladin" );
-
-    wchar_t localAppDataPath[ MAX_PATH ];
-    if ( SHGetSpecialFolderPath( 0, localAppDataPath, CSIDL_LOCAL_APPDATA, FALSE ) )
-        m_cachePath = QDir::fromNativeSeparators( QString::fromWCharArray( localAppDataPath ) );
-    else
-        m_cachePath = QDir::homePath();
-
-    m_cachePath += QLatin1String( "/Saladin/cache" );
+    setApplicationName( "Saladin" );
+    m_dataPath = QStandardPaths::writableLocation( QStandardPaths::AppDataLocation );
+    m_cachePath = QStandardPaths::writableLocation( QStandardPaths::AppLocalDataLocation ) + "/cache";
 
     m_tempPath = QDir::tempPath() + "/Saladin";
 }

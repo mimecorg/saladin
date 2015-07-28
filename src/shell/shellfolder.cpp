@@ -101,7 +101,7 @@ void ShellFolderPrivate::readProperties()
     m_hasParent = true;
 
     LPITEMIDLIST pidl;
-    hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), CSIDL_DESKTOP, &pidl );
+    hr = SHGetSpecialFolderLocation( (HWND)q->parent()->effectiveWinId(), CSIDL_DESKTOP, &pidl );
 
     if ( SUCCEEDED( hr ) ) {
         if ( ILIsEqual( pidl, m_pidl ) )
@@ -114,7 +114,7 @@ void ShellFolderPrivate::readProperties()
 
     for ( int i = 0; i < 3 && m_hasParent; i++ ) {
         LPITEMIDLIST pidl;
-        hr = SHGetSpecialFolderLocation( q->parent()->effectiveWinId(), rootFolders[ i ], &pidl );
+        hr = SHGetSpecialFolderLocation( (HWND)q->parent()->effectiveWinId(), rootFolders[ i ], &pidl );
 
         if ( SUCCEEDED( hr ) ) {
             if ( ILIsParent( pidl, m_pidl, true ) )
@@ -199,7 +199,7 @@ QList<ShellItem> ShellFolder::listItems( Flags flags )
         enumFlags |= SHCONTF_INCLUDEHIDDEN;
 
     IEnumIDList* enumerator;
-    HRESULT hr = d->m_folder->EnumObjects( parent()->effectiveWinId(), enumFlags, &enumerator );
+    HRESULT hr = d->m_folder->EnumObjects( (HWND)parent()->effectiveWinId(), enumFlags, &enumerator );
 
     if ( SUCCEEDED( hr ) && enumerator ) {
         LPITEMIDLIST pidl;
@@ -412,7 +412,7 @@ qint64 ShellFolderPrivate::calculateSize( IShellFolder* parentFolder, LPITEMIDLI
 
     if ( SUCCEEDED( hr ) ) {
         IEnumIDList* enumerator;
-        hr = folder->EnumObjects( q->parent()->effectiveWinId(), SHCONTF_FOLDERS | SHCONTF_NONFOLDERS | SHCONTF_INCLUDEHIDDEN, &enumerator );
+        hr = folder->EnumObjects( (HWND)q->parent()->effectiveWinId(), SHCONTF_FOLDERS | SHCONTF_NONFOLDERS | SHCONTF_INCLUDEHIDDEN, &enumerator );
 
         if ( SUCCEEDED( hr ) && enumerator ) {
             LPITEMIDLIST itemPidl;
@@ -458,7 +458,7 @@ bool ShellFolder::setItemName( ShellItem& item, const QString& name )
     bool result = false;
 
     LPITEMIDLIST pidlNew = NULL;
-    HRESULT hr = d->m_folder->SetNameOf( parent()->effectiveWinId(), item.d->m_pidl, (LPCWSTR)name.utf16(), SHGDN_INFOLDER | SHGDN_FORPARSING, &pidlNew );
+    HRESULT hr = d->m_folder->SetNameOf( (HWND)parent()->effectiveWinId(), item.d->m_pidl, (LPCWSTR)name.utf16(), SHGDN_INFOLDER | SHGDN_FORPARSING, &pidlNew );
 
     if ( SUCCEEDED( hr ) ) {
         if ( pidlNew ) {
@@ -598,10 +598,10 @@ ShellFolder* ShellFolder::browseFolder()
     QString title = tr( "Select the folder to open:" );
 
     BROWSEINFO info = { 0 };
-    info.hwndOwner = parent()->effectiveWinId();
+    info.hwndOwner = (HWND)parent()->effectiveWinId();
     info.pidlRoot = NULL;
     info.pszDisplayName = buffer;
-    info.lpszTitle = title.utf16();
+    info.lpszTitle = (LPCWSTR)title.utf16();
     info.ulFlags = BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
     info.lpfn = ShellFolderBrowseCallbackProc;
     info.lParam = (LPARAM)d->m_pidl;
@@ -628,10 +628,10 @@ ShellPidl ShellFolder::browseFolder( QWidget* parent, const QString& title, cons
     wchar_t buffer[ MAX_PATH ];
 
     BROWSEINFO info = { 0 };
-    info.hwndOwner = parent->effectiveWinId();
+    info.hwndOwner = (HWND)parent->effectiveWinId();
     info.pidlRoot = NULL;
     info.pszDisplayName = buffer;
-    info.lpszTitle = title.utf16();
+    info.lpszTitle = (LPCWSTR)title.utf16();
     info.ulFlags = BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
     info.lpfn = ShellFolderBrowseCallbackProc;
     info.lParam = (LPARAM)startPidl.d->pidl();
@@ -676,7 +676,7 @@ bool ShellFolder::canCreateFolder()
     bool result = false;
 
     ITransferDestination* destination;
-    HRESULT hr = d->m_folder->CreateViewObject( parent()->effectiveWinId(), IID_PPV_ARGS( &destination ) );
+    HRESULT hr = d->m_folder->CreateViewObject( (HWND)parent()->effectiveWinId(), IID_PPV_ARGS( &destination ) );
 
     if ( SUCCEEDED( hr ) ) {
         destination->Release();
@@ -700,7 +700,7 @@ bool ShellFolder::createFolder( const QString& name )
     HRESULT hr = CoCreateInstance( CLSID_FileOperation, NULL, CLSCTX_ALL, IID_PPV_ARGS( &fileOperation ) );
 
     if ( SUCCEEDED( hr ) ) {
-        fileOperation->SetOwnerWindow( parent()->effectiveWinId() );
+        fileOperation->SetOwnerWindow( (HWND)parent()->effectiveWinId() );
 
         DWORD operationFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMMKDIR | FOFX_NOMINIMIZEBOX;
         fileOperation->SetOperationFlags( operationFlags );
@@ -709,7 +709,7 @@ bool ShellFolder::createFolder( const QString& name )
         hr = SHCreateItemFromIDList( d->m_pidl, IID_PPV_ARGS( &item ) );
 
         if ( SUCCEEDED( hr ) ) {
-            hr = fileOperation->NewItem( item, FILE_ATTRIBUTE_DIRECTORY, name.utf16(), NULL, NULL );
+            hr = fileOperation->NewItem( item, FILE_ATTRIBUTE_DIRECTORY, (LPCWSTR)name.utf16(), NULL, NULL );
 
             if ( SUCCEEDED( hr ) ) {
                 hr = fileOperation->PerformOperations();
@@ -729,7 +729,7 @@ bool ShellFolder::createFolder( const QString& name )
         if ( ( attrs & ShellItem::FileSystem ) && ( attrs & ShellItem::Directory ) ) {
             QString path = d->m_path + QLatin1Char( '\\' ) + name;
 
-            result = CreateDirectory( path.utf16(), NULL );
+            result = CreateDirectory( (LPCWSTR)path.utf16(), NULL );
         }
     }
 
@@ -743,7 +743,7 @@ bool ShellFolder::createFile( const QString& name, bool overwrite, const char* d
     QString path = d->m_path + QLatin1Char( '\\' ) + name;
 
     DWORD creation = overwrite ? CREATE_ALWAYS : OPEN_ALWAYS;
-    HANDLE file = CreateFile( path.utf16(), GENERIC_WRITE, FILE_SHARE_READ, NULL, creation, FILE_ATTRIBUTE_NORMAL, NULL );
+    HANDLE file = CreateFile( (LPCWSTR)path.utf16(), GENERIC_WRITE, FILE_SHARE_READ, NULL, creation, FILE_ATTRIBUTE_NORMAL, NULL );
 
     if ( file != INVALID_HANDLE_VALUE ) {
         if ( data && size > 0 && ( overwrite || GetLastError() == 0 ) ) {
@@ -763,7 +763,7 @@ ShellItem ShellFolder::childItem( const QString& name )
 {
     ShellItem result;
 
-    HRESULT hr = d->m_folder->ParseDisplayName( parent()->effectiveWinId(), NULL, (LPWSTR)name.utf16(), NULL, &result.d->m_pidl, NULL );
+    HRESULT hr = d->m_folder->ParseDisplayName( (HWND)parent()->effectiveWinId(), NULL, (LPWSTR)name.utf16(), NULL, &result.d->m_pidl, NULL );
 
     if ( SUCCEEDED( hr ) )
         d->readItemProperties( result );
@@ -778,10 +778,10 @@ bool ShellFolder::executeItem( const ShellItem& item )
     SHELLEXECUTEINFO info = { 0 };
     info.cbSize = sizeof( info );
     info.fMask = SEE_MASK_IDLIST;
-    info.hwnd = parent()->effectiveWinId();
+    info.hwnd = (HWND)parent()->effectiveWinId();
     info.lpVerb = NULL;
     info.lpParameters = NULL;
-    info.lpDirectory = d->m_path.utf16();
+    info.lpDirectory = (LPCWSTR)d->m_path.utf16();
     info.nShow = SW_SHOWNORMAL;
     info.lpIDList = absolutePidl;
 
@@ -842,7 +842,7 @@ bool ShellFolder::explore()
     SHELLEXECUTEINFO info = { 0 };
     info.cbSize = sizeof( info );
     info.fMask = SEE_MASK_IDLIST;
-    info.hwnd = parent()->effectiveWinId();
+    info.hwnd = (HWND)parent()->effectiveWinId();
     info.lpVerb = NULL;
     info.lpParameters = NULL;
     info.lpDirectory = NULL;
@@ -857,7 +857,7 @@ QString ShellFolder::toolTip( const ShellItem& item )
     QString result;
 
     IQueryInfo* queryInfo;
-    HRESULT hr = d->m_folder->GetUIObjectOf( parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&item.d->m_pidl, IID_IQueryInfo, NULL, (void**)&queryInfo );
+    HRESULT hr = d->m_folder->GetUIObjectOf( (HWND)parent()->effectiveWinId(), 1, (LPCITEMIDLIST*)&item.d->m_pidl, IID_IQueryInfo, NULL, (void**)&queryInfo );
 
     if ( SUCCEEDED( hr ) ) {
         wchar_t* tip;

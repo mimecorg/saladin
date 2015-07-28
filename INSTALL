@@ -3,7 +3,7 @@ Requirements
 
  * Microsoft Visual Studio 2008 or newer
 
- * Qt framework, version 4.6 or newer (http://qt-project.org/)
+ * Qt framework, version 5.4 or newer (http://www.qt.io/)
 
 The program can be built using the standard 'qmake' tool from Qt. Simple configure
 script is available which creates a configuration file and runs qmake with
@@ -12,7 +12,7 @@ appropriate parameters.
 Open the Visual Studio Command Prompt. Make sure that QTDIR is set to the path where
 Qt was installed. Go to the directory where you have unpacked Saladin and run:
 
-    > set QTDIR=C:\path\to\qt4
+    > set QTDIR=C:\path\to\qt5
     > configure.bat
     > nmake
 

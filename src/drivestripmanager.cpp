@@ -200,7 +200,7 @@ bool DriveStripManager::stripDragEnterEvent( XmlUi::ToolStrip* strip, QDragEnter
 {
     m_dropData = new ShellDropData( e, m_computer, strip );
 
-    e->accept();
+    dragDropHelper( strip, e, false );
 
     return true;
 }
@@ -277,12 +277,11 @@ bool DriveStripManager::dragDropHelper( XmlUi::ToolStrip* strip, QDropEvent* e, 
             result = m_dropData->drop();
     }
 
-    if ( result ) {
+    if ( result )
         e->setDropAction( m_dropData->dropAction() );
-        e->accept();
-    } else {
-        e->ignore();
-    }
+    else
+        e->setDropAction( Qt::IgnoreAction );
+    e->accept();
 
     return result;
 }

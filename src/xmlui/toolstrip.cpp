@@ -1,6 +1,6 @@
 /****************************************************************************
-* Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2012 Michał Męciński
+* Simple XML-based UI builder for Qt
+* Copyright (C) 2007-2015 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -825,9 +825,12 @@ void ActionButton::adjustText()
                 text.replace( after, 1, '\n' );
             else
                 text.replace( before, 1, '\n' );
-            setText( text );
+            defaultAction()->setIconText( text );
         }
     }
+
+    // workaround for QTBUG-46914
+    setText( defaultAction()->iconText() );
 
     QKeySequence shortcut = defaultAction()->shortcut();
     if ( !shortcut.isEmpty() ) {

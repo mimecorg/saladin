@@ -20,7 +20,7 @@
 
 #include <shlobj.h>
 
-static QPixmap loadIcon( const wchar_t* pattern, int attributes )
+static QPixmap loadIcon( LPCWSTR pattern, int attributes )
 {
     SHFILEINFO info;
     DWORD_PTR list = SHGetFileInfo( pattern, attributes, &info, sizeof( info ),
@@ -29,7 +29,7 @@ static QPixmap loadIcon( const wchar_t* pattern, int attributes )
     QPixmap icon;
 
     if ( list != 0 ) {
-        icon = QPixmap::fromWinHICON( info.hIcon );
+        icon = QtWin::fromHICON( info.hIcon );
         DestroyIcon( info.hIcon );
     }
 
@@ -81,7 +81,7 @@ QPixmap IconCache::loadFileIcon( const QString& extension )
 
     QString pattern = "*." + extension;
 
-    QPixmap icon = loadIcon( pattern.utf16(), FILE_ATTRIBUTE_NORMAL );
+    QPixmap icon = loadIcon( (LPCWSTR)pattern.utf16(), FILE_ATTRIBUTE_NORMAL );
 
     g->m_fileIcons.insert( extension, icon );
 

@@ -63,7 +63,7 @@ QList<ShellDrive> ShellComputer::listDrives()
     QList<ShellDrive> result;
 
     IEnumIDList* enumerator;
-    HRESULT hr = d->m_folder->EnumObjects( parent()->effectiveWinId(), SHCONTF_STORAGE, &enumerator );
+    HRESULT hr = d->m_folder->EnumObjects( (HWND)parent()->effectiveWinId(), SHCONTF_STORAGE, &enumerator );
 
     if ( SUCCEEDED( hr ) ) {
         LPITEMIDLIST pidl;

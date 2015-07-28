@@ -1,6 +1,6 @@
 /****************************************************************************
-* Simple XML-based UI builder for Qt4
-* Copyright (C) 2007-2012 Michał Męciński
+* Simple XML-based UI builder for Qt
+* Copyright (C) 2007-2015 Michał Męciński
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are met:
@@ -45,24 +45,14 @@
 #include <QMenuBar>
 #include <QLayout>
 
-#if !defined( XMLUI_NO_STYLE_PLUGIN )
-#include <QStylePlugin>
-#endif
-
 using namespace XmlUi;
 
-WindowsStyle::WindowsStyle() : QWindowsVistaStyle()
+WindowsStyle::WindowsStyle() : QProxyStyle()
 {
 }
 
 WindowsStyle::~WindowsStyle()
 {
-}
-
-static bool useVista()
-{
-    return QSysInfo::WindowsVersion >= QSysInfo::WV_VISTA
-        && QSysInfo::WindowsVersion < QSysInfo::WV_NT_based;
 }
 
 static QColor blendColors( const QColor& src, const QColor& dest, double alpha )
@@ -73,28 +63,9 @@ static QColor blendColors( const QColor& src, const QColor& dest, double alpha )
     return QColor( (int)( red + 0.5 ), (int)( green + 0.5 ), (int)( blue + 0.5 ) );
 }
 
-void WindowsStyle::polish( QApplication* application )
-{
-    if ( useVista() )
-        QWindowsVistaStyle::polish( application );
-    else
-        QWindowsXPStyle::polish( application );
-}
-
-void WindowsStyle::unpolish( QApplication* application )
-{
-    if ( useVista() )
-        QWindowsVistaStyle::unpolish( application );
-    else
-        QWindowsXPStyle::unpolish( application );
-}
-
 void WindowsStyle::polish( QPalette& palette )
 {
-    if ( useVista() )
-        QWindowsVistaStyle::polish( palette );
-    else
-        QWindowsXPStyle::polish( palette );
+    QProxyStyle::polish( palette );
 
     QColor button = palette.color( QPalette::Button );
     QColor base = palette.color( QPalette::Base );
@@ -144,10 +115,7 @@ void WindowsStyle::polish( QWidget* widget )
         widget->setPalette( palette );
     }
 
-    if ( useVista() )
-        QWindowsVistaStyle::polish( widget );
-    else
-        QWindowsXPStyle::polish( widget );
+    QProxyStyle::polish( widget );
 }
 
 void WindowsStyle::unpolish( QWidget* widget )
@@ -161,10 +129,7 @@ void WindowsStyle::unpolish( QWidget* widget )
     if ( qobject_cast<ToolStrip*>( widget ) )
         widget->setPalette( QApplication::palette( widget ) );
 
-    if ( useVista() )
-        QWindowsVistaStyle::unpolish( widget );
-    else
-        QWindowsXPStyle::unpolish( widget );
+    QProxyStyle::unpolish( widget );
 }
 
 int WindowsStyle::pixelMetric( PixelMetric metric, const QStyleOption* option, const QWidget* widget ) const
@@ -182,19 +147,7 @@ int WindowsStyle::pixelMetric( PixelMetric metric, const QStyleOption* option, c
             break;
     }
 
-    if ( useVista() )
-        return QWindowsVistaStyle::pixelMetric( metric, option, widget );
-    else
-        return QWindowsXPStyle::pixelMetric( metric, option, widget );
-}
-
-int WindowsStyle::styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget,
-    QStyleHintReturn* returnData ) const
-{
-    if ( useVista() )
-        return QWindowsVistaStyle::styleHint( hint, option, widget, returnData );
-    else
-        return QWindowsXPStyle::styleHint( hint, option, widget, returnData );
+    return QProxyStyle::pixelMetric( metric, option, widget );
 }
 
 QSize WindowsStyle::sizeFromContents( ContentsType type, const QStyleOption* option,
@@ -202,11 +155,7 @@ QSize WindowsStyle::sizeFromContents( ContentsType type, const QStyleOption* opt
 {
     switch ( type ) {
         case CT_Menu:
-#if ( QT_VERSION < 0x040400 )
-            return contentsSize - QSize( 0, 1 );
-#else
             return contentsSize;
-#endif
 
         case CT_MenuItem:
             if ( const QStyleOptionMenuItem* menuItem = qstyleoption_cast<const QStyleOptionMenuItem*>( option ) ) {
@@ -239,27 +188,7 @@ QSize WindowsStyle::sizeFromContents( ContentsType type, const QStyleOption* opt
             break;
     }
 
-    if ( useVista() )
-        return QWindowsVistaStyle::sizeFromContents( type, option, contentsSize, widget );
-    else
-        return QWindowsXPStyle::sizeFromContents( type, option, contentsSize, widget );
-}
-
-QRect WindowsStyle::subElementRect( SubElement element, const QStyleOption* option, const QWidget* widget ) const
-{
-    if ( useVista() )
-        return QWindowsVistaStyle::subElementRect( element, option, widget );
-    else
-        return QWindowsXPStyle::subElementRect( element, option, widget );
-}
-
-QRect WindowsStyle::subControlRect( ComplexControl control, const QStyleOptionComplex* option,
-    SubControl subControl, const QWidget* widget ) const
-{
-    if ( useVista() )
-        return QWindowsVistaStyle::subControlRect( control, option, subControl, widget );
-    else
-        return QWindowsXPStyle::subControlRect( control, option, subControl, widget );
+    return QProxyStyle::sizeFromContents( type, option, contentsSize, widget );
 }
 
 void WindowsStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* option,
@@ -310,10 +239,7 @@ void WindowsStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* 
             break;
     }
 
-    if ( useVista() )
-        QWindowsVistaStyle::drawPrimitive( element, option, painter, widget );
-    else
-        QWindowsXPStyle::drawPrimitive( element, option, painter, widget );
+    QProxyStyle::drawPrimitive( element, option, painter, widget );
 }
 
 static void drawHighlightFrame( QPainter* painter, const QRect& rect, const QColor& begin, const QColor& middle, const QColor& end, const QColor& border, const QColor& inner, bool roundLeft, bool roundRight )
@@ -371,7 +297,6 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
     QPainter* painter, const QWidget* widget ) const
 {
     switch ( element ) {
-#if ( QT_VERSION >= 0x040500 )
         case CE_ShapedFrame:
             if ( qobject_cast<const ToolStrip*>( widget ) ) {
                 painter->setPen( m_colorSeparator );
@@ -380,7 +305,6 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
                 return;
             }
             break;
-#endif
 
         case CE_MenuEmptyArea:
             painter->fillRect( option->rect, m_colorMenuBackground );
@@ -392,11 +316,7 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
             if ( option->state & QStyle::State_Selected && option->state & QStyle::State_Enabled ) {
                 painter->setPen( m_colorItemBorder );
                 painter->setBrush( m_colorItemBackgroundBegin );
-#if ( QT_VERSION >= 0x040600 )
                 QRect rect = option->rect.adjusted( 1, 0, -1, 0 );
-#else
-                QRect rect = option->rect.adjusted( 1, 0, -2, 0 );
-#endif
                 drawHighlightFrame( painter, rect, m_colorItemBackgroundBegin, m_colorItemBackgroundMiddle, m_colorItemBackgroundEnd, m_colorItemBorder, m_colorItemBackgroundEnd, true, true );
             } else {
                 painter->setPen( m_colorSeparator );
@@ -477,10 +397,7 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
             break;
     }
 
-    if ( useVista() )
-        QWindowsVistaStyle::drawControl( element, option, painter, widget );
-    else
-        QWindowsXPStyle::drawControl( element, option, painter, widget );
+    QProxyStyle::drawControl( element, option, painter, widget );
 }
 
 void WindowsStyle::drawComplexControl( ComplexControl control, const QStyleOptionComplex* option,
@@ -541,56 +458,7 @@ void WindowsStyle::drawComplexControl( ComplexControl control, const QStyleOptio
             break;
     }
 
-    if ( useVista() )
-        QWindowsVistaStyle::drawComplexControl( control, option, painter, widget );
-    else
-        QWindowsXPStyle::drawComplexControl( control, option, painter, widget );
+    QProxyStyle::drawComplexControl( control, option, painter, widget );
 }
-
-#if !defined( XMLUI_NO_STYLE_PLUGIN )
-
-namespace XmlUi
-{
-
-class WindowsStylePlugin : public QStylePlugin
-{
-public: // overrides
-    QStringList keys() const;
-    QStyle* create( const QString& key );
-};
-
-QStringList WindowsStylePlugin::keys() const
-{
-    return QStringList() << "XmlUi::WindowsStyle";
-}
-
-QStyle* WindowsStylePlugin::create( const QString& key )
-{
-    if ( key.toLower() == QLatin1String( "xmlui::windowsstyle" ) )
-        return new WindowsStyle();
-    return NULL;
-}
-
-#if !defined( XMLUI_EXPORT_STYLE_PLUGIN )
-
-QObject* qt_plugin_instance_xmlui_windowsstyle()
-{
-    static QPointer<QObject> instance;
-    if ( !instance )
-        instance = new WindowsStylePlugin();
-    return instance;
-}
-
-Q_IMPORT_PLUGIN( xmlui_windowsstyle )
-
-#else
-
-Q_EXPORT_PLUGIN2( xmlui_windowsstyle, WindowsStylePlugin )
-
-#endif // !defined( XMLUI_EXPORT_STYLE_PLUGIN )
-
-}
-
-#endif // !defined( XMLUI_NO_STYLE_PLUGIN )
 
 #endif // !defined( XMLUI_NO_STYLE_WINDOWS )

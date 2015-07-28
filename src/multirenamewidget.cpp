@@ -89,7 +89,7 @@ MultiRenameWidget::MultiRenameWidget( QWidget* parent ) : QWidget( parent )
     m_list->setSelectionMode( QAbstractItemView::SingleSelection );
     m_list->setRootIsDecorated( false );
     m_list->setUniformRowHeights( true );
-    m_list->header()->setMovable( false );
+    m_list->header()->setSectionsMovable( false );
     m_list->header()->setStretchLastSection( false );
     layout->addWidget( m_list, 4, 0, 1, 5 );
 

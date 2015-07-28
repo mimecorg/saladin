@@ -518,7 +518,8 @@ bool PaneWidget::viewDragEnterEvent( QDragEnterEvent* e )
     m_dropData = new ShellDropData( e, m_model->folder(), this );
 
     m_view->setDragging( true );
-    e->accept();
+
+    dragDropHelper( e, false );
 
     return true;
 }
@@ -634,12 +635,11 @@ bool PaneWidget::dragDropHelper( QDropEvent* e, bool doDrop )
             result = m_dropData->drop();
     }
 
-    if ( result ) {
+    if ( result )
         e->setDropAction( m_dropData->dropAction() );
-        e->accept();
-    } else {
-        e->ignore();
-    }
+    else
+        e->setDropAction( Qt::IgnoreAction );
+    e->accept();
 
     return result;
 }
