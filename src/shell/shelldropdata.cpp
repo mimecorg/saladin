@@ -523,6 +523,11 @@ STDMETHODIMP WindowDropTarget::DragLeave()
 
 STDMETHODIMP WindowDropTarget::Drop( IDataObject* /*dataObject*/, DWORD keyState, POINTL pt, DWORD* effect )
 {
+    if ( ( keyState & ( MK_LBUTTON | MK_MBUTTON | MK_RBUTTON ) ) == 0 )
+        keyState |= m_lastKeyState & ( MK_LBUTTON | MK_MBUTTON | MK_RBUTTON );
+    m_lastKeyState = keyState;
+    m_lastPoint = pt;
+
     QDropEvent e( m_window->mapFromGlobal( QPoint( pt.x, pt.y ) ), effectToDropActions( *effect ), ShellDropDataPrivate::m_dropMimeData,
         keyStateToMouseButtons( keyState ), keyStateToKeyboardModifiers( keyState ) );
     QApplication::sendEvent( m_window, &e );
