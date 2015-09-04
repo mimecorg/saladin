@@ -27,7 +27,20 @@ StreamDevice::StreamDevice( const ShellPidl& pidl ) :
 
     d->m_pidl = pidl;
 
-    SHBindToObject( NULL, pidl.d->pidl(), NULL, IID_PPV_ARGS( &d->m_stream ) );
+    IBindCtx* bindContext;
+    CreateBindCtx( 0, &bindContext );
+
+    BIND_OPTS bindOpts;
+    bindOpts.cbStruct = sizeof( BIND_OPTS );
+    bindOpts.grfFlags = 0;
+    bindOpts.grfMode = STGM_READ | STGM_SHARE_DENY_NONE;
+    bindOpts.dwTickCountDeadline = 0;
+
+    bindContext->SetBindOptions( &bindOpts );
+
+    SHBindToObject( NULL, pidl.d->pidl(), bindContext, IID_PPV_ARGS( &d->m_stream ) );
+
+    bindContext->Release();
 }
 
 StreamDevice::~StreamDevice()
