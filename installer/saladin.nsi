@@ -153,10 +153,12 @@ Section
 
     File "${SRCDIR}\translations\locale.ini"
 
+    File "${SRCDIR}\translations\saladin_de.qm"
     File "${SRCDIR}\translations\saladin_es.qm"
     File "${SRCDIR}\translations\saladin_pl.qm"
     File "${SRCDIR}\translations\saladin_pt_BR.qm"
 
+    File "${QTDIR}\translations\qt_de.qm"
     File "${QTDIR}\translations\qt_es.qm"
     File "${QTDIR}\translations\qt_pl.qm"
     File "${QTDIR}\translations\qt_pt.qm"

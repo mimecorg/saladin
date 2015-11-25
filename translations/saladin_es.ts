@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es">
+<TS version="2.1" language="es">
 <context>
     <name>AboutBox</name>
     <message>
@@ -57,13 +57,9 @@
         <source>Donations</source>
         <translation>Donaciones</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Copyright &amp;copy; 2011-2014 Michał Męciński</source>
         <translation>Copyright &amp;copy; 2011-2014 Michał Męciński</translation>
-    </message>
-    <message>
-        <source>Using Qt %1 (%2 linking) and Windows Shell %3.</source>
-        <translation>Usando Qt %1 (vínculo %2) y Windows Shell %3.</translation>
     </message>
     <message>
         <source>Saladin %1</source>
@@ -120,6 +116,10 @@
     <message>
         <source>&amp;Quick Guide</source>
         <translation>&amp;Guía rápida</translation>
+    </message>
+    <message>
+        <source>Using Qt %1 and Windows Shell %2.</source>
+        <translation>Usando Qt %1 y Windows Shell %2.</translation>
     </message>
 </context>
 <context>

@@ -64,6 +64,8 @@ PRECOMPILED_HEADER = precompiled.h
 
 TRANSLATIONS += \
            ../translations/saladin_untranslated.ts \
+           ../translations/saladin_de.ts \
+           ../translations/saladin_es.ts \
            ../translations/saladin_pl.ts \
            ../translations/saladin_pt_BR.ts
 
