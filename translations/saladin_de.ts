@@ -686,7 +686,7 @@ F9</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="231"/>
         <source>Pack</source>
-        <translation>komprimieren</translation>
+        <translation>Packen</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="236"/>
@@ -787,12 +787,12 @@ F9</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="626"/>
         <source>Enter the pattern to select:</source>
-        <translation>Ein Muster auswählen:</translation>
+        <translation>FilterString zum auswählen eingeben:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="651"/>
         <source>Enter the pattern to unselect:</source>
-        <translation>Muster zum abwählen:</translation>
+        <translation>FilterString zum abwählen eingeben:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="708"/>
@@ -917,17 +917,17 @@ Wähle das Werkzeug in den Einstellungen und versuche es erneut.</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="1032"/>
         <source>Pack To Zip</source>
-        <translation>Zip komprimieren</translation>
+        <translation>Packe als Zip</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1037"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt;:</source>
-        <translation>Komprimieren &lt;b&gt;%1&lt;/b&gt;:</translation>
+        <translation>Packe &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1044"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt; selected items:</source>
-        <translation>Komprimiere &lt;b&gt;%1&lt;/b&gt; ausgewählte Einträge:</translation>
+        <translation>Packe &lt;b&gt;%1&lt;/b&gt; ausgewählte Einträge:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1182"/>
@@ -1262,7 +1262,7 @@ Make sure the device is available and try again.</source>
     <message>
         <location filename="../src/searchdialog.cpp" line="77"/>
         <source>&amp;Pattern:</source>
-        <translation>&amp;Muster:</translation>
+        <translation>&amp;Suchstring:</translation>
     </message>
     <message>
         <location filename="../src/searchdialog.cpp" line="86"/>
@@ -1328,7 +1328,7 @@ Make sure the device is available and try again.</source>
     <message>
         <location filename="../src/searchdialog.cpp" line="237"/>
         <source>Pattern cannot be empty.</source>
-        <translation>Struktur darf nicht leer sein.</translation>
+        <translation>Suchstring darf nicht leer sein.</translation>
     </message>
     <message>
         <location filename="../src/searchdialog.cpp" line="247"/>
