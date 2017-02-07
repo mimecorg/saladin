@@ -151,6 +151,7 @@ SearchDialog::SearchDialog( ShellFolder* folder, QWidget* parent ) : QDialog( pa
     resultsLayout->addWidget( m_view );
 
     connect( m_view, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( contextMenuRequested( const QPoint& ) ) );
+    connect( m_view, SIGNAL( doubleClicked( const QModelIndex& ) ), this, SLOT( itemDoubleClicked( const QModelIndex& ) ) );
 
     m_model = new SearchItemModel( this );
 
@@ -318,6 +319,19 @@ void SearchDialog::contextMenuRequested( const QPoint& pos )
         ShellSelection selection( m_model->folderAt( index ), items, this );
         selection.showContextMenu( m_view->viewport()->mapToGlobal( pos ), 0 );
     }
+}
+
+void SearchDialog::itemDoubleClicked( const QModelIndex& index )
+{
+    QModelIndex mappedIndex = m_proxyModel->mapToSource( index );
+
+    if ( !mappedIndex.isValid() )
+        return;
+
+    ShellFolder* folder = m_model->folderAt( mappedIndex );
+    ShellItem item = m_model->itemAt( mappedIndex );
+
+    folder->executeItem( item );
 }
 
 void SearchDialog::viewCurrent()

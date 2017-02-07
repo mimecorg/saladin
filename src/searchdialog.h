@@ -48,6 +48,8 @@ private slots:
 
     void contextMenuRequested( const QPoint& pos );
 
+    void itemDoubleClicked( const QModelIndex& index );
+
     void viewCurrent();
     void editCurrent();
     void gotoFile();
