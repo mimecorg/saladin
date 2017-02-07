@@ -1312,64 +1312,64 @@ Upewnij się że urządzenie jest dostępne i spróbuj ponownie.</translation>
         <translation>Kopiuj nazwy plików</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="181"/>
+        <location filename="../src/searchdialog.cpp" line="182"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="183"/>
+        <location filename="../src/searchdialog.cpp" line="184"/>
         <source>Search for files:</source>
         <translation>Szukaj plików:</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="237"/>
-        <location filename="../src/searchdialog.cpp" line="247"/>
+        <location filename="../src/searchdialog.cpp" line="238"/>
+        <location filename="../src/searchdialog.cpp" line="248"/>
         <source>Invalid value</source>
         <translation>Nieprawidłowa wartość</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="237"/>
+        <location filename="../src/searchdialog.cpp" line="238"/>
         <source>Pattern cannot be empty.</source>
         <translation>Wzorzec nie może być pusty.</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="247"/>
+        <location filename="../src/searchdialog.cpp" line="248"/>
         <source>Text cannot be empty.</source>
         <translation>Tekst nie może być pusty.</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="263"/>
+        <location filename="../src/searchdialog.cpp" line="264"/>
         <source>&amp;Abort</source>
         <translation>&amp;Przerwij</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="265"/>
+        <location filename="../src/searchdialog.cpp" line="266"/>
         <source>Searching...</source>
         <translation>Wyszukiwanie...</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="282"/>
-        <location filename="../src/searchdialog.cpp" line="300"/>
+        <location filename="../src/searchdialog.cpp" line="283"/>
+        <location filename="../src/searchdialog.cpp" line="301"/>
         <source>&amp;Close</source>
         <translation>Zam&amp;knij</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="284"/>
+        <location filename="../src/searchdialog.cpp" line="285"/>
         <source>Search aborted.</source>
         <translation>Wyszukiwanie przerwane.</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="289"/>
+        <location filename="../src/searchdialog.cpp" line="290"/>
         <source>%1 items found</source>
         <translation>znaleziono %1 elementów</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="294"/>
+        <location filename="../src/searchdialog.cpp" line="295"/>
         <source>Searching %1...</source>
         <translation>Wyszukiwanie %1...</translation>
     </message>
     <message>
-        <location filename="../src/searchdialog.cpp" line="302"/>
+        <location filename="../src/searchdialog.cpp" line="303"/>
         <source>Search completed.</source>
         <translation>Wyszukiwanie zakończone.</translation>
     </message>
