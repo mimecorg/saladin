@@ -22,8 +22,7 @@ ImageLabel::ImageLabel( QWidget* parent ) : QWidget( parent ),
     m_zoom( 1.0 ),
     m_black( false )
 {
-    setBackgroundRole( QPalette::Base );
-    setAutoFillBackground( true );
+    setAttribute( Qt::WA_OpaquePaintEvent );
 
     setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 }
@@ -79,10 +78,13 @@ QSize ImageLabel::sizeHint() const
 
 void ImageLabel::paintEvent( QPaintEvent* /*e*/ )
 {
+    QPainter painter( this );
+
+    painter.fillRect( rect(), m_black ? Qt::black : Qt::white );
+
     if ( m_image.isNull() )
         return;
 
-    QPainter painter( this );
     painter.setRenderHint( QPainter::SmoothPixmapTransform );
 
     double zoom = actualZoom();
@@ -93,9 +95,6 @@ void ImageLabel::paintEvent( QPaintEvent* /*e*/ )
     target.setTop( ( height() - scaled.height() ) / 2 );
     target.setLeft( ( width() - scaled.width() ) / 2 );
     target.setSize( scaled );
-
-    if ( m_black && m_image.hasAlphaChannel() )
-        painter.fillRect( target, Qt::black );
 
     painter.drawImage( target, m_image );
 }
