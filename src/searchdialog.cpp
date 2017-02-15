@@ -413,6 +413,9 @@ void SearchDialog::gotoFile()
     ShellFolder* folder = m_model->folderAt( index );
     ShellItem item = m_model->itemAt( index );
 
+    if ( !item.isValid() )
+        return;
+
     mainWindow->gotoFile( folder->pidl(), item );
 
     QDialog::accept();
@@ -426,6 +429,9 @@ void SearchDialog::copyNames()
         QModelIndex index = m_proxyModel->mapToSource( m_proxyModel->index( i, 0 ) );
         names.append( m_model->pathAt( index ) );
     }
+
+    if ( names.isEmpty() )
+        return;
 
     QString text;
     if ( names.count() > 1 )
