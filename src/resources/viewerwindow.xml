@@ -1,5 +1,8 @@
 <xmlui>
   <strip id="stripMain">
+    <action id="previous"/>
+    <action id="next"/>
+    <separator/>
     <action id="reload"/>
     <separator/>
     <action id="switchToText"/>

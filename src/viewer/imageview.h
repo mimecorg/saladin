@@ -36,6 +36,8 @@ public: // overrides
 
     void load();
 
+    void storeSettings();
+
 private slots:
     void updateActions();
 
@@ -60,7 +62,6 @@ private slots:
 
 private:
     void initializeSettings();
-    void storeSettings();
 
     void zoom( double factor );
     void adjustScrollBar( QScrollBar* scrollBar, double factor );

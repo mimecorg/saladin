@@ -91,6 +91,7 @@ private slots:
 
     void renameCurrent();
     void viewCurrent();
+    void viewSelected();
     void editCurrent();
     void editNew();
     void copySelected();

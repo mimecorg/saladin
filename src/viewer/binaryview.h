@@ -36,6 +36,8 @@ public: // overrides
 
     void load();
 
+    void storeSettings();
+
 private slots:
     void updateActions();
 
@@ -52,7 +54,6 @@ private slots:
 
 private:
     void initializeSettings();
-    void storeSettings();
 
 private:
     TextEdit* m_edit;

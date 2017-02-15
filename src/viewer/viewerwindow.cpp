@@ -34,6 +34,16 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
 
     QAction* action;
 
+    action = new QAction( IconLoader::icon( "find-previous" ), tr( "Previous" ), this );
+    action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::Key_P ) << QKeySequence( Qt::ALT + Qt::Key_Left ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( previous() ) );
+    setAction( "previous", action );
+
+    action = new QAction( IconLoader::icon( "find-next" ), tr( "Next" ), this );
+    action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::Key_N ) << QKeySequence( Qt::ALT + Qt::Key_Right ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( next() ) );
+    setAction( "next", action );
+
     action = new QAction( IconLoader::icon( "refresh" ), tr( "Reload" ), this );
     action->setShortcut( Qt::CTRL + Qt::Key_R );
     connect( action, SIGNAL( triggered() ), this, SLOT( reload() ) );
@@ -118,6 +128,22 @@ void ViewerWindow::setView( View* view )
     action( "switchToImage" )->setChecked( type == View::Image );
 
     builder()->resumeUpdate();
+}
+
+void ViewerWindow::enableNavigation( bool isFirst, bool isLast )
+{
+    action( "previous" )->setEnabled( !isFirst );
+    action( "next" )->setEnabled( !isLast );
+}
+
+void ViewerWindow::previous()
+{
+    mainWindow->viewManager()->loadPrevious( this );
+}
+
+void ViewerWindow::next()
+{
+    mainWindow->viewManager()->loadNext( this );
 }
 
 void ViewerWindow::reload()

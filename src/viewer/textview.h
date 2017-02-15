@@ -37,6 +37,8 @@ public: // overrides
 
     void load();
 
+    void storeSettings();
+
     void setFullScreen( bool on );
 
     bool eventFilter( QObject* obj, QEvent* e );
@@ -68,7 +70,6 @@ private slots:
 
 private:
     void initializeSettings();
-    void storeSettings();
 
     QMenu* createEncodingMenu();
 

@@ -58,6 +58,8 @@ public:
 
     virtual void load() = 0;
 
+    virtual void storeSettings() = 0;
+
     virtual void setFullScreen( bool on );
 
 signals:

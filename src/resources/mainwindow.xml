@@ -30,7 +30,7 @@
     </section>
     <section id="sectionFunctions" uniform="1">
       <action id="renameCurrent"/>
-      <action id="viewCurrent"/>
+      <action id="popupView"/>
       <action id="popupEdit"/>
       <action id="popupCopy"/>
       <action id="popupMove"/>
@@ -49,6 +49,10 @@
       </grid>      
     </section>
   </strip>
+  <menu id="menuView">
+    <action id="viewCurrent"/>
+    <action id="viewSelected"/>
+  </menu>
   <menu id="menuEdit">
     <action id="editCurrent"/>
     <action id="editNew"/>

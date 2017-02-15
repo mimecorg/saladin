@@ -34,10 +34,15 @@ public:
 public:
     void setView( View* view );
 
+    void enableNavigation( bool isFirst, bool isLast );
+
 protected: // overrides
     void showEvent( QShowEvent* e );
 
 private slots:
+    void previous();
+    void next();
+
     void reload();
 
     void switchToText();

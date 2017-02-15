@@ -155,10 +155,18 @@ MainWindow::MainWindow() : QMainWindow(),
     setAction( "renameCurrent", action );
 
     action = new QAction( IconLoader::icon( "view" ), tr( "View", "action name" ), this );
-    action->setShortcut( QKeySequence( Qt::Key_F3 ) );
     action->setIconText( tr( "View\nF3" ) );
+    setAction( "popupView", action );
+
+    action = new QAction( IconLoader::icon( "view" ), tr( "View Current File" ), this );
+    action->setShortcut( QKeySequence( Qt::Key_F3 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
     setAction( "viewCurrent", action );
+
+    action = new QAction( IconLoader::icon( "view-selected" ), tr( "View Selected Files" ), this );
+    action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F3 ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( viewSelected() ) );
+    setAction( "viewSelected", action );
 
     action = new QAction( IconLoader::icon( "edit" ), tr( "Edit" ), this );
     action->setIconText( tr( "Edit\nF4" ) );
@@ -304,6 +312,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setTitle( "sectionSelect", tr( "Select" ) );
     setTitle( "sectionTools", tr( "Tools" ) );
 
+    setPopupMenu( "popupView", "menuView", "viewCurrent" );
     setPopupMenu( "popupEdit", "menuEdit", "editCurrent" );
     setPopupMenu( "popupCopy", "menuCopy", "copySelected" );
     setPopupMenu( "popupMove", "menuMove", "moveSelected" );
@@ -688,6 +697,33 @@ void MainWindow::viewCurrent()
         m_viewManager->openView( m_sourcePane->folder()->itemPidl( item ) );
     else
         startTool( ViewerTool, m_sourcePane->folder(), m_sourcePane->currentItem() );
+}
+
+void MainWindow::viewSelected()
+{
+    QList<ShellItem> items;
+
+    foreach ( ShellItem item, m_sourcePane->selectedItems() ) {
+        if ( item.isValid() && item.attributes().testFlag( ShellItem::Stream ) )
+            items.append( item );
+    }
+
+    if ( items.isEmpty() )
+        return;
+
+    LocalSettings* settings = application->applicationSettings();
+
+    if ( settings->value( "InternalViewer" ).toBool() ) {
+        QList<ShellPidl> pidls;
+        foreach ( ShellItem item, items )
+            pidls.append( m_sourcePane->folder()->itemPidl( item ) );
+        m_viewManager->openView( pidls );
+    } else {
+        if ( items.count() == 1 )
+            startTool( ViewerTool, m_sourcePane->folder(), items.first() );
+        else
+            QMessageBox::warning( this, tr( "Cannot view files" ), tr( "Only the internal viewer supports viewing multiple files." ) );
+    }
 }
 
 void MainWindow::editCurrent()
