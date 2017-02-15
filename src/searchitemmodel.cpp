@@ -65,9 +65,9 @@ void SearchItemModel::startSearch( ShellFolder* folder, const QString& pattern, 
     m_text = text;
     m_cs = cs;
 
-    scanFolder( QString(), folder );
-
     endResetModel();
+
+    scanFolder( QString(), folder );
 
     if ( m_pendingItems.isEmpty() ) {
         if ( !m_pendingFolders.isEmpty() )
