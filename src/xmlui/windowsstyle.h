@@ -80,23 +80,17 @@ public: // overrides
         QPainter* painter, const QWidget* widget ) const;
 
 private:
-    QColor m_colorBackgroundBegin;
-    QColor m_colorBackgroundEnd;
+    QColor m_colorBackground;
+
     QColor m_colorMenuBorder;
     QColor m_colorMenuBackground;
     QColor m_colorBarBegin;
     QColor m_colorBarEnd;
     QColor m_colorSeparator;
     QColor m_colorItemBorder;
-    QColor m_colorItemBackgroundBegin;
-    QColor m_colorItemBackgroundMiddle;
-    QColor m_colorItemBackgroundEnd;
-    QColor m_colorItemCheckedBegin;
-    QColor m_colorItemCheckedMiddle;
-    QColor m_colorItemCheckedEnd;
-    QColor m_colorItemSunkenBegin;
-    QColor m_colorItemSunkenMiddle;
-    QColor m_colorItemSunkenEnd;
+    QColor m_colorItemBackground;
+    QColor m_colorItemChecked;
+    QColor m_colorItemSunken;
     QColor m_colorToolStripLabel;
 };
 

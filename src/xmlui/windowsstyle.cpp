@@ -77,27 +77,17 @@ void WindowsStyle::polish( QPalette& palette )
 
     highlight = QColor::fromHsv( highlight.hue(), 204, 255 ).toRgb();
 
-    m_colorBackgroundBegin = button;
-    m_colorBackgroundEnd = blendColors( button, base, 0.205 );
-    m_colorMenuBorder = blendColors( text, dark, 0.2 );
-    m_colorMenuBackground = blendColors( button, base, 0.143 );
-    m_colorBarBegin = blendColors( button, base, 0.2 );
-    m_colorBarEnd = blendColors( button, dark, 0.8 );
-    m_colorSeparator = blendColors( dark, base, 0.5 );
-    m_colorItemBorder = highlight;
-    
-    m_colorItemBackgroundBegin = blendColors( highlight, base, 0.2 );
-    m_colorItemBackgroundMiddle = blendColors( highlight, base, 0.4 );
-    m_colorItemBackgroundEnd = blendColors( highlight, light, 0.1 );
+    m_colorBackground = button;
 
-    m_colorItemCheckedBegin = blendColors( highlight, base, 0.2 );
-    m_colorItemCheckedMiddle = blendColors( highlight, light, 0.1 );
-    m_colorItemCheckedEnd = blendColors( highlight, base, 0.4 );
-    
-    m_colorItemSunkenBegin = blendColors( highlight, base, 0.3 );
-    m_colorItemSunkenMiddle = blendColors( highlight, base, 0.5 );
-    m_colorItemSunkenEnd = blendColors( highlight, light, 0.2 );
-    
+    m_colorMenuBorder = blendColors( dark, base, 0.55 );
+    m_colorMenuBackground = button;
+    m_colorSeparator = blendColors( dark, base, 0.4 );
+    m_colorItemBorder = highlight;
+
+    m_colorItemBackground = blendColors( highlight, base, 0.4 );
+    m_colorItemChecked = blendColors( highlight, light, 0.3 );
+    m_colorItemSunken = blendColors( highlight, base, 0.5 );
+
     m_colorToolStripLabel = blendColors( highlight, shadow, 0.3 );
 }
 
@@ -204,17 +194,11 @@ void WindowsStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* 
                     painter->drawLine( rect.bottomLeft() + QPoint( 0, 1 ),
                         rect.bottomRight() + QPoint( 0, 1 ) );
                 }
-                QLinearGradient gradient( option->rect.topLeft(), option->rect.topRight() );
-                gradient.setColorAt( 0.0, m_colorBackgroundBegin );
-                gradient.setColorAt( 0.6, m_colorBackgroundEnd );
-                painter->fillRect( rect, gradient );
+                painter->fillRect( rect, m_colorBackground );
                 return;
             }
             if ( qobject_cast<const GradientWidget*>( widget ) ) {
-                QLinearGradient gradient( option->rect.topLeft(), option->rect.topRight() );
-                gradient.setColorAt( 0.0, m_colorBackgroundBegin );
-                gradient.setColorAt( 0.6, m_colorBackgroundEnd );
-                painter->fillRect( option->rect, gradient );
+                painter->fillRect( option->rect, m_colorBackground );
                 return;
             }
             break;
@@ -242,53 +226,15 @@ void WindowsStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* 
     QProxyStyle::drawPrimitive( element, option, painter, widget );
 }
 
-static void drawHighlightFrame( QPainter* painter, const QRect& rect, const QColor& begin, const QColor& middle, const QColor& end, const QColor& border, const QColor& inner, bool roundLeft, bool roundRight )
+static void drawHighlightFrame( QPainter* painter, const QRect& rect, const QColor& background, const QColor& border )
 {
     painter->save();
 
     QRect frameRect = rect.adjusted( 0, 0, -1, -1 );
 
-    QLinearGradient gradient( frameRect.topLeft(), frameRect.bottomLeft() );
-    gradient.setColorAt( 0.0, begin );
-    gradient.setColorAt( 0.5, middle );
-    gradient.setColorAt( 1.0, end );
-
-    QRegion region = rect;
-    if ( roundLeft ) {
-        region -= QRect( rect.topLeft(), QSize( 1, 1 ) );
-        region -= QRect( rect.bottomLeft(), QSize( 1, 1 ) );
-    }
-    if ( roundRight ) {
-        region -= QRect( rect.topRight(), QSize( 1, 1 ) );
-        region -= QRect( rect.bottomRight(), QSize( 1, 1 ) );
-    }
-    painter->setClipRegion( region );
-
     painter->setPen( border );
-    painter->setBrush( gradient );
+    painter->setBrush( background );
     painter->drawRect( frameRect );
-
-    painter->setPen( inner );
-    painter->setBrush( QBrush() );
-    painter->drawRect( frameRect.adjusted( 1, 1, -1, -1 ) );
-    if ( roundLeft ) {
-        painter->drawPoint( rect.left() + 2, rect.top() + 2 );
-        painter->drawPoint( rect.left() + 2, rect.bottom() - 2 );
-    }
-    if ( roundRight ) {
-        painter->drawPoint( rect.right() - 2, rect.top() + 2 );
-        painter->drawPoint( rect.right() - 2, rect.bottom() - 2 );
-    }
-
-    painter->setPen( border );
-    if ( roundLeft ) {
-        painter->drawPoint( rect.left() + 1, rect.top() + 1 );
-        painter->drawPoint( rect.left() + 1, rect.bottom() - 1 );
-    }
-    if ( roundRight ) {
-        painter->drawPoint( rect.right() - 1, rect.top() + 1 );
-        painter->drawPoint( rect.right() - 1, rect.bottom() - 1 );
-    }
 
     painter->restore();
 }
@@ -315,18 +261,15 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
             painter->fillRect( option->rect, m_colorMenuBackground );
             if ( option->state & QStyle::State_Selected && option->state & QStyle::State_Enabled ) {
                 painter->setPen( m_colorItemBorder );
-                painter->setBrush( m_colorItemBackgroundBegin );
+                painter->setBrush( m_colorItemBackground );
                 QRect rect = option->rect.adjusted( 1, 0, -1, 0 );
-                drawHighlightFrame( painter, rect, m_colorItemBackgroundBegin, m_colorItemBackgroundMiddle, m_colorItemBackgroundEnd, m_colorItemBorder, m_colorItemBackgroundEnd, true, true );
-            } else {
-                painter->setPen( m_colorSeparator );
-                painter->drawLine( option->rect.left() + 25, option->rect.top(), option->rect.left() + 25, option->rect.bottom() );
+                drawHighlightFrame( painter, rect, m_colorItemBackground, m_colorItemBorder );
             }
             if ( const QStyleOptionMenuItem* optionItem = qstyleoption_cast<const QStyleOptionMenuItem*>( option ) ) {
                 if ( optionItem->menuItemType == QStyleOptionMenuItem::Separator ) {
                     painter->setPen( m_colorSeparator );
                     painter->drawLine( option->rect.left() + 32, ( option->rect.top() + option->rect.bottom() ) / 2,
-                        option->rect.right(), ( option->rect.top() + option->rect.bottom() ) / 2 );
+                        option->rect.right() - 2, ( option->rect.top() + option->rect.bottom() ) / 2 );
                     painter->restore();
                     return;
                 }
@@ -335,9 +278,9 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
                 if ( optionItem->checked && option->state & QStyle::State_Enabled ) {
                     painter->setPen( m_colorItemBorder );
                     if ( option->state & QStyle::State_Selected && option->state & QStyle::State_Enabled )
-                        painter->setBrush( m_colorItemSunkenBegin );
+                        painter->setBrush( m_colorItemSunken );
                     else
-                        painter->setBrush( m_colorItemCheckedBegin );
+                        painter->setBrush( m_colorItemChecked );
                     painter->drawRect( checkRect );
                 }
                 if ( !optionItem->icon.isNull() ) {
@@ -419,13 +362,12 @@ void WindowsStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                     bool checked = buttonState & State_On;
                     bool sunken = buttonState & State_Sunken;
                     if ( selected || checked || sunken ) {
-                        bool roundRight = !( optionToolButton->subControls & SC_ToolButtonMenu );
                         if ( sunken || selected && checked )
-                            drawHighlightFrame( painter, buttonRect, m_colorItemSunkenBegin, m_colorItemSunkenMiddle, m_colorItemSunkenEnd, m_colorItemBorder, m_colorItemSunkenBegin, true, roundRight );
+                            drawHighlightFrame( painter, buttonRect, m_colorItemSunken, m_colorItemBorder );
                         else if ( checked )
-                            drawHighlightFrame( painter, buttonRect, m_colorItemCheckedBegin, m_colorItemCheckedMiddle, m_colorItemCheckedEnd, m_colorItemBorder, m_colorItemCheckedEnd, true, roundRight );
+                            drawHighlightFrame( painter, buttonRect, m_colorItemChecked, m_colorItemBorder );
                         else
-                            drawHighlightFrame( painter, buttonRect, m_colorItemBackgroundBegin, m_colorItemBackgroundMiddle, m_colorItemBackgroundEnd, m_colorItemBorder, m_colorItemBackgroundEnd, true, roundRight );
+                            drawHighlightFrame( painter, buttonRect, m_colorItemBackground, m_colorItemBorder );
                     }
                     QStyleOptionToolButton optionLabel = *optionToolButton;
                     optionLabel.state = buttonState;
@@ -436,9 +378,9 @@ void WindowsStyle::drawComplexControl( ComplexControl control, const QStyleOptio
                         QRect menuRect = subControlRect( control, option, SC_ToolButtonMenu, widget );
                         menuRect.adjust( -1, 0, 0, 0 );
                         if ( sunken || optionToolButton->state & State_Sunken && optionToolButton->activeSubControls & SC_ToolButtonMenu )
-                            drawHighlightFrame( painter, menuRect, m_colorItemSunkenBegin, m_colorItemSunkenMiddle, m_colorItemSunkenEnd, m_colorItemBorder, m_colorItemSunkenBegin, false, true );
+                            drawHighlightFrame( painter, menuRect, m_colorItemSunken, m_colorItemBorder );
                         else if ( selected )
-                            drawHighlightFrame( painter, menuRect, m_colorItemBackgroundBegin, m_colorItemBackgroundMiddle, m_colorItemBackgroundEnd, m_colorItemBorder, m_colorItemBackgroundEnd, false, true );
+                            drawHighlightFrame( painter, menuRect, m_colorItemBackground, m_colorItemBorder );
                         QStyleOptionToolButton optionArrow = *optionToolButton;
                         optionArrow.rect = menuRect.adjusted( 2, 3, -1, -3 );
                         drawPrimitive( PE_IndicatorArrowDown, &optionArrow, painter, widget );
