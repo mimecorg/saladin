@@ -50,15 +50,18 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     QLabel* label = new QLabel( tr( "Find:" ), this );
     layout->addWidget( label );
 
-    m_edit = new QLineEdit( this );
-    m_edit->setMaximumWidth( 200 );
-    layout->addWidget( m_edit, 1 );
+    m_comboBox = new QComboBox( this );
+    m_comboBox->setEditable( true );
+    m_comboBox->setCompleter( NULL );
+    m_comboBox->setInsertPolicy( QComboBox::NoInsert );
+    m_comboBox->setMaximumWidth( 200 );
+    layout->addWidget( m_comboBox, 1 );
 
-    label->setBuddy( m_edit );
+    label->setBuddy( m_comboBox );
 
-    connect( m_edit, SIGNAL( textChanged( const QString& ) ), this, SLOT( textChanged( const QString& ) ) );
+    connect( m_comboBox, SIGNAL( currentTextChanged( const QString& ) ), this, SLOT( textChanged( const QString& ) ) );
 
-    m_edit->installEventFilter( this );
+    m_comboBox->installEventFilter( this );
 
     m_previousButton = new QToolButton( this );
     m_previousButton->setIcon( IconLoader::icon( "find-previous" ) );
@@ -102,23 +105,38 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     m_warningPixmap->hide();
     m_warningLabel->hide();
 
-    setFocusProxy( m_edit );
+    setFocusProxy( m_comboBox );
 }
 
 FindBar::~FindBar()
 {
 }
 
-void FindBar::setText( const QString& text )
+QString FindBar::text() const
+{
+    return m_comboBox->currentText();
+}
+
+void FindBar::setTextList( const QStringList& list )
 {
     bool old = blockSignals( true );
-    m_edit->setText( text );
+    m_comboBox->clear();
+    m_comboBox->addItems( list );
+    m_comboBox->setCurrentIndex( 0 );
+    m_comboBox->lineEdit()->selectAll();
     blockSignals( old );
 }
 
-QString FindBar::text() const
+QStringList FindBar::textList() const
 {
-    return m_edit->text();
+    QStringList list;
+    list.append( m_comboBox->currentText() );
+    for ( int i = 0; i < m_comboBox->count(); i++ ) {
+        QString item = m_comboBox->itemText( i );
+        if ( item != list.first() && list.count() < 10 )
+            list.append( item );
+    }
+    return list;
 }
 
 void FindBar::setFlags( QTextDocument::FindFlags flags )
@@ -149,7 +167,7 @@ void FindBar::setBoundWidget( QWidget* widget )
 
 void FindBar::selectAll()
 {
-    m_edit->selectAll();
+    m_comboBox->lineEdit()->selectAll();
 }
 
 void FindBar::hideEvent( QHideEvent* e )
@@ -160,7 +178,7 @@ void FindBar::hideEvent( QHideEvent* e )
 
 bool FindBar::eventFilter( QObject* obj, QEvent* e )
 {
-    if ( obj == m_edit && e->type() == QEvent::ShortcutOverride ) {
+    if ( obj == m_comboBox && e->type() == QEvent::ShortcutOverride ) {
         QKeyEvent* ke = (QKeyEvent*)e;
         if ( ke->key() == Qt::Key_Escape ) {
             hide();
@@ -169,7 +187,7 @@ bool FindBar::eventFilter( QObject* obj, QEvent* e )
         }
     }
 
-    if ( obj == m_edit && e->type() == QEvent::KeyPress ) {
+    if ( obj == m_comboBox && e->type() == QEvent::KeyPress ) {
         QKeyEvent* ke = (QKeyEvent*)e;
         if ( ke->key() == Qt::Key_Escape ) {
             hide();
@@ -211,5 +229,5 @@ void FindBar::textChanged( const QString& text )
 void FindBar::caseToggled()
 {
     if ( m_enabled )
-        emit find( m_edit->text() );
+        emit find( m_comboBox->currentText() );
 }

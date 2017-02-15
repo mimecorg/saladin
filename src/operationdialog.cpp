@@ -24,7 +24,7 @@
 
 OperationDialog::OperationDialog( Flags flags, QWidget* parent ) : QDialog( parent ),
     m_nameEdit( NULL ),
-    m_patternEdit( NULL ),
+    m_patternComboBox( NULL ),
     m_locationEdit( NULL ),
     m_sourceEdit( NULL ),
     m_targetEdit( NULL ),
@@ -79,10 +79,15 @@ OperationDialog::OperationDialog( Flags flags, QWidget* parent ) : QDialog( pare
         QLabel* label = new QLabel( tr( "&Pattern:" ), this );
         gridLayout->addWidget( label, row, 0 );
 
-        m_patternEdit = new QLineEdit( this );
-        gridLayout->addWidget( m_patternEdit, row++, 1 );
+        m_patternComboBox = new QComboBox( this );
+        m_patternComboBox->setEditable( true );
+        m_patternComboBox->setInsertPolicy( QComboBox::NoInsert );
+        m_patternComboBox->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::Fixed );
+        gridLayout->addWidget( m_patternComboBox, row++, 1 );
 
-        label->setBuddy( m_patternEdit );
+        label->setBuddy( m_patternComboBox );
+
+        connect( m_patternComboBox->lineEdit(), SIGNAL( returnPressed() ), this, SLOT( accept() ) );
     }
 
     if ( flags.testFlag( WithLocation ) ) {
@@ -181,14 +186,6 @@ void OperationDialog::setName( const QString& text )
     }
 }
 
-void OperationDialog::setPattern( const QString& text )
-{
-    if ( m_patternEdit ) {
-        m_patternEdit->setText( text );
-        m_patternEdit->selectAll();
-    }
-}
-
 void OperationDialog::setLocation( const QString& text )
 {
     if ( m_locationEdit )
@@ -214,7 +211,30 @@ QString OperationDialog::name() const
 
 QString OperationDialog::pattern() const
 {
-    return m_patternEdit ? m_patternEdit->text() : QString();
+    return m_patternComboBox ? m_patternComboBox->currentText() : QString();
+}
+
+void OperationDialog::setPatternList( const QStringList& list )
+{
+    if ( m_patternComboBox ) {
+        m_patternComboBox->addItems( list );
+        m_patternComboBox->setCurrentIndex( 0 );
+        m_patternComboBox->setFocus();
+    }
+}
+
+QStringList OperationDialog::patternList() const
+{
+    QStringList list;
+    if ( m_patternComboBox ) {
+        list.append( m_patternComboBox->currentText() );
+        for ( int i = 0; i < m_patternComboBox->count(); i++ ) {
+            QString item = m_patternComboBox->itemText( i );
+            if ( item != list.first() && list.count() < 10 )
+                list.append( item );
+        }
+    }
+    return list;
 }
 
 void OperationDialog::setCheckBoxText( const QString& text )
@@ -252,8 +272,8 @@ void OperationDialog::accept()
         }
     }
 
-    if ( m_patternEdit ) {
-        QString pattern = m_patternEdit->text();
+    if ( m_patternComboBox ) {
+        QString pattern = m_patternComboBox->currentText();
         if ( pattern.isEmpty() ) {
             QMessageBox::warning( this, tr( "Invalid value" ), tr( "Pattern cannot be empty." ) );
             return;

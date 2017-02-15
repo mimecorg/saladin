@@ -63,10 +63,10 @@ private:
     ShellFolder* m_folder;
 
     QLineEdit* m_locationEdit;
-    QLineEdit* m_patternEdit;
+    QComboBox* m_patternComboBox;
 
     QCheckBox* m_textCheckBox;
-    QLineEdit* m_textEdit;
+    QComboBox* m_textComboBox;
     QCheckBox* m_caseCheckBox;
 
     QDialogButtonBox* m_buttonBox;

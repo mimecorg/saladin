@@ -634,12 +634,12 @@ void MainWindow::selectMask()
     dialog.setPromptPixmap( IconLoader::pixmap( "select", 22 ) );
     dialog.setPrompt( tr( "Enter the pattern to select:" ) );
 
-    dialog.setPattern( settings->value( "Pattern" ).toString() );
+    dialog.setPatternList( settings->value( "Pattern" ).toStringList() );
 
     if ( dialog.exec() != QDialog::Accepted )
         return;
 
-    settings->setValue( "Pattern", dialog.pattern() );
+    settings->setValue( "Pattern", dialog.patternList() );
 
     m_sourcePane->setPatternSelection( dialog.pattern(), true );
 }
@@ -659,12 +659,12 @@ void MainWindow::unselectMask()
     dialog.setPromptPixmap( IconLoader::pixmap( "unselect", 22 ) );
     dialog.setPrompt( tr( "Enter the pattern to unselect:" ) );
 
-    dialog.setPattern( settings->value( "Pattern" ).toString() );
+    dialog.setPatternList( settings->value( "Pattern" ).toStringList() );
 
     if ( dialog.exec() != QDialog::Accepted )
         return;
 
-    settings->setValue( "Pattern", dialog.pattern() );
+    settings->setValue( "Pattern", dialog.patternList() );
 
     m_sourcePane->setPatternSelection( dialog.pattern(), false );
 }

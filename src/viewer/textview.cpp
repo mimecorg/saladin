@@ -177,9 +177,9 @@ void TextView::initializeSettings()
     m_edit->setWordWrapMode( wordWrap ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
     action( "wordWrap" )->setChecked( wordWrap );
 
-    QString text = settings->value( "FindText" ).toString();
+    QStringList list = settings->value( "FindText" ).toStringList();
     QTextDocument::FindFlags flags = (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt();
-    m_findBar->setText( text );
+    m_findBar->setTextList( list );
     m_findBar->setFlags( flags );
 }
 
@@ -188,8 +188,8 @@ void TextView::storeSettings()
     LocalSettings* settings = application->applicationSettings();
 
     settings->setValue( "WordWrap", action( "wordWrap" )->isChecked() );
-    
-    settings->setValue( "FindText", m_findBar->text() );
+
+    settings->setValue( "FindText", m_findBar->textList() );
     settings->setValue( "FindFlags", (int)m_findBar->flags() );
 }
 
@@ -403,7 +403,7 @@ void TextView::findNext()
 {
     if ( m_isFindEnabled ) {
         findText( m_findBar->text(), m_edit->textCursor().selectionStart() + 1, m_findBar->flags() );
-        m_findBar->selectAll();
+        m_findBar->setTextList( m_findBar->textList() );
     }
 }
 
@@ -411,7 +411,7 @@ void TextView::findPrevious()
 {
     if ( m_isFindEnabled ) {
         findText( m_findBar->text(), m_edit->textCursor().selectionStart(), m_findBar->flags() | QTextDocument::FindBackward );
-        m_findBar->selectAll();
+        m_findBar->setTextList( m_findBar->textList() );
     }
 }
 

@@ -51,13 +51,15 @@ public:
     void setPrompt( const QString& text );
 
     void setName( const QString& text );
-    void setPattern( const QString& text );
     void setLocation( const QString& text );
     void setSource( const QString& text );
     void setTarget( const QString& text );
 
     QString name() const;
     QString pattern() const;
+
+    void setPatternList( const QStringList& list );
+    QStringList patternList() const;
 
     void setCheckBoxText( const QString& text );
 
@@ -83,7 +85,7 @@ private:
     QBoxLayout* m_mainLayout;
 
     QLineEdit* m_nameEdit;
-    QLineEdit* m_patternEdit;
+    QComboBox* m_patternComboBox;
     QLineEdit* m_locationEdit;
     QLineEdit* m_sourceEdit;
     QLineEdit* m_targetEdit;

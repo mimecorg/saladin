@@ -22,7 +22,7 @@
 #include <QWidget>
 #include <QTextDocument>
 
-class QLineEdit;
+class QComboBox;
 class QToolButton;
 class QCheckBox;
 class QLabel;
@@ -47,14 +47,12 @@ public:
 
 public:
     /**
-    * Set the text to find.
-    */
-    void setText( const QString& text );
-
-    /**
     * Return the text to find.
     */
     QString text() const;
+
+    void setTextList( const QStringList& list );
+    QStringList textList() const;
 
     /**
     * Set the find flags.
@@ -118,7 +116,7 @@ private slots:
     void caseToggled();
 
 private:
-    QLineEdit* m_edit;
+    QComboBox* m_comboBox;
 
     QToolButton* m_previousButton;
     QToolButton* m_nextButton;

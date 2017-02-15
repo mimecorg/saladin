@@ -34,7 +34,7 @@
 SearchDialog::SearchDialog( ShellFolder* folder, QWidget* parent ) : QDialog( parent ),
     m_folder( folder ),
     m_textCheckBox( NULL ),
-    m_textEdit( NULL ),
+    m_textComboBox( NULL ),
     m_caseCheckBox( NULL )
 {
     QVBoxLayout* topLayout = new QVBoxLayout( this );
@@ -78,24 +78,32 @@ SearchDialog::SearchDialog( ShellFolder* folder, QWidget* parent ) : QDialog( pa
     QLabel* patternLabel = new QLabel( tr( "&Pattern:" ), this );
     gridLayout->addWidget( patternLabel, 1, 0 );
 
-    m_patternEdit = new QLineEdit( this );
-    gridLayout->addWidget( m_patternEdit, 1, 1, 1, 2 );
+    m_patternComboBox = new QComboBox( this );
+    m_patternComboBox->setEditable( true );
+    m_patternComboBox->setInsertPolicy( QComboBox::NoInsert );
+    gridLayout->addWidget( m_patternComboBox, 1, 1, 1, 2 );
 
-    patternLabel->setBuddy( m_patternEdit );
+    patternLabel->setBuddy( m_patternComboBox );
+
+    connect( m_patternComboBox->lineEdit(), SIGNAL( returnPressed() ), this, SLOT( accept() ) );
 
     if ( folder->attributes().testFlag( ShellItem::FileSystem ) ) {
         m_textCheckBox = new QCheckBox( tr( "&Text:" ), this );
         gridLayout->addWidget( m_textCheckBox, 2, 0 );
 
-        m_textEdit = new QLineEdit( this );
-        m_textEdit->setEnabled( false );
-        gridLayout->addWidget( m_textEdit, 2, 1 );
+        m_textComboBox = new QComboBox( this );
+        m_textComboBox->setEnabled( false );
+        m_textComboBox->setEditable( true );
+        m_textComboBox->setInsertPolicy( QComboBox::NoInsert );
+        gridLayout->addWidget( m_textComboBox, 2, 1 );
 
         m_caseCheckBox = new QCheckBox( tr( "&Match case" ), this );
         m_caseCheckBox->setEnabled( false );
         gridLayout->addWidget( m_caseCheckBox, 2, 2 );
 
         connect( m_textCheckBox, SIGNAL( toggled( bool ) ), this, SLOT( textToggled( bool ) ) );
+
+        connect( m_textComboBox->lineEdit(), SIGNAL( returnPressed() ), this, SLOT( accept() ) );
     }
 
     gridLayout->setColumnStretch( 1, 1 );
@@ -218,15 +226,16 @@ SearchDialog::SearchDialog( ShellFolder* folder, QWidget* parent ) : QDialog( pa
         m_view->setColumnWidth( 3, 70 );
     }
 
-    m_patternEdit->setText( settings->value( "Pattern" ).toString() );
+    m_patternComboBox->addItems( settings->value( "Pattern" ).toStringList() );
+    m_patternComboBox->setCurrentIndex( 0 );
 
-    if ( m_textEdit ) {
-        m_textEdit->setText( settings->value( "FindText" ).toString() );
+    if ( m_textComboBox ) {
+        m_textComboBox->addItems( settings->value( "FindText" ).toStringList() );
+        m_textComboBox->setCurrentIndex( 0 );
         m_caseCheckBox->setChecked( ( (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt() & QTextDocument::FindCaseSensitively ) != 0 );
     }
 
-    m_patternEdit->setFocus();
-    m_patternEdit->selectAll();
+    m_patternComboBox->setFocus();
 
     resize( settings->value( "SearchDialogSize", QSize( 750, 550 ) ).toSize() );
 }
@@ -241,18 +250,18 @@ SearchDialog::~SearchDialog()
 
 void SearchDialog::textToggled( bool on )
 {
-    m_textEdit->setEnabled( on );
+    m_textComboBox->setEnabled( on );
     m_caseCheckBox->setEnabled( on );
 
     if ( on ) {
-        m_textEdit->selectAll();
-        m_textEdit->setFocus();
+        m_textComboBox->lineEdit()->selectAll();
+        m_textComboBox->setFocus();
     }
 }
 
 void SearchDialog::accept()
 {
-    QString pattern = m_patternEdit->text();
+    QString pattern = m_patternComboBox->currentText();
     if ( pattern.isEmpty() ) {
         QMessageBox::warning( this, tr( "Invalid value" ), tr( "Pattern cannot be empty." ) );
         return;
@@ -262,7 +271,7 @@ void SearchDialog::accept()
     Qt::CaseSensitivity cs = Qt::CaseInsensitive;
 
     if ( m_textCheckBox && m_textCheckBox->isChecked() ) {
-        text = m_textEdit->text();
+        text = m_textComboBox->currentText();
         if ( text.isEmpty() ) {
             QMessageBox::warning( this, tr( "Invalid value" ), tr( "Text cannot be empty." ) );
             return;
@@ -272,11 +281,33 @@ void SearchDialog::accept()
 
     LocalSettings* settings = application->applicationSettings();
 
-    settings->setValue( "Pattern", pattern );
+    QStringList patterns;
+    patterns.append( pattern );
+    for ( int i = 0; i < m_patternComboBox->count(); i++ ) {
+        QString item = m_patternComboBox->itemText( i );
+        if ( item != pattern && patterns.count() < 10 )
+            patterns.append( item );
+    }
+    settings->setValue( "Pattern", patterns );
+
+    m_patternComboBox->clear();
+    m_patternComboBox->addItems( patterns );
+    m_patternComboBox->setCurrentIndex( 0 );
 
     if ( !text.isEmpty() ) {
-        settings->setValue( "FindText", text );
+        QStringList texts;
+        texts.append( text );
+        for ( int i = 0; i < m_textComboBox->count(); i++ ) {
+            QString item = m_textComboBox->itemText( i );
+            if ( item != text && texts.count() < 10 )
+                texts.append( item );
+        }
+        settings->setValue( "FindText", texts );
         settings->setValue( "FindFlags", (int)( cs == Qt::CaseSensitive ? QTextDocument::FindCaseSensitively : 0 ) );
+
+        m_textComboBox->clear();
+        m_textComboBox->addItems( texts );
+        m_textComboBox->setCurrentIndex( 0 );
     }
 
     m_buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
