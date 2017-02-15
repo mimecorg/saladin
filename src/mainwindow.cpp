@@ -124,7 +124,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setAction( "copyToLeftPane", action );
 
     action = new QAction( IconLoader::icon( "select" ), tr( "Select Mask" ), this );
-    action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_Equal ) );
+    action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Plus ) << QKeySequence( Qt::CTRL + Qt::Key_Equal ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( selectMask() ) );
     setAction( "selectMask", action );
 
@@ -134,7 +134,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setAction( "selectAll", action );
 
     action = new QAction( IconLoader::icon( "unselect" ), tr( "Unselect Mask" ), this );
-    action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_Minus ) );
+    action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Minus ) << QKeySequence( Qt::CTRL + Qt::Key_Underscore ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( unselectMask() ) );
     setAction( "unselectMask", action );
 
