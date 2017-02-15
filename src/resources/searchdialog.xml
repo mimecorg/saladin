@@ -1,0 +1,11 @@
+<xmlui>
+  <strip id="stripSearch">
+    <action id="popupView"/>
+    <action id="editCurrent"/>
+    <action id="gotoFile"/>
+  </strip>
+  <menu id="menuView">
+    <action id="viewCurrent"/>
+    <action id="viewAll"/>
+  </menu>
+</xmlui>

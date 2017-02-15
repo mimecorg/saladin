@@ -5,6 +5,7 @@
   <file>guidedialog.xml</file>
   <file>imageview.xml</file>
   <file>mainwindow.xml</file>
+  <file>searchdialog.xml</file>
   <file>textview.xml</file>
   <file>viewerwindow.xml</file>
 </qresource>

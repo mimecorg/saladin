@@ -19,6 +19,8 @@
 #ifndef SEARCHDIALOG_H
 #define SEARCHDIALOG_H
 
+#include "xmlui/client.h"
+
 #include <QDialog>
 
 class ShellFolder;
@@ -27,7 +29,7 @@ class SearchItemModel;
 class SearchProxyModel;
 class ElidedLabel;
 
-class SearchDialog : public QDialog
+class SearchDialog : public QDialog, public XmlUi::Client
 {
     Q_OBJECT
 public:
@@ -51,6 +53,7 @@ private slots:
     void itemDoubleClicked( const QModelIndex& index );
 
     void viewCurrent();
+    void viewAll();
     void editCurrent();
     void gotoFile();
 

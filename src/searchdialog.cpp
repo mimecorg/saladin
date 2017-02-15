@@ -29,6 +29,7 @@
 #include "viewer/viewmanager.h"
 #include "xmlui/gradientwidget.h"
 #include "xmlui/toolstrip.h"
+#include "xmlui/builder.h"
 
 SearchDialog::SearchDialog( ShellFolder* folder, QWidget* parent ) : QDialog( parent ),
     m_folder( folder ),
@@ -115,29 +116,47 @@ SearchDialog::SearchDialog( ShellFolder* folder, QWidget* parent ) : QDialog( pa
 
     QVBoxLayout* resultsLayout = new QVBoxLayout( resultsBox );
 
-    QAction* viewAction = new QAction( IconLoader::icon( "view" ), tr( "View" ), this );
-    viewAction->setShortcut( QKeySequence( Qt::Key_F3 ) );
-    connect( viewAction, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
+    QAction* action;
 
-    QAction* editAction = new QAction( IconLoader::icon( "edit" ), tr( "Edit" ), this );
-    editAction->setShortcut( QKeySequence( Qt::Key_F4 ) );
-    connect( editAction, SIGNAL( triggered() ), this, SLOT( editCurrent() ) );
+    action = new QAction( IconLoader::icon( "view" ), tr( "View", "action name" ), this );
+    setAction( "popupView", action );
 
-    QAction* gotoAction = new QAction( IconLoader::icon( "goto" ), tr( "Go To File" ), this );
-    gotoAction->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_G ) );
-    connect( gotoAction, SIGNAL( triggered() ), this, SLOT( gotoFile() ) );
+    action = new QAction( IconLoader::icon( "view" ), tr( "View Current File" ), this );
+    action->setShortcut( QKeySequence( Qt::Key_F3 ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
+    setAction( "viewCurrent", action );
 
-    QAction* copyAction = new QAction( IconLoader::icon( "copy-names" ), tr( "Copy File Names" ), this );
-    copyAction->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_C ) );
-    connect( copyAction, SIGNAL( triggered() ), this, SLOT( copyNames() ) );
+    action = new QAction( IconLoader::icon( "view-selected" ), tr( "View All Files" ), this );
+    action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F3 ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( viewAll() ) );
+    setAction( "viewAll", action );
+
+    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit" ), this );
+    action->setShortcut( QKeySequence( Qt::Key_F4 ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( editCurrent() ) );
+    setAction( "editCurrent", action );
+
+    action = new QAction( IconLoader::icon( "goto" ), tr( "Go To File" ), this );
+    action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_G ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( gotoFile() ) );
+    setAction( "gotoFile", action );
+
+    action = new QAction( IconLoader::icon( "copy-names" ), tr( "Copy File Names" ), this );
+    action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_C ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( copyNames() ) );
+    setAction( "copyNames", action );
+
+    setPopupMenu( "popupView", "menuView", "viewCurrent" );
+
+    loadXmlUiFile( ":/resources/searchdialog.xml" );
+
+    XmlUi::Builder* builder = new XmlUi::Builder( this );
+    builder->addClient( this );
 
     XmlUi::ToolStrip* strip = new XmlUi::ToolStrip( resultsBox );
+    builder->registerToolStrip( "stripSearch", strip );
+    strip->addAuxiliaryAction( this->action( "copyNames" ) );
     resultsLayout->addWidget( strip );
-
-    strip->addToolAction( viewAction );
-    strip->addToolAction( editAction );
-    strip->addToolAction( gotoAction );
-    strip->addAuxiliaryAction( copyAction );
 
     m_view = new FolderItemView( resultsBox );
     m_view->setSelectionMode( QAbstractItemView::NoSelection );
@@ -350,6 +369,31 @@ void SearchDialog::viewCurrent()
         mainWindow->viewManager()->openView( folder->itemPidl( item ) );
     else
         mainWindow->startTool( MainWindow::ViewerTool, folder, item );
+}
+
+void SearchDialog::viewAll()
+{
+    QList<ShellPidl> pidls;
+
+    for ( int i = 0; i < m_model->rowCount(); i++ ) {
+        QModelIndex index = m_proxyModel->mapToSource( m_proxyModel->index( i, 0 ) );
+
+        ShellFolder* folder = m_model->folderAt( index );
+        ShellItem item = m_model->itemAt( index );
+
+        if ( item.isValid() && item.attributes().testFlag( ShellItem::Stream ) )
+            pidls.append( folder->itemPidl( item ) );
+    }
+
+    if ( pidls.empty() )
+        return;
+
+    LocalSettings* settings = application->applicationSettings();
+
+    if ( settings->value( "InternalViewer" ).toBool() )
+        mainWindow->viewManager()->openView( pidls );
+    else
+        QMessageBox::warning( this, tr( "Cannot view files" ), tr( "Only the internal viewer supports viewing multiple files." ) );
 }
 
 void SearchDialog::editCurrent()
