@@ -44,9 +44,6 @@ using namespace XmlUi;
 
 ToolStrip::ToolStrip( QWidget* parent ) : QWidget( parent ),
     m_sectionLayout( NULL ),
-    m_gridLayout( NULL ),
-    m_gridRow( 0 ),
-    m_gridColumn( 0 ),
     m_rowLayout( NULL )
 {
     m_layout = new ToolStripLayout( this );
@@ -76,13 +73,6 @@ void ToolStrip::addToolAction( QAction* action )
     if ( m_rowLayout ) {
         button = createButton( action, SmallButton );
         m_rowLayout->addWidget( button );
-    } else if ( m_gridLayout ) {
-        button = createButton( action, MediumButton );
-        m_gridLayout->addWidget( button, m_gridRow++, m_gridColumn );
-        if ( m_gridRow == 2 ) {
-            m_gridRow = 0;
-            m_gridColumn++;
-        }
     } else if ( m_sectionLayout ) {
         button = createButton( action, LargeButton );
         m_sectionLayout->addWidget( button );
@@ -110,34 +100,15 @@ void ToolStrip::endSection()
     m_sectionLayout = NULL;
 }
 
-void ToolStrip::beginGrid()
-{
-    m_gridLayout = new QGridLayout();
-    m_gridLayout->setMargin( 0 );
-    m_gridLayout->setSpacing( 0 );
-
-    m_sectionLayout->addLayout( m_gridLayout );
-
-    m_gridColumn = 0;
-    m_gridRow = 0;
-}
-
-void ToolStrip::endGrid()
-{
-    m_gridLayout = NULL;
-}
-
 void ToolStrip::beginRow()
 {
     m_rowLayout = new QHBoxLayout();
+    m_rowLayout->setAlignment( Qt::AlignTop );
     m_rowLayout->setMargin( 0 );
     m_rowLayout->setSpacing( 0 );
+    m_rowLayout->setContentsMargins( 0, 4, 0, 0 );
 
-    m_gridLayout->addLayout( m_rowLayout, m_gridRow++, m_gridColumn );
-    if ( m_gridRow == 2 ) {
-        m_gridRow = 0;
-        m_gridColumn++;
-    }
+    m_sectionLayout->addLayout( m_rowLayout );
 }
 
 void ToolStrip::endRow()
@@ -707,7 +678,7 @@ void ToolStripSectionLayout::calculateSize()
 
     m_titleSize = fontMetrics.size( 0, m_titleText );
 
-    m_sizeHint = QSize( qMax( width, m_titleSize.width() ) + 9, buttonSize.height() + m_titleSize.height() + 9 );
+    m_sizeHint = QSize( qMax( width, m_titleSize.width() ) + 9, buttonSize.height() + 6 );
 
     m_dirty = false;
 }
@@ -757,11 +728,11 @@ void ToolStripSectionLayout::setGeometry( const QRect& rect )
         QSize size = item->sizeHint();
         if ( m_uniform )
             size.setWidth( maxWidth );
-        item->setGeometry( QRect( left, rect.top() + 3, size.width(), rect.height() - m_titleSize.height() - 9 ) );
+        item->setGeometry( QRect( left, rect.top() + 3, size.width(), rect.height() - 6 ) );
         left += size.width();
     }
 
-    m_titleRect = QRect( rect.left() + 3, rect.bottom() - m_titleSize.height() - 2, rect.width() - 9, m_titleSize.height() );
+    m_titleRect = QRect( rect.left() + 3, rect.bottom() - m_titleSize.height() - 18, rect.width() - 9, m_titleSize.height() );
 
     m_separatorRect = QRect( rect.right() - 2, rect.top(), 3, rect.height() );
 }

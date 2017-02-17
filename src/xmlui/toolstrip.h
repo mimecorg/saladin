@@ -102,16 +102,6 @@ public:
     void endSection();
 
     /**
-    * Begin a grid layout inside a section.
-    */
-    void beginGrid();
-
-    /**
-    * End the current grid layout.
-    */
-    void endGrid();
-
-    /**
     * Begin a horizontal row of small buttons in a grid layout.
     */
     void beginRow();
@@ -167,10 +157,6 @@ private:
     ToolStripLayout* m_layout;
 
     ToolStripSectionLayout* m_sectionLayout;
-
-    QGridLayout* m_gridLayout;
-    int m_gridRow;
-    int m_gridColumn;
 
     QBoxLayout* m_rowLayout;
 

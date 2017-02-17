@@ -87,8 +87,6 @@ void WindowsStyle::polish( QPalette& palette )
     m_colorItemBackground = blendColors( highlight, base, 0.4 );
     m_colorItemChecked = blendColors( highlight, light, 0.3 );
     m_colorItemSunken = blendColors( highlight, base, 0.5 );
-
-    m_colorToolStripLabel = blendColors( highlight, shadow, 0.3 );
 }
 
 void WindowsStyle::polish( QWidget* widget )
@@ -98,12 +96,6 @@ void WindowsStyle::polish( QWidget* widget )
 
     if ( qobject_cast<GradientWidget*>( widget ) )
         widget->setAttribute( Qt::WA_StyledBackground );
-
-    if ( qobject_cast<ToolStrip*>( widget ) ) {
-        QPalette palette = widget->palette();
-        palette.setColor( QPalette::Text, m_colorToolStripLabel );
-        widget->setPalette( palette );
-    }
 
     QProxyStyle::polish( widget );
 }

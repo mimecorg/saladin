@@ -2,31 +2,29 @@
   <strip id="stripMain">
     <section id="sectionClipboard">
       <action id="paste"/>
-      <grid>
-        <action id="cut"/>
-        <action id="popupEditCopy"/>
-      </grid>
+      <action id="cut"/>
+      <action id="popupEditCopy"/>
     </section>
-    <section id="sectionView">
-      <grid>
-        <action id="refresh"/>
-        <row>
-          <action id="viewHidden"/>
-          <action id="viewSameDirectory"/>
-          <action id="swapPanes"/>
-        </row>
-      </grid>
+    <section id="sectionRefresh">
+      <action id="refresh"/>
+    </section>
+    <section id="sectionHidden">
+      <action id="viewHidden"/>
+    </section>
+    <section id="sectionPanels">
+      <row>
+        <action id="viewSameDirectory"/>
+        <action id="swapPanes"/>
+      </row>
     </section>
     <section id="sectionSelect">
-      <grid>
+      <row>
         <action id="selectMask"/>
-        <row>
-          <action id="selectAll"/>
-          <action id="unselectAll"/>
-          <action id="unselectMask"/>
-          <action id="invertSelection"/>
-        </row>
-      </grid>
+        <action id="selectAll"/>
+        <action id="unselectAll"/>
+        <action id="unselectMask"/>
+        <action id="invertSelection"/>
+      </row>
     </section>
     <section id="sectionFunctions" uniform="1">
       <action id="renameCurrent"/>
@@ -39,14 +37,12 @@
       <action id="openTerminal"/>
     </section>
     <section id="sectionTools">
-      <grid>
-        <action id="packToZip"/>
-        <action id="popupOpen"/>
-        <action id="calculateSize"/>
-        <action id="popupCompare"/>
-        <action id="search"/>
-        <action id="explore"/>
-      </grid>      
+      <action id="packToZip"/>
+      <action id="popupOpen"/>
+      <action id="calculateSize"/>
+      <action id="popupCompare"/>
+      <action id="search"/>
+      <action id="explore"/>
     </section>
   </strip>
   <menu id="menuView">

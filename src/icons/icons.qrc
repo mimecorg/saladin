@@ -10,11 +10,14 @@
   <file>bookmark-16.png</file>
   <file>bookmark-22.png</file>
   <file>browse-16.png</file>
+  <file>browse-22.png</file>
   <file>calculate-16.png</file>
+  <file>calculate-22.png</file>
   <file>clone-16.png</file>
   <file>clone-22.png</file>
   <file>close-16.png</file>
   <file>compare-16.png</file>
+  <file>compare-22.png</file>
   <file>configure-16.png</file>
   <file>configure-22.png</file>
   <file>copy-16.png</file>
@@ -25,11 +28,14 @@
   <file>edit-16.png</file>
   <file>edit-22.png</file>
   <file>edit-copy-16.png</file>
+  <file>edit-copy-22.png</file>
   <file>edit-cut-16.png</file>
+  <file>edit-cut-22.png</file>
   <file>edit-paste-16.png</file>
   <file>edit-paste-22.png</file>
   <file>encoding-16.png</file>
   <file>explore-16.png</file>
+  <file>explore-22.png</file>
   <file>file-new-16.png</file>
   <file>file-new-22.png</file>
   <file>find-16.png</file>
@@ -63,6 +69,7 @@
   <file>pane-same-16.png</file>
   <file>pane-swap-16.png</file>
   <file>refresh-16.png</file>
+  <file>refresh-22.png</file>
   <file>rename-16.png</file>
   <file>rename-22.png</file>
   <file>rotate-left-16.png</file>
@@ -88,6 +95,7 @@
   <file>view-16.png</file>
   <file>view-22.png</file>
   <file>view-hidden-16.png</file>
+  <file>view-hidden-22.png</file>
   <file>view-selected-16.png</file>
   <file>warning-16.png</file>
   <file>web-16.png</file>

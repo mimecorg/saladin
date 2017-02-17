@@ -91,7 +91,6 @@ private:
     QColor m_colorItemBackground;
     QColor m_colorItemChecked;
     QColor m_colorItemSunken;
-    QColor m_colorToolStripLabel;
 };
 
 }

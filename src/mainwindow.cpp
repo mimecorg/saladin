@@ -90,8 +90,9 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( refreshDrives() ) );
     setAction( "refreshDrives", action );
 
-    action = new QAction( IconLoader::icon( "view-hidden" ), tr( "Hidden Files" ), this );
+    action = new QAction( IconLoader::icon( "view-hidden" ), tr( "View Hidden Files" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_H ) );
+    action->setIconText( tr( "Hidden" ) );
     action->setCheckable( true );
     connect( action, SIGNAL( toggled( bool ) ), this, SLOT( viewHidden( bool ) ) );
     setAction( "viewHidden", action );
@@ -259,8 +260,9 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( openFtpSite() ) );
     setAction( "openFtpSite", action );
 
-    action = new QAction( IconLoader::icon( "calculate" ), tr( "Show Size" ), this );
+    action = new QAction( IconLoader::icon( "calculate" ), tr( "Calculate Size" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_L ) );
+    action->setIconText( tr( "Size" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( calculateSize() ) );
     setAction( "calculateSize", action );
 
@@ -306,11 +308,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( editBookmarks() ) );
     setAction( "editBookmarks", action );
 
-    setTitle( "sectionFunctions", tr( "Functions" ) );
-    setTitle( "sectionClipboard", tr( "Clipboard" ) );
-    setTitle( "sectionView", tr( "View", "section name" ) );
+    setTitle( "sectionPanels", tr( "Panels" ) );
     setTitle( "sectionSelect", tr( "Select" ) );
-    setTitle( "sectionTools", tr( "Tools" ) );
 
     setPopupMenu( "popupView", "menuView", "viewCurrent" );
     setPopupMenu( "popupEdit", "menuEdit", "editCurrent" );

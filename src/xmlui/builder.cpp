@@ -268,43 +268,13 @@ void Builder::populateToolStrip( const Node& node )
         if ( child.type() == Section ) {
             bool section = false;
 
-            foreach ( Node sectionChild, child.children() ) {
-                if ( sectionChild.type() == Grid ) {
-                    bool grid = false;
+            foreach ( Node gridChild, child.children() ) {
+                if ( gridChild.type() == Row ) {
+                    bool row = false;
 
-                    foreach ( Node gridChild, sectionChild.children() ) {
-                        if ( gridChild.type() == Row ) {
-                            bool row = false;
-
-                            foreach ( Node rowChild, gridChild.children() ) {
-                                if ( rowChild.type() == Action ) {
-                                    QAction* action = findAction( rowChild.id() );
-
-                                    if ( action && action->isVisible() ) {
-                                        if ( !section ) {
-                                            QString title = findTitle( child.id() );
-                                            strip->beginSection( title, child.isUniform() );
-                                            section = true;
-                                        }
-                                        if ( !grid ) {
-                                            strip->beginGrid();
-                                            grid = true;
-                                        }
-                                        if ( !row ) {
-                                            strip->beginRow();
-                                            row = true;
-                                        }
-                                        addToolAction( strip, action, rowChild.id() );
-                                    }
-                                }
-                            }
-
-                            if ( row )
-                                strip->endRow();
-                        }
-
-                        if ( gridChild.type() == Action ) {
-                            QAction* action = findAction( gridChild.id() );
+                    foreach ( Node rowChild, gridChild.children() ) {
+                        if ( rowChild.type() == Action ) {
+                            QAction* action = findAction( rowChild.id() );
 
                             if ( action && action->isVisible() ) {
                                 if ( !section ) {
@@ -312,21 +282,21 @@ void Builder::populateToolStrip( const Node& node )
                                     strip->beginSection( title, child.isUniform() );
                                     section = true;
                                 }
-                                if ( !grid ) {
-                                    strip->beginGrid();
-                                    grid = true;
+                                if ( !row ) {
+                                    strip->beginRow();
+                                    row = true;
                                 }
-                                addToolAction( strip, action, gridChild.id() );
+                                addToolAction( strip, action, rowChild.id() );
                             }
                         }
                     }
 
-                    if ( grid )
-                        strip->endGrid();
+                    if ( row )
+                        strip->endRow();
                 }
 
-                if ( sectionChild.type() == Action ) {
-                    QAction* action = findAction( sectionChild.id() );
+                if ( gridChild.type() == Action ) {
+                    QAction* action = findAction( gridChild.id() );
 
                     if ( action && action->isVisible() ) {
                         if ( !section ) {
@@ -334,7 +304,7 @@ void Builder::populateToolStrip( const Node& node )
                             strip->beginSection( title, child.isUniform() );
                             section = true;
                         }
-                        addToolAction( strip, action, sectionChild.id() );
+                        addToolAction( strip, action, gridChild.id() );
                     }
                 }
             }
