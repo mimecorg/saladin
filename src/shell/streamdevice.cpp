@@ -123,6 +123,38 @@ bool StreamDevice::seek( qint64 pos )
     return false;
 }
 
+static QDateTime systemTimeToQDateTime( const SYSTEMTIME* systemTime )
+{
+    SYSTEMTIME localTime;
+    SystemTimeToTzSpecificLocalTime( NULL, systemTime, &localTime );
+
+    QDate date( localTime.wYear, localTime.wMonth, localTime.wDay );
+    QTime time( localTime.wHour, localTime.wMinute, localTime.wSecond, localTime.wMilliseconds );
+
+    return QDateTime( date, time, Qt::LocalTime );
+}
+
+static QDateTime fileTimeToQDateTime( const FILETIME* fileTime )
+{
+    SYSTEMTIME systemTime;
+    FileTimeToSystemTime( fileTime, &systemTime );
+
+    return systemTimeToQDateTime( &systemTime );
+}
+
+QDateTime StreamDevice::lastModified() const
+{
+    if ( d->m_stream ) {
+        STATSTG stat = {};
+        HRESULT hr = d->m_stream->Stat( &stat, STATFLAG_NONAME );
+
+        if ( SUCCEEDED( hr ) )
+            return fileTimeToQDateTime( &stat.mtime );
+    }
+
+    return QDateTime();
+}
+
 qint64 StreamDevice::readData( char* data, qint64 maxSize )
 {
     if ( d->m_stream ) {

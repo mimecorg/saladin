@@ -12,6 +12,8 @@
     <action id="rotateRight"/>
     <separator/>
     <action id="blackBackground"/>
+    <separator/>
+    <action id="viewInformation"/>
   </strip>
   <menu id="menuContext">
     <action id="copy"/>

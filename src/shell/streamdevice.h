@@ -40,6 +40,8 @@ public: // overrides
     qint64 size() const;
     bool seek( qint64 pos );
 
+    QDateTime lastModified() const;
+
 protected: // overrides
     qint64 readData( char* data, qint64 maxSize );
     qint64 writeData( const char* data, qint64 maxSize );

@@ -54,6 +54,8 @@ private slots:
 
     void blackBackground();
 
+    void viewInformation();
+
     void contextMenuRequested( const QPoint& pos );
 
     void loadImage();

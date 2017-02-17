@@ -21,6 +21,7 @@
 #include "imageloader.h"
 
 #include "application.h"
+#include "shell/streamdevice.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
 #include "xmlui/builder.h"
@@ -71,6 +72,11 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( blackBackground() ) );
     setAction( "blackBackground", action );
+
+    action = new QAction( IconLoader::icon( "info" ), tr( "Information" ), this );
+    action->setShortcut( Qt::Key_I );
+    connect( action, SIGNAL( triggered() ), this, SLOT( viewInformation() ) );
+    setAction( "viewInformation", action );
 
     loadXmlUiFile( ":/resources/imageview.xml" );
 
@@ -269,6 +275,68 @@ void ImageView::blackBackground()
     bool black = action( "blackBackground" )->isChecked();
 
     m_label->setBlackBackground( black );
+}
+
+void ImageView::viewInformation()
+{
+    const QImage& image = m_label->image();
+
+    if ( !image.isNull() ) {
+        ShellPidl filePidl = pidl();
+
+        QString path = filePidl.path();
+
+        StreamDevice device( filePidl );
+
+        QString info = tr( "File path: %1\nFile size: %2 bytes\nLast modified: %3" ).arg(
+            path,
+            QLocale::system().toString( device.size() ),
+            device.lastModified().toString( "yyyy-MM-dd hh:mm" ) );
+
+        info += "\n\n";
+
+        info += tr( "Image format: %1" ).arg( QString( format().toUpper() ) );
+
+        info += "\n";
+
+        info += tr( "Image size: %1 x %2 pixels" )
+            .arg( image.width() )
+            .arg( image.height() );
+
+        if ( format() == "png" ) {
+            double dpiX = image.dotsPerMeterX() * 0.0254;
+            double dpiY = image.dotsPerMeterY() * 0.0254;
+
+            double cmX = image.width() / ( image.dotsPerMeterX() * 0.01 );
+            double cmY = image.height() / ( image.dotsPerMeterY() * 0.01 );
+
+            double inchX = image.width() / dpiX;
+            double inchY = image.height() / dpiX;
+
+            info += "\n";
+
+            info += tr( "Print size: %1 x %2 cm / %3 x %4 \" (%5 x %6 dpi)" )
+                .arg( cmX, 0, 'f', 2 )
+                .arg( cmY, 0, 'f', 2 )
+                .arg( inchX, 0, 'f', 2 )
+                .arg( inchY, 0, 'f', 2 )
+                .arg( dpiX, 0, 'f', 0 )
+                .arg( dpiY, 0, 'f', 0 );
+        }
+
+        int colorCount = image.colorCount();
+        if ( colorCount == 0 )
+            colorCount = 1 << qMin( image.bitPlaneCount(), 24 );
+
+        info += "\n";
+
+        info += tr( "Colors: %1 (%2 bpp)\nAlpha channel: %3" )
+            .arg( colorCount )
+            .arg( image.bitPlaneCount() )
+            .arg( image.hasAlphaChannel() ? tr( "yes" ) : tr( "no" ) );
+
+        QMessageBox::information( mainWidget(), tr( "Information" ), info, QMessageBox::Ok );
+    }
 }
 
 void ImageView::contextMenuRequested( const QPoint& pos )
