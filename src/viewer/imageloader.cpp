@@ -36,6 +36,8 @@ void ImageLoader::run()
     if ( file.open( QIODevice::ReadOnly ) ) {
         QImageReader reader( &file );
 
+        reader.setAutoTransform( true );
+
         m_format = reader.format();
 
         if ( reader.read( &m_image ) && !m_aborted )
