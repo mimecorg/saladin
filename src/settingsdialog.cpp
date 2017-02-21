@@ -118,6 +118,23 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     connect( m_rememberCheckBox, SIGNAL( toggled( bool ) ), leftPaneButton, SLOT( setDisabled( bool ) ) );
     connect( m_rememberCheckBox, SIGNAL( toggled( bool ) ), m_leftPaneEdit, SLOT( setDisabled( bool ) ) );
 
+    QGroupBox* appearanceGroup = new QGroupBox( tr( "Appearance" ), generalTab );
+    QGridLayout* appearanceLayout = new QGridLayout( appearanceGroup );
+    generalLayout->addWidget( appearanceGroup );
+
+    QLabel* themeLabel = new QLabel( tr( "&User interface theme:" ), appearanceGroup );
+    appearanceLayout->addWidget( themeLabel, 0, 0 );
+
+    m_themeComboBox = new SeparatorComboBox( appearanceGroup );
+    m_themeComboBox->addItem( tr( "Classic" ), "classic" );
+    m_themeComboBox->addItem( tr( "White" ), "white" );
+    m_themeComboBox->addItem( tr( "Dark" ), "dark" );
+    appearanceLayout->addWidget( m_themeComboBox, 0, 1 );
+
+    themeLabel->setBuddy( m_themeComboBox );
+
+    appearanceLayout->setColumnStretch( 2, 1 );
+
     QGroupBox* fontsGroup = new QGroupBox( tr( "Fonts" ), generalTab );
     QGridLayout* fontsLayout = new QGridLayout( fontsGroup );
     generalLayout->addWidget( fontsGroup );
@@ -256,6 +273,10 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     m_rememberCheckBox->setChecked( settings->value( "RememberDirectories" ).toBool() );
 
+    index = m_themeComboBox->findData( settings->value( "Theme" ) );
+    if ( index >= 0 )
+        m_themeComboBox->setCurrentIndex( index );
+
     QFont binaryFont( settings->value( "BinaryFont" ).toString() );
     binaryFont.setStyleHint( QFont::Courier );
     m_binaryFontComboBox->setCurrentFont( binaryFont );
@@ -301,6 +322,8 @@ bool SettingsDialog::apply()
     settings->setValue( "Directory1", QVariant::fromValue( m_pidls[ 0 ] ) );
     settings->setValue( "Directory2", QVariant::fromValue( m_pidls[ 1 ] ) );
     settings->setValue( "RememberDirectories", m_rememberCheckBox->isChecked() );
+
+    settings->setValue( "Theme", m_themeComboBox->currentData() );
 
     settings->setValue( "BinaryFont", m_binaryFontComboBox->currentFont().family() );
     settings->setValue( "BinaryFontSize", m_binaryFontSpinBox->value() );

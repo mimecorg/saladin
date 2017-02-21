@@ -30,8 +30,11 @@
 
 #if !defined( XMLUI_NO_STYLE_WINDOWS )
 
+#include "application.h"
 #include "gradientwidget.h"
 #include "toolstrip.h"
+#include "aboutbox.h"
+#include "utils/localsettings.h"
 
 #include <QStyleOption>
 #include <QPainter>
@@ -47,7 +50,9 @@
 
 using namespace XmlUi;
 
-WindowsStyle::WindowsStyle() : QProxyStyle()
+WindowsStyle::WindowsStyle() : QProxyStyle(),
+    m_whiteTheme( false ),
+    m_darkTheme( false )
 {
 }
 
@@ -65,7 +70,13 @@ static QColor blendColors( const QColor& src, const QColor& dest, double alpha )
 
 void WindowsStyle::polish( QPalette& palette )
 {
-    QProxyStyle::polish( palette );
+    QString theme = application->applicationSettings()->value( "Theme" ).toString();
+
+    m_whiteTheme = ( theme == QLatin1String( "white" ) );
+    m_darkTheme = ( theme == QLatin1String( "dark" ) );
+
+    if ( !m_darkTheme )
+        QProxyStyle::polish( palette );
 
     QColor button = palette.color( QPalette::Button );
     QColor base = palette.color( QPalette::Base );
@@ -76,8 +87,6 @@ void WindowsStyle::polish( QPalette& palette )
     QColor highlight = palette.color( QPalette::Highlight );
 
     highlight = QColor::fromHsv( highlight.hue(), 204, 255 ).toRgb();
-
-    m_colorBackground = button;
 
     m_colorMenuBorder = blendColors( dark, base, 0.55 );
     m_colorMenuBackground = button;
@@ -91,25 +100,52 @@ void WindowsStyle::polish( QPalette& palette )
 
 void WindowsStyle::polish( QWidget* widget )
 {
-    if ( qobject_cast<QMainWindow*>( widget ) )
-        widget->setAttribute( Qt::WA_StyledBackground );
+    if ( m_whiteTheme ) {
+        if ( qobject_cast<QMainWindow*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::Window, Qt::white );
+            widget->setPalette( palette );
+        }
 
-    if ( qobject_cast<GradientWidget*>( widget ) )
-        widget->setAttribute( Qt::WA_StyledBackground );
+        if ( qobject_cast<GradientWidget*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::Window, Qt::white );
+            widget->setPalette( palette );
+            widget->setAutoFillBackground( true );
+        }
+    }
+
+    if ( m_darkTheme ) {
+        if ( qobject_cast<ToolStrip*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::Text, palette.color( QPalette::WindowText ) );
+            palette.setColor( QPalette::ButtonText, palette.color( QPalette::WindowText ) );
+            widget->setPalette( palette );
+        }
+
+        if ( qobject_cast<QTreeView*>( widget ) || qobject_cast<QListView*>( widget ) || qobject_cast<QMenu*>( widget ) || qobject_cast<QTextBrowser*>( widget ) || qobject_cast<AboutBoxSection*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::Text, palette.color( QPalette::WindowText ) );
+            widget->setPalette( palette );
+        }
+
+        if ( qobject_cast<QTabWidget*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::Base, Qt::white );
+            palette.setColor( QPalette::WindowText, palette.color( QPalette::Text ) );
+            widget->setPalette( palette );
+        }
+    }
 
     QProxyStyle::polish( widget );
 }
 
 void WindowsStyle::unpolish( QWidget* widget )
 {
-    if ( qobject_cast<QMainWindow*>( widget ) )
-        widget->setAttribute( Qt::WA_StyledBackground, false );
-
-    if ( qobject_cast<GradientWidget*>( widget ) )
-        widget->setAttribute( Qt::WA_StyledBackground, false );
-
-    if ( qobject_cast<ToolStrip*>( widget ) )
-        widget->setPalette( QApplication::palette( widget ) );
+    if ( m_whiteTheme ) {
+        if ( qobject_cast<GradientWidget*>( widget ) )
+            widget->setAutoFillBackground( false );
+    }
 
     QProxyStyle::unpolish( widget );
 }
@@ -177,24 +213,6 @@ void WindowsStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* 
     QPainter* painter, const QWidget* widget ) const
 {
     switch ( element ) {
-        case PE_Widget:
-            if ( qobject_cast<const QMainWindow*>( widget ) ) {
-                QRect rect = option->rect;
-                if ( QStatusBar* statusBar = widget->findChild<QStatusBar*>() ) {
-                    rect.adjust( 0, 0, 0, -statusBar->height() );
-                    painter->setPen( option->palette.light().color() );
-                    painter->drawLine( rect.bottomLeft() + QPoint( 0, 1 ),
-                        rect.bottomRight() + QPoint( 0, 1 ) );
-                }
-                painter->fillRect( rect, m_colorBackground );
-                return;
-            }
-            if ( qobject_cast<const GradientWidget*>( widget ) ) {
-                painter->fillRect( option->rect, m_colorBackground );
-                return;
-            }
-            break;
-
         case PE_FrameMenu:
             painter->setPen( m_colorMenuBorder );
             painter->setBrush( Qt::NoBrush );

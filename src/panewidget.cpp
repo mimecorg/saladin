@@ -156,6 +156,8 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     m_view->viewport()->installEventFilter( this );
 
     setFocusProxy( m_view );
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( updateEditPalette() ) );
 }
 
 PaneWidget::~PaneWidget()
@@ -243,7 +245,9 @@ bool PaneWidget::eventFilter( QObject* watched, QEvent* e )
 
 bool PaneWidget::editFocusInEvent( QFocusEvent* /*e*/ )
 {
-    m_edit->setPalette( palette() );
+    QPalette palette = Application::palette();
+    palette.setColor( QPalette::Text, palette.color( QPalette::WindowText ) );
+    m_edit->setPalette( palette );
     return false;
 }
 
@@ -868,7 +872,7 @@ void PaneWidget::updateLocation()
 
 void PaneWidget::updateEditPalette()
 {
-    QPalette palette = m_edit->palette();
+    QPalette palette = Application::palette();
     if ( m_isSource ) {
         palette.setColor( QPalette::Base, palette.color( QPalette::Highlight ) );
         palette.setColor( QPalette::Text, palette.color( QPalette::HighlightedText ) );

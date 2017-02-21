@@ -58,6 +58,8 @@ Application::Application( int& argc, char** argv ) : QApplication( argc, argv )
 
     setWindowIcon( IconLoader::icon( "saladin" ) );
 
+    initializePalette();
+
     mainWindow = new MainWindow();
 
     QNetworkProxyFactory::setUseSystemConfiguration( true );
@@ -271,9 +273,32 @@ void Application::openDownloads()
     QDesktopServices::openUrl( m_updateClient->downloadUrl() );
 }
 
+static void updatePalette( QWidget* widget, const QPalette& palette )
+{
+    widget->setPalette( palette );
+    widget->style()->polish( widget );
+
+    foreach ( QObject* child, widget->children() ) {
+        if ( child->isWidgetType() )
+            updatePalette( (QWidget*)child, widget->palette() );
+    }
+}
+
 void Application::settingsChanged()
 {
     m_updateClient->setAutoUpdate( m_settings->value( "AutoUpdate" ).toBool() );
+
+    QString oldTheme = m_theme;
+    m_theme = m_settings->value( "Theme" ).toString();
+
+    if ( !oldTheme.isEmpty() && m_theme != oldTheme ) {
+        initializePalette();
+
+        foreach ( QWidget* widget, topLevelWidgets() )
+            updatePalette( widget, palette() );
+
+        emit themeChanged();
+    }
 }
 
 QString Application::version() const
@@ -329,6 +354,9 @@ void Application::initializeSettings()
     if ( !m_settings->contains( "BinaryFontSize" ) )
         m_settings->setValue( "BinaryFontSize", 10 );
 
+    if ( !m_settings->contains( "Theme" ) )
+        m_settings->setValue( "Theme", "classic" );
+
     if ( !m_settings->contains( "TextFont" ) )
         m_settings->setValue( "TextFont", "Courier New" );
     if ( !m_settings->contains( "TextFontSize" ) )
@@ -353,6 +381,28 @@ void Application::initializeSettings()
         wchar_t buffer[ MAX_PATH ];
         if ( SHGetSpecialFolderPath( 0, buffer, CSIDL_SYSTEM, FALSE ) )
             m_settings->setValue( "ConsoleTool", QString::fromWCharArray( buffer ) + "\\cmd.exe" );
+    }
+}
+
+void Application::initializePalette()
+{
+    QString theme = m_settings->value( "Theme" ).toString();
+
+    if ( theme == QLatin1String( "white" ) ) {
+        QPalette pal( Qt::white );
+        pal.setColor( QPalette::Window, style()->standardPalette().color( QPalette::Window ) );
+        pal.setColor( QPalette::Highlight, palette().color( QPalette::Highlight ) );
+        setPalette( pal );
+    } else if ( theme == QLatin1String( "dark" ) ) {
+        QPalette pal( QColor( 26, 26, 26 ) );
+        pal.setColor( QPalette::Base, Qt::black );
+        pal.setColor( QPalette::AlternateBase, QColor( 26, 26, 26 ) );
+        pal.setColor( QPalette::Text, Qt::black );
+        pal.setColor( QPalette::ButtonText, Qt::black );
+        pal.setColor( QPalette::Highlight, palette().color( QPalette::Highlight ) );
+        setPalette( pal );
+    } else {
+        setPalette( style()->standardPalette() );
     }
 }
 

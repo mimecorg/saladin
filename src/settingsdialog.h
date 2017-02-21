@@ -61,6 +61,8 @@ private:
     QLineEdit* m_rightPaneEdit;
     QCheckBox* m_rememberCheckBox;
 
+    QComboBox* m_themeComboBox;
+
     QFontComboBox* m_binaryFontComboBox;
     QSpinBox* m_binaryFontSpinBox;
     QFontComboBox* m_textFontComboBox;

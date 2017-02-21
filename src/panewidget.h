@@ -113,6 +113,7 @@ private slots:
 
     void renameTimeout();
 
+    void updateEditPalette();
     void updateStatus();
 
 private:
@@ -142,7 +143,6 @@ private:
     void openDrive( const ShellDrive& drive );
 
     void updateLocation();
-    void updateEditPalette();
 
     QString formatSize( qint64 size, bool afterOf );
 

@@ -65,12 +65,17 @@ public slots:
 
     void settingsChanged();
 
+signals:
+    void themeChanged();
+
 private:
     bool loadTranslation( const QString& name, bool tryQtDir );
 
     void initializeDefaultPaths();
 
     void initializeSettings();
+
+    void initializePalette();
 
     bool checkAccess( const QString& path );
 
@@ -87,6 +92,8 @@ private:
     QString m_tempPath;
 
     LocalSettings* m_settings;
+
+    QString m_theme;
 
     QList<Bookmark> m_bookmarks;
 

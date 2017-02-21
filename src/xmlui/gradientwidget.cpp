@@ -32,8 +32,6 @@ using namespace XmlUi;
 
 GradientWidget::GradientWidget( QWidget* parent ) : QWidget( parent )
 {
-    setPalette( QPalette( QColor( 255, 255, 255 ) ) );
-    setAutoFillBackground( true );
 }
 
 GradientWidget::~GradientWidget()

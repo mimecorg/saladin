@@ -80,7 +80,8 @@ public: // overrides
         QPainter* painter, const QWidget* widget ) const;
 
 private:
-    QColor m_colorBackground;
+    bool m_whiteTheme;
+    bool m_darkTheme;
 
     QColor m_colorMenuBorder;
     QColor m_colorMenuBackground;
