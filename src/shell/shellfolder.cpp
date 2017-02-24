@@ -510,6 +510,8 @@ ShellPidl ShellFolder::itemPidl( const ShellItem& item ) const
     if ( SHGetPathFromIDListEx( absolutePidl, buffer, 1024, GPFIDL_DEFAULT ) )
         pidl.d->m_path = QString::fromWCharArray( buffer );
 
+    pidl.d->m_attributes = item.d->m_attributes;
+
     CoTaskMemFree( absolutePidl );
 
     return pidl;

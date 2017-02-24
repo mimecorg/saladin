@@ -62,6 +62,8 @@ private slots:
 
     void selectEncoding();
 
+    void editFile();
+
     void contextMenuRequested( const QPoint& pos );
 
     void loadNextBlock();

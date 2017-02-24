@@ -53,6 +53,7 @@ public:
     void transferSelection( ShellSelection* selection, ShellFolder* targetFolder, ShellSelection::TransferType type, bool canRename );
 
     void startTool( Tool tool, ShellFolder* folder, const ShellItem& item );
+    void startTool( Tool tool, const QString& path, const QString& directory );
 
     void gotoFile( const ShellPidl& folderPidl, const ShellItem& item );
 
@@ -136,8 +137,6 @@ private:
 
     void transferItems( ShellFolder* sourceFolder, const QList<ShellItem>& items, ShellFolder* targetFolder, ShellSelection::TransferType type );
     void deleteItems( ShellFolder* folder, const QList<ShellItem>& items, ShellSelection::Flags flags );
-
-    void startTool( Tool tool, const QString& path, const QString& directory );
 
     QString toolPath( Tool tool );
     QString toolName( Tool tool );

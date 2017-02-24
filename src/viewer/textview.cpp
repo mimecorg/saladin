@@ -20,6 +20,7 @@
 #include "textloader.h"
 
 #include "application.h"
+#include "mainwindow.h"
 #include "findbar.h"
 #include "utils/localsettings.h"
 #include "utils/iconloader.h"
@@ -78,6 +79,11 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     action->setShortcut( Qt::CTRL + Qt::Key_G );
     connect( action, SIGNAL( triggered() ), this, SLOT( goToLine() ) );
     setAction( "goToLine", action );
+
+    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit File" ), this );
+    action->setShortcut( QKeySequence( Qt::Key_F4 ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( editFile() ) );
+    setAction( "editFile", action );
 
     loadXmlUiFile( ":/resources/textview.xml" );
 
@@ -484,6 +490,17 @@ void TextView::setEncoding( const QString& format )
 void TextView::selectEncoding()
 {
     builder()->toolStrip( "stripMain" )->execMenu( action( "selectEncoding" ) );
+}
+
+void TextView::editFile()
+{
+    if ( pidl().isValid() && pidl().attributes().testFlag( ShellItem::FileSystem ) ) {
+        QString path = pidl().path();
+        if ( path.isEmpty() )
+            return;
+
+        mainWindow->startTool( MainWindow::EditorTool, QString( "\"%1\"" ).arg( path ), QFileInfo( path ).absolutePath() );
+    }
 }
 
 bool TextView::eventFilter( QObject* obj, QEvent* e )

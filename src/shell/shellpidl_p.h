@@ -36,6 +36,7 @@ public:
 public:
     QByteArray m_data;
     QString m_path;
+    ShellItem::Attributes m_attributes;
 };
 
 #endif

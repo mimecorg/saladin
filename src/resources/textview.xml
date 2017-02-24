@@ -10,6 +10,8 @@
     <separator/>
     <action id="wordWrap"/>
     <action id="selectEncoding"/>
+    <separator/>
+    <action id="editFile"/>
   </strip>
   <menu id="menuContext">
     <action id="copy"/>

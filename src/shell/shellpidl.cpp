@@ -19,13 +19,15 @@
 #include "shellpidl.h"
 #include "shellpidl_p.h"
 
-ShellPidlPrivate::ShellPidlPrivate()
+ShellPidlPrivate::ShellPidlPrivate() :
+    m_attributes( 0 )
 {
 }
 
 ShellPidlPrivate::ShellPidlPrivate( const ShellPidlPrivate& other ) : QSharedData( other ),
     m_data( other.m_data ),
-    m_path( other.m_path )
+    m_path( other.m_path ),
+    m_attributes( other.m_attributes )
 {
 }
 
@@ -61,6 +63,11 @@ bool ShellPidl::isValid() const
 QString ShellPidl::path() const
 {
     return d->m_path;
+}
+
+ShellItem::Attributes ShellPidl::attributes() const
+{
+    return d->m_attributes;
 }
 
 bool operator ==( const ShellPidl& lhs, const ShellPidl& rhs )

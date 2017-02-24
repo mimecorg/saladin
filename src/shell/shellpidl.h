@@ -21,6 +21,8 @@
 
 #include <QSharedData>
 
+#include "shellitem.h"
+
 class ShellPidlPrivate;
 
 class ShellPidl
@@ -36,6 +38,8 @@ public:
     bool isValid() const;
 
     QString path() const;
+
+    ShellItem::Attributes attributes() const;
 
 public:
     static void registerMetaType();
