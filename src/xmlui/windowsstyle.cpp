@@ -123,7 +123,7 @@ void WindowsStyle::polish( QWidget* widget )
             widget->setPalette( palette );
         }
 
-        if ( qobject_cast<QTreeView*>( widget ) || qobject_cast<QListView*>( widget ) || qobject_cast<QMenu*>( widget ) || qobject_cast<QTextBrowser*>( widget ) || qobject_cast<AboutBoxSection*>( widget ) ) {
+        if ( qobject_cast<QTreeView*>( widget ) || qobject_cast<QListView*>( widget ) || qobject_cast<QMenu*>( widget ) || qobject_cast<AboutBoxSection*>( widget ) || qobject_cast<QPlainTextEdit*>( widget ) ) {
             QPalette palette = widget->palette();
             palette.setColor( QPalette::Text, palette.color( QPalette::WindowText ) );
             widget->setPalette( palette );
@@ -133,6 +133,12 @@ void WindowsStyle::polish( QWidget* widget )
             QPalette palette = widget->palette();
             palette.setColor( QPalette::Base, Qt::white );
             palette.setColor( QPalette::WindowText, palette.color( QPalette::Text ) );
+            widget->setPalette( palette );
+        }
+
+        if ( qobject_cast<QTextBrowser*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::Base, QColor( 204, 204, 204 ) );
             widget->setPalette( palette );
         }
     }

@@ -52,7 +52,7 @@ void FolderItemView::drawRow( QPainter* painter, const QStyleOptionViewItem& opt
         rect = style()->visualRect( layoutDirection(), viewport()->rect(), rect );
 
         QPen oldPen = painter->pen();
-        painter->setPen( QColor( 0, 0, 255 ) );
+        painter->setPen( palette().color( QPalette::Highlight ) );
         painter->drawRect( rect.adjusted( 0, 0, -1, -1 ) );
         painter->setPen( oldPen );
     }

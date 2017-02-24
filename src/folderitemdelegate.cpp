@@ -17,6 +17,7 @@
 **************************************************************************/
 
 #include "folderitemdelegate.h"
+#include "application.h"
 
 FolderItemDelegate::FolderItemDelegate( QObject* parent ) : QStyledItemDelegate( parent )
 {
@@ -28,6 +29,10 @@ FolderItemDelegate::~FolderItemDelegate()
 
 void FolderItemDelegate::updateEditorGeometry( QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& /*index*/ ) const
 {
+    QPalette palette = Application::palette();
+    palette.setColor( QPalette::Text, palette.color( QPalette::WindowText ) );
+    editor->setPalette( palette );
+
     editor->setGeometry( option.rect.adjusted( 21, 0, 0, 0 ) );
 }
 
