@@ -194,7 +194,8 @@ void Application::about()
 
 void Application::showQuickGuide()
 {
-    m_aboutBox->close();
+    if ( m_aboutBox )
+        m_aboutBox->close();
 
     if ( !m_guideDialog ) {
         m_guideDialog = new GuideDialog( mainWindow );
@@ -256,6 +257,11 @@ void Application::showUpdateState()
             break;
         }
     }
+}
+
+void Application::openWebsite()
+{
+    QDesktopServices::openUrl( QUrl( "http://saladin.mimec.org/" ) );
 }
 
 void Application::openDonations()
@@ -356,6 +362,9 @@ void Application::initializeSettings()
 
     if ( !m_settings->contains( "Theme" ) )
         m_settings->setValue( "Theme", "classic" );
+
+    if ( !m_settings->contains( "HideToolStrip" ) )
+        m_settings->setValue( "HideToolStrip", false );
 
     if ( !m_settings->contains( "TextFont" ) )
         m_settings->setValue( "TextFont", "Courier New" );

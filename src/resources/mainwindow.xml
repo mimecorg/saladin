@@ -45,6 +45,75 @@
       <action id="explore"/>
     </section>
   </strip>
+  <menu id="menuBarEdit">
+    <action id="cut"/>
+    <action id="copy"/>
+    <action id="copyNames"/>
+    <action id="paste"/>
+    <separator/>
+    <action id="configure"/>
+  </menu>
+  <menu id="menuBarView">
+    <action id="refresh"/>
+    <action id="refreshDrives"/>
+    <separator/>
+    <action id="viewHidden"/>
+    <separator/>
+    <action id="viewSameDirectory"/>
+    <action id="swapPanes"/>
+  </menu>
+  <menu id="menuBarSelect">
+    <action id="selectMask"/>
+    <action id="selectAll"/>
+    <action id="unselectAll"/>
+    <action id="unselectMask"/>
+    <action id="invertSelection"/>
+  </menu>
+  <menu id="menuBarFunctions">
+    <action id="renameCurrent"/>
+    <separator/>
+    <action id="viewCurrent"/>
+    <action id="viewSelected"/>
+    <separator/>
+    <action id="editCurrent"/>
+    <action id="editNew"/>
+    <separator/>
+    <action id="copySelected"/>
+    <action id="cloneSelected"/>
+    <separator/>
+    <action id="moveSelected"/>
+    <action id="renameSelected"/>
+    <separator/>
+    <action id="createFolder"/>
+    <separator/>
+    <action id="moveToTrashCan"/>
+    <action id="deleteSelected"/>
+    <separator/>
+    <action id="openTerminal"/>
+  </menu>
+  <menu id="menuBarTools">
+    <action id="packToZip"/>
+    <separator/>
+    <action id="openDirectory"/>
+    <action id="browse"/>
+    <action id="openFtpSite"/>
+    <separator/>
+    <action id="calculateSize"/>
+    <separator/>
+    <action id="compareFiles"/>
+    <action id="compareDirectories"/>
+    <separator/>
+    <action id="search"/>
+    <separator/>
+    <action id="explore"/>
+  </menu>
+  <menu id="menuBarHelp">
+    <action id="showQuickGuide"/>
+    <separator/>
+    <action id="openWebsite"/>
+    <separator/>
+    <action id="about"/>
+  </menu>
   <menu id="menuView">
     <action id="viewCurrent"/>
     <action id="viewSelected"/>

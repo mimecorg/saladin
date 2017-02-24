@@ -59,6 +59,7 @@ public slots:
 
     void showUpdateState();
 
+    void openWebsite();
     void openDonations();
     void openReleaseNotes();
     void openDownloads();

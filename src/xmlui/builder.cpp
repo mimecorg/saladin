@@ -248,6 +248,11 @@ void Builder::registerToolStrip( const QString& id, ToolStrip* strip )
     }
 }
 
+void Builder::unregisterToolStrip( const QString& id )
+{
+    m_toolStrips.remove( id );
+}
+
 ToolStrip* Builder::toolStrip( const QString& id ) const
 {
     return m_toolStrips.value( id );

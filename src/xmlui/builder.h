@@ -109,6 +109,12 @@ public:
     void registerToolStrip( const QString& id, ToolStrip* strip );
 
     /**
+    * Unregister a toolstrip.
+    * @param id The identifier of the toolstrip.
+    */
+    void unregisterToolStrip( const QString& id );
+
+    /**
     * Return the toolstrip with given identifier.
     */
     ToolStrip* toolStrip( const QString& id ) const;

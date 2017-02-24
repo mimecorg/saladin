@@ -89,7 +89,7 @@ void WindowsStyle::polish( QPalette& palette )
     highlight = QColor::fromHsv( highlight.hue(), 204, 255 ).toRgb();
 
     m_colorMenuBorder = blendColors( dark, base, 0.55 );
-    m_colorMenuBackground = button;
+    m_colorMenuBackground = m_darkTheme ? QColor( 51, 51, 51 ) : button;
     m_colorSeparator = blendColors( dark, base, 0.4 );
     m_colorItemBorder = highlight;
 
@@ -123,7 +123,7 @@ void WindowsStyle::polish( QWidget* widget )
             widget->setPalette( palette );
         }
 
-        if ( qobject_cast<QTreeView*>( widget ) || qobject_cast<QListView*>( widget ) || qobject_cast<QMenu*>( widget ) || qobject_cast<AboutBoxSection*>( widget ) || qobject_cast<QPlainTextEdit*>( widget ) ) {
+        if ( qobject_cast<QTreeView*>( widget ) || qobject_cast<QListView*>( widget ) || qobject_cast<QMenuBar*>( widget ) || qobject_cast<QMenu*>( widget ) || qobject_cast<AboutBoxSection*>( widget ) || qobject_cast<QPlainTextEdit*>( widget ) ) {
             QPalette palette = widget->palette();
             palette.setColor( QPalette::Text, palette.color( QPalette::WindowText ) );
             widget->setPalette( palette );
@@ -165,6 +165,8 @@ int WindowsStyle::pixelMetric( PixelMetric metric, const QStyleOption* option, c
             return 0;
         case PM_MenuVMargin:
             return 1;
+        case PM_MenuBarHMargin:
+            return 3;
         case PM_MenuButtonIndicator:
             return 12;
         default:
@@ -272,6 +274,10 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
             painter->fillRect( option->rect, m_colorMenuBackground );
             return;
 
+        case CE_MenuBarEmptyArea:
+            painter->fillRect( option->rect, m_colorMenuBackground );
+            return;
+
         case CE_MenuItem: {
             painter->save();
             painter->fillRect( option->rect, m_colorMenuBackground );
@@ -342,6 +348,32 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
                     optionArrow.state = option->state & State_Enabled;
                     drawPrimitive( PE_IndicatorArrowRight, &optionArrow, painter, widget );
                 }
+            }
+            painter->restore();
+            return;
+        }
+
+        case CE_MenuBarItem: {
+            painter->save();
+            painter->fillRect( option->rect, m_colorMenuBackground );
+            if ( option->state & QStyle::State_Selected && option->state & QStyle::State_Enabled ) {
+                if ( option->state & State_Sunken )
+                    drawHighlightFrame( painter, option->rect, m_colorItemSunken, m_colorItemBorder );
+                else
+                    drawHighlightFrame( painter, option->rect, m_colorItemBackground, m_colorItemBorder );
+            }
+            if ( const QStyleOptionMenuItem* optionItem = qstyleoption_cast<const QStyleOptionMenuItem*>( option ) ) {
+                QPixmap pixmap = optionItem->icon.pixmap( pixelMetric( PM_SmallIconSize, option, widget ), QIcon::Normal );
+
+                uint alignment = Qt::AlignCenter | Qt::TextShowMnemonic | Qt::TextDontClip | Qt::TextSingleLine;
+                if ( !styleHint( SH_UnderlineShortcut, optionItem, widget ) )
+                    alignment |= Qt::TextHideMnemonic;
+
+                if ( !pixmap.isNull() )
+                    drawItemPixmap( painter, optionItem->rect, alignment, pixmap );
+                else
+                    drawItemText( painter, optionItem->rect, alignment, optionItem->palette, optionItem->state & State_Enabled, optionItem->text, QPalette::Text );
+
             }
             painter->restore();
             return;

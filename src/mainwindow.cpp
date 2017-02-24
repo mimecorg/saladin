@@ -54,6 +54,14 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), application, SLOT( about() ) );
     setAction( "about", action );
 
+    action = new QAction( IconLoader::icon( "web" ), tr( "Saladin Website" ), this );
+    connect( action, SIGNAL( triggered() ), application, SLOT( openWebsite() ) );
+    setAction( "openWebsite", action );
+
+    action = new QAction( IconLoader::icon( "help" ), tr( "Quick Quide" ), this );
+    connect( action, SIGNAL( triggered() ), application, SLOT( showQuickGuide() ) );
+    setAction( "showQuickGuide", action );
+
     action = new QAction( IconLoader::icon( "configure" ), tr( "Saladin Settings" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( configure() ) );
     setAction( "configure", action );
@@ -308,6 +316,14 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( editBookmarks() ) );
     setAction( "editBookmarks", action );
 
+    action = new QAction( IconLoader::icon( "arrow-hide" ), tr( "Collapse Toolbar" ), this );
+    connect( action, SIGNAL( triggered() ), this, SLOT( hideToolStrip() ) );
+    setAction( "hideToolStrip", action );
+
+    action = new QAction( IconLoader::icon( "arrow-down" ), tr( "Expand Toolbar" ), this );
+    connect( action, SIGNAL( triggered() ), this, SLOT( showToolStrip() ) );
+    setAction( "showToolStrip", action );
+
     setTitle( "sectionPanels", tr( "Panels" ) );
     setTitle( "sectionSelect", tr( "Select" ) );
 
@@ -322,15 +338,13 @@ MainWindow::MainWindow() : QMainWindow(),
 
     loadXmlUiFile( ":/resources/mainwindow.xml" );
 
-    XmlUi::ToolStrip* strip = new XmlUi::ToolStrip( this );
-    strip->addAuxiliaryAction( this->action( "configure" ) );
-    strip->addAuxiliaryAction( this->action( "about" ) );
-    setMenuWidget( strip );
-
     XmlUi::Builder* builder = new XmlUi::Builder( this );
     builder->addClient( this );
 
-    builder->registerToolStrip( "stripMain", strip );
+    if ( application->applicationSettings()->value( "HideToolStrip" ).toBool() )
+        createMenuBar();
+    else
+        createToolStrip();
 
     QShortcut* shortcut;
 
@@ -1264,4 +1278,53 @@ void MainWindow::otherOpenParent()
     ShellFolder* folder = m_sourcePane->folder()->parentFolder( item );
     if ( folder )
         m_targetPane->setFolder( folder );
+}
+
+void MainWindow::hideToolStrip()
+{
+    builder()->unregisterToolStrip( "stripMain" );
+
+    createMenuBar();
+
+    application->applicationSettings()->setValue( "HideToolStrip", true );
+}
+
+void MainWindow::showToolStrip()
+{
+    createToolStrip();
+
+    application->applicationSettings()->setValue( "HideToolStrip", false );
+}
+
+void MainWindow::createToolStrip()
+{
+    XmlUi::ToolStrip* strip = new XmlUi::ToolStrip( this );
+    strip->addAuxiliaryAction( this->action( "hideToolStrip" ) );
+    strip->addAuxiliaryAction( this->action( "configure" ) );
+    strip->addAuxiliaryAction( this->action( "about" ) );
+    setMenuWidget( strip );
+
+    builder()->registerToolStrip( "stripMain", strip );
+}
+
+void MainWindow::createMenuBar()
+{
+    QMenuBar* menuBar = new QMenuBar( this );
+    setMenuWidget( menuBar );
+
+    menuBar->addMenu( builder()->contextMenu( "menuBarEdit" ) )->setText( tr( "&Edit" ) );
+    menuBar->addMenu( builder()->contextMenu( "menuBarView" ) )->setText( tr( "&View" ) );
+    menuBar->addMenu( builder()->contextMenu( "menuBarSelect" ) )->setText( tr( "&Selection" ) );
+    menuBar->addMenu( builder()->contextMenu( "menuBarFunctions" ) )->setText( tr( "&Functions" ) );
+    menuBar->addMenu( builder()->contextMenu( "menuBarTools" ) )->setText( tr( "&Tools" ) );
+    menuBar->addMenu( builder()->contextMenu( "menuBarHelp" ) )->setText( tr( "&Help" ) );
+
+    QToolButton* button = new QToolButton( menuBar );
+    button->setAutoRaise( true );
+    button->setFocusPolicy( Qt::NoFocus );
+    button->setToolButtonStyle( Qt::ToolButtonIconOnly );
+    button->setIconSize( QSize( 16, 16 ) );
+    button->setDefaultAction( action( "showToolStrip" ) );
+
+    menuBar->setCornerWidget( button, Qt::TopRightCorner );
 }

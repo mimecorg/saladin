@@ -123,6 +123,9 @@ private slots:
     void otherOpenFolder();
     void otherOpenParent();
 
+    void hideToolStrip();
+    void showToolStrip();
+
 private:
     void initializeSettings();
     void saveSettings();
@@ -138,6 +141,9 @@ private:
 
     QString toolPath( Tool tool );
     QString toolName( Tool tool );
+
+    void createToolStrip();
+    void createMenuBar();
 
 private:
     DriveStripManager* m_driveStripManager;

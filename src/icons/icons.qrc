@@ -2,6 +2,7 @@
 <qresource prefix="/icons">
   <file>about-16.png</file>
   <file>arrow-down-16.png</file>
+  <file>arrow-hide-16.png</file>
   <file>arrow-left-16.png</file>
   <file>arrow-right-16.png</file>
   <file>arrow-top-16.png</file>
