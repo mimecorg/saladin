@@ -62,7 +62,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), application, SLOT( showQuickGuide() ) );
     setAction( "showQuickGuide", action );
 
-    action = new QAction( IconLoader::icon( "configure" ), tr( "Saladin Settings" ), this );
+    action = new QAction( IconLoader::icon( "configure" ), tr( "Settings..." ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( configure() ) );
     setAction( "configure", action );
 
@@ -132,7 +132,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( copyToLeftPane() ) );
     setAction( "copyToLeftPane", action );
 
-    action = new QAction( IconLoader::icon( "select" ), tr( "Select Mask" ), this );
+    action = new QAction( IconLoader::icon( "select" ), tr( "Select Mask..." ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Plus ) << QKeySequence( Qt::CTRL + Qt::Key_Equal ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( selectMask() ) );
     setAction( "selectMask", action );
@@ -142,7 +142,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
     setAction( "selectAll", action );
 
-    action = new QAction( IconLoader::icon( "unselect" ), tr( "Unselect Mask" ), this );
+    action = new QAction( IconLoader::icon( "unselect" ), tr( "Unselect Mask..." ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Minus ) << QKeySequence( Qt::CTRL + Qt::Key_Underscore ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( unselectMask() ) );
     setAction( "unselectMask", action );
@@ -219,7 +219,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( renameSelected() ) );
     setAction( "renameSelected", action );
 
-    action = new QAction( IconLoader::icon( "folder-new" ), tr( "Create Folder" ), this );
+    action = new QAction( IconLoader::icon( "folder-new" ), tr( "Create Folder..." ), this );
     action->setShortcut( QKeySequence( Qt::Key_F7 ) );
     action->setIconText( tr( "Folder\nF7" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( createFolder() ) );
@@ -245,7 +245,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( openTerminal() ) );
     setAction( "openTerminal", action );
 
-    action = new QAction( IconLoader::icon( "pack" ), tr( "Pack" ), this );
+    action = new QAction( IconLoader::icon( "pack" ), tr( "Pack..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_P ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( packToZip() ) );
     setAction( "packToZip", action );
@@ -287,7 +287,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( compareDirectories() ) );
     setAction( "compareDirectories", action );
 
-    action = new QAction( IconLoader::icon( "find" ), tr( "Search" ), this );
+    action = new QAction( IconLoader::icon( "find" ), tr( "Search..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_S ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( search() ) );
     setAction( "search", action );
