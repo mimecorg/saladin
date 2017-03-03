@@ -46,6 +46,7 @@ AboutBox::AboutBox( const QString& title, const QString& message, QWidget* paren
     promptLabel->setWordWrap( true );
     promptLabel->setText( message );
     promptLabel->setMinimumWidth( 350 );
+    promptLabel->setOpenExternalLinks( true );
     promptLayout->addWidget( promptLabel, 1, Qt::AlignTop );
 
     QFrame* separator = new QFrame( this );

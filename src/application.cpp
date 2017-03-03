@@ -91,88 +91,42 @@ Application::~Application()
     m_settings = NULL;
 }
 
-extern "C" IMAGE_DOS_HEADER __ImageBase;
-
-QString Application::technicalInformation()
-{
-#if defined( Q_OS_WIN64 )
-    QString configBits = "64";
-#else
-    QString configBits = "32";
-#endif
-#if defined ( QT_DEBUG )
-    QString configMode = "debug";
-#else
-    QString configMode = "release";
-#endif
-
-    QString qtVersion = qVersion();
-
-    QString shellVersion;
-    DLLVERSIONINFO2 info = { 0 };
-    info.info1.cbSize = sizeof( info );
-    DLLGETVERSIONPROC dllGetVersion = (DLLGETVERSIONPROC)GetProcAddress( GetModuleHandle( L"shell32" ), "DllGetVersion" );
-    if ( dllGetVersion ) {
-        dllGetVersion( &info.info1 );
-        shellVersion = QString( "%1.%2.%3.%4" ).arg( info.info1.dwMajorVersion ).arg( info.info1.dwMinorVersion ).arg( info.info1.dwBuildNumber ).arg( (int)( info.ullVersion & DLLVER_QFE_MASK ) );
-    }
-
-    const IMAGE_NT_HEADERS* header = (const IMAGE_NT_HEADERS*)( (char*)&__ImageBase + __ImageBase.e_lfanew );
-    QDateTime compiled = QDateTime::fromTime_t( header->FileHeader.TimeDateStamp );
-
-    QString infoMessage;
-    infoMessage += "<h4>" + tr( "Technical Information" ) + "</h4>";
-    infoMessage += "<p>" + tr( "Built on %1 in %2-bit %3 mode." ).arg( compiled.toString( "yyyy-MM-dd HH:mm" ), configBits, configMode );
-    infoMessage += " " + tr( "Using Qt %1 and Windows Shell %2." ).arg( qtVersion, shellVersion ) + "</p>";
-
-    return infoMessage;
-}
-
 void Application::about()
 {
     if ( !m_aboutBox ) {
         QString message;
         message += "<h3>" + tr( "Saladin %1" ).arg( version() ) + "</h3>";
-        message += "<p>" + tr( "Dual-pane file manager for Windows." ) + "</p>";
-        message += "<p>" + tr( "This program is free software: you can redistribute it and/or modify"
-            " it under the terms of the GNU General Public License as published by"
-            " the Free Software Foundation, either version 3 of the License, or"
-            " (at your option) any later version." ) + "</p>";
-        message += "<p>" + trUtf8( "Copyright &copy; 2011-2014 Michał Męciński" ) + "</p>";
+        message += "<p>" + trUtf8( "Copyright &copy; 2011-2017 Michał Męciński" ) + " (<a href=\"https://twitter.com/MichalMecinski\">@MichalMecinski</a>)<br>";
+        message += trUtf8( "Icons copyright &copy; 2017 Łukasz Grabowski" ) + " (<a href=\"https://twitter.com/LGrabowskiPL\">@LGrabowskiPL</a>)</p>";
 
-        QString link = "<a href=\"http://saladin.mimec.org\">saladin.mimec.org</a>";
+        QString notesMessage;
+        notesMessage += "<h4>" + tr( "Release Notes" ) + "</h4>";
+        notesMessage += "<p>" + tr( "See what's new in this version of Saladin:" );
+        notesMessage += QString( " <a href=\"http://saladin.mimec.org/release/%1\">http://saladin.mimec.org/release/%1</a></p>" ).arg( version() );
 
         QString helpMessage;
         helpMessage += "<h4>" + tr( "Help" ) + "</h4>";
         helpMessage += "<p>" + tr( "Open the Saladin Quick Guide for help." ) + "</p>";
 
-        QString webMessage;
-        webMessage += "<h4>" + tr( "Website" ) + "</h4>";
-        webMessage += "<p>" + tr( "Visit %1 for more information about Saladin." ).arg( link ) + "</p>";
-
-        QString donateMessage;
-        donateMessage += "<h4>" + tr( "Donations" ) + "</h4>";
-        donateMessage += "<p>" + tr( "If you like this program, your donation will help me dedicate more time for it, support it and implement new features." ) + "</p>";
-
         QString updateMessage;
         updateMessage += "<h4>" + tr( "Latest Version" ) + "</h4>";
         updateMessage += "<p>" + tr( "Automatic checking for latest version is disabled. You can enable it in program settings." ) + "</p>";
 
-        QString infoMessage = technicalInformation();
+        QString licenseMessage;
+        licenseMessage += "<h4>" + tr( "License" ) + "</h4>";
+        licenseMessage += "<p>" + tr( "This program is free software: you can redistribute it and/or modify"
+            " it under the terms of the GNU General Public License as published by"
+            " the Free Software Foundation, either version 3 of the License, or"
+            " (at your option) any later version." ) + "</p>";
 
         m_aboutBox = new AboutBox( tr( "About Saladin" ), message, mainWindow );
+
+        m_aboutBox->addSection( IconLoader::pixmap( "web" ), notesMessage );
 
         AboutBoxSection* helpSection = m_aboutBox->addSection( IconLoader::pixmap( "help" ), helpMessage );
 
         QPushButton* helpButton = helpSection->addButton( tr( "&Quick Guide" ) );
         connect( helpButton, SIGNAL( clicked() ), this, SLOT( showQuickGuide() ) );
-
-        m_aboutBox->addSection( IconLoader::pixmap( "web" ), webMessage );
-
-        AboutBoxSection* donateSection = m_aboutBox->addSection( IconLoader::pixmap( "bookmark" ), donateMessage );
-
-        QPushButton* donateButton = donateSection->addButton( tr( "&Donate" ) );
-        connect( donateButton, SIGNAL( clicked() ), this, SLOT( openDonations() ) );
 
         delete m_updateSection;
 
@@ -185,7 +139,7 @@ void Application::about()
             connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
         }
 
-        m_aboutBox->addSection( IconLoader::pixmap( "info" ), infoMessage );
+        m_aboutBox->addSection( IconLoader::pixmap( "gear" ), licenseMessage );
     }
 
     m_aboutBox->show();
