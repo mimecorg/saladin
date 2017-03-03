@@ -78,6 +78,7 @@ private slots:
     void openDirectory();
     void openParent();
     void openRoot();
+    void openHome();
 
     void viewSameDirectory();
     void swapPanes();
@@ -130,6 +131,8 @@ private slots:
 private:
     void initializeSettings();
     void saveSettings();
+
+    void restoreDirectory( int index, const QString& key );
 
     void setSourcePane( int index );
 

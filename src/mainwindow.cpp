@@ -115,6 +115,11 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), this, SLOT( swapPanes() ) );
     setAction( "swapPanes", action );
 
+    action = new QAction( IconLoader::icon( "home" ), tr( "Home Directory" ), this );
+    action->setShortcut( QKeySequence( Qt::ALT + Qt::Key_Home ) );
+    connect( action, SIGNAL( triggered() ), this, SLOT( openHome() ) );
+    setAction( "openHome", action );
+
     action = new QAction( IconLoader::icon( "arrow-top" ), tr( "Root Directory" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_Backslash ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openRoot() ) );
@@ -429,16 +434,12 @@ void MainWindow::initializeSettings()
     QApplication::processEvents();
 
     for ( int i = 0; i < 2; i++ ) {
-        QString key = QString( "Directory%1" ).arg( i + 1 );
-        ShellPidl pidl = settings->value( key ).value<ShellPidl>();
-
-        ShellFolder* folder = new ShellFolder( pidl, m_panes[ i ] );
-        if ( !folder->isValid() ) {
-            delete folder;
-            folder = new ShellFolder( ShellFolder::defaultFolder(), m_panes[ i ] );
-        }
-
-        m_panes[ i ]->setFolder( folder );
+        QString key;
+        if ( settings->value( "RememberDirectories" ).toBool() )
+            key = QString( "Directory%1" ).arg( i + 1 );
+        else
+            key = QString( "HomeDirectory%1" ).arg( i + 1 );
+        restoreDirectory( i, key );
     }
 
     m_panes[ 0 ]->activateView();
@@ -469,6 +470,21 @@ void MainWindow::saveSettings()
             }
         }
     }
+}
+
+void MainWindow::restoreDirectory( int index, const QString& key )
+{
+    LocalSettings* settings = application->applicationSettings();
+
+    ShellPidl pidl = settings->value( key ).value<ShellPidl>();
+
+    ShellFolder* folder = new ShellFolder( pidl, m_panes[ index ] );
+    if ( !folder->isValid() ) {
+        delete folder;
+        folder = new ShellFolder( ShellFolder::defaultFolder(), m_panes[ index ] );
+    }
+
+    m_panes[ index ]->setFolder( folder );
 }
 
 void MainWindow::closeEvent( QCloseEvent* e )
@@ -611,6 +627,16 @@ void MainWindow::openParent()
 void MainWindow::openRoot()
 {
     m_sourcePane->openRoot();
+}
+
+void MainWindow::openHome()
+{
+    int index = ( m_sourcePane == m_panes[ 0 ] ) ? 0 : 1;
+
+    QString key = QString( "HomeDirectory%1" ).arg( index + 1 );
+    restoreDirectory( index, key );
+
+    m_panes[ index ]->activateView();
 }
 
 void MainWindow::gotoFile( const ShellPidl& folderPidl, const ShellItem& item )

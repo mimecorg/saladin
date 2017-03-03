@@ -57,6 +57,7 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
 
     connect( m_strip, SIGNAL( customContextMenuRequested( const QPoint& ) ), this, SLOT( stripContextMenuRequested( const QPoint& ) ) );
 
+    m_strip->addAuxiliaryAction( mainWindow->action( "openHome" ) );
     m_strip->addAuxiliaryAction( mainWindow->action( "openRoot" ) );
     m_strip->addAuxiliaryAction( mainWindow->action( "openParent" ) );
     if ( location == LeftPane )

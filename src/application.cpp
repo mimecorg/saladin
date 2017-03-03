@@ -309,6 +309,19 @@ void Application::initializeSettings()
     if ( !m_settings->contains( "RememberDirectories" ) )
         m_settings->setValue( "RememberDirectories", false );
 
+    if ( !m_settings->contains( "HomeDirectory1" ) ) {
+        if ( !m_settings->value( "RememberDirectories" ).toBool() )
+            m_settings->setValue( "HomeDirectory1", m_settings->value( "Directory1" ) );
+        else
+            m_settings->setValue( "HomeDirectory1", QVariant::fromValue( ShellFolder::defaultFolder() ) );
+    }
+    if ( !m_settings->contains( "HomeDirectory2" ) ) {
+        if ( !m_settings->value( "RememberDirectories" ).toBool() )
+            m_settings->setValue( "HomeDirectory2", m_settings->value( "Directory2" ) );
+        else
+            m_settings->setValue( "HomeDirectory2", QVariant::fromValue( ShellFolder::defaultFolder() ) );
+    }
+
     if ( !m_settings->contains( "BinaryFont" ) )
         m_settings->setValue( "BinaryFont", "Courier New" );
     if ( !m_settings->contains( "BinaryFontSize" ) )
