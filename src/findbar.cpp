@@ -66,7 +66,7 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     m_previousButton = new QToolButton( this );
     m_previousButton->setIcon( IconLoader::icon( "find-previous" ) );
     m_previousButton->setIconSize( QSize( 16, 16 ) );
-    m_previousButton->setToolTip( tr( "Find Previous" ) );
+    m_previousButton->setToolTip( QString( "%1 (Shift+F3)" ).arg( tr( "Find Previous" ) ) );
     m_previousButton->setAutoRaise( true );
     layout->addWidget( m_previousButton );
 
@@ -75,7 +75,7 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     m_nextButton = new QToolButton( this );
     m_nextButton->setIcon( IconLoader::icon( "find-next" ) );
     m_nextButton->setIconSize( QSize( 16, 16 ) );
-    m_nextButton->setToolTip( tr( "Find Next" ) );
+    m_nextButton->setToolTip( QString( "%1 (F3)" ).arg( tr( "Find Next" ) ) );
     m_nextButton->setAutoRaise( true );
     layout->addWidget( m_nextButton );
 
