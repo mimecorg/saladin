@@ -228,6 +228,20 @@ void ToolStrip::paintEvent( QPaintEvent* /*e*/ )
                 drawSeparator( rect, &painter, this );
         }
     }
+
+    if ( !m_layout->isSimpleLayout() ) {
+        QStyleOptionFrameV3 option;
+        option.init( this );
+        option.frameShape = QFrame::HLine;
+        option.state |= QStyle::State_Sunken;
+        option.lineWidth = 1;
+        option.rect = geometry();
+        option.rect.setBottom( option.rect.top() );
+        style()->drawControl( QStyle::CE_ShapedFrame, &option, &painter, this );
+        option.rect = geometry();
+        option.rect.setTop( option.rect.bottom() );
+        style()->drawControl( QStyle::CE_ShapedFrame, &option, &painter, this );
+    }
 }
 
 ToolStripAction::ToolStripAction( const QString& text, QObject* parent ) : QAction( text, parent ),
@@ -527,7 +541,7 @@ void ToolStripLayout::setGeometry( const QRect& rect )
         if ( m_simpleLayout )
             button->setGeometry( QRect( right - size.width(), contents.top(), size.width(), size.height() ) );
         else
-            button->setGeometry( QRect( right - size.width() - 3, contents.top() + 3, size.width(), size.height() ) );
+            button->setGeometry( QRect( right - size.width() - 3, contents.top() + 8, size.width(), size.height() ) );
         right -= size.width();
     }
 
@@ -678,7 +692,7 @@ void ToolStripSectionLayout::calculateSize()
 
     m_titleSize = fontMetrics.size( 0, m_titleText );
 
-    m_sizeHint = QSize( qMax( width, m_titleSize.width() ) + 9, buttonSize.height() + 6 );
+    m_sizeHint = QSize( qMax( width, m_titleSize.width() ) + 9, buttonSize.height() + 8 );
 
     m_dirty = false;
 }
@@ -728,13 +742,13 @@ void ToolStripSectionLayout::setGeometry( const QRect& rect )
         QSize size = item->sizeHint();
         if ( m_uniform )
             size.setWidth( maxWidth );
-        item->setGeometry( QRect( left, rect.top() + 3, size.width(), rect.height() - 6 ) );
+        item->setGeometry( QRect( left, rect.top() + 4, size.width(), rect.height() - 8 ) );
         left += size.width();
     }
 
-    m_titleRect = QRect( rect.left() + 3, rect.bottom() - m_titleSize.height() - 18, rect.width() - 9, m_titleSize.height() );
+    m_titleRect = QRect( rect.left() + 3, rect.bottom() - m_titleSize.height() - 19, rect.width() - 9, m_titleSize.height() );
 
-    m_separatorRect = QRect( rect.right() - 2, rect.top(), 3, rect.height() );
+    m_separatorRect = QRect( rect.right() - 2, rect.top() + 4, 3, rect.height() - 8 );
 }
 
 void ToolStripSectionLayout::invalidate()

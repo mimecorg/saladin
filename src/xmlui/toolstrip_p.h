@@ -56,6 +56,8 @@ public:
 
     void clearAuxiliaryButtons();
 
+    bool isSimpleLayout() const { return m_simpleLayout; }
+
 public: // overrides
     Qt::Orientations expandingDirections() const;
 

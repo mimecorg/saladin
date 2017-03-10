@@ -90,7 +90,7 @@ void WindowsStyle::polish( QPalette& palette )
 
     m_colorMenuBorder = blendColors( dark, base, 0.55 );
     m_colorMenuBackground = m_darkTheme ? QColor( 51, 51, 51 ) : button;
-    m_colorSeparator = blendColors( dark, base, 0.4 );
+    m_colorSeparator = m_whiteTheme ? QColor( 221, 221, 221 ) : blendColors( dark, base, 0.4 );
     m_colorItemBorder = highlight;
 
     m_colorItemBackground = blendColors( highlight, base, 0.4 );
@@ -262,11 +262,19 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
 {
     switch ( element ) {
         case CE_ShapedFrame:
-            if ( qobject_cast<const ToolStrip*>( widget ) ) {
-                painter->setPen( m_colorSeparator );
-                painter->drawLine( ( option->rect.left() + option->rect.right() ) / 2, option->rect.top(),
-                    ( option->rect.left() + option->rect.right() ) / 2, option->rect.bottom() );
-                return;
+            if ( qobject_cast<const ToolStrip*>( widget ) || qobject_cast<const QFrame*>( widget ) ) {
+                if ( const QStyleOptionFrameV3* optionFrame = qstyleoption_cast<const QStyleOptionFrameV3*>( option ) ) {
+                    if ( optionFrame->frameShape == QFrame::VLine ) {
+                        painter->setPen( m_colorSeparator );
+                        painter->drawLine( ( option->rect.left() + option->rect.right() ) / 2, option->rect.top(),
+                            ( option->rect.left() + option->rect.right() ) / 2, option->rect.bottom() );
+                        return;
+                    } else if ( optionFrame->frameShape == QFrame::HLine ) {
+                        painter->setPen( m_colorMenuBorder );
+                        painter->drawLine( option->rect.left(), option->rect.top(), option->rect.right(), option->rect.top() );
+                        return;
+                    }
+                }
             }
             break;
 

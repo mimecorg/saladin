@@ -49,6 +49,8 @@ PaneWidget::PaneWidget( PaneLocation location, QWidget* parent ) : QWidget( pare
     layout->setSpacing( 0 );
     layout->setMargin( 0 );
 
+    layout->addSpacing( 3 );
+
     m_strip = new XmlUi::ToolStrip( this );
     layout->addWidget( m_strip );
     layout->addSpacing( 3 );
