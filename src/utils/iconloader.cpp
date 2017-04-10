@@ -17,6 +17,7 @@
 **************************************************************************/
 
 #include "iconloader.h"
+#include "application.h"
 
 #include <QPixmapCache>
 #include <QPainter>
@@ -30,7 +31,7 @@ QPixmap IconLoader::pixmap( const QString& name, int size )
     if ( QPixmapCache::find( key, pixmap ) )
         return pixmap;
 
-    QString path = QString( ":/icons/%1-%2.png" ).arg( name ).arg( size );
+    QString path = QString( "%1/%2-%3.png" ).arg( application->iconsPath(), name ).arg( size );
 
     pixmap = QPixmap( path );
 
@@ -92,10 +93,12 @@ QIcon IconLoader::icon( const QString& name )
 {
     QIcon icon;
 
+    QString iconsPath = application->iconsPath();
+
     const int sizes[ 4 ] = { 16, 22, 32, 48 };
 
     for ( int i = 0; i < 4; i++ ) {
-        QString path = QString( ":/icons/%1-%2.png" ).arg( name ).arg( sizes[ i ] );
+        QString path = QString( "%1/%2-%3.png" ).arg( iconsPath, name ).arg( sizes[ i ] );
 
         if ( QFile::exists( path ) )
             icon.addFile( path, QSize( sizes[ i ], sizes[ i ] ) );
@@ -108,11 +111,13 @@ QIcon IconLoader::overlayedIcon( const QString& name, const QString& overlay )
 {
     QIcon icon;
 
+    QString iconsPath = application->iconsPath();
+
     const int sizes[ 4 ] = { 16, 22, 32, 48 };
 
     for ( int i = 0; i < 4; i++ ) {
-        QString imagePath = QString( ":/icons/%1-%2.png" ).arg( name ).arg( sizes[ i ] );
-        QString overlayPath = QString( ":/icons/%1-%2.png" ).arg( overlay ).arg( sizes[ i ] );
+        QString imagePath = QString( "%1/%2-%3.png" ).arg( iconsPath, name ).arg( sizes[ i ] );
+        QString overlayPath = QString( "%1/%2-%3.png" ).arg( iconsPath, overlay ).arg( sizes[ i ] );
 
         if ( QFile::exists( imagePath ) && QFile::exists( overlayPath ) )
             icon.addPixmap( overlayedPixmap( name, overlay, sizes[ i ] ) );
