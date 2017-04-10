@@ -141,6 +141,12 @@ void WindowsStyle::polish( QWidget* widget )
             palette.setColor( QPalette::Base, QColor( 204, 204, 204 ) );
             widget->setPalette( palette );
         }
+
+        if ( qobject_cast<QMessageBox*>( widget ) ) {
+            QPalette palette = widget->palette();
+            palette.setColor( QPalette::WindowText, palette.color( QPalette::Text ) );
+            widget->setPalette( palette );
+        }
     }
 
     QProxyStyle::polish( widget );
