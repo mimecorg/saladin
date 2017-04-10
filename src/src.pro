@@ -51,6 +51,7 @@ SOURCES += aboutbox.cpp \
 RESOURCES += \
            guide/guide.qrc \
            icons/icons.qrc \
+           icons/dark/dark.qrc \
            resources/resources.qrc
 
 include( shell/shell.pri )
