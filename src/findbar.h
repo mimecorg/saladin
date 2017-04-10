@@ -115,7 +115,11 @@ private slots:
 
     void caseToggled();
 
+    void loadIcons();
+
 private:
+    QToolButton* m_closeButton;
+
     QComboBox* m_comboBox;
 
     QToolButton* m_previousButton;

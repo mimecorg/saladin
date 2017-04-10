@@ -18,6 +18,8 @@
 
 #include "findbar.h"
 
+#include "application.h"
+#include "utils/localsettings.h"
 #include "utils/iconloader.h"
 
 #include <QLayout>
@@ -38,14 +40,13 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     layout->setMargin( 3 );
     layout->setSpacing( 5 );
 
-    QToolButton* closeButton = new QToolButton( this );
-    closeButton->setIcon( IconLoader::icon( "close" ) );
-    closeButton->setIconSize( QSize( 16, 16 ) );
-    closeButton->setToolTip( tr( "Close" ) );
-    closeButton->setAutoRaise( true );
-    layout->addWidget( closeButton );
+    m_closeButton = new QToolButton( this );
+    m_closeButton->setIconSize( QSize( 16, 16 ) );
+    m_closeButton->setToolTip( tr( "Close" ) );
+    m_closeButton->setAutoRaise( true );
+    layout->addWidget( m_closeButton );
 
-    connect( closeButton, SIGNAL( clicked() ), this, SLOT( hide() ) );
+    connect( m_closeButton, SIGNAL( clicked() ), this, SLOT( hide() ) );
 
     QLabel* label = new QLabel( tr( "Find:" ), this );
     layout->addWidget( label );
@@ -64,7 +65,6 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     m_comboBox->installEventFilter( this );
 
     m_previousButton = new QToolButton( this );
-    m_previousButton->setIcon( IconLoader::icon( "find-previous" ) );
     m_previousButton->setIconSize( QSize( 16, 16 ) );
     m_previousButton->setToolTip( QString( "%1 (Shift+F3)" ).arg( tr( "Find Previous" ) ) );
     m_previousButton->setAutoRaise( true );
@@ -73,7 +73,6 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     connect( m_previousButton, SIGNAL( clicked() ), this, SIGNAL( findPrevious() ) );
 
     m_nextButton = new QToolButton( this );
-    m_nextButton->setIcon( IconLoader::icon( "find-next" ) );
     m_nextButton->setIconSize( QSize( 16, 16 ) );
     m_nextButton->setToolTip( QString( "%1 (F3)" ).arg( tr( "Find Next" ) ) );
     m_nextButton->setAutoRaise( true );
@@ -91,13 +90,16 @@ FindBar::FindBar( QWidget* parent ) : QWidget( parent ),
     layout->addSpacing( 10 );
 
     m_warningPixmap = new QLabel( this );
-    m_warningPixmap->setPixmap( IconLoader::pixmap( "warning" ) );
     layout->addWidget( m_warningPixmap );
 
     m_warningLabel = new QLabel( tr( "Text not found" ) );
     layout->addWidget( m_warningLabel );
 
     layout->addStretch( 0 );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     m_previousButton->setEnabled( false );
     m_nextButton->setEnabled( false );
@@ -230,4 +232,22 @@ void FindBar::caseToggled()
 {
     if ( m_enabled )
         emit find( m_comboBox->currentText() );
+}
+
+void FindBar::loadIcons()
+{
+    m_closeButton->setIcon( IconLoader::icon( "close" ) );
+    m_previousButton->setIcon( IconLoader::icon( "find-previous" ) );
+    m_nextButton->setIcon( IconLoader::icon( "find-next" ) );
+
+    m_warningPixmap->setPixmap( IconLoader::pixmap( "warning" ) );
+
+    QString theme = application->applicationSettings()->value( "Theme" ).toString();
+
+    if ( theme == QLatin1String( "dark" ) ) {
+        QPalette palette = m_comboBox->palette();
+        palette.setColor( QPalette::Base, Qt::white );
+        palette.setColor( QPalette::Text, Qt::black );
+        m_comboBox->lineEdit()->setPalette( palette );
+    }
 }
