@@ -18,13 +18,141 @@
 
 #include "textedit.h"
 
-TextEdit::TextEdit( QWidget* parent ) : QPlainTextEdit( parent )
+#include "application.h"
+#include "utils/localsettings.h"
+
+class LineNumberArea : public QWidget
 {
-    setViewportMargins( 2, 0, 0, 0 );
+public:
+    LineNumberArea( TextEdit* parent ) : QWidget( parent ),
+        m_textEdit( parent )
+    {
+    }
+
+public:
+    QSize sizeHint() const
+    {
+        return QSize( m_textEdit->lineNumberAreaWidth(), 0 );
+    }
+
+protected:
+    void paintEvent( QPaintEvent* e )
+    {
+        m_textEdit->lineNumberAreaPaintEvent( e );
+    }
+
+private:
+    TextEdit* m_textEdit;
+};
+
+TextEdit::TextEdit( QWidget* parent ) : QPlainTextEdit( parent ),
+    m_lineNumbers( false )
+{
+    m_lineNumberArea = new LineNumberArea( this );
+    m_lineNumberArea->hide();
+
     setBackgroundRole( QPalette::Base );
     setAutoFillBackground( true );
+
+    connect( this, SIGNAL( blockCountChanged( int ) ), this, SLOT( updateLineNumberAreaWidth() ) );
+    connect( this, SIGNAL( updateRequest( const QRect&, int ) ), this, SLOT( updateLineNumberArea( const QRect&, int ) ) );
+
+    updateLineNumberAreaWidth();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( themeChanged() ) );
 }
 
 TextEdit::~TextEdit()
 {
+}
+
+void TextEdit::setLineNumbers( bool numbers )
+{
+    if ( m_lineNumbers != numbers ) {
+        m_lineNumbers = numbers;
+        m_lineNumberArea->setVisible( numbers );
+        updateLineNumberAreaWidth();
+    }
+}
+
+int TextEdit::lineNumberAreaWidth()
+{
+    int digits = 1;
+    int max = qMax( 1, blockCount() );
+    while ( max >= 10 ) {
+        max /= 10;
+        digits++;
+    }
+
+    return fontMetrics().width( QLatin1Char( '9' ) ) * digits + 4;
+}
+
+void TextEdit::updateLineNumberAreaWidth()
+{
+    setViewportMargins( ( m_lineNumbers ? lineNumberAreaWidth() : 0 ) + 2, 0, 0, 0 );
+}
+
+void TextEdit::updateLineNumberArea( const QRect& rect, int dy )
+{
+    if ( m_lineNumbers ) {
+        if ( dy )
+            m_lineNumberArea->scroll( 0, dy );
+        else
+            m_lineNumberArea->update( 0, rect.y(), m_lineNumberArea->width(), rect.height() );
+
+        if ( rect.contains( viewport()->rect() ) )
+            updateLineNumberAreaWidth();
+    }
+}
+
+void TextEdit::resizeEvent( QResizeEvent* e )
+{
+    QPlainTextEdit::resizeEvent( e );
+
+    QRect rect = contentsRect();
+    m_lineNumberArea->setGeometry( QRect( rect.left(), rect.top(), lineNumberAreaWidth(), rect.height() ) );
+}
+
+void TextEdit::lineNumberAreaPaintEvent( QPaintEvent* e )
+{
+    QString theme = application->applicationSettings()->value( "Theme" ).toString();
+
+    QColor background;
+    QColor foreground;
+
+    if ( theme == QLatin1String( "dark" ) ) {
+        background = QColor( 64, 64, 64 );
+        foreground = QColor( 160, 160, 160 );
+    } else {
+        background = QColor( 228, 228, 228 );
+        foreground = QColor( 128, 128, 128 );
+    }
+
+    QPainter painter( m_lineNumberArea );
+    painter.fillRect( e->rect(), background );
+
+    QTextBlock block = firstVisibleBlock();
+    int blockNumber = block.blockNumber();
+    int top = (int)blockBoundingGeometry( block ).translated( contentOffset() ).top();
+    int bottom = top + (int)blockBoundingRect( block ).height();
+
+    painter.setPen( foreground );
+
+    while ( block.isValid() && top <= e->rect().bottom() ) {
+        if ( block.isVisible() && bottom >= e->rect().top() ) {
+            QString number = QString::number( blockNumber + 1 );
+            painter.drawText( 0, top, m_lineNumberArea->width() - 2, fontMetrics().height(), Qt::AlignRight, number );
+        }
+
+        block = block.next();
+        top = bottom;
+        bottom = top + (int)blockBoundingRect( block ).height();
+        blockNumber++;
+    }
+}
+
+void TextEdit::themeChanged()
+{
+    if ( m_lineNumbers )
+        m_lineNumberArea->update();
 }

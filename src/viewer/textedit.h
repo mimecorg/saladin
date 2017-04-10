@@ -19,12 +19,38 @@
 #ifndef TEXTEDIT_H
 #define TEXTEDIT_H
 
+class LineNumberArea;
+
 class TextEdit : public QPlainTextEdit
 {
     Q_OBJECT
 public:
     TextEdit( QWidget* parent );
     ~TextEdit();
+
+public:
+    void setLineNumbers( bool numbers );
+    bool lineNumbers() const { return m_lineNumbers; }
+
+protected:
+    void resizeEvent( QResizeEvent* e );
+
+private slots:
+    void updateLineNumberAreaWidth();
+    void updateLineNumberArea( const QRect& rect, int dy );
+
+    void themeChanged();
+
+private:
+    void lineNumberAreaPaintEvent( QPaintEvent* e );
+    int lineNumberAreaWidth();
+
+private:
+    bool m_lineNumbers;
+
+    LineNumberArea* m_lineNumberArea;
+
+    friend class LineNumberArea;
 };
 
 #endif

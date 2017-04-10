@@ -55,6 +55,7 @@ private slots:
 
     void findText( const QString& text );
 
+    void toggleLineNumbers();
     void goToLine();
 
     void toggleWordWrap();

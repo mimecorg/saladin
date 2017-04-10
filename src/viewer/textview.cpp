@@ -38,6 +38,12 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     QAction* action;
     XmlUi::ToolStripAction* encodingAction;
 
+    action = new QAction( tr( "Line Numbers" ), this );
+    action->setShortcut( Qt::Key_L );
+    action->setCheckable( true );
+    connect( action, SIGNAL( triggered() ), this, SLOT( toggleLineNumbers() ) );
+    setAction( "lineNumbers", action );
+
     action = new QAction( tr( "Word Wrap" ), this );
     action->setShortcut( Qt::Key_W );
     action->setCheckable( true );
@@ -187,6 +193,10 @@ void TextView::initializeSettings()
     m_edit->setWordWrapMode( wordWrap ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap );
     action( "wordWrap" )->setChecked( wordWrap );
 
+    bool lineNumbers = settings->value( "LineNumbers", false ).toBool();
+    m_edit->setLineNumbers( lineNumbers );
+    action( "lineNumbers" )->setChecked( lineNumbers );
+
     QStringList list = settings->value( "FindText" ).toStringList();
     QTextDocument::FindFlags flags = (QTextDocument::FindFlags)settings->value( "FindFlags" ).toInt();
     m_findBar->setTextList( list );
@@ -198,6 +208,7 @@ void TextView::storeSettings()
     LocalSettings* settings = application->applicationSettings();
 
     settings->setValue( "WordWrap", action( "wordWrap" )->isChecked() );
+    settings->setValue( "LineNumbers", action( "lineNumbers" )->isChecked() );
 
     settings->setValue( "FindText", m_findBar->textList() );
     settings->setValue( "FindFlags", (int)m_findBar->flags() );
@@ -460,6 +471,11 @@ void TextView::findText( const QString& text, int from, QTextDocument::FindFlags
     m_findBar->showWarning( warn );
 }
 
+void TextView::toggleLineNumbers()
+{
+    m_edit->setLineNumbers( action( "lineNumbers" )->isChecked() );
+}
+
 void TextView::goToLine()
 {
     GoToDialog dialog( m_edit->document()->blockCount(), m_currentLine, mainWidget() );
@@ -547,6 +563,7 @@ void TextView::setFullScreen( bool on )
 
 void TextView::loadIcons()
 {
+    action( "lineNumbers" )->setIcon( IconLoader::icon( "word-wrap" ) );
     action( "wordWrap" )->setIcon( IconLoader::icon( "word-wrap" ) );
     action( "selectEncoding" )->setIcon( IconLoader::icon( "encoding" ) );
     action( "copy" )->setIcon( IconLoader::icon( "edit-copy" ) );

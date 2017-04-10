@@ -4,6 +4,7 @@
     <separator/>
     <action id="find"/>
     <separator/>
+    <action id="lineNumbers"/>
     <action id="goToLine"/>
     <separator/>
     <action id="wordWrap"/>
