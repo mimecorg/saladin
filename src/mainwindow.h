@@ -128,6 +128,8 @@ private slots:
     void hideToolStrip();
     void showToolStrip();
 
+    void loadIcons();
+
 private:
     void initializeSettings();
     void saveSettings();

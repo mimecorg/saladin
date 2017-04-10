@@ -41,6 +41,7 @@ public:
     QString version() const;
 
     QString translationsPath() const { return m_translationsPath; }
+    QString iconsPath() const;
 
     QString locateDataFile( const QString& name );
     QString locateCacheFile( const QString& name );
@@ -102,7 +103,11 @@ private:
 
     QPointer<AboutBox> m_aboutBox;
 
+    QPointer<AboutBoxSection> m_notesSection;
+    QPointer<AboutBoxSection> m_helpSection;
     QPointer<AboutBoxSection> m_updateSection;
+    QPointer<AboutBoxSection> m_licenseSection;
+
     QPointer<QPushButton> m_updateButton;
 
     QString m_shownVersion;

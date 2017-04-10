@@ -18,6 +18,7 @@
 
 #include "guidedialog.h"
 
+#include "application.h"
 #include "utils/iconloader.h"
 #include "xmlui/gradientwidget.h"
 #include "xmlui/builder.h"
@@ -31,15 +32,15 @@ GuideDialog::GuideDialog( QWidget* parent ) : QDialog( parent )
 
     QAction* action;
 
-    action = new QAction( IconLoader::icon( "arrow-left" ), tr( "Back" ), this );
+    action = new QAction( tr( "Back" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( goBack() ) );
     setAction( "goBack", action );
 
-    action = new QAction( IconLoader::icon( "arrow-right" ), tr( "Forward" ), this );
+    action = new QAction( tr( "Forward" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( goForward() ) );
     setAction( "goForward", action );
 
-    action = new QAction( IconLoader::icon( "home" ), tr( "Home" ), this );
+    action = new QAction( tr( "Home" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( goHome() ) );
     setAction( "goHome", action );
 
@@ -58,9 +59,8 @@ GuideDialog::GuideDialog( QWidget* parent ) : QDialog( parent )
     QHBoxLayout* promptLayout = new QHBoxLayout( promptWidget );
     promptLayout->setSpacing( 10 );
 
-    QLabel* promptPixmap = new QLabel( promptWidget );
-    promptPixmap->setPixmap( IconLoader::pixmap( "help", 22 ) );
-    promptLayout->addWidget( promptPixmap );
+    m_promptPixmap = new QLabel( promptWidget );
+    promptLayout->addWidget( m_promptPixmap );
 
     QLabel* promptLabel = new QLabel( promptWidget );
     promptLabel->setWordWrap( true );
@@ -96,6 +96,10 @@ GuideDialog::GuideDialog( QWidget* parent ) : QDialog( parent )
     buttonBox->button( QDialogButtonBox::Ok )->setText( tr( "&OK" ) );
 
     connect( buttonBox, SIGNAL( accepted() ), this, SLOT( accept() ) );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     updateActions();
 
@@ -136,4 +140,13 @@ void GuideDialog::updateActions()
 {
     action( "goBack" )->setEnabled( m_browser->isBackwardAvailable() );
     action( "goForward" )->setEnabled( m_browser->isForwardAvailable() );
+}
+
+void GuideDialog::loadIcons()
+{
+    action( "goBack" )->setIcon( IconLoader::icon( "find-previous" ) );
+    action( "goForward" )->setIcon( IconLoader::icon( "find-next" ) );
+    action( "goHome" )->setIcon( IconLoader::icon( "home" ) );
+
+    m_promptPixmap->setPixmap( IconLoader::pixmap( "help", 22 ) );
 }

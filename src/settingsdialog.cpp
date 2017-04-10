@@ -39,9 +39,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     QHBoxLayout* promptLayout = new QHBoxLayout( promptWidget );
     promptLayout->setSpacing( 10 );
 
-    QLabel* promptPixmap = new QLabel( promptWidget );
-    promptPixmap->setPixmap( IconLoader::pixmap( "configure", 22 ) );
-    promptLayout->addWidget( promptPixmap );
+    m_promptPixmap = new QLabel( promptWidget );
+    promptLayout->addWidget( m_promptPixmap );
 
     QLabel* promptLabel = new QLabel( promptWidget );
     promptLabel->setWordWrap( true );
@@ -63,7 +62,7 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     mainLayout->addWidget( m_tabWidget );
 
     QWidget* generalTab = new QWidget( m_tabWidget );
-    m_tabWidget->addTab( generalTab, IconLoader::icon( "configure" ), tr( "General" ) );
+    m_tabWidget->addTab( generalTab, tr( "General" ) );
 
     QVBoxLayout* generalLayout = new QVBoxLayout( generalTab );
 
@@ -95,8 +94,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     leftPaneLabel->setBuddy( m_leftPaneEdit );
 
-    QToolButton* leftPaneButton = browseButton( directoriesGroup, SLOT( browseLeftPane() ) );
-    directoriesLayout->addWidget( leftPaneButton, 0, 2 );
+    m_leftPaneButton = browseButton( directoriesGroup, SLOT( browseLeftPane() ) );
+    directoriesLayout->addWidget( m_leftPaneButton, 0, 2 );
 
     QLabel* rightPaneLabel = new QLabel( tr( "Right pane:" ), directoriesGroup );
     directoriesLayout->addWidget( rightPaneLabel, 1, 0 );
@@ -107,8 +106,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     rightPaneLabel->setBuddy( m_rightPaneEdit );
 
-    QToolButton* rightPaneButton = browseButton( directoriesGroup, SLOT( browseRightPane() ) );
-    directoriesLayout->addWidget( rightPaneButton, 1, 2 );
+    m_rightPaneButton = browseButton( directoriesGroup, SLOT( browseRightPane() ) );
+    directoriesLayout->addWidget( m_rightPaneButton, 1, 2 );
 
     m_rememberCheckBox = new QCheckBox( tr( "&Remember last directories on exit" ), directoriesGroup );
     directoriesLayout->addWidget( m_rememberCheckBox, 2, 1 );
@@ -185,7 +184,7 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     generalLayout->addStretch( 1 );
 
     QWidget* toolsTab = new QWidget( m_tabWidget );
-    m_tabWidget->addTab( toolsTab, IconLoader::icon( "gear" ), tr( "Tools" ) );
+    m_tabWidget->addTab( toolsTab, tr( "Tools" ) );
 
     QVBoxLayout* toolsLayout = new QVBoxLayout( toolsTab );
 
@@ -200,11 +199,11 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     m_viewerEdit->setReadOnly( true );
     viewerLayout->addWidget( m_viewerEdit, 1, 0 );
 
-    QToolButton* viewerButton = browseButton( viewerGroup, SLOT( browseViewer() ) );
-    viewerLayout->addWidget( viewerButton, 1, 1 );
+    m_viewerButton = browseButton( viewerGroup, SLOT( browseViewer() ) );
+    viewerLayout->addWidget( m_viewerButton, 1, 1 );
 
     connect( m_internalViewerCheckBox, SIGNAL( toggled( bool ) ), m_viewerEdit, SLOT( setDisabled( bool ) ) );
-    connect( m_internalViewerCheckBox, SIGNAL( toggled( bool ) ), viewerButton, SLOT( setDisabled( bool ) ) );
+    connect( m_internalViewerCheckBox, SIGNAL( toggled( bool ) ), m_viewerButton, SLOT( setDisabled( bool ) ) );
 
     QGroupBox* editorGroup = new QGroupBox( tr( "Text Editor" ), toolsTab );
     QGridLayout* editorLayout = new QGridLayout( editorGroup );
@@ -214,8 +213,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     m_editorEdit->setReadOnly( true );
     editorLayout->addWidget( m_editorEdit, 0, 0 );
 
-    QToolButton* editorButton = browseButton( editorGroup, SLOT( browseEditor() ) );
-    editorLayout->addWidget( editorButton, 0, 1 );
+    m_editorButton = browseButton( editorGroup, SLOT( browseEditor() ) );
+    editorLayout->addWidget( m_editorButton, 0, 1 );
 
     QGroupBox* consoleGroup = new QGroupBox( tr( "Console" ), toolsTab );
     QGridLayout* consoleLayout = new QGridLayout( consoleGroup );
@@ -225,8 +224,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     m_consoleEdit->setReadOnly( true );
     consoleLayout->addWidget( m_consoleEdit, 0, 0 );
 
-    QToolButton* consoleButton = browseButton( consoleGroup, SLOT( browseConsole() ) );
-    consoleLayout->addWidget( consoleButton, 0, 1 );
+    m_consoleButton = browseButton( consoleGroup, SLOT( browseConsole() ) );
+    consoleLayout->addWidget( m_consoleButton, 0, 1 );
 
     QGroupBox* diffGroup = new QGroupBox( tr( "Compare Files" ), toolsTab );
     QGridLayout* diffLayout = new QGridLayout( diffGroup );
@@ -236,8 +235,8 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     m_diffEdit->setReadOnly( true );
     diffLayout->addWidget( m_diffEdit, 0, 0 );
 
-    QToolButton* diffButton = browseButton( diffGroup, SLOT( browseDiff() ) );
-    diffLayout->addWidget( diffButton, 0, 1 );
+    m_diffButton = browseButton( diffGroup, SLOT( browseDiff() ) );
+    diffLayout->addWidget( m_diffButton, 0, 1 );
 
     toolsLayout->addStretch( 1 );
 
@@ -253,6 +252,10 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     connect( buttonBox, SIGNAL( accepted() ), this, SLOT( accept() ) );
     connect( buttonBox, SIGNAL( rejected() ), this, SLOT( reject() ) );
     connect( buttonBox->button( QDialogButtonBox::Apply ), SIGNAL( clicked() ), this, SLOT( apply() ) );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     LocalSettings* settings = application->applicationSettings();
 
@@ -414,11 +417,25 @@ QToolButton* SettingsDialog::browseButton( QWidget* parent, const char* slot )
 {
     QToolButton* button = new QToolButton( parent );
     button->setAutoRaise( true );
-    button->setIcon( IconLoader::icon( "browse" ) );
     button->setIconSize( QSize( 16, 16 ) );
     button->setToolTip( tr( "Browse" ) );
 
     connect( button, SIGNAL( clicked() ), this, slot );
 
     return button;
+}
+
+void SettingsDialog::loadIcons()
+{
+    m_promptPixmap->setPixmap( IconLoader::pixmap( "configure", 22 ) );
+
+    m_tabWidget->setTabIcon( 0, IconLoader::icon( "configure" ) );
+    m_tabWidget->setTabIcon( 1, IconLoader::icon( "gear" ) );
+
+    m_leftPaneButton->setIcon( IconLoader::icon( "browse" ) );
+    m_rightPaneButton->setIcon( IconLoader::icon( "browse" ) );
+    m_viewerButton->setIcon( IconLoader::icon( "browse" ) );
+    m_editorButton->setIcon( IconLoader::icon( "browse" ) );
+    m_consoleButton->setIcon( IconLoader::icon( "browse" ) );
+    m_diffButton->setIcon( IconLoader::icon( "browse" ) );
 }

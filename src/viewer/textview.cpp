@@ -38,19 +38,19 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     QAction* action;
     XmlUi::ToolStripAction* encodingAction;
 
-    action = new QAction( IconLoader::icon( "word-wrap" ), tr( "Word Wrap" ), this );
+    action = new QAction( tr( "Word Wrap" ), this );
     action->setShortcut( Qt::Key_W );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( toggleWordWrap() ) );
     setAction( "wordWrap", action );
 
-    encodingAction = new XmlUi::ToolStripAction( IconLoader::icon( "encoding" ), tr( "Encoding" ), this );
+    encodingAction = new XmlUi::ToolStripAction( tr( "Encoding" ), this );
     encodingAction->setShortcut( Qt::Key_E );
     encodingAction->setPopupMode( QToolButton::InstantPopup );
     connect( encodingAction, SIGNAL( triggered() ), this, SLOT( selectEncoding() ) );
     setAction( "selectEncoding", encodingAction );
 
-    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "&Copy" ), this );
+    action = new QAction( tr( "&Copy" ), this );
     action->setShortcut( QKeySequence::Copy );
     connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "copy", action );
@@ -60,30 +60,34 @@ TextView::TextView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     connect( action, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
     setAction( "selectAll", action );
 
-    action = new QAction( IconLoader::icon( "find-text" ), tr( "&Find..." ), this );
+    action = new QAction( tr( "&Find..." ), this );
     action->setShortcut( QKeySequence::Find );
     connect( action, SIGNAL( triggered() ), this, SLOT( find() ) );
     setAction( "find", action );
 
-    action = new QAction( IconLoader::icon( "find-next" ), tr( "Find &Next" ), this );
+    action = new QAction( tr( "Find &Next" ), this );
     action->setShortcut( QKeySequence::FindNext );
     connect( action, SIGNAL( triggered() ), this, SLOT( findNext() ) );
     setAction( "findNext", action );
 
-    action = new QAction( IconLoader::icon( "find-previous" ), tr( "Find &Previous" ), this );
+    action = new QAction( tr( "Find &Previous" ), this );
     action->setShortcut( QKeySequence::FindPrevious );
     connect( action, SIGNAL( triggered() ), this, SLOT( findPrevious() ) );
     setAction( "findPrevious", action );
 
-    action = new QAction( IconLoader::icon( "goto" ), tr( "&Go To Line..." ), this );
+    action = new QAction( tr( "&Go To Line..." ), this );
     action->setShortcut( Qt::CTRL + Qt::Key_G );
     connect( action, SIGNAL( triggered() ), this, SLOT( goToLine() ) );
     setAction( "goToLine", action );
 
-    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit File" ), this );
+    action = new QAction( tr( "Edit File" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F4 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( editFile() ) );
     setAction( "editFile", action );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     loadXmlUiFile( ":/resources/textview.xml" );
 
@@ -539,4 +543,16 @@ void TextView::setFullScreen( bool on )
         if ( QFrame* frame = qobject_cast<QFrame*>( layout->itemAt( 0 )->widget() ) )
             frame->setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
     }
+}
+
+void TextView::loadIcons()
+{
+    action( "wordWrap" )->setIcon( IconLoader::icon( "word-wrap" ) );
+    action( "selectEncoding" )->setIcon( IconLoader::icon( "encoding" ) );
+    action( "copy" )->setIcon( IconLoader::icon( "edit-copy" ) );
+    action( "find" )->setIcon( IconLoader::icon( "find-text" ) );
+    action( "findNext" )->setIcon( IconLoader::icon( "find-next" ) );
+    action( "findPrevious" )->setIcon( IconLoader::icon( "find-previous" ) );
+    action( "goToLine" )->setIcon( IconLoader::icon( "goto" ) );
+    action( "editFile" )->setIcon( IconLoader::icon( "edit" ) );
 }

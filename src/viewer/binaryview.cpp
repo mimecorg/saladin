@@ -31,13 +31,13 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
 {
     QAction* action;
 
-    action = new QAction( IconLoader::icon( "hex-mode" ), tr( "Hex Mode" ), this );
+    action = new QAction( tr( "Hex Mode" ), this );
     action->setShortcut( Qt::Key_H );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( toggleHexMode() ) );
     setAction( "hexMode", action );
 
-    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "&Copy" ), this );
+    action = new QAction( tr( "&Copy" ), this );
     action->setShortcut( QKeySequence::Copy );
     connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "copy", action );
@@ -46,6 +46,10 @@ BinaryView::BinaryView( QObject* parent, QWidget* parentWidget ) : View( parent 
     action->setShortcut( QKeySequence::SelectAll );
     connect( action, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
     setAction( "selectAll", action );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     loadXmlUiFile( ":/resources/binaryview.xml" );
 
@@ -221,4 +225,10 @@ void BinaryView::contextMenuRequested( const QPoint& pos )
     QMenu* menu = builder()->contextMenu( "menuContext" );
     if ( menu )
         menu->popup( m_edit->mapToGlobal( pos ) );
+}
+
+void BinaryView::loadIcons()
+{
+    action( "hexMode" )->setIcon( IconLoader::icon( "hex-mode" ) );
+    action( "copy" )->setIcon( IconLoader::icon( "edit-copy" ) );
 }

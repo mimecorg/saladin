@@ -31,52 +31,56 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
 {
     QAction* action;
 
-    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "&Copy" ), this );
+    action = new QAction( tr( "&Copy" ), this );
     action->setShortcut( QKeySequence::Copy );
     connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "copy", action );
 
-    action = new QAction( IconLoader::icon( "zoom-fit" ), tr( "Zoom To &Fit" ), this );
+    action = new QAction( tr( "Zoom To &Fit" ), this );
     action->setShortcut( Qt::Key_F );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( zoomFit() ) );
     setAction( "zoomFit", action );
 
-    action = new QAction( IconLoader::icon( "zoom-in" ), tr( "Zoom &In" ), this );
+    action = new QAction( tr( "Zoom &In" ), this );
     action->setShortcut( Qt::CTRL + Qt::Key_Equal );
     connect( action, SIGNAL( triggered() ), this, SLOT( zoomIn() ) );
     setAction( "zoomIn", action );
 
-    action = new QAction( IconLoader::icon( "zoom-out" ), tr( "Zoom &Out" ), this );
+    action = new QAction( tr( "Zoom &Out" ), this );
     action->setShortcut( Qt::CTRL + Qt::Key_Minus );
     connect( action, SIGNAL( triggered() ), this, SLOT( zoomOut() ) );
     setAction( "zoomOut", action );
 
-    action = new QAction( IconLoader::icon( "zoom-orig" ), tr( "Original &Size" ), this );
+    action = new QAction( tr( "Original &Size" ), this );
     action->setShortcut( Qt::CTRL + Qt::Key_0 );
     connect( action, SIGNAL( triggered() ), this, SLOT( zoomOriginal() ) );
     setAction( "zoomOriginal", action );
 
-    action = new QAction( IconLoader::icon( "rotate-left" ), tr( "Rotate &Left" ), this );
+    action = new QAction( tr( "Rotate &Left" ), this );
     action->setShortcut( Qt::Key_L );
     connect( action, SIGNAL( triggered() ), this, SLOT( rotateLeft() ) );
     setAction( "rotateLeft", action );
 
-    action = new QAction( IconLoader::icon( "rotate-right" ), tr( "Rotate &Right" ), this );
+    action = new QAction( tr( "Rotate &Right" ), this );
     action->setShortcut( Qt::Key_R );
     connect( action, SIGNAL( triggered() ), this, SLOT( rotateRight() ) );
     setAction( "rotateRight", action );
 
-    action = new QAction( IconLoader::icon( "black-background" ), tr( "&Black Background" ), this );
+    action = new QAction( tr( "&Black Background" ), this );
     action->setShortcut( Qt::Key_B );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( blackBackground() ) );
     setAction( "blackBackground", action );
 
-    action = new QAction( IconLoader::icon( "info" ), tr( "Information" ), this );
+    action = new QAction( tr( "Information" ), this );
     action->setShortcut( Qt::Key_I );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewInformation() ) );
     setAction( "viewInformation", action );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     loadXmlUiFile( ":/resources/imageview.xml" );
 
@@ -344,4 +348,17 @@ void ImageView::contextMenuRequested( const QPoint& pos )
     QMenu* menu = builder()->contextMenu( "menuContext" );
     if ( menu )
         menu->popup( m_label->mapToGlobal( pos ) );
+}
+
+void ImageView::loadIcons()
+{
+    action( "copy" )->setIcon( IconLoader::icon( "edit-copy" ) );
+    action( "zoomFit" )->setIcon( IconLoader::icon( "zoom-fit" ) );
+    action( "zoomIn" )->setIcon( IconLoader::icon( "zoom-in" ) );
+    action( "zoomOut" )->setIcon( IconLoader::icon( "zoom-out" ) );
+    action( "zoomOriginal" )->setIcon( IconLoader::icon( "zoom-orig" ) );
+    action( "rotateLeft" )->setIcon( IconLoader::icon( "rotate-left" ) );
+    action( "rotateRight" )->setIcon( IconLoader::icon( "rotate-right" ) );
+    action( "blackBackground" )->setIcon( IconLoader::icon( "black-background" ) );
+    action( "viewInformation" )->setIcon( IconLoader::icon( "info" ) );
 }

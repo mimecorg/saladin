@@ -34,43 +34,47 @@ ViewerWindow::ViewerWindow() : QMainWindow(),
 
     QAction* action;
 
-    action = new QAction( IconLoader::icon( "find-previous" ), tr( "Previous" ), this );
+    action = new QAction( tr( "Previous" ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::Key_P ) << QKeySequence( Qt::ALT + Qt::Key_Left ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( previous() ) );
     setAction( "previous", action );
 
-    action = new QAction( IconLoader::icon( "find-next" ), tr( "Next" ), this );
+    action = new QAction( tr( "Next" ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::Key_N ) << QKeySequence( Qt::ALT + Qt::Key_Right ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( next() ) );
     setAction( "next", action );
 
-    action = new QAction( IconLoader::icon( "refresh" ), tr( "Reload" ), this );
+    action = new QAction( tr( "Reload" ), this );
     action->setShortcut( Qt::CTRL + Qt::Key_R );
     connect( action, SIGNAL( triggered() ), this, SLOT( reload() ) );
     setAction( "reload", action );
 
-    action = new QAction( IconLoader::icon( "type-text" ), tr( "Text" ), this );
+    action = new QAction( tr( "Text" ), this );
     action->setShortcut( Qt::Key_1 );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( switchToText() ) );
     setAction( "switchToText", action );
 
-    action = new QAction( IconLoader::icon( "type-binary" ), tr( "Binary" ), this );
+    action = new QAction( tr( "Binary" ), this );
     action->setShortcut( Qt::Key_2 );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( switchToBinary() ) );
     setAction( "switchToBinary", action );
 
-    action = new QAction( IconLoader::icon( "type-image" ), tr( "Image" ), this );
+    action = new QAction( tr( "Image" ), this );
     action->setShortcut( Qt::Key_3 );
     action->setCheckable( true );
     connect( action, SIGNAL( triggered() ), this, SLOT( switchToImage() ) );
     setAction( "switchToImage", action );
 
-    action = new QAction( IconLoader::icon( "fullscreen" ), tr( "Full Screen" ), this );
+    action = new QAction( tr( "Full Screen" ), this );
     action->setShortcut( Qt::Key_F11 );
     connect( action, SIGNAL( triggered() ), this, SLOT( fullScreen() ) );
     setAction( "fullScreen", action );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     QShortcut* shortcut;
 
@@ -234,4 +238,15 @@ void ViewerWindow::storeGeometry( bool offset )
 
     settings->setValue( "ViewerWindowGeometry", saveGeometry() );
     settings->setValue( "ViewerWindowOffset", offset );
+}
+
+void ViewerWindow::loadIcons()
+{
+    action( "previous" )->setIcon( IconLoader::icon( "find-previous" ) );
+    action( "next" )->setIcon( IconLoader::icon( "find-next" ) );
+    action( "reload" )->setIcon( IconLoader::icon( "refresh" ) );
+    action( "switchToText" )->setIcon( IconLoader::icon( "type-text" ) );
+    action( "switchToBinary" )->setIcon( IconLoader::icon( "type-binary" ) );
+    action( "switchToImage" )->setIcon( IconLoader::icon( "type-image" ) );
+    action( "fullScreen" )->setIcon( IconLoader::icon( "fullscreen" ) );
 }

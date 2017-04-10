@@ -52,6 +52,8 @@ private slots:
 
     void settingsChanged();
 
+    void loadIcons();
+
 private:
     void initializeSettings();
 

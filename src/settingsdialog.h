@@ -44,6 +44,8 @@ private slots:
     void browseConsole();
     void browseDiff();
 
+    void loadIcons();
+
 private:
     void browsePane( QLineEdit* edit, int index );
     void browseTool( QLineEdit* edit );
@@ -53,7 +55,16 @@ private:
     QToolButton* browseButton( QWidget* parent, const char* slot );
 
 private:
+    QLabel* m_promptPixmap;
+
     QTabWidget* m_tabWidget;
+
+    QToolButton* m_leftPaneButton;
+    QToolButton* m_rightPaneButton;
+    QToolButton* m_viewerButton;
+    QToolButton* m_editorButton;
+    QToolButton* m_consoleButton;
+    QToolButton* m_diffButton;
 
     SeparatorComboBox* m_languageComboBox;
 

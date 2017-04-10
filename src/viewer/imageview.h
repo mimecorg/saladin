@@ -62,6 +62,8 @@ private slots:
 
     void updateStatus();
 
+    void loadIcons();
+
 private:
     void initializeSettings();
 

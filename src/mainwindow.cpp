@@ -49,285 +49,289 @@ MainWindow::MainWindow() : QMainWindow(),
 
     QAction* action;
 
-    action = new QAction( IconLoader::icon( "about" ), tr( "About Saladin" ), this );
+    action = new QAction( tr( "About Saladin" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F1 ) );
     connect( action, SIGNAL( triggered() ), application, SLOT( about() ) );
     setAction( "about", action );
 
-    action = new QAction( IconLoader::icon( "web" ), tr( "Saladin Website" ), this );
+    action = new QAction( tr( "Saladin Website" ), this );
     connect( action, SIGNAL( triggered() ), application, SLOT( openWebsite() ) );
     setAction( "openWebsite", action );
 
-    action = new QAction( IconLoader::icon( "help" ), tr( "Quick Quide" ), this );
+    action = new QAction( tr( "Quick Quide" ), this );
     connect( action, SIGNAL( triggered() ), application, SLOT( showQuickGuide() ) );
     setAction( "showQuickGuide", action );
 
-    action = new QAction( IconLoader::icon( "configure" ), tr( "Settings..." ), this );
+    action = new QAction( tr( "Settings..." ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( configure() ) );
     setAction( "configure", action );
 
-    action = new QAction( IconLoader::icon( "edit-paste" ), tr( "Paste" ), this );
+    action = new QAction( tr( "Paste" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_V ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( paste() ) );
     setAction( "paste", action );
 
-    action = new QAction( IconLoader::icon( "edit-cut" ), tr( "Cut" ), this );
+    action = new QAction( tr( "Cut" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_X ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( cut() ) );
     setAction( "cut", action );
 
-    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "Copy" ), this );
+    action = new QAction( tr( "Copy" ), this );
     setAction( "popupEditCopy", action );
 
-    action = new QAction( IconLoader::icon( "edit-copy" ), tr( "Copy Files" ), this );
+    action = new QAction( tr( "Copy Files" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_C ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( copy() ) );
     setAction( "copy", action );
 
-    action = new QAction( IconLoader::icon( "copy-names" ), tr( "Copy File Names" ), this );
+    action = new QAction( tr( "Copy File Names" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_C ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( copyNames() ) );
     setAction( "copyNames", action );
 
-    action = new QAction( IconLoader::icon( "refresh" ), tr( "Refresh" ), this );
+    action = new QAction( tr( "Refresh" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( refresh() ) );
     setAction( "refresh", action );
 
-    action = new QAction( IconLoader::icon( "refresh" ), tr( "Refresh Drives" ), this );
+    action = new QAction( tr( "Refresh Drives" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( refreshDrives() ) );
     setAction( "refreshDrives", action );
 
-    action = new QAction( IconLoader::icon( "view-hidden" ), tr( "View Hidden Files" ), this );
+    action = new QAction( tr( "View Hidden Files" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_H ) );
     action->setIconText( tr( "Hidden" ) );
     action->setCheckable( true );
     connect( action, SIGNAL( toggled( bool ) ), this, SLOT( viewHidden( bool ) ) );
     setAction( "viewHidden", action );
 
-    action = new QAction( IconLoader::icon( "pane-same" ), tr( "Same Directory" ), this );
+    action = new QAction( tr( "Same Directory" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_E ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewSameDirectory() ) );
     setAction( "viewSameDirectory", action );
 
-    action = new QAction( IconLoader::icon( "pane-swap" ), tr( "Swap Panels" ), this );
+    action = new QAction( tr( "Swap Panels" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_U ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( swapPanes() ) );
     setAction( "swapPanes", action );
 
-    action = new QAction( IconLoader::icon( "home" ), tr( "Home Directory" ), this );
+    action = new QAction( tr( "Home Directory" ), this );
     action->setShortcut( QKeySequence( Qt::ALT + Qt::Key_Home ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openHome() ) );
     setAction( "openHome", action );
 
-    action = new QAction( IconLoader::icon( "arrow-top" ), tr( "Root Directory" ), this );
+    action = new QAction( tr( "Root Directory" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_Backslash ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openRoot() ) );
     setAction( "openRoot", action );
 
-    action = new QAction( IconLoader::icon( "arrow-up" ), tr( "Parent Directory" ), this );
+    action = new QAction( tr( "Parent Directory" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( openParent() ) );
     setAction( "openParent", action );
 
-    action = new QAction( IconLoader::icon( "arrow-right" ), "Left -> Right", this );
+    action = new QAction( tr( "Left -> Right" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( copyToRightPane() ) );
     setAction( "copyToRightPane", action );
 
-    action = new QAction( IconLoader::icon( "arrow-left" ), "Left <- Right", this );
+    action = new QAction( tr( "Left <- Right" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( copyToLeftPane() ) );
     setAction( "copyToLeftPane", action );
 
-    action = new QAction( IconLoader::icon( "select" ), tr( "Select Mask..." ), this );
+    action = new QAction( tr( "Select Mask..." ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Plus ) << QKeySequence( Qt::CTRL + Qt::Key_Equal ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( selectMask() ) );
     setAction( "selectMask", action );
 
-    action = new QAction( IconLoader::icon( "select-all" ), tr( "Select All" ), this );
+    action = new QAction( tr( "Select All" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_A ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( selectAll() ) );
     setAction( "selectAll", action );
 
-    action = new QAction( IconLoader::icon( "unselect" ), tr( "Unselect Mask..." ), this );
+    action = new QAction( tr( "Unselect Mask..." ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Minus ) << QKeySequence( Qt::CTRL + Qt::Key_Underscore ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( unselectMask() ) );
     setAction( "unselectMask", action );
 
-    action = new QAction( IconLoader::icon( "unselect-all" ), tr( "Unselect All" ), this );
+    action = new QAction( tr( "Unselect All" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_A ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( unselectAll() ) );
     setAction( "unselectAll", action );
 
-    action = new QAction( IconLoader::icon( "select-invert" ), tr( "Invert Selection" ), this );
+    action = new QAction( tr( "Invert Selection" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_I ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( invertSelection() ) );
     setAction( "invertSelection", action );
 
-    action = new QAction( IconLoader::icon( "rename" ), tr( "Rename" ), this );
+    action = new QAction( tr( "Rename" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F2 ) );
     action->setIconText( tr( "Rename\nF2" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( renameCurrent() ) );
     setAction( "renameCurrent", action );
 
-    action = new QAction( IconLoader::icon( "view" ), tr( "View", "action name" ), this );
+    action = new QAction( tr( "View", "action name" ), this );
     action->setIconText( tr( "View\nF3" ) );
     setAction( "popupView", action );
 
-    action = new QAction( IconLoader::icon( "view" ), tr( "View Current File" ), this );
+    action = new QAction( tr( "View Current File" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F3 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewCurrent() ) );
     setAction( "viewCurrent", action );
 
-    action = new QAction( IconLoader::icon( "view-selected" ), tr( "View Selected Files" ), this );
+    action = new QAction( tr( "View Selected Files" ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F3 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( viewSelected() ) );
     setAction( "viewSelected", action );
 
-    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit" ), this );
+    action = new QAction( tr( "Edit" ), this );
     action->setIconText( tr( "Edit\nF4" ) );
     setAction( "popupEdit", action );
 
-    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit File" ), this );
+    action = new QAction( tr( "Edit File" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F4 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( editCurrent() ) );
     setAction( "editCurrent", action );
 
-    action = new QAction( IconLoader::icon( "file-new" ), tr( "Create File..." ), this );
+    action = new QAction( tr( "Create File..." ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F4 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( editNew() ) );
     setAction( "editNew", action );
 
-    action = new QAction( IconLoader::icon( "copy" ), tr( "Copy" ), this );
+    action = new QAction( tr( "Copy" ), this );
     action->setIconText( tr( "Copy\nF5" ) );
     setAction( "popupCopy", action );
 
-    action = new QAction( IconLoader::icon( "copy" ), tr( "Copy To Target Directory..." ), this );
+    action = new QAction( tr( "Copy To Target Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::Key_F5 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( copySelected() ) );
     setAction( "copySelected", action );
 
-    action = new QAction( IconLoader::icon( "clone" ), tr( "Clone In Source Directory..." ), this );
+    action = new QAction( tr( "Clone In Source Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F5 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( cloneSelected() ) );
     setAction( "cloneSelected", action );
 
-    action = new QAction( IconLoader::icon( "move" ), tr( "Move" ), this );
+    action = new QAction( tr( "Move" ), this );
     action->setIconText( tr( "Move\nF6" ) );
     setAction( "popupMove", action );
 
-    action = new QAction( IconLoader::icon( "move" ), tr( "Move To Target Directory..." ), this );
+    action = new QAction( tr( "Move To Target Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::Key_F6 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( moveSelected() ) );
     setAction( "moveSelected", action );
 
-    action = new QAction( IconLoader::icon( "multi-rename" ), tr( "Rename In Source Directory..." ), this );
+    action = new QAction( tr( "Rename In Source Directory..." ), this );
     action->setShortcut( QKeySequence( Qt::SHIFT + Qt::Key_F6 ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( renameSelected() ) );
     setAction( "renameSelected", action );
 
-    action = new QAction( IconLoader::icon( "folder-new" ), tr( "Create Folder..." ), this );
+    action = new QAction( tr( "Create Folder..." ), this );
     action->setShortcut( QKeySequence( Qt::Key_F7 ) );
     action->setIconText( tr( "Folder\nF7" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( createFolder() ) );
     setAction( "createFolder", action );
 
-    action = new QAction( IconLoader::icon( "trashcan" ), tr( "Delete" ), this );
+    action = new QAction( tr( "Delete" ), this );
     action->setIconText( tr( "Delete\nF8" ) );
     setAction( "popupDelete", action );
 
-    action = new QAction( IconLoader::icon( "trashcan" ), tr( "Move To Recycle Bin" ), this );
+    action = new QAction( tr( "Move To Recycle Bin" ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::Key_F8 ) << QKeySequence( Qt::Key_Delete ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( moveToTrashCan() ) );
     setAction( "moveToTrashCan", action );
 
-    action = new QAction( IconLoader::icon( "delete" ), tr( "Delete Permanently" ), this );
+    action = new QAction( tr( "Delete Permanently" ), this );
     action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::SHIFT + Qt::Key_F8 ) << QKeySequence( Qt::SHIFT + Qt::Key_Delete ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( deleteSelected() ) );
     setAction( "deleteSelected", action );
 
-    action = new QAction( IconLoader::icon( "terminal" ), tr( "Open Console" ), this );
+    action = new QAction( tr( "Open Console" ), this );
     action->setShortcut( QKeySequence( Qt::Key_F9 ) );
     action->setIconText( tr( "Console\nF9" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openTerminal() ) );
     setAction( "openTerminal", action );
 
-    action = new QAction( IconLoader::icon( "pack" ), tr( "Pack..." ), this );
+    action = new QAction( tr( "Pack..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_P ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( packToZip() ) );
     setAction( "packToZip", action );
 
-    action = new QAction( IconLoader::icon( "browse" ), tr( "Open" ), this );
+    action = new QAction( tr( "Open" ), this );
     setAction( "popupOpen", action );
 
-    action = new QAction( IconLoader::icon( "open" ), tr( "Open Directory" ), this );
+    action = new QAction( tr( "Open Directory" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_O ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openDirectory() ) );
     setAction( "openDirectory", action );
 
-    action = new QAction( IconLoader::icon( "browse" ), tr( "Browse For Folder..." ), this );
+    action = new QAction( tr( "Browse For Folder..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_O ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( browse() ) );
     setAction( "browse", action );
 
-    action = new QAction( IconLoader::icon( "ftp" ), tr( "Connect To FTP..." ), this );
+    action = new QAction( tr( "Connect To FTP..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_F ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( openFtpSite() ) );
     setAction( "openFtpSite", action );
 
-    action = new QAction( IconLoader::icon( "calculate" ), tr( "Calculate Size" ), this );
+    action = new QAction( tr( "Calculate Size" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_L ) );
     action->setIconText( tr( "Size" ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( calculateSize() ) );
     setAction( "calculateSize", action );
 
-    action = new QAction( IconLoader::icon( "compare" ), tr( "Compare" ), this );
+    action = new QAction( tr( "Compare" ), this );
     setAction( "popupCompare", action );
 
-    action = new QAction( IconLoader::icon( "compare" ), tr( "Compare Files" ), this );
+    action = new QAction( tr( "Compare Files" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_M ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( compareFiles() ) );
     setAction( "compareFiles", action );
 
-    action = new QAction( IconLoader::icon( "folder-compare" ), tr( "Compare Directories" ), this );
+    action = new QAction( tr( "Compare Directories" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_M ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( compareDirectories() ) );
     setAction( "compareDirectories", action );
 
-    action = new QAction( IconLoader::icon( "find" ), tr( "Search..." ), this );
+    action = new QAction( tr( "Search..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_S ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( search() ) );
     setAction( "search", action );
 
-    action = new QAction( IconLoader::icon( "explore" ), tr( "Explore" ), this );
+    action = new QAction( tr( "Explore" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_E ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( explore() ) );
     setAction( "explore", action );
 
-    action = new QAction( IconLoader::icon( "history" ), tr( "History" ), this );
+    action = new QAction( tr( "History" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_G ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( showHistory() ) );
     setAction( "showHistory", action );
 
-    action = new QAction( IconLoader::icon( "bookmark" ), tr( "Bookmarks" ), this );
+    action = new QAction( tr( "Bookmarks" ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_D ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( showBookmarks() ) );
     setAction( "showBookmarks", action );
 
-    action = new QAction( IconLoader::icon( "bookmark" ), tr( "Add Bookmark..." ), this );
+    action = new QAction( tr( "Add Bookmark..." ), this );
     action->setShortcut( QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_D ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( addBookmark() ) );
     setAction( "addBookmark", action );
 
-    action = new QAction( IconLoader::icon( "edit" ), tr( "Edit Bookmarks..." ), this );
+    action = new QAction( tr( "Edit Bookmarks..." ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( editBookmarks() ) );
     setAction( "editBookmarks", action );
 
-    action = new QAction( IconLoader::icon( "arrow-hide" ), tr( "Collapse Toolbar" ), this );
+    action = new QAction( tr( "Collapse Toolbar" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( hideToolStrip() ) );
     setAction( "hideToolStrip", action );
 
-    action = new QAction( IconLoader::icon( "arrow-down" ), tr( "Expand Toolbar" ), this );
+    action = new QAction( tr( "Expand Toolbar" ), this );
     connect( action, SIGNAL( triggered() ), this, SLOT( showToolStrip() ) );
     setAction( "showToolStrip", action );
+
+    loadIcons();
+
+    connect( application, SIGNAL( themeChanged() ), this, SLOT( loadIcons() ) );
 
     setTitle( "sectionPanels", tr( "Panels" ) );
     setTitle( "sectionSelect", tr( "Select" ) );
@@ -1353,4 +1357,67 @@ void MainWindow::createMenuBar()
     button->setDefaultAction( action( "showToolStrip" ) );
 
     menuBar->setCornerWidget( button, Qt::TopRightCorner );
+}
+
+void MainWindow::loadIcons()
+{
+    action( "about" )->setIcon( IconLoader::icon( "about" ) );
+    action( "openWebsite" )->setIcon( IconLoader::icon( "web" ) );
+    action( "showQuickGuide" )->setIcon( IconLoader::icon( "help" ) );
+    action( "configure" )->setIcon( IconLoader::icon( "configure" ) );
+    action( "paste" )->setIcon( IconLoader::icon( "edit-paste" ) );
+    action( "cut" )->setIcon( IconLoader::icon( "edit-cut" ) );
+    action( "popupEditCopy" )->setIcon( IconLoader::icon( "edit-copy" ) );
+    action( "copy" )->setIcon( IconLoader::icon( "edit-copy" ) );
+    action( "copyNames" )->setIcon( IconLoader::icon( "copy-names" ) );
+    action( "refresh" )->setIcon( IconLoader::icon( "refresh" ) );
+    action( "refreshDrives" )->setIcon( IconLoader::icon( "refresh" ) );
+    action( "viewHidden" )->setIcon( IconLoader::icon( "view-hidden" ) );
+    action( "viewSameDirectory" )->setIcon( IconLoader::icon( "pane-same" ) );
+    action( "swapPanes" )->setIcon( IconLoader::icon( "pane-swap" ) );
+    action( "openHome" )->setIcon( IconLoader::icon( "home" ) );
+    action( "openRoot" )->setIcon( IconLoader::icon( "arrow-top" ) );
+    action( "openParent" )->setIcon( IconLoader::icon( "arrow-up" ) );
+    action( "copyToRightPane" )->setIcon( IconLoader::icon( "arrow-right" ) );
+    action( "copyToLeftPane" )->setIcon( IconLoader::icon( "arrow-left" ) );
+    action( "selectMask" )->setIcon( IconLoader::icon( "select" ) );
+    action( "selectAll" )->setIcon( IconLoader::icon( "select-all" ) );
+    action( "unselectMask" )->setIcon( IconLoader::icon( "unselect" ) );
+    action( "unselectAll" )->setIcon( IconLoader::icon( "unselect-all" ) );
+    action( "invertSelection" )->setIcon( IconLoader::icon( "select-invert" ) );
+    action( "renameCurrent" )->setIcon( IconLoader::icon( "rename" ) );
+    action( "popupView" )->setIcon( IconLoader::icon( "view" ) );
+    action( "viewCurrent" )->setIcon( IconLoader::icon( "view" ) );
+    action( "viewSelected" )->setIcon( IconLoader::icon( "view-selected" ) );
+    action( "popupEdit" )->setIcon( IconLoader::icon( "edit" ) );
+    action( "editCurrent" )->setIcon( IconLoader::icon( "edit" ) );
+    action( "editNew" )->setIcon( IconLoader::icon( "file-new" ) );
+    action( "popupCopy" )->setIcon( IconLoader::icon( "copy" ) );
+    action( "copySelected" )->setIcon( IconLoader::icon( "copy" ) );
+    action( "cloneSelected" )->setIcon( IconLoader::icon( "clone" ) );
+    action( "popupMove" )->setIcon( IconLoader::icon( "move" ) );
+    action( "moveSelected" )->setIcon( IconLoader::icon( "move" ) );
+    action( "renameSelected" )->setIcon( IconLoader::icon( "multi-rename" ) );
+    action( "createFolder" )->setIcon( IconLoader::icon( "folder-new" ) );
+    action( "popupDelete" )->setIcon( IconLoader::icon( "trashcan" ) );
+    action( "moveToTrashCan" )->setIcon( IconLoader::icon( "trashcan" ) );
+    action( "deleteSelected" )->setIcon( IconLoader::icon( "delete" ) );
+    action( "openTerminal" )->setIcon( IconLoader::icon( "terminal" ) );
+    action( "packToZip" )->setIcon( IconLoader::icon( "pack" ) );
+    action( "popupOpen" )->setIcon( IconLoader::icon( "browse" ) );
+    action( "openDirectory" )->setIcon( IconLoader::icon( "open" ) );
+    action( "browse" )->setIcon( IconLoader::icon( "browse" ) );
+    action( "openFtpSite" )->setIcon( IconLoader::icon( "ftp" ) );
+    action( "calculateSize" )->setIcon( IconLoader::icon( "calculate" ) );
+    action( "popupCompare" )->setIcon( IconLoader::icon( "compare" ) );
+    action( "compareFiles" )->setIcon( IconLoader::icon( "compare" ) );
+    action( "compareDirectories" )->setIcon( IconLoader::icon( "folder-compare" ) );
+    action( "search" )->setIcon( IconLoader::icon( "find" ) );
+    action( "explore" )->setIcon( IconLoader::icon( "explore" ) );
+    action( "showHistory" )->setIcon( IconLoader::icon( "history" ) );
+    action( "showBookmarks" )->setIcon( IconLoader::icon( "bookmark" ) );
+    action( "addBookmark" )->setIcon( IconLoader::icon( "bookmark" ) );
+    action( "editBookmarks" )->setIcon( IconLoader::icon( "edit" ) );
+    action( "hideToolStrip" )->setIcon( IconLoader::icon( "arrow-hide" ) );
+    action( "showToolStrip" )->setIcon( IconLoader::icon( "arrow-down" ) );
 }

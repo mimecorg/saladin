@@ -53,6 +53,8 @@ private slots:
 
     void statusChanged( const QString& status );
 
+    void loadIcons();
+
 private:
     void initializeGeometry();
     void storeGeometry( bool offset );

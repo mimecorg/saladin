@@ -41,7 +41,11 @@ private slots:
 
     void updateActions();
 
+    void loadIcons();
+
 private:
+    QLabel* m_promptPixmap;
+
     QTextBrowser* m_browser;
 };
 

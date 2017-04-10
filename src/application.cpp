@@ -121,11 +121,11 @@ void Application::about()
 
         m_aboutBox = new AboutBox( tr( "About Saladin" ), message, mainWindow );
 
-        m_aboutBox->addSection( IconLoader::pixmap( "web" ), notesMessage );
+        m_notesSection = m_aboutBox->addSection( IconLoader::pixmap( "web" ), notesMessage );
 
-        AboutBoxSection* helpSection = m_aboutBox->addSection( IconLoader::pixmap( "help" ), helpMessage );
+        m_helpSection = m_aboutBox->addSection( IconLoader::pixmap( "help" ), helpMessage );
 
-        QPushButton* helpButton = helpSection->addButton( tr( "&Quick Guide" ) );
+        QPushButton* helpButton = m_helpSection->addButton( tr( "&Quick Guide" ) );
         connect( helpButton, SIGNAL( clicked() ), this, SLOT( showQuickGuide() ) );
 
         delete m_updateSection;
@@ -139,7 +139,7 @@ void Application::about()
             connect( m_updateButton, SIGNAL( clicked() ), m_updateClient, SLOT( checkUpdate() ) );
         }
 
-        m_aboutBox->addSection( IconLoader::pixmap( "gear" ), licenseMessage );
+        m_licenseSection = m_aboutBox->addSection( IconLoader::pixmap( "license" ), licenseMessage );
     }
 
     m_aboutBox->show();
@@ -257,7 +257,18 @@ void Application::settingsChanged()
         foreach ( QWidget* widget, topLevelWidgets() )
             updatePalette( widget, palette() );
 
+        QPixmapCache::clear();
+
         emit themeChanged();
+
+        if ( m_notesSection )
+            m_notesSection->setPixmap( IconLoader::pixmap( "web" ) );
+        if ( m_helpSection )
+            m_helpSection->setPixmap( IconLoader::pixmap( "help" ) );
+        if ( m_updateSection )
+            m_updateSection->setPixmap( IconLoader::pixmap( "info" ) );
+        if ( m_licenseSection )
+            m_licenseSection->setPixmap( IconLoader::pixmap( "license" ) );
     }
 }
 
@@ -380,6 +391,16 @@ void Application::initializePalette()
     } else {
         setPalette( style()->standardPalette() );
     }
+}
+
+QString Application::iconsPath() const
+{
+    QString theme = m_settings->value( "Theme" ).toString();
+
+    if ( theme == QLatin1String( "dark" ) )
+        return ":/icons/dark";
+    else
+        return ":/icons";
 }
 
 QString Application::locateDataFile( const QString& name )
