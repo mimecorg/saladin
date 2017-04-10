@@ -7,7 +7,9 @@
 
 <h1>Internal Viewer</h1>
 
-<p>The internal viewer can be opened using the <b>Functions &gt; <img src="../../icons/view-16.png" /> View</b> command (<b>F3</b>). It automatically recognizes the format of the file and displays it in one of the following modes:</p>
+<p>The internal viewer can be opened using the <b><img src="../../icons/view-16.png" /> View</b> command (<b>F3</b>). All currently selected files can be quickly viewed using the <b><img src="../../icons/view-selected-16.png" /> View Selected Files</b> command (<b>Shift+F3</b>). When multiple files are opened, it is possible to switch between selected files using the <b><img src="../../icons/find-previous-16.png" /> Previous</b> command (<b>P</b> or <b>Alt+LEFT</b>) and the <b><img src="../../icons/find-next-16.png" /> Next</b> command (<b>N</b> or <b>Alt+RIGHT</b>) in the viewer.</p>
+
+<p>The viewer automatically recognizes the format of the file and displays it in one of the following modes:</p>
 
 <ul>
 <li>Text</li>
@@ -17,11 +19,13 @@
 
 <p>You can switch between those modes using the <b>1</b>, <b>2</b> and <b>3</b> keys or the toolbar buttons. You can also reload the file to reflect the latest changes using the <b><img src="../../icons/refresh-16.png" /> Reload</b> command (<b>Ctrl+R</b>).</p>
 
-<p>In the text mode the file is displayed using automatically detected encoding, either UTF-8, ANSI (the default encoding configured in Windows), Unicode or Unicode BE (big endian). You can select an appropriate encoding from the <b><img src="../../icons/encoding-16.png" /> Encoding</b> menu if it wasn't detected correctly. It is possible to select and copy a fragment of text to the Clipboard and to enable or disable wrapping long lines to the edge of the window using the <b><img src="../../icons/word-wrap-16.png" /> Word Wrap</b> option (<b>W</b>). You can also use the <b><img src="../../icons/find-text-16.png" /> Find</b> command (<b>Ctrl+F</b>) to quickly search for any text in the file using the search bar. You can also go to the specified line using the <b><img src="../../icons/goto-16.png" /> Go To Line</b> command (<b>Ctrl+G</b>).</p>
+<p>In the text mode the file is displayed using automatically detected encoding, either UTF-8, ANSI (the default encoding configured in Windows), Unicode or Unicode BE (big endian). You can select an appropriate encoding from the <b><img src="../../icons/encoding-16.png" /> Encoding</b> menu if it wasn't detected correctly. It is possible to select and copy a fragment of text to the Clipboard and to enable or disable wrapping long lines to the edge of the window using the <b><img src="../../icons/word-wrap-16.png" /> Word Wrap</b> option (<b>W</b>). You can also use the <b><img src="../../icons/find-text-16.png" /> Find</b> command (<b>Ctrl+F</b>) to quickly search for any text in the file using the search bar. You can also go to the specified line using the <b><img src="../../icons/goto-16.png" /> Go To Line</b> command (<b>Ctrl+G</b>) and toggle displaying line numbers on or off using the <b><img src="../../icons/goto-16.png" /> Line Numbers</b> command (<b>L</b>). To open the currently viewed file in the text editor, use the <b><img src="../../icons/edit-16.png" /> Edit File</b> command (<b>F4</b>).</p>
 
 <p>In the binary mode the file is displayed using a fixed number of 80 bytes per row, with non-printable characters replaced with a dot. You can enable the <b><img src="../../icons/hex-mode-16.png" /> Hexadecimal</b> option (<b>H</b>) to diplay 16 bytes per row, along with the offset and hexadecimal values for each byte. It is also possible to select and copy a fragment of text to the Clipboard in this mode.</p>
 
-<p>In the image mode a PNG, JPEG, GIF, BMP, TIFF, ICO or SVG image can be displayed. It is possible to copy the entire image to the Clipboard. You can enable the <b><img src="../../icons/zoom-fit-16.png" /> Zoom To Fit</b> option (<b>F</b>) to automatically scale the image to the window if it's too large. You can also zoom the image in and out, rotate it by 90 degrees in both directions, and change the color of transparent areas of the image. It is also possible to switch the viewer to full screen mode using the <b><img src="../../icons/fullscreen-16.png" /> Full Screen</b> command (<b>F11</b>).</b>
+<p>In the image mode a PNG, JPEG, GIF, BMP, TIFF, ICO or SVG image can be displayed. It is possible to copy the entire image to the Clipboard. You can enable the <b><img src="../../icons/zoom-fit-16.png" /> Zoom To Fit</b> option (<b>F</b>) to automatically scale the image to the window if it's too large. You can also zoom the image in and out, rotate it by 90 degrees in both directions, and change the background color of the image between black and white. To display information about the image, such as the format, size and number of colors, use the <b><img src="../../icons/info-16.png" /> Information</b> command (<b>I</b>). You can also switch the viewer to full screen mode using the <b><img src="../../icons/fullscreen-16.png" /> Full Screen</b> command (<b>F11</b>).</b>
+
+<p>You can change the font and text size used in text and binary views in <b><img src="../../icons/configure-16.png" /> Saladin Settings</b>. The font used for the binary view must be a fixed width font. Fonts with ligatures, such as <a href="https://github.com/tonsky/FiraCode">Fira Code</a>, are supported if the font is installed in your system.</p>
 
 <p>Summary of keyboard shortcuts in the internal viewer:</p>
 
@@ -54,7 +58,7 @@
 <tr>
  <td>B</td>
  <td><img src="../../icons/black-background-16.png" /></td>
- <td>Switch the background color for transparent areas between black and white.</td>
+ <td>Switch the background color between black and white.</td>
 <tr>
  <td>F</td>
  <td><img src="../../icons/zoom-fit-16.png" /></td>
@@ -62,8 +66,18 @@
 </tr>
 <tr>
  <td>H</td>
- <td></td>
+ <td><img src="../../icons/hex-mode-16.png" /></td>
  <td>Enable or disable hexadecimal display (binary mode only).</td>
+</tr>
+<tr>
+ <td>I</td>
+ <td><img src="../../icons/info-16.png" /></td>
+ <td>Display informatino about the image (image mode only).</td>
+</tr>
+<tr>
+ <td>L</td>
+ <td><img src="../../icons/goto-16.png" /></td>
+ <td>Toggle line numbers on and off (text mode only).</td>
 </tr>
 <tr>
  <td>L</td>
@@ -71,9 +85,19 @@
  <td>Rotate the image counter-clockwise (image mode only).</td>
 </tr>
 <tr>
+ <td>N</td>
+ <td><img src="../../icons/find-next-16.png" /></td>
+ <td>View the next selected file.</td>
+</tr>
+<tr>
  <td>O</td>
  <td></td>
  <td>Select OEM encoding (text mode only).</td>
+</tr>
+<tr>
+ <td>P</td>
+ <td><img src="../../icons/find-previous-16.png" /></td>
+ <td>View the previous selected file.</td>
 </tr>
 <tr>
  <td>R</td>
@@ -87,7 +111,7 @@
 </tr>
 <tr>
  <td>W</td>
- <td></td>
+ <td><img src="../../icons/word-wrap-16.png" /></td>
  <td>Enable or disable word wrapping (text mode only).</td>
 </tr>
 <tr>
@@ -101,6 +125,11 @@
  <td>Find the previous occurrence of the last searched text (text mode only).</td>
 </tr>
 <tr>
+ <td>F4</td>
+ <td><img src="../../icons/edit-16.png" /></td>
+ <td>Open the current file in the text editor (text mode only).</td>
+</tr>
+<tr>
  <td>F11</td>
  <td><img src="../../icons/fullscreen-16.png" /></td>
  <td>Toggle full screen mode.</td>
@@ -109,6 +138,16 @@
  <td>ESC</td>
  <td></td>
  <td>Close the viewer window.</td>
+</tr>
+<tr>
+ <td>Alt+LEFT</td>
+ <td><img src="../../icons/find-previous-16.png" /></td>
+ <td>View the previous selected file.</td>
+</tr>
+<tr>
+ <td>Alt+RIGHT</td>
+ <td><img src="../../icons/find-next-16.png" /></td>
+ <td>View the next selected file.</td>
 </tr>
 <tr>
  <td>Ctrl+-</td>

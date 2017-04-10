@@ -7,15 +7,17 @@
 
 <h1>File Lists</h1>
 
-<p>The list of directories and files in the current directory is the main part of each panel. The list is automatically refreshed when changes occur in the directory; you can also select <b>View &gt; <img src="../../icons/refresh-16.png" /> Refresh</b> (<b>Ctrl+R</b>) to refresh the list.</p>
+<p>The list of directories and files in the current directory is the main part of each panel. The list is automatically refreshed when changes occur in the directory; you can also select <b><img src="../../icons/refresh-16.png" /> Refresh</b> (<b>Ctrl+R</b>) to refresh the list.</p>
 
 <p>Double click on an item to open the file or to enter a directory or ZIP archive; this is the same as pressing <b>Enter</b> or <b>Right</b> cursor key on the current item. A special item named <tt>..</tt> can be used to navigate to the parent directory unless the current directory is already the root directory of a drive or the Desktop. The <b><img src="../../icons/arrow-up-16.png" /> Parent Directory</b> command or the <b>Backspace</b> or <b>Left</b> cursor key can also be used to go to the parent directory.</p>
 
-<p>The first column of the list displays the file name with extension. The second column displays the size of the file in bytes, <tt>&lt;DIR&gt;</tt> for directories and <tt>&lt;LNK&gt;</tt> for hard links and junctions. The total size of a directory can be calculated and displayed by pressing <b>Space</b> or by selecting one or more directories and selecting <b>Tools &gt; <img src="../../icons/calculate-16.png" /> Show Size</b> (<b>Ctrl+L</b>). The third column displays the date and time when the file was last modified.</p>
+<p>The first column of the list displays the file name with extension. The second column displays the size of the file in bytes, <tt>&lt;DIR&gt;</tt> for directories and <tt>&lt;LNK&gt;</tt> for hard links and junctions. The total size of a directory can be calculated and displayed by pressing <b>Space</b> or by selecting one or more directories and selecting <b><img src="../../icons/calculate-16.png" /> Calculate Size</b> (<b>Ctrl+L</b>). The third column displays the date and time when the file was last modified.</p>
 
-<p>The last column displays the following attributes: <b>d</b>irectory, <b>r</b>ead-only, <b>a</b>rchive, <b>h</b>idden, <b>s</b>ystem, <b>c</b>ompressed and <b>e</b>ncrypted. A letter is displayed when an attribute is set, a dash indicates that it is not set. In addition, hidden files are displayed with gray color and compressed files are displayed with dark blue color. Hidden and system files are not displayed by default; they can be shown by enabling the <b>View &gt; <img src="../../icons/view-hidden-16.png" /> Hidden Files</b> option (<b>Ctrl+H</b>).</p>
+<p>The last column displays the following attributes: <b>d</b>irectory, <b>r</b>ead-only, <b>a</b>rchive, <b>h</b>idden, <b>s</b>ystem, <b>c</b>ompressed and <b>e</b>ncrypted. A letter is displayed when an attribute is set, a dash indicates that it is not set. In addition, hidden files are displayed with gray color and compressed files are displayed with dark blue color. Hidden and system files are not displayed by default; they can be shown by enabling the <b><img src="../../icons/view-hidden-16.png" /> View Hidden Files</b> option (<b>Ctrl+H</b>).</p>
 
 <p>You can sort the list by any column by clicking on the column header. Note that directories are always displayed before files, although the can be ordered by size, date or attributes. You can also resize and reorder the columns by dragging the separators and the headers. column layout changes are automatically applied to both panels.</>
+
+<p>You can change the home directories displayed by default in each panel in <b><img src="../../icons/configure-16.png" /> Saladin Settings</b>. You can also configure Saladin to remember the last opened directories on exit. You can quickly open the home directory of a panel using the <b><img src="../../icons/home-16.png" /> Home Directory</b> command (<b>Alt+HOME</b>).
 
 <h2>Selection</h2>
 
@@ -25,7 +27,7 @@
 
 <p>You can select or unselect a range of items by holding <b>Shift</b> and clicking with the left mouse button or changing the current item using keyboard. You can also toggle the selection of an individual item by holding <b>Ctrl</b> and clicking on the item with the left mouse button. The <b>Insert</b> key toggles the selection of the current item and moves the cursor down. The <b>Space</b> key toggles the selection of the current item without moving the cursor and also calculates the total size of the selected directory.</a>
 
-<p>To select multiple files based on their name, use the <b>Select &gt; <img src="../../icons/select-16.png" /> Select Mask</b> command (<b>Ctrl+=</b>). You can enter the pattern using <a href="wildcards.html">wildcards</a>, for example <code>*.txt</code>. You can also enter multiple patterns by separating them with a semicolon, for example <code>*.txt;*.ini</code>. The <b>Select &gt; <img src="../../icons/unselect-16.png" /> Unselect Mask</b> command (<b>Ctrl+-</b>) works in an analogous way but unselects files matching the mask. The <b>Select &gt; <img src="../../icons/select-all-16.png" /> Select All</b> (<b>Ctrl+A</b>), <b>Select &gt; <img src="../../icons/unselect-all-16.png" /> Unselect All</b> (<b>Ctrl+Shift+A</b>) and <b>Select &gt; <img src="../../icons/select-invert-16.png" /> Invert Selection</b> (<b>Ctrl+-I</b>) commands can also be used to modify selection in the active panel.</p>
+<p>To select multiple files based on their name, use the <b>Select &gt; <img src="../../icons/select-16.png" /> Select Mask</b> command (<b>Ctrl+=</b>). You can enter the pattern using <a href="wildcards.html">wildcards</a>, for example <code>*.txt</code>. You can also enter multiple patterns by separating them with a semicolon, for example <code>*.txt;*.ini</code>. The <b>Select &gt; <img src="../../icons/unselect-16.png" /> Unselect Mask</b> command (<b>Ctrl+-</b>) works in an analogous way but unselects files matching the mask. The <b>Select &gt; <img src="../../icons/select-all-16.png" /> Select All</b> (<b>Ctrl+A</b>), <b>Select &gt; <img src="../../icons/unselect-all-16.png" /> Unselect All</b> (<b>Ctrl+Shift+A</b>) and <b>Select &gt; <img src="../../icons/select-invert-16.png" /> Invert Selection</b> (<b>Ctrl+I</b>) commands can also be used to modify selection in the active panel.</p>
 
 <h2>Contextual Menus</h2>
 
@@ -33,7 +35,7 @@
 
 <h2>Rename In-place</h2>
 
-<p> Click on the current item using left mouse button to rename it in-place; the <b>Functions &gt; <img src="../../icons/rename-16.png" /> Rename</b> command or the <b>F2</b> key can also be used for this purpose. Press <b>Enter</b> to confirm the new name or <b>Esc</b> to cancel renaming.</p>
+<p> Click on the current item using left mouse button to rename it in-place; the <b><img src="../../icons/rename-16.png" /> Rename</b> command or the <b>F2</b> key can also be used for this purpose. Press <b>Enter</b> to confirm the new name or <b>Esc</b> to cancel renaming.</p>
 
 <h2>Drag &amp; Drop</h2>
 
