@@ -67,6 +67,8 @@ public slots:
 
     void settingsChanged();
 
+    void updateTheme();
+
 signals:
     void themeChanged();
 

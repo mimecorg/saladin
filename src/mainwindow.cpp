@@ -535,6 +535,14 @@ bool MainWindow::eventFilter( QObject* object, QEvent* e )
     return false;
 }
 
+void MainWindow::changeEvent( QEvent* e )
+{
+    QMainWindow::changeEvent( e );
+
+    if ( e->type() == QEvent::ThemeChange )
+        QTimer::singleShot( 100, application, SLOT( updateTheme() ) );
+}
+
 void MainWindow::setSourcePane( int index )
 {
     if ( m_sourcePane == m_panes[ index ] )

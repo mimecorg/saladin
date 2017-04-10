@@ -251,25 +251,29 @@ void Application::settingsChanged()
     QString oldTheme = m_theme;
     m_theme = m_settings->value( "Theme" ).toString();
 
-    if ( !oldTheme.isEmpty() && m_theme != oldTheme ) {
-        initializePalette();
+    if ( !oldTheme.isEmpty() && m_theme != oldTheme )
+        updateTheme();
+}
 
-        foreach ( QWidget* widget, topLevelWidgets() )
-            updatePalette( widget, palette() );
+void Application::updateTheme()
+{
+    initializePalette();
 
-        QPixmapCache::clear();
+    foreach ( QWidget* widget, topLevelWidgets() )
+        updatePalette( widget, palette() );
 
-        emit themeChanged();
+    QPixmapCache::clear();
 
-        if ( m_notesSection )
-            m_notesSection->setPixmap( IconLoader::pixmap( "web" ) );
-        if ( m_helpSection )
-            m_helpSection->setPixmap( IconLoader::pixmap( "help" ) );
-        if ( m_updateSection )
-            m_updateSection->setPixmap( IconLoader::pixmap( "info" ) );
-        if ( m_licenseSection )
-            m_licenseSection->setPixmap( IconLoader::pixmap( "license" ) );
-    }
+    emit themeChanged();
+
+    if ( m_notesSection )
+        m_notesSection->setPixmap( IconLoader::pixmap( "web" ) );
+    if ( m_helpSection )
+        m_helpSection->setPixmap( IconLoader::pixmap( "help" ) );
+    if ( m_updateSection )
+        m_updateSection->setPixmap( IconLoader::pixmap( "info" ) );
+    if ( m_licenseSection )
+        m_licenseSection->setPixmap( IconLoader::pixmap( "license" ) );
 }
 
 QString Application::version() const
