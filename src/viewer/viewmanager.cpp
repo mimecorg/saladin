@@ -208,7 +208,7 @@ void ViewManager::updateTitle( ViewItem& item, const QString& name )
         title = tr( "Unknown file" );
 
     if ( item.m_pidls.count() > 1 )
-        title += QString( " - " ) + tr( "%2 of %3" ).arg( item.m_index + 1 ).arg( item.m_pidls.count() );
+        title += QString( " - " ) + tr( "%1 of %2" ).arg( item.m_index + 1 ).arg( item.m_pidls.count() );
 
     item.m_window->setWindowTitle( QString( "%1 - Saladin" ).arg( title ) );
 }
