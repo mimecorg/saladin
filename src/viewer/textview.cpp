@@ -563,7 +563,7 @@ void TextView::setFullScreen( bool on )
 
 void TextView::loadIcons()
 {
-    action( "lineNumbers" )->setIcon( IconLoader::icon( "word-wrap" ) );
+    action( "lineNumbers" )->setIcon( IconLoader::icon( "line-numbers" ) );
     action( "wordWrap" )->setIcon( IconLoader::icon( "word-wrap" ) );
     action( "selectEncoding" )->setIcon( IconLoader::icon( "encoding" ) );
     action( "copy" )->setIcon( IconLoader::icon( "edit-copy" ) );
