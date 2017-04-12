@@ -215,7 +215,7 @@ void Application::showUpdateState()
 
 void Application::openWebsite()
 {
-    QDesktopServices::openUrl( QUrl( "http://saladin.mimec.org/" ) );
+    QDesktopServices::openUrl( QString( "http://saladin.mimec.org/release/%1" ).arg( version() ) );
 }
 
 void Application::openDonations()

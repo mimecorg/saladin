@@ -54,9 +54,9 @@ MainWindow::MainWindow() : QMainWindow(),
     connect( action, SIGNAL( triggered() ), application, SLOT( about() ) );
     setAction( "about", action );
 
-    action = new QAction( tr( "Saladin Website" ), this );
+    action = new QAction( tr( "Release Notes" ), this );
     connect( action, SIGNAL( triggered() ), application, SLOT( openWebsite() ) );
-    setAction( "openWebsite", action );
+    setAction( "releaseNotes", action );
 
     action = new QAction( tr( "Quick Quide" ), this );
     connect( action, SIGNAL( triggered() ), application, SLOT( showQuickGuide() ) );
@@ -1370,7 +1370,7 @@ void MainWindow::createMenuBar()
 void MainWindow::loadIcons()
 {
     action( "about" )->setIcon( IconLoader::icon( "about" ) );
-    action( "openWebsite" )->setIcon( IconLoader::icon( "web" ) );
+    action( "releaseNotes" )->setIcon( IconLoader::icon( "web" ) );
     action( "showQuickGuide" )->setIcon( IconLoader::icon( "help" ) );
     action( "configure" )->setIcon( IconLoader::icon( "configure" ) );
     action( "paste" )->setIcon( IconLoader::icon( "edit-paste" ) );

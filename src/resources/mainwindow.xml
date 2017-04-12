@@ -110,7 +110,7 @@
   <menu id="menuBarHelp">
     <action id="showQuickGuide"/>
     <separator/>
-    <action id="openWebsite"/>
+    <action id="releaseNotes"/>
     <separator/>
     <action id="about"/>
   </menu>
