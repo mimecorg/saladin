@@ -55,7 +55,6 @@
   </menu>
   <menu id="menuBarView">
     <action id="refresh"/>
-    <action id="refreshDrives"/>
     <separator/>
     <action id="viewHidden"/>
     <separator/>
