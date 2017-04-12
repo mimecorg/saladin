@@ -121,8 +121,8 @@ void TextEdit::lineNumberAreaPaintEvent( QPaintEvent* e )
     QColor foreground;
 
     if ( theme == QLatin1String( "dark" ) ) {
-        background = QColor( 64, 64, 64 );
-        foreground = QColor( 160, 160, 160 );
+        background = QColor( 16, 16, 16 );
+        foreground = QColor( 128, 128, 128 );
     } else {
         background = QColor( 228, 228, 228 );
         foreground = QColor( 128, 128, 128 );
