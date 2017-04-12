@@ -43,12 +43,12 @@ ImageView::ImageView( QObject* parent, QWidget* parentWidget ) : View( parent ),
     setAction( "zoomFit", action );
 
     action = new QAction( tr( "Zoom &In" ), this );
-    action->setShortcut( Qt::CTRL + Qt::Key_Equal );
+    action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Plus ) << QKeySequence( Qt::CTRL + Qt::Key_Equal ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( zoomIn() ) );
     setAction( "zoomIn", action );
 
     action = new QAction( tr( "Zoom &Out" ), this );
-    action->setShortcut( Qt::CTRL + Qt::Key_Minus );
+    action->setShortcuts( QList<QKeySequence>() << QKeySequence( Qt::CTRL + Qt::Key_Minus ) << QKeySequence( Qt::CTRL + Qt::Key_Underscore ) );
     connect( action, SIGNAL( triggered() ), this, SLOT( zoomOut() ) );
     setAction( "zoomOut", action );
 
