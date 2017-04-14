@@ -391,6 +391,7 @@ void Application::initializePalette()
         pal.setColor( QPalette::Text, Qt::black );
         pal.setColor( QPalette::ButtonText, Qt::black );
         pal.setColor( QPalette::Highlight, palette().color( QPalette::Highlight ) );
+        pal.setColor( QPalette::Link, QColor( 51, 153, 255 ) );
         setPalette( pal );
     } else {
         setPalette( style()->standardPalette() );
