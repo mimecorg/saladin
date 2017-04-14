@@ -96,6 +96,8 @@ void WindowsStyle::polish( QPalette& palette )
     m_colorItemBackground = blendColors( highlight, base, 0.4 );
     m_colorItemChecked = blendColors( highlight, light, 0.3 );
     m_colorItemSunken = blendColors( highlight, base, 0.5 );
+
+    m_colorGroupBoxText = palette.color( QPalette::WindowText );
 }
 
 void WindowsStyle::polish( QWidget* widget )
@@ -221,6 +223,19 @@ QSize WindowsStyle::sizeFromContents( ContentsType type, const QStyleOption* opt
     }
 
     return QProxyStyle::sizeFromContents( type, option, contentsSize, widget );
+}
+
+int WindowsStyle::styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData ) const
+{
+    switch ( hint ) {
+        case SH_GroupBox_TextLabelColor:
+            return m_colorGroupBoxText.rgb();
+
+        default:
+            break;
+    }
+
+    return QProxyStyle::styleHint( hint, option, widget, returnData );
 }
 
 void WindowsStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* option,

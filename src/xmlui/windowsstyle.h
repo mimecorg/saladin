@@ -72,6 +72,8 @@ public: // overrides
     QSize sizeFromContents( ContentsType type, const QStyleOption* option,
         const QSize& contentsSize, const QWidget* widget ) const;
 
+    int styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData = NULL ) const;
+
     void drawPrimitive( PrimitiveElement element, const QStyleOption* option,
         QPainter* painter, const QWidget* widget ) const;
     void drawControl( ControlElement element, const QStyleOption* option,
@@ -92,6 +94,7 @@ private:
     QColor m_colorItemBackground;
     QColor m_colorItemChecked;
     QColor m_colorItemSunken;
+    QColor m_colorGroupBoxText;
 };
 
 }
