@@ -44,6 +44,9 @@ private slots:
     void browseConsole();
     void browseDiff();
 
+    void showGeneralTab();
+    void showToolsTab();
+
     void loadIcons();
 
 private:
@@ -57,7 +60,10 @@ private:
 private:
     QLabel* m_promptPixmap;
 
-    QTabWidget* m_tabWidget;
+    QStackedWidget* m_stackedWidget;
+
+    QAction* m_generalAction;
+    QAction* m_toolsAction;
 
     QToolButton* m_leftPaneButton;
     QToolButton* m_rightPaneButton;

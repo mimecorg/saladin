@@ -24,6 +24,7 @@
 #include "utils/separatorcombobox.h"
 #include "utils/iconloader.h"
 #include "xmlui/gradientwidget.h"
+#include "xmlui/toolstrip.h"
 
 SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 {
@@ -58,13 +59,28 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
     mainLayout->setSpacing( 4 );
     topLayout->addLayout( mainLayout );
 
-    m_tabWidget = new QTabWidget( this );
-    mainLayout->addWidget( m_tabWidget );
+    XmlUi::ToolStrip* strip = new XmlUi::ToolStrip( this );
+    mainLayout->addWidget( strip );
 
-    QWidget* generalTab = new QWidget( m_tabWidget );
-    m_tabWidget->addTab( generalTab, tr( "General" ) );
+    m_generalAction = new QAction( tr( "General" ), this );
+    m_generalAction->setCheckable( true );
+    m_generalAction->setChecked( true );
+    connect( m_generalAction, SIGNAL( triggered() ), this, SLOT( showGeneralTab() ) );
+    strip->addToolAction( m_generalAction );
+
+    m_toolsAction = new QAction( tr( "Tools" ), this );
+    m_toolsAction->setCheckable( true );
+    connect( m_toolsAction, SIGNAL( triggered() ), this, SLOT( showToolsTab() ) );
+    strip->addToolAction( m_toolsAction );
+
+    m_stackedWidget = new QStackedWidget( this );
+    mainLayout->addWidget( m_stackedWidget );
+
+    QWidget* generalTab = new QWidget( m_stackedWidget );
+    m_stackedWidget->addWidget( generalTab );
 
     QVBoxLayout* generalLayout = new QVBoxLayout( generalTab );
+    generalLayout->setContentsMargins( 0, 6, 0, 0 );
 
     QGroupBox* regionalGroup = new QGroupBox( tr( "Regional Options" ), generalTab );
     QGridLayout* regionalLayout = new QGridLayout( regionalGroup );
@@ -183,10 +199,11 @@ SettingsDialog::SettingsDialog( QWidget* parent ) : QDialog( parent )
 
     generalLayout->addStretch( 1 );
 
-    QWidget* toolsTab = new QWidget( m_tabWidget );
-    m_tabWidget->addTab( toolsTab, tr( "Tools" ) );
+    QWidget* toolsTab = new QWidget( m_stackedWidget );
+    m_stackedWidget->addWidget( toolsTab );
 
     QVBoxLayout* toolsLayout = new QVBoxLayout( toolsTab );
+    toolsLayout->setContentsMargins( 0, 6, 0, 0 );
 
     QGroupBox* viewerGroup = new QGroupBox( tr( "File Viewer" ), toolsTab );
     QGridLayout* viewerLayout = new QGridLayout( viewerGroup );
@@ -425,12 +442,28 @@ QToolButton* SettingsDialog::browseButton( QWidget* parent, const char* slot )
     return button;
 }
 
+void SettingsDialog::showGeneralTab()
+{
+    m_stackedWidget->setCurrentIndex( 0 );
+
+    m_generalAction->setChecked( true );
+    m_toolsAction->setChecked( false );
+}
+
+void SettingsDialog::showToolsTab()
+{
+    m_stackedWidget->setCurrentIndex( 1 );
+
+    m_generalAction->setChecked( false );
+    m_toolsAction->setChecked( true );
+}
+
 void SettingsDialog::loadIcons()
 {
     m_promptPixmap->setPixmap( IconLoader::pixmap( "configure", 22 ) );
 
-    m_tabWidget->setTabIcon( 0, IconLoader::icon( "configure" ) );
-    m_tabWidget->setTabIcon( 1, IconLoader::icon( "gear" ) );
+    m_generalAction->setIcon( IconLoader::icon( "configure" ) );
+    m_toolsAction->setIcon( IconLoader::icon( "gear" ) );
 
     m_leftPaneButton->setIcon( IconLoader::icon( "browse" ) );
     m_rightPaneButton->setIcon( IconLoader::icon( "browse" ) );
