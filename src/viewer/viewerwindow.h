@@ -63,6 +63,8 @@ private:
     View* m_view;
 
     QLabel* m_statusLabel;
+
+    bool m_restoreMaximized;
 };
 
 #endif

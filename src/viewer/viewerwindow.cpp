@@ -28,7 +28,8 @@
 #include "xmlui/toolstrip.h"
 
 ViewerWindow::ViewerWindow() : QMainWindow(),
-    m_view( NULL )
+    m_view( NULL ),
+    m_restoreMaximized( false )
 {
     setAttribute( Qt::WA_DeleteOnClose, true );
 
@@ -185,12 +186,16 @@ void ViewerWindow::fullScreen()
         menuWidget()->show();
         statusBar()->show();
         m_view->setFullScreen( false );
-        setWindowState( windowState() & ~Qt::WindowFullScreen );
+        if ( m_restoreMaximized )
+            setWindowState( ( windowState() | Qt::WindowMaximized ) & ~Qt::WindowFullScreen );
+        else
+            setWindowState( windowState() & ~Qt::WindowFullScreen );
     } else {
+        m_restoreMaximized = isMaximized();
         menuWidget()->hide();
         statusBar()->hide();
         m_view->setFullScreen( true );
-        setWindowState( windowState() | Qt::WindowFullScreen );
+        setWindowState( ( windowState() | Qt::WindowFullScreen ) & ~Qt::WindowMaximized );
     }
 }
 
