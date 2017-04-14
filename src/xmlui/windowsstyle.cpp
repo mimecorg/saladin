@@ -131,10 +131,11 @@ void WindowsStyle::polish( QWidget* widget )
             widget->setPalette( palette );
         }
 
-        if ( qobject_cast<QTabWidget*>( widget ) ) {
+        if ( qobject_cast<QLineEdit*>( widget ) ) {
             QPalette palette = widget->palette();
             palette.setColor( QPalette::Base, Qt::white );
-            palette.setColor( QPalette::WindowText, palette.color( QPalette::Text ) );
+            palette.setColor( QPalette::Text, Qt::black );
+            palette.setColor( QPalette::Disabled, QPalette::Text, QColor( 128, 128, 128 ) );
             widget->setPalette( palette );
         }
 

@@ -241,13 +241,4 @@ void FindBar::loadIcons()
     m_nextButton->setIcon( IconLoader::icon( "find-next" ) );
 
     m_warningPixmap->setPixmap( IconLoader::pixmap( "warning" ) );
-
-    QString theme = application->applicationSettings()->value( "Theme" ).toString();
-
-    if ( theme == QLatin1String( "dark" ) ) {
-        QPalette palette = m_comboBox->palette();
-        palette.setColor( QPalette::Base, Qt::white );
-        palette.setColor( QPalette::Text, Qt::black );
-        m_comboBox->lineEdit()->setPalette( palette );
-    }
 }
