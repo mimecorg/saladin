@@ -239,8 +239,13 @@ static void updatePalette( QWidget* widget, const QPalette& palette )
     widget->style()->polish( widget );
 
     foreach ( QObject* child, widget->children() ) {
-        if ( child->isWidgetType() )
-            updatePalette( (QWidget*)child, widget->palette() );
+        if ( child->isWidgetType() ) {
+            QWidget* childWidget = (QWidget*)child;
+            if ( childWidget->isTopLevel() )
+                updatePalette( childWidget, application->palette() );
+            else
+                updatePalette( childWidget, widget->palette() );
+        }
     }
 }
 
