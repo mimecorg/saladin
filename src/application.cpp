@@ -283,7 +283,7 @@ void Application::updateTheme()
 
 QString Application::version() const
 {
-    return QString( "0.6" );
+    return QString( "1.0" );
 }
 
 bool Application::loadTranslation( const QString& name, bool tryQtDir )
