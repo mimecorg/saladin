@@ -1,5 +1,5 @@
 Simple XML-based UI builder for Qt
-Version 2.2
+Version 3.0
 
 This library provides a tool strip widget, replacing classic menu bar and
 toolbars, and facilities for defining and merging the layout of actions
@@ -10,7 +10,7 @@ Website: http://www.mimec.org/components/xmlui
 Copyright
 =========
 
-Copyright (C) 2007-2015 Michał Męciński
+Copyright (C) 2007-2017 Michał Męciński
 
 Special thanks for Filipe Azevedo for the MacStyle contribution.
 
