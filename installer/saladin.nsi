@@ -1,6 +1,6 @@
-/**************************************************************************
+﻿/**************************************************************************
 * This file is part of the Saladin program
-* Copyright (C) 2011-2014 Michał Męciński
+* Copyright (C) 2011-2017 Michał Męciński
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 
 !define UNINST_KEY "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Saladin"
 
-!include "MUI2.nsh"
+Unicode true
 
-!include "languages\saladin_en.nsh"
+!include "MUI2.nsh"
 
 !ifdef INNER
     SetCompress off
@@ -100,11 +100,13 @@ ShowInstDetails nevershow
 
 !insertmacro MUI_LANGUAGE "English"
 
+!include "languages\saladin_en.nsh"
+
 VIProductVersion "${BUILDVERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Michał Męciński"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Saladin Setup"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright (C) 2011-2014 Michał Męciński"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright (C) 2011-2017 Michał Męciński"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "OriginalFilename" "saladin-${VERSION}-${ARCHITECTURE}.exe"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Saladin"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
@@ -144,6 +146,41 @@ Section
     Delete "$INSTDIR\bin\*.*"
 
     File "${BUILDDIR}\saladin.exe"
+
+    File "qt.conf"
+
+    File "${QTDIR}\bin\Qt5Core.dll"
+    File "${QTDIR}\bin\Qt5Gui.dll"
+    File "${QTDIR}\bin\Qt5Network.dll"
+    File "${QTDIR}\bin\Qt5Svg.dll"
+    File "${QTDIR}\bin\Qt5Widgets.dll"
+    File "${QTDIR}\bin\Qt5WinExtras.dll"
+    File "${QTDIR}\bin\Qt5Xml.dll"
+
+    File "${OPENSSLDIR}\bin\libeay32.dll"
+    File "${OPENSSLDIR}\bin\ssleay32.dll"
+
+    File "${VCRTDIR}\msvcp100.dll"
+    File "${VCRTDIR}\msvcr100.dll"
+
+    SetOutPath "$INSTDIR\plugins\platforms"
+
+    File "${QTDIR}\plugins\platforms\qwindows.dll"
+
+    SetOutPath "$INSTDIR\plugins\imageformats"
+
+    File "${QTDIR}\plugins\imageformats\qdds.dll"
+    File "${QTDIR}\plugins\imageformats\qgif.dll"
+    File "${QTDIR}\plugins\imageformats\qicns.dll"
+    File "${QTDIR}\plugins\imageformats\qico.dll"
+    File "${QTDIR}\plugins\imageformats\qjp2.dll"
+    File "${QTDIR}\plugins\imageformats\qjpeg.dll"
+    File "${QTDIR}\plugins\imageformats\qmng.dll"
+    File "${QTDIR}\plugins\imageformats\qsvg.dll"
+    File "${QTDIR}\plugins\imageformats\qtga.dll"
+    File "${QTDIR}\plugins\imageformats\qtiff.dll"
+    File "${QTDIR}\plugins\imageformats\qwbmp.dll"
+    File "${QTDIR}\plugins\imageformats\qwebp.dll"
 
     Delete "$INSTDIR\doc\*.*"
 
@@ -218,6 +255,7 @@ Section "Uninstall"
     Delete "$INSTDIR\COPYING"
     Delete "$INSTDIR\README"
     RMDir /r "$INSTDIR\bin"
+    RMDir /r "$INSTDIR\plugins"
     RMDir /r "$INSTDIR\doc"
     RMDir /r "$INSTDIR\translations"
     Delete "$INSTDIR\uninstall.exe"
