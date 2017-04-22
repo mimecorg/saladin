@@ -90,9 +90,12 @@ void WindowsStyle::polish( QPalette& palette )
 
     m_colorMenuBorder = blendColors( dark, base, 0.55 );
     m_colorMenuBackground = m_darkTheme ? QColor( 51, 51, 51 ) : button;
-    m_colorSeparator = m_whiteTheme ? QColor( 221, 221, 221 ) : blendColors( dark, base, 0.4 );
-    m_colorItemBorder = highlight;
+    m_colorMenuSeparator = m_whiteTheme ? QColor( 221, 221, 221 ) : blendColors( dark, base, 0.4 );
 
+    m_colorToolbarSeparator = m_darkTheme ? QColor( 85, 85, 85 ) : m_colorMenuSeparator;
+    m_colorToolbarBorder = m_darkTheme ? QColor( 136, 136, 136 ) : m_colorMenuBorder;
+
+    m_colorItemBorder = highlight;
     m_colorItemBackground = blendColors( highlight, base, 0.4 );
     m_colorItemChecked = blendColors( highlight, light, 0.3 );
     m_colorItemSunken = blendColors( highlight, base, 0.5 );
@@ -287,12 +290,12 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
             if ( qobject_cast<const ToolStrip*>( widget ) || qobject_cast<const QFrame*>( widget ) ) {
                 if ( const QStyleOptionFrameV3* optionFrame = qstyleoption_cast<const QStyleOptionFrameV3*>( option ) ) {
                     if ( optionFrame->frameShape == QFrame::VLine ) {
-                        painter->setPen( m_colorSeparator );
+                        painter->setPen( m_colorToolbarSeparator );
                         painter->drawLine( ( option->rect.left() + option->rect.right() ) / 2, option->rect.top(),
                             ( option->rect.left() + option->rect.right() ) / 2, option->rect.bottom() );
                         return;
                     } else if ( optionFrame->frameShape == QFrame::HLine ) {
-                        painter->setPen( m_colorMenuBorder );
+                        painter->setPen( m_colorToolbarBorder );
                         painter->drawLine( option->rect.left(), option->rect.top(), option->rect.right(), option->rect.top() );
                         return;
                     }
@@ -319,7 +322,7 @@ void WindowsStyle::drawControl( ControlElement element, const QStyleOption* opti
             }
             if ( const QStyleOptionMenuItem* optionItem = qstyleoption_cast<const QStyleOptionMenuItem*>( option ) ) {
                 if ( optionItem->menuItemType == QStyleOptionMenuItem::Separator ) {
-                    painter->setPen( m_colorSeparator );
+                    painter->setPen( m_colorMenuSeparator );
                     painter->drawLine( option->rect.left() + 32, ( option->rect.top() + option->rect.bottom() ) / 2,
                         option->rect.right() - 2, ( option->rect.top() + option->rect.bottom() ) / 2 );
                     painter->restore();

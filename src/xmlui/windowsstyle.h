@@ -89,7 +89,9 @@ private:
     QColor m_colorMenuBackground;
     QColor m_colorBarBegin;
     QColor m_colorBarEnd;
-    QColor m_colorSeparator;
+    QColor m_colorMenuSeparator;
+    QColor m_colorToolbarSeparator;
+    QColor m_colorToolbarBorder;
     QColor m_colorItemBorder;
     QColor m_colorItemBackground;
     QColor m_colorItemChecked;
