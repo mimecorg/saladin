@@ -95,6 +95,8 @@ public slots:
     void resizeHeaderSection( int index, int size );
     void moveHeaderSection( int from, int to );
 
+    void updateEditPalette();
+
 signals:
     void headerSectionResized( int index, int size );
     void headerSectionMoved( int from, int to );
@@ -113,7 +115,6 @@ private slots:
 
     void renameTimeout();
 
-    void updateEditPalette();
     void updateStatus();
 
 private:

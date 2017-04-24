@@ -424,6 +424,9 @@ void MainWindow::initializeSettings()
 
     show();
 
+    for ( int i = 0; i < 2; i++ )
+        m_panes[ i ]->updateEditPalette();
+
     QApplication::processEvents();
 
     QApplication::setOverrideCursor( Qt::BusyCursor );
