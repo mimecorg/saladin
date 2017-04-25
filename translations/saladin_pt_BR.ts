@@ -63,13 +63,12 @@
     <message>
         <location filename="../src/application.cpp" line="99"/>
         <source>Copyright &amp;copy; 2011-2017 Michał Męciński</source>
-        <translatorcomment>Direito autoral &amp; copia; 2011-2017 Michał Męciński</translatorcomment>
-        <translation>Copyright &amp;copy; 2011-2017 Michał Męciński</translation>
+        <translation>Direito autoral &amp;copy; 2011-2017 Michał Męciński</translation>
     </message>
     <message>
         <location filename="../src/application.cpp" line="100"/>
         <source>Icons copyright &amp;copy; 2017 Łukasz Grabowski</source>
-        <translation>Ícones direito autoral &amp;copia; 2017 Łukasz Grabowski</translation>
+        <translation>Ícones direito autoral &amp;copy; 2017 Łukasz Grabowski</translation>
     </message>
     <message>
         <location filename="../src/application.cpp" line="103"/>

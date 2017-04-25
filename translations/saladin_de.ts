@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/application.cpp" line="100"/>
         <source>Icons copyright &amp;copy; 2017 Łukasz Grabowski</source>
-        <translation>Icons copyright &amp;copy; 2017 Łukasz Grabowsk</translation>
+        <translation>Icons copyright &amp;copy; 2017 Łukasz Grabowski</translation>
     </message>
     <message>
         <location filename="../src/application.cpp" line="103"/>
