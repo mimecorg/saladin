@@ -489,7 +489,7 @@ Kanał alfa: %3</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="79"/>
         <location filename="../src/mainwindow.cpp" line="199"/>
-        <location filename="../src/mainwindow.cpp" line="965"/>
+        <location filename="../src/mainwindow.cpp" line="968"/>
         <source>Copy</source>
         <translation>Kopiuj</translation>
     </message>
@@ -534,7 +534,7 @@ Kanał alfa: %3</translation>
         <translation>Katalog nadrzędny</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="684"/>
+        <location filename="../src/mainwindow.cpp" line="687"/>
         <source>Select Mask</source>
         <translation>Zaznacz maskę</translation>
     </message>
@@ -544,7 +544,7 @@ Kanał alfa: %3</translation>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
+        <location filename="../src/mainwindow.cpp" line="712"/>
         <source>Unselect Mask</source>
         <translation>Odznacz maskę</translation>
     </message>
@@ -605,7 +605,7 @@ Kanał alfa: %3</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="165"/>
-        <location filename="../src/mainwindow.cpp" line="974"/>
+        <location filename="../src/mainwindow.cpp" line="977"/>
         <source>Rename</source>
         <translation>Zmień nazwę</translation>
     </message>
@@ -680,7 +680,7 @@ F5</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="213"/>
-        <location filename="../src/mainwindow.cpp" line="981"/>
+        <location filename="../src/mainwindow.cpp" line="984"/>
         <source>Move</source>
         <translation>Przenieś</translation>
     </message>
@@ -742,47 +742,47 @@ F6</translation>
         <translation>Panele</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="776"/>
+        <location filename="../src/mainwindow.cpp" line="779"/>
         <source>Cannot view files</source>
         <translation>Nie można wyświetlić plików</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="776"/>
+        <location filename="../src/mainwindow.cpp" line="779"/>
         <source>Only the internal viewer supports viewing multiple files.</source>
         <translation>Tylko wewnętrzna przeglądarka obsługuje podgląd wielu plików.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1046"/>
+        <location filename="../src/mainwindow.cpp" line="1049"/>
         <source>Create Folder</source>
         <translation>Utwórz folder</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1353"/>
+        <location filename="../src/mainwindow.cpp" line="1356"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edycja</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1354"/>
+        <location filename="../src/mainwindow.cpp" line="1357"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1355"/>
+        <location filename="../src/mainwindow.cpp" line="1358"/>
         <source>&amp;Selection</source>
         <translation>&amp;Zaznaczenie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1356"/>
+        <location filename="../src/mainwindow.cpp" line="1359"/>
         <source>&amp;Functions</source>
         <translation>&amp;Funkcje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1357"/>
+        <location filename="../src/mainwindow.cpp" line="1360"/>
         <source>&amp;Tools</source>
         <translation>&amp;Narzędzia</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1358"/>
+        <location filename="../src/mainwindow.cpp" line="1361"/>
         <source>&amp;Help</source>
         <translation>&amp;Pomoc</translation>
     </message>
@@ -898,162 +898,162 @@ F9</translation>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="686"/>
+        <location filename="../src/mainwindow.cpp" line="689"/>
         <source>Enter the pattern to select:</source>
         <translation>Podaj maskę do zaznaczenia:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="711"/>
+        <location filename="../src/mainwindow.cpp" line="714"/>
         <source>Enter the pattern to unselect:</source>
         <translation>Podaj maskę do odznaczenia:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="795"/>
+        <location filename="../src/mainwindow.cpp" line="798"/>
         <source>Create File</source>
         <translation>Utwórz plik</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="797"/>
+        <location filename="../src/mainwindow.cpp" line="800"/>
         <source>Create a new file:</source>
         <translation>Utwórz nowy plik:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="843"/>
+        <location filename="../src/mainwindow.cpp" line="846"/>
         <source>Tool failed</source>
         <translation>Uruchomienie nie powiodło się</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="843"/>
+        <location filename="../src/mainwindow.cpp" line="846"/>
         <source>The %1 tool could not be started.
 Make sure it is correctly configured in Saladin settings and try again.</source>
         <translation>Narzędzie %1 nie mogło zostać uruchomione.
 Upewnij się że jest ono prawidłowo skonfigurowane w ustawieniach programu i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="869"/>
+        <location filename="../src/mainwindow.cpp" line="872"/>
         <source>Missing tool</source>
         <translation>Brakujące narzędzie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="869"/>
+        <location filename="../src/mainwindow.cpp" line="872"/>
         <source>There is no %1 tool configured.
 Select the tool in Saladin settings and try again.</source>
         <translation>Narzędzie %1 nie zostało skonfigurowane.
 Wybierz narzędzie w ustawieniach programu i spróbuj ponownie.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="879"/>
+        <location filename="../src/mainwindow.cpp" line="882"/>
         <source>file viewer</source>
         <translation>przeglądarki plików</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="881"/>
+        <location filename="../src/mainwindow.cpp" line="884"/>
         <source>text editor</source>
         <translation>edytora tekstu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="883"/>
+        <location filename="../src/mainwindow.cpp" line="886"/>
         <source>console</source>
         <translation>konsoli</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="885"/>
+        <location filename="../src/mainwindow.cpp" line="888"/>
         <source>file compare</source>
         <translation>porównywania plików</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="932"/>
+        <location filename="../src/mainwindow.cpp" line="935"/>
         <source>Drag &amp; Drop</source>
         <translation>Przeciągnij i upuść</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="932"/>
+        <location filename="../src/mainwindow.cpp" line="935"/>
         <source>The source and target locations are the same.</source>
         <translation>Lokalizacje źródłowa i docelowa są takie same. </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="958"/>
+        <location filename="../src/mainwindow.cpp" line="961"/>
         <source>Clone</source>
         <translation>Klonuj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="961"/>
+        <location filename="../src/mainwindow.cpp" line="964"/>
         <source>Clone &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Klonuj &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="963"/>
+        <location filename="../src/mainwindow.cpp" line="966"/>
         <source>Clone &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Klonuj &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="968"/>
+        <location filename="../src/mainwindow.cpp" line="971"/>
         <source>Copy &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Kopiuj &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="970"/>
+        <location filename="../src/mainwindow.cpp" line="973"/>
         <source>Copy &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Kopiuj &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="977"/>
+        <location filename="../src/mainwindow.cpp" line="980"/>
         <source>Rename &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Zmień nazwę &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="979"/>
+        <location filename="../src/mainwindow.cpp" line="982"/>
         <source>Rename &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Zmień nazwę &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="984"/>
+        <location filename="../src/mainwindow.cpp" line="987"/>
         <source>Move &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Przenieś &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="986"/>
+        <location filename="../src/mainwindow.cpp" line="989"/>
         <source>Move &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Przenieś &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1007"/>
-        <location filename="../src/mainwindow.cpp" line="1137"/>
+        <location filename="../src/mainwindow.cpp" line="1010"/>
+        <location filename="../src/mainwindow.cpp" line="1140"/>
         <source>O&amp;verwrite without prompt</source>
         <translation>Na&amp;dpisz bez pytania</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1048"/>
+        <location filename="../src/mainwindow.cpp" line="1051"/>
         <source>Create a new folder:</source>
         <translation>Utwórz nowy folder:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1119"/>
+        <location filename="../src/mainwindow.cpp" line="1122"/>
         <source>Pack To Zip</source>
         <translation>Spakuj do Zip</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1124"/>
+        <location filename="../src/mainwindow.cpp" line="1127"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt;:</source>
         <translation>Spakuj &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1131"/>
+        <location filename="../src/mainwindow.cpp" line="1134"/>
         <source>Pack &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Spakuj &lt;b&gt;%1&lt;/b&gt; zaznaczonych elementów:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1269"/>
+        <location filename="../src/mainwindow.cpp" line="1272"/>
         <source>Add Bookmark</source>
         <translation>Dodaj zakładkę</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1271"/>
+        <location filename="../src/mainwindow.cpp" line="1274"/>
         <source>Add current directory to the list of bookmarks:</source>
         <translation>Dodaj bieżący katalog do listy zakładek:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1276"/>
+        <location filename="../src/mainwindow.cpp" line="1279"/>
         <source>&amp;Remember password</source>
         <translation>&amp;Zapamiętaj hasło</translation>
     </message>
