@@ -40,7 +40,7 @@ ChangeNotifyWatcherGlobal::ChangeNotifyWatcherGlobal()
     wc.lpfnWndProc = ChangeNotifyWatcherProc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
-    wc.hInstance = qWinAppInst();
+    wc.hInstance = GetModuleHandle( NULL );
     wc.hIcon = NULL;
     wc.hCursor = NULL;
     wc.hbrBackground = NULL;
@@ -64,7 +64,7 @@ ChangeNotifyWatcher::ChangeNotifyWatcher( LPITEMIDLIST pidl, int eventTypes, QOb
 {
     ChangeNotifyWatcherGlobal* g = changeNotifyWatcherGlobal();
 
-    m_window = CreateWindow( ChangeNotifyWatcher_Window, ChangeNotifyWatcher_Window, 0, 0, 0, 0, 0, NULL, NULL, qWinAppInst(), NULL );
+    m_window = CreateWindow( ChangeNotifyWatcher_Window, ChangeNotifyWatcher_Window, 0, 0, 0, 0, 0, NULL, NULL, GetModuleHandle( NULL ), NULL );
 
     if ( m_window ) {
         SHChangeNotifyEntry entry;
