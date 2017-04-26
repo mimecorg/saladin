@@ -13,7 +13,7 @@ set BUILDDIR=D:\Release\saladin-x86
 
 set QTDIR=D:\Qt5\x86-widgets
 set OPENSSLDIR=D:\OpenSSL\x86
-set VCRTDIR=C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\redist\x86\Microsoft.VC100.CRT
+set VCRTDIR=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT
 
 set ARCHITECTURE=win_x86
 set SUFFIX=
@@ -27,7 +27,7 @@ set BUILDDIR=D:\Release\saladin-x64
 
 set QTDIR=D:\Qt5\x64-widgets
 set OPENSSLDIR=D:\OpenSSL\x64
-set VCRTDIR=C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\redist\x64\Microsoft.VC100.CRT
+set VCRTDIR=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT
 
 set ARCHITECTURE=win_x64
 set SUFFIX= (64-bit)

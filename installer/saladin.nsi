@@ -160,22 +160,23 @@ Section
     File "${OPENSSLDIR}\bin\libeay32.dll"
     File "${OPENSSLDIR}\bin\ssleay32.dll"
 
-    File "${VCRTDIR}\msvcp100.dll"
-    File "${VCRTDIR}\msvcr100.dll"
+    File "${VCRTDIR}\msvcp120.dll"
+    File "${VCRTDIR}\msvcr120.dll"
 
     SetOutPath "$INSTDIR\plugins\platforms"
+
+    Delete "$INSTDIR\plugins\platforms\*.*"
 
     File "${QTDIR}\plugins\platforms\qwindows.dll"
 
     SetOutPath "$INSTDIR\plugins\imageformats"
 
-    File "${QTDIR}\plugins\imageformats\qdds.dll"
+    Delete "$INSTDIR\plugins\imageformats\*.*"
+
     File "${QTDIR}\plugins\imageformats\qgif.dll"
     File "${QTDIR}\plugins\imageformats\qicns.dll"
     File "${QTDIR}\plugins\imageformats\qico.dll"
-    File "${QTDIR}\plugins\imageformats\qjp2.dll"
     File "${QTDIR}\plugins\imageformats\qjpeg.dll"
-    File "${QTDIR}\plugins\imageformats\qmng.dll"
     File "${QTDIR}\plugins\imageformats\qsvg.dll"
     File "${QTDIR}\plugins\imageformats\qtga.dll"
     File "${QTDIR}\plugins\imageformats\qtiff.dll"
@@ -204,7 +205,7 @@ Section
 
     File "${QTDIR}\translations\qtbase_de.qm"
     ;File "${QTDIR}\translations\qtbase_es.qm"
-    ;File "${QTDIR}\translations\qtbase_pl.qm"
+    File "${QTDIR}\translations\qtbase_pl.qm"
     ;File "${QTDIR}\translations\qtbase_pt.qm"
     File "${QTDIR}\translations\qtbase_ru.qm"
 
