@@ -22,14 +22,6 @@
         <translation>Ayuda</translation>
     </message>
     <message>
-        <source>Technical Information</source>
-        <translation>Información técnica</translation>
-    </message>
-    <message>
-        <source>Visit %1 for more information about Saladin.</source>
-        <translation>Visite %1 para más información sobre Saladin.</translation>
-    </message>
-    <message>
         <source>Automatic checking for latest version is disabled. You can enable it in program settings.</source>
         <translation>La búsqueda automática de actualizaciones está desactivada. Puede activarla en la configuración del programa.</translation>
     </message>
@@ -46,20 +38,8 @@
         <translation>&amp;Reintentar</translation>
     </message>
     <message>
-        <source>Built on %1 in %2-bit %3 mode.</source>
-        <translation>Creado el %1 en modo de %2 %3 bits.</translation>
-    </message>
-    <message>
         <source>Latest Version</source>
         <translation>Última versión</translation>
-    </message>
-    <message>
-        <source>Donations</source>
-        <translation>Donaciones</translation>
-    </message>
-    <message>
-        <source>Copyright &amp;copy; 2011-2014 Michał Męciński</source>
-        <translation>Copyright &amp;copy; 2011-2014 Michał Męciński</translation>
     </message>
     <message>
         <source>Saladin %1</source>
@@ -70,28 +50,12 @@
         <translation>Su versión de Saladin está actualizada.</translation>
     </message>
     <message>
-        <source>Dual-pane file manager for Windows.</source>
-        <translation>Gestor de archivos de doble panel para Windows.</translation>
-    </message>
-    <message>
-        <source>&amp;Donate</source>
-        <translation>D&amp;onar</translation>
-    </message>
-    <message>
         <source>Checking for latest version...</source>
         <translation>Buscando actualizaciones...</translation>
     </message>
     <message>
         <source>&amp;Check Now</source>
         <translation>&amp;Buscar ahora</translation>
-    </message>
-    <message>
-        <source>If you like this program, your donation will help me dedicate more time for it, support it and implement new features.</source>
-        <translation>Si le ha gustado este programa, su donación me ayudará a dedicarle más tiempo, apoyarla e implementar nuevas funciones.</translation>
-    </message>
-    <message>
-        <source>Website</source>
-        <translation>Página web</translation>
     </message>
     <message>
         <source>Do&amp;wnload</source>
@@ -118,8 +82,24 @@
         <translation>&amp;Guía rápida</translation>
     </message>
     <message>
-        <source>Using Qt %1 and Windows Shell %2.</source>
-        <translation>Usando Qt %1 y Windows Shell %2.</translation>
+        <source>Copyright &amp;copy; 2011-2017 Michał Męciński</source>
+        <translation>Copyright &amp;copy; 2011-2017 Michał Męciński</translation>
+    </message>
+    <message>
+        <source>Icons copyright &amp;copy; 2017 Łukasz Grabowski</source>
+        <translation>Copyright de iconos &amp;copy; 2017 Łukasz Grabowski</translation>
+    </message>
+    <message>
+        <source>Release Notes</source>
+        <translation>Notas de la versión</translation>
+    </message>
+    <message>
+        <source>See what&apos;s new in this version of Saladin:</source>
+        <translation>Echa un vistazo a las novedades de esta versión de Saladin:</translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation>Licencia</translation>
     </message>
 </context>
 <context>
@@ -353,6 +333,44 @@
         <source>&amp;Black Background</source>
         <translation>Fondo &amp;negro</translation>
     </message>
+    <message>
+        <source>Information</source>
+        <translation>Información</translation>
+    </message>
+    <message>
+        <source>File path: %1
+File size: %2 bytes
+Last modified: %3</source>
+        <translation>Ruta del archivo: %1
+Tamaño del archivo: %2 bytes
+Última modificación: %3</translation>
+    </message>
+    <message>
+        <source>Image format: %1</source>
+        <translation>Formato de imagen: %1</translation>
+    </message>
+    <message>
+        <source>Image size: %1 x %2 pixels</source>
+        <translation>Tamaño de imagen: %1 x %2 píxeles</translation>
+    </message>
+    <message>
+        <source>Print size: %1 x %2 cm / %3 x %4 &quot; (%5 x %6 dpi)</source>
+        <translation>Tamaño de impresión: %1 x %2 cm / %3 x %4 &quot; (%5 x %6 dpi)</translation>
+    </message>
+    <message>
+        <source>Colors: %1 (%2 bpp)
+Alpha channel: %3</source>
+        <translation>Colores: %1 (%2 bpp)
+Canal alfal: %3</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>sí</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>no</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -377,10 +395,6 @@
         <translation>Abrir</translation>
     </message>
     <message>
-        <source>Pack</source>
-        <translation>Comprimir</translation>
-    </message>
-    <message>
         <source>Rename &lt;b&gt;%1&lt;/b&gt; selected items:</source>
         <translation>Renombrar los elementos seleccionados &lt;b&gt;%1&lt;/b&gt;:</translation>
     </message>
@@ -393,16 +407,8 @@
         <translation>Pegar</translation>
     </message>
     <message>
-        <source>Tools</source>
-        <translation>Herramientas</translation>
-    </message>
-    <message>
         <source>Edit File</source>
         <translation>Editar archivo</translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation>Portapapeles</translation>
     </message>
     <message>
         <source>Same Directory</source>
@@ -469,16 +475,8 @@ F2</source>
 F2</translation>
     </message>
     <message>
-        <source>Hidden Files</source>
-        <translation>Archivos ocultos</translation>
-    </message>
-    <message>
         <source>Browse For Folder...</source>
         <translation>Examinar carpeta...</translation>
-    </message>
-    <message>
-        <source>Functions</source>
-        <translation>Funciones</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -505,10 +503,6 @@ F2</translation>
         <translation>Cambiar nombre</translation>
     </message>
     <message>
-        <source>Search</source>
-        <translation>Buscar</translation>
-    </message>
-    <message>
         <source>Select</source>
         <translation>Seleccionar</translation>
     </message>
@@ -531,10 +525,6 @@ F2</translation>
     <message>
         <source>Unselect Mask</source>
         <translation>Anular selección de máscara</translation>
-    </message>
-    <message>
-        <source>Show Size</source>
-        <translation>Mostrar tamaño</translation>
     </message>
     <message>
         <source>Rename In Source Directory...</source>
@@ -645,10 +635,6 @@ Select the tool in Saladin settings and try again.</source>
 Seleccione la herramienta en la configuración de Saladin e inténtelo de nuevo.</translation>
     </message>
     <message>
-        <source>Saladin Settings</source>
-        <translation>Configuración de Saladin</translation>
-    </message>
-    <message>
         <source>Copy Files</source>
         <translation>Copiar archivos</translation>
     </message>
@@ -673,11 +659,6 @@ F4</translation>
     <message>
         <source>Edit Bookmarks...</source>
         <translation>Editar marcadores...</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <comment>section name</comment>
-        <translation>Visualizar</translation>
     </message>
     <message>
         <source>Explore</source>
@@ -753,6 +734,118 @@ F3</translation>
         <source>View</source>
         <comment>action name</comment>
         <translation>Visualizar</translation>
+    </message>
+    <message>
+        <source>Quick Quide</source>
+        <translation>Guía Rápida</translation>
+    </message>
+    <message>
+        <source>Settings...</source>
+        <translation>Configuración...</translation>
+    </message>
+    <message>
+        <source>View Hidden Files</source>
+        <translation>Ver archivos ocultos</translation>
+    </message>
+    <message>
+        <source>Hidden</source>
+        <translation>Oculto</translation>
+    </message>
+    <message>
+        <source>Home Directory</source>
+        <translation>Directorio principal</translation>
+    </message>
+    <message>
+        <source>Left -&gt; Right</source>
+        <translation>Izquierda -&gt; derecha</translation>
+    </message>
+    <message>
+        <source>Left &lt;- Right</source>
+        <translation>Izquierda &lt;- derecha</translation>
+    </message>
+    <message>
+        <source>Select Mask...</source>
+        <translation>Seleccionar máscara...</translation>
+    </message>
+    <message>
+        <source>Unselect Mask...</source>
+        <translation>Anular selección de máscara...</translation>
+    </message>
+    <message>
+        <source>View Current File</source>
+        <translation>Visualizar archivo actual</translation>
+    </message>
+    <message>
+        <source>View Selected Files</source>
+        <translation>Visualizar archivos seleccionados</translation>
+    </message>
+    <message>
+        <source>Create Folder...</source>
+        <translation>Crear carpeta...</translation>
+    </message>
+    <message>
+        <source>Pack...</source>
+        <translation>Comprimir...</translation>
+    </message>
+    <message>
+        <source>Calculate Size</source>
+        <translation>Calcular tamaño</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation>Tamaño</translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation>Buscar...</translation>
+    </message>
+    <message>
+        <source>Collapse Toolbar</source>
+        <translation>Contraer barra de herramientas</translation>
+    </message>
+    <message>
+        <source>Expand Toolbar</source>
+        <translation>Expandir barra de herramientas</translation>
+    </message>
+    <message>
+        <source>Panels</source>
+        <translation>Paneles</translation>
+    </message>
+    <message>
+        <source>Cannot view files</source>
+        <translation>No se ha podido visualizar los archivos</translation>
+    </message>
+    <message>
+        <source>Only the internal viewer supports viewing multiple files.</source>
+        <translation>Solo el visor interno soporta la visualización de varios archivos.</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Editar</translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation>&amp;Visualizar</translation>
+    </message>
+    <message>
+        <source>&amp;Selection</source>
+        <translation>&amp;Selección</translation>
+    </message>
+    <message>
+        <source>&amp;Functions</source>
+        <translation>&amp;Funciones</translation>
+    </message>
+    <message>
+        <source>&amp;Tools</source>
+        <translation>&amp;Herramientas</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Ayuda</translation>
+    </message>
+    <message>
+        <source>Release Notes</source>
+        <translation>Notas de la versión</translation>
     </message>
 </context>
 <context>
@@ -1008,10 +1101,6 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
         <translation>Editar</translation>
     </message>
     <message>
-        <source>View</source>
-        <translation>Visualizar</translation>
-    </message>
-    <message>
         <source>Search completed.</source>
         <translation>Búsqueda finalizada.</translation>
     </message>
@@ -1095,6 +1184,27 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
         <source>Search for files:</source>
         <translation>Buscar archivos:</translation>
     </message>
+    <message>
+        <source>View</source>
+        <comment>action name</comment>
+        <translation>Visualizar</translation>
+    </message>
+    <message>
+        <source>View Current File</source>
+        <translation>Visualizar archivo actual</translation>
+    </message>
+    <message>
+        <source>View All Files</source>
+        <translation>Visualizar todos los archivos</translation>
+    </message>
+    <message>
+        <source>Cannot view files</source>
+        <translation>No se han podido visualizar los archivos</translation>
+    </message>
+    <message>
+        <source>Only the internal viewer supports viewing multiple files.</source>
+        <translation>Solo el visor interno soporta la visualización de varios archivos.</translation>
+    </message>
 </context>
 <context>
     <name>SearchItemModel</name>
@@ -1156,10 +1266,6 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
     <message>
         <source>Browse</source>
         <translation>Examinar</translation>
-    </message>
-    <message>
-        <source>Initial Directories</source>
-        <translation>Directorios iniciales</translation>
     </message>
     <message>
         <source>Text Editor</source>
@@ -1252,6 +1358,30 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
     <message>
         <source>&amp;Enable automatic checking for latest version of Saladin</source>
         <translation>Activar la búsqueda automática de nuevas &amp;versiones de Saladin</translation>
+    </message>
+    <message>
+        <source>Home Directories</source>
+        <translation>Directorios principales</translation>
+    </message>
+    <message>
+        <source>Appearance</source>
+        <translation>Apariencia</translation>
+    </message>
+    <message>
+        <source>&amp;User interface theme:</source>
+        <translation>Tema de interfaz de &amp;usuario:</translation>
+    </message>
+    <message>
+        <source>Classic</source>
+        <translation>Clásico</translation>
+    </message>
+    <message>
+        <source>White</source>
+        <translation>Blanco</translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation>Oscuro</translation>
     </message>
 </context>
 <context>
@@ -1399,12 +1529,24 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
         <source>Chinese Traditional</source>
         <translation>Chino tradicional</translation>
     </message>
+    <message>
+        <source>Line Numbers</source>
+        <translation>Números de línea</translation>
+    </message>
+    <message>
+        <source>Edit File</source>
+        <translation>Editar archivo</translation>
+    </message>
 </context>
 <context>
     <name>ViewManager</name>
     <message>
         <source>Unknown file</source>
         <translation>Archivo desconocido</translation>
+    </message>
+    <message>
+        <source>%1 of %2</source>
+        <translation>%1 de %2</translation>
     </message>
 </context>
 <context>
@@ -1428,6 +1570,14 @@ Asegúrese de que el dispositivo está disponible e inténtelo de nuevo.</transl
     <message>
         <source>Full Screen</source>
         <translation>Pantalla completa</translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation>Anterior</translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation>Siguiente</translation>
     </message>
 </context>
 </TS>
