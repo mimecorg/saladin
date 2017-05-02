@@ -3,7 +3,7 @@
 if "%1" == "" goto usage
 
 set VERSION=1.0
-set BUILDVERSION=1.0.0.6315
+set BUILDVERSION=1.0.0.6332
 
 set NSISDIR=C:\Program Files (x86)\NSIS
 
