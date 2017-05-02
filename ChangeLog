@@ -1,3 +1,19 @@
+1.0 (2017-05-02)
+ * ported to Qt5
+ * compact toolbar layout and new icons
+ * collapsing the toolbar into a menu bar
+ * white and dark user interface themes
+ * viewing mutliple selected files in the internal viewer
+ * remembering last used search text and patterns
+ * quickly navigate to the configured home directories
+ * open the text editor directly from the internal viewer
+ * automatically rotate images in the internal viewer
+ * display line numbers in the internal viewer
+ * detailed image information in the internal viewer
+ * fixed opening fileds locked for writing in the internal viewer
+ * fixed a crash in the search results window when the list is empty
+ * added German and Russian translations
+
 0.6 (2014-11-25)
  * changing background for transparent areas in image viewer
  * fixed a problem with changing panel width

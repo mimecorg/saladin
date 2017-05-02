@@ -1,5 +1,5 @@
 Saladin
-Version 0.6 (2014-11-25)
+Version 1.0 (2017-05-02)
 
 Dual-pane file manager for Windows.
 
@@ -8,7 +8,7 @@ the capabilities of Windows Explorer with the well known
 and easy to use orthodox user interface. It supports both
 32-bit and 64-bit versions of Windows.
 
-NOTE: Windows Vista or newer is required to run this program.
+NOTE: This program does not support Windows XP or older.
 
 
 Copyrights
@@ -41,12 +41,16 @@ Credits
 
 Authors:
 
- * Michał Męciński (mimec at mimec org)
+ * Michał Męciński (mimec at mimec org; Twitter: @MichalMecinski)
+
+Icons:
+
+ * Łukasz Grabowski (lgrabowski at bulletcode com; Twitter: @LukaszGx)
 
 Translators:
 
  * Flávio Veras (flaviove at gmail com)
-    - Portuguese translation
+    - Portuguese (Brazil) translation
 
  * Patricia Martín Chozas, Gonzalo Mena Morales (menamoralesgonzalo at gmail com)
     - Spanish translation
