@@ -1,0 +1,15 @@
+debug
+release
+src/precompiled.h.cpp
+src/saladin.vcxproj
+src/saladin.vcxproj.filters
+src/saladin.vcxproj.user
+tmp
+translations/call-lrelease.bat
+translations/call-lupdate.bat
+.qmake.stash
+config.pri
+configure-msvc.bat
+release-x64.bat
+saladin.sln
+saladin.v12.suo
